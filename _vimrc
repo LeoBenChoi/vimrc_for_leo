@@ -1,93 +1,130 @@
-" 文字使用 utf-8
-" Linux 使用
-" 普通设置
-:set number " 显示行号
-:set guifont=楷体:h12:cGB2312:qDRAFT " 字体
-:set backspace=2 " 退格键能正常使用
-:set showcmd " 显示输入命令
-:set nocompatible  " 以不兼容vi运行
-:set noignorecase " 搜索时不忽略大小写
-:filetype plugin indent on " 自动检测文件类型、自动缩进？
-:set wrap " 自动换行 
-:set termguicolors " 开启真彩色
+" Vim with all enhancements
+source $VIMRUNTIME/vimrc_example.vim
 
-" 状态栏
-" set statusline 
-:set laststatus=2 " 状态栏显示两行(始终显示)
-
-" 语法
-:syn on " 语法高亮
-
-" 备份
-:set nobackup " 不备份
-:set noundofile " 不生成undo文件
-:set noswapfile " 不生成swp文件
-
-" 缩进
-:set tabstop=4 " 制表符宽度为4
-:set shiftwidth=4 " 缩进宽度为4
-:set softtabstop=4 " 换行缩进为4
-":setlocal expandtab " 制表符插入空格
-"setlocal autoindent " 自动缩进
-
-" 新建文件时 文件头 
-:autocmd BufNewFile *.sh,*.py exec ":call SetTitle()"
-function! SetTitle()
-	if has('unix')
-		if expand("%:e") == "sh"
-			call setline(1, "#!/bin/bash")
-		endif
-		if expand("%:e") == "py"
-			call setline(1, "#!/usr/bin/python")
-			call setline(2, "# -*- coding: UTF-8 -*-")
-		endif
-"	call setline(2, "##################################################")
-"	call setline(3, "# Author:		Ben")
-"	call setline(4, "# Email:	 	lio_ben_choi@foxmial.com")
-"	call setline(5, "# Date:			".strftime("%Y-%m-%d"))
-"	call setline(6, "# Description:	The Description")
-"	call setline(7, "##################################################")
-"		if expand("%:e") == "py"
-"			call setline(8, "# -*- coding: UTF-8 -*-")
-"		endif
-	endif
+" Use the internal diff if available.
+" Otherwise use the special 'diffexpr' for Windows.
+if &diffopt !~# 'internal'
+  set diffexpr=MyDiff()
+endif
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg1 = substitute(arg1, '!', '\!', 'g')
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg2 = substitute(arg2, '!', '\!', 'g')
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let arg3 = substitute(arg3, '!', '\!', 'g')
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  let cmd = substitute(cmd, '!', '\!', 'g')
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
 endfunction
 
-" 光标
-" 新建文件自动将光标定位到末尾
-:autocmd BufNewFile * normal G
-" 文件打开回到上次离开行
-:autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" vimrc for Leo
+" author: Leo
+" descript: vimrc for own use, welcome to copy
 
-" 映射
-" <F2>  普通模式：配置 
-" <F3> 显示特殊字符，用于代码审计
-" <F5> 执行当前文件
-:nnoremap <F2> :e $MYVIMRC<CR>
-" inoremap <F2> <C-R>=strftime("%Y/%m/%d")<CR>
-:nnoremap <F3> :set list!<CR>
-" nnoremap <F5> :update<CR>:source %<CR>
-:nmap <F5> :call CompileRun()<CR>
-" 这里其实有局限性，python版本不对记得改
-function! CompileRun()
-	execute "w"
-	if &filetype == 'python'
-		execute "!python3 %"
-	endif
-endfunction
+" 1 重要选项
+" 2 移动、搜索以及正则表达式
+" 3 标签(tag)
+set showfulltag	"在插入模式补全标签时显示更多信息
 
-" 补全字典目录
-:autocmd! FileType python set dictionary+=$VIM/vimfiles/dict/python.dict
+" 4 显示文本
+set scroll=5	"按 CTRL-U 和 CTRL-D 滚动的行数 (局部于窗口)
+set window=20	"按 CTRL-F 和 CTRL-B 滚动的行数
+set wrap	"长行折行(局部于窗口)
+set linebreak	"在 'breakat' 中的字符处对长行折行(局部于窗口)
+set breakindent	"在折行文本中保持缩进(局部于窗口)
+set cmdheight=2	"用于命令行的行数
+"set list "以 ^I 显示 <Tab>, 以 $ 显示行尾(局部于窗口)
+set number
+"set relativenumber	"显示每行的相对行号(局部于窗口)
+set numberwidth=4	"用于行号的列数(局部于窗口)
 
-" 状态栏
-" 样例
-":set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-":set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
-:set statusline=%1*[%t]%2*\ [%{&ff}(%{&fenc})]\ %3*%y%4*%h%m%r%=%5*%l,%-10v%-3p%%
+" 5 语法、高亮和拼写
+" "dark" 或者 "light"；背景色亮度
+set background=light
+
+
+" 6 多个窗口
+set statusline=%1*[%t]%2*\ [%{&ff}(%{&fenc})]\ %3*%y%4*%h%m%r%=%5*%l,%-10v%-3p%%
 " 状态栏调色
 hi User1 cterm=none ctermfg=0 ctermbg=255
 hi User2 cterm=none ctermfg=5 ctermbg=0
 hi User3 cterm=none ctermfg=3 ctermbg=0
 hi User4 cterm=none ctermfg=red ctermbg=0
 hi User5 cterm=none ctermfg=2 ctermbg=0
+
+" 7 多个标签页
+set showtabline=2	"0, 1 或 2; 何时使用标签页行
+
+
+" 8 终端
+set title	"在窗口标题中显示信息
+
+" 9 使用鼠标
+" 10 图形用户界面
+set guifont=楷体:h16:cGB2312:qDRAFT " "在 GUI 中使用的字体名称列表
+
+" 11 打印
+" 12 消息和信息
+set showmode	"在状态行中显示当前模式
+
+" 13 选择文本
+" 14 编辑文本
+set noundofile	"自动保存和恢复撤销历史
+
+" 15 Tab 和缩进
+set tabstop=4	"<Tab> 在文本中代表的空格数(局部于缓冲区)
+"set shiftwidth=4	"每步（自动）缩进所使用的空格数(局部于缓冲区)
+"set smarttab	"用 <Tab> 键缩进时插入 'shiftwidth' 个空格(使用空格代替 <Tab>)
+"set shiftround	"用 "<<" 和 ">>" 缩进时，插入 'shiftwidth' 整数倍个空格
+set autoindent	"自动设置新行缩进(局部于缓冲区) 使用noai关闭
+set smartindent	"智能自动缩进(局部于缓冲区)
+
+" 16 折叠
+" 17 差异模式
+
+" 18 映射
+" <F2>  普通模式：配置 
+nnoremap <F2> :e $MYVIMRC<CR>
+
+
+" 19 读写文件
+" 20 交换文件
+" 21 命令行编辑
+" 22 执行外部命令
+set shell=C:\\Windows\\system32\\cmd.exe	"用于外部命令的 shell 程序的名称
+
+" 23 运行 make 并跳到错误（快速修复）
+" 24 系统特定
+" 25 语言特定
+" 26 多字节字符
+set encoding=utf-8	"在 Vim 中使用的字符编码："latin1", "utf-8","euc-jp", "big5" 等
+
+" 27 杂项
+" 文件打开回到上次离开行
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+""" 配置文件完 """
+
 
