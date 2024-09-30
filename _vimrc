@@ -32,6 +32,7 @@ hi User2 cterm=none ctermfg=5 ctermbg=0
 hi User3 cterm=none ctermfg=3 ctermbg=0
 hi User4 cterm=none ctermfg=red ctermbg=0
 hi User5 cterm=none ctermfg=2 ctermbg=0
+set laststatus=2 " 启用状态栏
 
 " 7 多个标签页
 set showtabline=2	"0, 1 或 2; 何时使用标签页行
