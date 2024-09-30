@@ -1,44 +1,3 @@
-" Vim with all enhancements
-source $VIMRUNTIME/vimrc_example.vim
-
-" Use the internal diff if available.
-" Otherwise use the special 'diffexpr' for Windows.
-if &diffopt !~# 'internal'
-  set diffexpr=MyDiff()
-endif
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg1 = substitute(arg1, '!', '\!', 'g')
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg2 = substitute(arg2, '!', '\!', 'g')
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let arg3 = substitute(arg3, '!', '\!', 'g')
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      if empty(&shellxquote)
-        let l:shxq_sav = ''
-        set shellxquote&
-      endif
-      let cmd = '"' . $VIMRUNTIME . '\diff"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  let cmd = substitute(cmd, '!', '\!', 'g')
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-  if exists('l:shxq_sav')
-    let &shellxquote=l:shxq_sav
-  endif
-endfunction
-
 " vimrc for Leo
 " author: Leo
 " descript: vimrc for own use, welcome to copy
@@ -55,7 +14,7 @@ set wrap	"长行折行(局部于窗口)
 set linebreak	"在 'breakat' 中的字符处对长行折行(局部于窗口)
 set breakindent	"在折行文本中保持缩进(局部于窗口)
 set cmdheight=2	"用于命令行的行数
-"set list "以 ^I 显示 <Tab>, 以 $ 显示行尾(局部于窗口)
+"set list "以 ^I 显示 <Tab>, 以 $ 显示行尾(局部于窗口),本人一般用于绑定F3
 set number
 "set relativenumber	"显示每行的相对行号(局部于窗口)
 set numberwidth=4	"用于行号的列数(局部于窗口)
@@ -77,7 +36,6 @@ hi User5 cterm=none ctermfg=2 ctermbg=0
 " 7 多个标签页
 set showtabline=2	"0, 1 或 2; 何时使用标签页行
 
-
 " 8 终端
 set title	"在窗口标题中显示信息
 
@@ -94,12 +52,13 @@ set showmode	"在状态行中显示当前模式
 set noundofile	"自动保存和恢复撤销历史
 
 " 15 Tab 和缩进
-set tabstop=4	"<Tab> 在文本中代表的空格数(局部于缓冲区)
-"set shiftwidth=4	"每步（自动）缩进所使用的空格数(局部于缓冲区)
-"set smarttab	"用 <Tab> 键缩进时插入 'shiftwidth' 个空格(使用空格代替 <Tab>)
-"set shiftround	"用 "<<" 和 ">>" 缩进时，插入 'shiftwidth' 整数倍个空格
-set autoindent	"自动设置新行缩进(局部于缓冲区) 使用noai关闭
-set smartindent	"智能自动缩进(局部于缓冲区)
+set expandtab " 使用空格代替tab
+set tabstop=4	" <Tab> 在文本中代表的空格数(局部于缓冲区)
+"set shiftwidth=4	" 每步（自动）缩进所使用的空格数(局部于缓冲区)
+"set smarttab	" 用 <Tab> 键缩进时插入 'shiftwidth' 个空格(使用空格代替 <Tab>)
+"set shiftround	" 用 "<<" 和 ">>" 缩进时，插入 'shiftwidth' 整数倍个空格
+set autoindent	" 自动设置新行缩进(局部于缓冲区) 使用noai关闭
+set smartindent	" 智能自动缩进(局部于缓冲区)
 
 " 16 折叠
 " 17 差异模式
