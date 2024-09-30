@@ -35,7 +35,7 @@ hi User5 cterm=none ctermfg=2 ctermbg=0
 set laststatus=2 " 启用状态栏
 
 " 7 多个标签页
-set showtabline=2	"0, 1 或 2; 何时使用标签页行
+"set showtabline=2	"0, 1 或 2; 何时使用标签页行
 
 " 8 终端
 set title	"在窗口标题中显示信息
