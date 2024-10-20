@@ -1,3 +1,3 @@
 # vimrc for Leo
 
-自用的vimrc，
+自用的vimrc
