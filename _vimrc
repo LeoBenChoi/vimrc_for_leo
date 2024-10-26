@@ -64,6 +64,7 @@ endfunction
 :set numberwidth=4	"用于行号的列数(局部于窗口)
 
 " 5 语法、高亮和拼写
+
 " "dark" 或者 "light"；背景色亮度
 "set background=light
 :filetype plugin on " 检测文件类型
@@ -93,7 +94,7 @@ endfunction
 " 8 终端
 " 9 使用鼠标
 " 10 图形用户界面
-:set guifont=楷体:h14:cGB2312:qDRAFT " "在 GUI 中使用的字体名称列表
+:set guifont=Consolas:h16:b:cANSI:qDRAFT "在 GUI 中使用的字体名称列表
 
 " 11 打印
 " 12 消息和信息
@@ -127,6 +128,12 @@ endfunction
 "nmap <C-c> "+yy
 "vmap <C-c> "+y
 "nmap <C-v> "+p
+" 重新载入当前文件
+:nnoremap <F4> :source %<CR>
+" 编译运行
+:nnoremap <F5> :!%<CR>
+"set pythonthreedll = "D:\\Program Files\\Python\\Python312"
+
 
 " 19 读写文件
 " 20 交换文件
@@ -138,7 +145,7 @@ endfunction
 :set wildmenu
 
 " 22 执行外部命令
-:set shell=C:\\Windows\\system32\\cmd.exe	"用于外部命令的 shell 程序的名称
+set shell=C:\\Windows\\system32\\cmd.exe	"用于外部命令的 shell 程序的名称
 
 " 23 运行 make 并跳到错误（快速修复）
 " 24 系统特定
@@ -146,6 +153,8 @@ endfunction
 " 26 多字节字符
 :set encoding=utf-8	"在 Vim 中使用的字符编码："latin1", "utf-8","euc-jp", "big5" 等
 :set fileencodings=ucs-bom,utf-8,gb18030,cp936,latin1 " 猜测文件编码列表
+" 宽度有歧义字符的宽度（解决中文引号显示不全问题）
+: set ambiwidth=double
 
 " 27 杂项
 " 文件打开回到上次离开行
@@ -156,7 +165,8 @@ if has('win32') || has ('win64')
 else
     let $VIMHOME = $HOME."/.vim"
 endif
-
+" 最大化
+autocmd GUIEnter * simalt ~x
 
 " 加载插件
 " ######################
@@ -190,8 +200,8 @@ autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silen
 " ##  插件 altercation  ##
 " ########################
 if has('gui_running') == 1
-	":set background=light
-	:set background=dark
+	:set background=light
+	"set background=dark
 	:colorscheme solarized
 elseif has('gui_running') == 0
 	:set background=dark
