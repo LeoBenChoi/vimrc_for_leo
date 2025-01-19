@@ -3,9 +3,13 @@
 ### 基本信息
 
 vimrc for Leo
+
 author: Leo
+
 mail: leo_ben_choi@outlook.com
+
 date: 20250119
+
 descript: 自己用的比较顺手的vimrc
 
 
