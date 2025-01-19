@@ -1,18 +1,72 @@
 " vimrc for Leo
 " author: Leo
+" mail: leo_ben_choi@outlook.com
+" date: 20250119
 " descript: 自己用的比较顺手的vimrc
-" date: 20241020
 
 """"""""
 " 映射 "
 """"""""
 " <F1> 帮助文档
-" <F2> 打开配置文件
+" <F2> 显示/关闭行号，默认为显示
 " <F4> 重新载入当前文件
-" <F5> 运行代码（如果可以的话）
-:nmap <F2> :e $MYVIMRC<CR> 
-:nnoremap <F5> :!%<CR>
+" <F5> 运行文件（如果可以的话）
+" <C-F5>和<S-F5>暂时不确定用哪一个比较顺手，所以两个都设置为了编译
+" <C-F5> 编译文件（如果可以的话）
+" <S-F5> 编译文件（如果可以的话）
+" <F7> 浅色模式
+" <F8> 深色模式
+" <F12> 打开配置文件
+:nnoremap <F2> :set number!<CR>
 :nnoremap <F4> :source %<CR>
+:nnoremap <F5> :call RunFile()<CR>
+:nnoremap <S-F5> :call CompileRunFile()<CR>
+:nnoremap <C-F5> :call CompileRunFile()<CR>
+:nnoremap <F7> :set background=light<CR>
+:nnoremap <F8> :set background=dark<CR>
+:nnoremap <F12> :e $MYVIMRC<CR> 
+
+" 将 F5 键映射为检测并运行文件
+" 定义 RunFile 函数
+function! RunFile()
+    " 获取当前文件的文件类型
+    let filetype = &filetype
+    " 根据文件类型执行对应操作
+    if filetype ==? 'python'
+        " 执行 Python 文件
+        exec '!python' shellescape(@%, 1)
+    elseif filetype ==? 'go'
+        " 执行 Go 文件
+        exec '!go run' shellescape(@%, 1)
+    else
+        " 提示不支持的文件类型
+        echo "这个文件暂不能运行!"
+    endif
+endfunction
+
+" 注释1：==# 区分大小写
+"
+" 注释2：shellescape(@%, 1)
+" shellescape() 是 Vim 提供的一个内置函数，用于对字符串进行转义，确保文件路径在命令行中安全且正确。
+" 例如，如果文件路径包含特殊字符（如空格或其他 shell 元字符），shellescape() 会自动加引号或做转义处理，以避免路径解析错误。@% 是 Vim 的寄存器，表示当前文件的路径（绝对路径）。
+" 第二个参数 1 表示强制对路径进行完整的转义，确保安全性。
+
+" 定义 CompileRunFile 函数
+function! CompileRunFile()
+    " 获取当前文件的文件类型
+    let filetype = &filetype
+    " 如果是 Python 文件，直接执行
+    if filetype ==? 'python'
+        exec '!python' shellescape(@%, 1)
+    " 如果是 Go 文件，先编译再执行
+    elseif filetype ==? 'go'
+        " 编译 Go 文件
+        exec '!go build' shellescape(@%,1)
+        " 提示不支持的文件类型
+        echo "这个文件暂不支持编译!"
+    endif
+endfunction
+
 
 """"""""
 " 常用 "
@@ -29,6 +83,7 @@
 :set wildmenu " 命令行补全时显示匹配列表
 :set encoding=utf-8	"在 Vim 中使用的字符编码："latin1", "utf-8","euc-jp", "big5" 等
 :set fileencodings=ucs-bom,utf-8,gb18030,cp936,latin1 " 猜测文件编码列表
+:set ignorecase " 使用搜索模式时忽略大小写
 
 """""""""""""
 " tab键优化 "
