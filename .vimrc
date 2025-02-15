@@ -1,4 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 基本设置
 " 基本编辑设置
 set nocompatible         " 关闭 vi 兼容模式
@@ -12,11 +13,27 @@ set breakindent         " 自动缩进换行符
 set showbreak=+++       " 设置换行符显示方式
 set guifont=Consolas:h12:b:cANSI:qDRAFT    " 设置字体
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 性能优化
+set lazyredraw           " 延迟重绘，提高性能
+set ttyfast              " 提升屏幕刷新速度
+set updatetime=300       " 设置自动语法检查的时间间隔
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 禁用自动备份相关功能
+set nobackup          " 禁用备份文件
+set nowritebackup     " 禁用写入时备份文件
+set noswapfile        " 禁用交换文件
+set noundofile        " 禁用撤销文件
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 键盘映射
+source $VIM/vimfiles/keymap/default.keymap.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 打开文件时回到上次编辑的位置
+autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缩进设置
 set noexpandtab     " 不用空格代替 Tab 键
 set tabstop=4       " Tab 键显示为 4 个空格宽度
 set shiftwidth=4    " 自动缩进为 4 个空格
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 显示设置
 set number              " 显示行号
@@ -36,6 +53,7 @@ set cmdheight=2         " 设置命令行高度
 set mouse=a             " 所有模式都支持鼠标
 set ttymouse=sgr        " 鼠标兼容
 set signcolumn=yes      " 打开标志列
+set guioptions-=m	   " 隐藏菜单栏
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 文件与自动命令
 filetype plugin on      " 打开文件类型检测
@@ -45,13 +63,14 @@ set foldmethod=marker   " 设置折叠方式为标记
 set foldlevelstart=99   " 设置折叠级别为99
 set foldcolumn=3        " 设置折叠栏宽度为3
 set foldnestmax=10      " 设置最大折叠深度为10
-autocmd BufRead,BufNewFile *.vimhex set filetype=xxd
+autocmd BufRead,BufNewFile *.vimhex set filetype=xxd	" 设置vimhex文件类型
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 搜索设置
 set incsearch           " 实时搜索
 set hlsearch            " 高亮搜索结果
 set ignorecase          " 使用搜索模式时忽略大小写
 set smartcase           " 智能区分大小写
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 主题和外观
 if has("gui_running")
@@ -87,25 +106,22 @@ else
 	endif
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 打开文件时回到上次编辑的位置
-autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 性能优化
-set lazyredraw           " 延迟重绘，提高性能
-set ttyfast              " 提升屏幕刷新速度
-set updatetime=300       " 设置自动语法检查的时间间隔
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 禁用自动备份相关功能
-set nobackup          " 禁用备份文件
-set nowritebackup     " 禁用写入时备份文件
-set noswapfile        " 禁用交换文件
-set noundofile        " 禁用撤销文件
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 键盘映射
-source $VIM/vimfiles/keymap/default.keymap.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件管理
 " 注册插件服务
+if executable('vim-language-server')
+	augroup LspVim
+		autocmd!
+		autocmd User lsp_setup call lsp#register_server({
+					\ 'name': 'vim-language-server',
+					\ 'cmd': {server_info->['vim-language-server', '--stdio']},
+					\ 'whitelist': ['vim'],
+					\ 'initialization_options': {
+					\   'vimruntime': $VIMRUNTIME,
+					\   'runtimepath': &rtp,
+					\ }})
+	augroup END
+endif
 if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({
@@ -146,7 +162,29 @@ function! s:on_lsp_buffer_enabled() abort
 	let g:lsp_format_sync_timeout = 1000
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
+	" refer to doc to add more commands
 endfunction
+
+" 状态栏
+let g:lightline = {
+			\ 'colorscheme': 'wombat',
+			\ 'active': {
+			\   'left': [ [ 'mode', ], [ 'gitbranchstatus'], ['filename' ], [ 'readonly', 'modified'] ],
+			\   'right': [ ['lineinfo'], [ 'percent' ], ['filetype', 'fileformat', 'fileencoding', 'charvaluehex' ] ]
+			\ },
+			\ 'component_function': {
+			\   'gitbranchstatus': 'FugitiveStatusline',
+			\ },
+			\ 'component': {
+			\   'charvaluehex': '0x%B'
+			\ },
+			\ }
+
+" 侧边栏
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
 
 
 finish
