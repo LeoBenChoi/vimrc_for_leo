@@ -52,6 +52,7 @@ else
 		call system("sudo git clone https://github.com/tpope/vim-fugitive.git " . ' vimfiles/pack/plugins/start/vim-fugitive/')
 		call system("sudo git clone https://github.com/fatih/vim-go.git " . ' vimfiles/pack/plugins/start/vim-go/')
 		call system("sudo git clone https://github.com/prabirshrestha/vim-lsp.git " . ' vimfiles/pack/plugins/start/vim-lsp/')
+		call system("sudo git clone https://github.com/mattn/vim-lsp-settings.git " . ' vimfiles/pack/plugins/start/vim-lsp-settings/')
 	endif
 endif
 

@@ -72,9 +72,11 @@ if filereadable(flag_file) == 0
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('gui_running') == 1
-	"colorscheme gruxbox
+	colorscheme gruvbox
 	set ambiwidth=double
-	autocmd GUIENter * simalt ~x
+		if (has('win32') || has('win64')) == 1
+			autocmd GUIENter * simalt ~x
+		endif
 	let hour = strftime("%H")
 	if hour >= 8 && hour < 18
 		set background light
@@ -92,7 +94,6 @@ else
 	else
 		set termguicolors
 		colorscheme silverhand
-		let g:airline_theme='silverhand'
 		if (has('win32') || has('win64')) == 1
 			call HighlightFor("CurosrColumn", "#0a0d04", "5e81f5", "NONE")
 		endif
@@ -177,3 +178,5 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+
+let g:snipMate = { 'snippet_version' : 1 }
