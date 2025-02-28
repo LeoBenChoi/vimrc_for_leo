@@ -12,6 +12,7 @@ set linebreak           " 允许在长行中断行
 set breakindent         " 自动缩进换行符
 set showbreak=+++       " 设置换行符显示方式
 set guifont=Consolas:h12:b:cANSI:qDRAFT    " 设置字体
+set fileformat=unix " test
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 性能优化
 set lazyredraw           " 延迟重绘，提高性能
@@ -25,7 +26,7 @@ set noswapfile        " 禁用交换文件
 set noundofile        " 禁用撤销文件
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 键盘映射
-source $VIM/vimfiles/keymap/default.keymap.vim
+"source $VIM/vimfiles/keymap/default.keymap.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 打开文件时回到上次编辑的位置
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
@@ -72,9 +73,8 @@ set ignorecase          " 使用搜索模式时忽略大小写
 set smartcase           " 智能区分大小写
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 主题和外观
-if has("gui_running")
-	" 设置GVim的主题
+" 主题和外观 
+if has("gui_running") == 1 " pass
 	colorscheme gruvbox
 	set ambiwidth=double  " 设置宽字符显示
 	autocmd GUIENter * simalt ~x
@@ -82,21 +82,21 @@ if has("gui_running")
 	if hour >= 8 && hour < 18
 		" 白天（8:00-18:00）使用 light 主题
 		set background=light
-	else
+	else " TODO
 		" 晚上（18:00-6:00）使用 dark 主题
 		set background=dark
-	endif
-else
+	endif " TODO
+else " pass
 	" 设置终端Vim的主题
-	set termguicolors
-	let g:cyberpunk_cursorline="default"
-	let hour = strftime("%H")
-	if hour >= 8 && hour < 18
+	set termguicolors " pass
+	let g:cyberpunk_cursorline="default" " TODO
+	let hour = strftime("%H") " TODO
+	if hour >= 8 && hour < 18 " TODO
 		" 白天（6:00-18:00）使用 light 主题
-		colorscheme cyberpunk
-		let g:airline_theme='cyberpunk'
+		"colorscheme cyberpunk 
+		let g:airline_theme='cyberpunk' " TODO
 		" 修改列显示
-		call HighlightFor("CursorColumn", "#140007", "#FF0055", "NONE")
+		call HighlightFor("CursorColumn", "#140007", "#FF0055", "NONE") " TODO
 	else
 		" 晚上（18:00-6:00）使用 dark 主题
 		colorscheme silverhand
@@ -168,7 +168,7 @@ endfunction
 " 状态栏
 let g:lightline = {
 			\ 'colorscheme': 'wombat',
-			\ 'active': {
+			\ 'active': { " TODO
 			\   'left': [ [ 'mode', ], [ 'gitbranchstatus'], ['filename' ], [ 'readonly', 'modified'] ],
 			\   'right': [ ['lineinfo'], [ 'percent' ], ['filetype', 'fileformat', 'fileencoding', 'charvaluehex' ] ]
 			\ },
@@ -185,7 +185,3 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-
-
-finish
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
