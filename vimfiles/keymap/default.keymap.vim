@@ -29,7 +29,11 @@ nnoremap <F12> :e $MYVIMRC<CR>
 "" 定义函数
 "" F1 键打开帮助文档
 func OpenNotebook()
-	:e $VIM\vimfiles\doc\notebook.txt
+	if (has('win32') || has('win64')) == 1
+		:e $VIM\vimfiles\doc\notebook.txt
+	elseif has('unix') == 1
+		:e /etc/vim/vimfiles/dock/notebook.txt
+	endif
 endfunc
 
 "" F3 键切换二进制显示（十六进制显示）
