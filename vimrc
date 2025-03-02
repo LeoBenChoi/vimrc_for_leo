@@ -27,12 +27,7 @@ set noundofile        " 禁用撤销文件
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " 键盘映射
-" python
-autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
-
-" go
-autocmd FileType go nnoremap <F5> :w<CR>:!go run %<CR>
-autocmd FileType go nnoremap <C-F5> :w<CR>:!go build %<CR>
+nnoremap <F5> :!go run %<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -121,10 +116,12 @@ if (has('win32') || has('win64')) == 1
 
 elseif has('unix') == 1
 	" Linux 或类 Unix 系统设置
-	" TODO: 设置适配 Linux 或类 Unix 系统的配置
 	colorscheme gruvbox
 	" kali 里面这一一个变量会导致报错
-	:unlet g:gruvbox_contrast
+	unlet g:gruvbox_contrast
+	set runtimepath+=/etc/vim/
+	set packpath+=/etc/vim/vimfiles/
+	let $MYVIMRC = '/etc/vim/vimrc'
 else
 	echo "未适配或未知操作系统"
 endif
