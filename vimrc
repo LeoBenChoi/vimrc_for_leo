@@ -9,6 +9,7 @@ set linebreak
 set showbreak=+++
 set guifont=Consolas:h12:b:cANSI:qDRAFT
 set fileformat=unix
+set syntax=on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set lazyredraw
 set ttyfast
@@ -52,16 +53,36 @@ set foldcolumn=3
 set foldnestmax=10
 autocmd BufRead,BufNewFile *.vimhex set filetype=xxd
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" !! 不能删除
+set nocompatible
+set backspace=indent,eol,start
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if (has('win32') || has('win64')) == 1
 	let g:LEOVIMRCPATH = $VIM 
 	let flag_file = expand(LEOVIMRCPATH . '\vimfiles\init_complete_flag')
+	if has('gui_running') == 1
+		colorscheme gruvbox
+		set ambiwidth=double
+		if (has('win32') || has('win64')) == 1
+			autocmd GUIENter * simalt ~x
+		endif
+		let hour = strftime("%H")
+		if hour >= 8 && hour < 18
+			set background=light
+		else
+			set background=dark
+		endif
+	else
+		colorscheme gruvbox
+		set background=dark
+	endif
 elseif has('unix') == 1
 	let g:LEOVIMRCPATH = '/etc/vim/'
 	let flag_file = expand(LEOVIMRCPATH . '/vimfiles/init_complete_flag')
 	set runtimepath+=/etc/vim/vimfiles
 	set packpath+=/etc/vim/vimfiles
 	source /etc/vim/vimfiles/keymap/default.keymap.vim
+	colorscheme elflord
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if filereadable(flag_file) == 0
@@ -71,36 +92,12 @@ if filereadable(flag_file) == 0
 	source /etc/vim/init.vim
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has('gui_running') == 1
-	colorscheme gruvbox
-	set ambiwidth=double
-		if (has('win32') || has('win64')) == 1
-			autocmd GUIENter * simalt ~x
-		endif
-	let hour = strftime("%H")
-	if hour >= 8 && hour < 18
-		set background light
-	else
-		set background=dark
-	endif
-else
-	let g:cyberpunk_cursorline="default"
-	let hour = strftime("%H")
-	if hour >= 8 && hour < 18
-		colorscheme cyberpunk
-		if (has('win32') || has('win64')) == 1
-			call HighlightFor("CurosrColumn", "#140007", "#FF0055", "NONE")
-		endif
-	else
-		set termguicolors
-		colorscheme silverhand
-		if (has('win32') || has('win64')) == 1
-			call HighlightFor("CurosrColumn", "#0a0d04", "5e81f5", "NONE")
-		endif
-	endif
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 注册插件服务
+" use vim-go
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " if executable('vim-language-server')
 if executable('vim-language-server')
 	augroup LspVim
@@ -115,6 +112,7 @@ if executable('vim-language-server')
 					\ }})
 	augroup END
 endif
+
 if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({
@@ -123,6 +121,7 @@ if executable('pylsp')
 				\ 'allowlist': ['python'],
 				\ })
 endif
+
 if executable('gopls')
 	" go get -u golang.org/x/tools/gopls@latest
 	au User lsp_setup call lsp#register_server({
@@ -154,7 +153,6 @@ function! s:on_lsp_buffer_enabled() abort
 
 	let g:lsp_format_sync_timeout = 1000
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-
 	" refer to doc to add more commands
 endfunction
 
@@ -179,4 +177,5 @@ nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
+" 解决kali不知道哪里来的报错
 let g:snipMate = { 'snippet_version' : 1 }
