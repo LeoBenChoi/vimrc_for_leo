@@ -27,7 +27,13 @@ set noundofile        " 禁用撤销文件
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " 键盘映射
-source $VIM/vimfiles/keymap/default.keymap.vim
+" python
+autocmd FileType python nnoremap <F5> :w<CR>:!python %<CR>
+
+" go
+autocmd FileType go nnoremap <F5> :w<CR>:!go run %<CR>
+autocmd FileType go nnoremap <C-F5> :w<CR>:!go build %<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " 打开文件时回到上次编辑的位置
@@ -116,18 +122,20 @@ if (has('win32') || has('win64')) == 1
 elseif has('unix') == 1
 	" Linux 或类 Unix 系统设置
 	" TODO: 设置适配 Linux 或类 Unix 系统的配置
+	colorscheme gruvbox
+	" kali 里面这一一个变量会导致报错
+	:unlet g:gruvbox_contrast
 else
 	echo "未适配或未知操作系统"
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 其他环境变量
 if has('win32') || has('win64')
 	" Windows 系统的 Vimfiles 路径
-	let $VIMRCHOME = expand($VIM . '\vimfiles\')
+	let $LEOVIMRCHOME = expand($VIM . '\vimfiles\')
 elseif has('unix')
 	" Linux 或类 Unix 系统的 Vimfiles 路径
-	let $VIMRCHOME = expand('/etc/vim/')
+	let $LEOVIMRCHOME = expand('/etc/vim/')
 else
 	echo "未适配或未知操作系统"
 endif
@@ -207,8 +215,6 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-
-
 " 补全功能(可以使用tab和cr进行选择)
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -241,5 +247,9 @@ nnoremap <C-f> :NERDTreeFind<CR>
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 "autocmd BufRead,BufNewFile * :RainbowToggle
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" kali 会对SnipMate报错，但是我没有这个插件
+let g:snipMate = { 'snippet_version' : 1 }
+
 
 finish
