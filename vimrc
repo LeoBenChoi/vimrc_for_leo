@@ -1,5 +1,4 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 基本设置
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -14,7 +13,6 @@ set wrapmargin=80       " 设置自动换行的列数为80
 set linebreak           " 允许在长行中断行
 set breakindent         " 自动缩进换行符
 set showbreak=+++       " 设置换行符显示方式
-set guifont=Consolas:h12:b:cANSI:qDRAFT    " 设置字体
 set mouse=a				 " 启用鼠标
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 性能优化
@@ -88,97 +86,128 @@ set hlsearch            " 高亮搜索结果
 set ignorecase          " 使用搜索模式时忽略大小写
 set smartcase           " 智能区分大小写
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 主题和外观
-" 适配
-if has("gui_running") == 1
-	" 设置GVim的主题
-	set ambiwidth=double  " 设置宽字符显示
-	autocmd GUIENter * simalt ~x
-elseif has("gui_running") == 0
-	set termguicolors	" 设置终端颜色
-endif
-" 主题
-colorscheme gruvbox " 设置主题
-" 昼夜切换
-let hour = strftime("%H")
-if hour >= 7 && hour < 19
-	" 白天使用 light 主题
-	set background=light
+" 适配配置
+if (has('win32') || has('win64')) == 1
+	" Windows 系统设置
+	set guifont=Consolas:h12:b:cANSI:qDRAFT
+	colorscheme gruvbox " 设置主题
+
+	if has('gui_running') == 1
+		autocmd GUIENter * simalt ~x
+	else
+		set termguicolors
+	endif
+	let hour = strftime("%H")
+	if hour >= 7 && hour < 19
+		set background=light
+	else
+		set background=dark
+	endif
+
+elseif has('unix') == 1
+	" Linux 或类 Unix 系统设置
+	" TODO: 设置适配 Linux 或类 Unix 系统的配置
 else
-	" 晚上使用 dark 主题
-	set background=dark
+	echo "未适配或未知操作系统"
 endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 其他环境变量
 if has('win32') || has('win64')
 	" Windows 系统的 Vimfiles 路径
-	let $VIMHOME = expand($VIM . '\vimfiles\')
+	let $VIMRCHOME = expand($VIM . '\vimfiles\')
 elseif has('unix')
 	" Linux 或类 Unix 系统的 Vimfiles 路径
-	let $VIMHOME = expand('~/.vim')
+	let $VIMRCHOME = expand('/etc/vim/')
 else
 	echo "未适配或未知操作系统"
 endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件管理
-" 注册插件服务
+
+" go 语言支持
+let g:go_code_completion_enabled = 1
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-remote=auto']},
+        \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
+        \ })
+    autocmd BufWritePre *.go
+        \ call execute('LspDocumentFormatSync') |
+        \ call execute('LspCodeActionSync source.organizeImports')
+endif
+
+
+" python 语言支持
+if executable('pylsp')
+    " pip install python-lsp-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pylsp',
+        \ 'cmd': {server_info->['pylsp']},
+        \ 'allowlist': ['python'],
+        \ })
+endif
+
+" vimL 语言支持
 if executable('vim-language-server')
 	augroup LspVim
-		autocmd!
-		autocmd User lsp_setup call lsp#register_server({
-					\ 'name': 'vim-language-server',
-					\ 'cmd': {server_info->['vim-language-server', '--stdio']},
-					\ 'whitelist': ['vim'],
-					\ 'initialization_options': {
-					\   'vimruntime': $VIMRUNTIME,
-					\   'runtimepath': &rtp,
-					\ }})
+	  autocmd!
+	  autocmd User lsp_setup call lsp#register_server({
+		  \ 'name': 'vim-language-server',
+		  \ 'cmd': {server_info->['vim-language-server', '--stdio']},
+		  \ 'whitelist': ['vim'],
+		  \ 'initialization_options': {
+		  \   'vimruntime': $VIMRUNTIME,
+		  \   'runtimepath': &rtp,
+		  \ }})
 	augroup END
-endif
-if executable('pylsp')
-	" pip install python-lsp-server
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'pylsp',
-				\ 'cmd': {server_info->['pylsp']},
-				\ 'allowlist': ['python'],
-				\ })
-endif
-if executable('gopls')
-	" go get -u golang.org/x/tools/gopls@latest
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'gopls',
-				\ 'cmd': {server_info->['gopls', '-remote=auto']},
-				\ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
-				\ })
-	autocmd BufWritePre *.go
-				\ call execute('LspDocumentFormatSync') |
-				\ call execute('LspCodeActionSync source.organizeImports')
-endif
+  endif
 
 function! s:on_lsp_buffer_enabled() abort
-	setlocal omnifunc=lsp#complete
-	setlocal signcolumn=yes
-	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-	nmap <buffer> gd <plug>(lsp-definition)
-	nmap <buffer> gs <plug>(lsp-document-symbol-search)
-	nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-	nmap <buffer> gr <plug>(lsp-references)
-	nmap <buffer> gi <plug>(lsp-implementation)
-	nmap <buffer> gt <plug>(lsp-type-definition)
-	nmap <buffer> <leader>rn <plug>(lsp-rename)
-	nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-	nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-	nmap <buffer> K <plug>(lsp-hover)
-	nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
-	nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
-	let g:lsp_format_sync_timeout = 1000
-	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+    " refer to doc to add more commands
 
-	" refer to doc to add more commands
+	" 折叠
+	set foldmethod=expr
+	\ foldexpr=lsp#ui#vim#folding#foldexpr()
+	\ foldtext=lsp#ui#vim#folding#foldtext()
 endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+
+
+" 补全功能(可以使用tab和cr进行选择)
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
 
 " 状态栏
 let g:lightline = {
