@@ -20,6 +20,7 @@ echo "hello"
 "	vim-go				go语言自动导包和格式化
 "	vim-lsp				vim lsp 插件
 "	vim-lsp-settings	vim lsp 插件配置
+"	vim-wakatime		一个记录编写类型的有趣插件
 
 
 " get OS release
@@ -36,7 +37,6 @@ else
 
 	echo "install env ..."
 	if (has('win32') || has('win64')) == 1
-		execute(":!start git clone https://github.com/prabirshrestha/asyncomplete.vim.git " . ' vimfiles\pack\plugins\start\asyncomplete.vim\')
 		execute(":!start git clone https://github.com/morhetz/gruvbox.git " . ' vimfiles\pack\plugins\start\gruvbox\')
 		execute(":!start git clone https://github.com/itchyny/lightline.vim.git " . ' vimfiles\pack\plugins\start\lightline.vim\')
 		execute(":!start git clone https://github.com/preservim/nerdtree.git " . ' vimfiles\pack\plugins\start\nerdtree\')
@@ -45,8 +45,8 @@ else
 		execute(":!start git clone https://github.com/fatih/vim-go.git " . ' vimfiles\pack\plugins\start\vim-go\')
 		execute(":!start git clone https://github.com/prabirshrestha/vim-lsp.git " . ' vimfiles\pack\plugins\start\vim-lsp\')
 		execute(":!start git clone https://github.com/mattn/vim-lsp-settings.git " . ' vimfiles\pack\plugins\start\vim-lsp-settings\')
+		execute(":!start git clone https://github.com/wakatime/vim-wakatime.git" . ' vimfiles\pack\plugins\start\vim-wakatime\')
 	elseif has('unix') == 1
-		call system("sudo git clone https://github.com/prabirshrestha/asyncomplete.vim.git " . ' vimfiles/pack/plugins/start/asyncomplete.vim/')
 		call system("sudo git clone https://github.com/morhetz/gruvbox.git vimfiles/pack/plugins/start/gruvbox/")
 		call system("sudo git clone https://github.com/itchyny/lightline.vim.git" . ' vimfiles/pack/plugins/start/lightline.vim/')
 		call system("sudo git clone https://github.com/preservim/nerdtree.git " . ' vimfiles/pack/plugins/start/nerdtree/')
@@ -55,70 +55,8 @@ else
 		call system("sudo git clone https://github.com/fatih/vim-go.git " . ' vimfiles/pack/plugins/start/vim-go/')
 		call system("sudo git clone https://github.com/prabirshrestha/vim-lsp.git " . ' vimfiles/pack/plugins/start/vim-lsp/')
 		call system("sudo git clone https://github.com/mattn/vim-lsp-settings.git " . ' vimfiles/pack/plugins/start/vim-lsp-settings/')
+		call system("sudo git clone https://github.com/wakatime/vim-wakatime.git" . ' vimfiles/pack/plugins/start/vim-wakatime/')
 	endif
 endif
-
-" install git
-function! InstallGit()
-	if empty(system('git --version'))
-		echo "install git"
-		if (has('win32') || has('win64')) == 1
-			execute("winget install --id Git.Git -e --source winget")
-		elseif has('unix') == 1
-			let getos = call GetLinuxDistro()
-			if getos == "kali" || getos == "debian" || getos == "ubuntu"
-				silent !sudo apt-get install git -y
-				redraw!
-			endif
-			if getos == "centos" || getos == "fedora" || getos == "redhat"
-				silent !sudo yum install git -y
-				redraw!
-			endif
-			if getos == "arch" || getos == "manjaro"
-				silent !sudo pacman -S git -y
-				redraw!
-			endif
-			if getos == "opensuse"
-				silent !sudo zypper install git -y
-				redraw!
-			endif
-			if getos == "alpine"
-				silent !sudo apk add git
-				redraw!
-			endif
-			if getos == "unknown""
-				echo "I not konw your Linux or Unix"
-			endif
-		else
-			echo "I not konw your OS"
-		endif
-	else
-		echo "Git installed"
-	endif
-endfunction
-
-" Get Linux release
-function! GetLinuxDistro()
-	" read file for /etc/os-release
-	if filereadable('/etc/os-release')
-		let os_release = readfile('/etc/os-release')
-		for line in os_release
-			if line =~ '^ID='
-				" get release ID
-				let distro = substitute(line, '^ID=', '', '')
-				return distro
-			endif
-		endfor
-	endif
-
-	" if not found file for /etc/os-release, can try execute lsb_release
-	if executable('lsb_release')
-		let distro = system('lsb_release -si')
-		return trim(distro)
-	endif
-
-	" drfault, can not use your Linux or Unix
-	return 'unknown'
-endfunction
 
 finish
