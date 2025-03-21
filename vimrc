@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 基本设置
 set nocompatible         " 关闭 vi 兼容模式
 set backspace=2          " 允许退格键删除任何字符
@@ -10,7 +10,8 @@ set wrapmargin=80       " 设置自动换行的列数为80
 set linebreak           " 允许在长行中断行
 set breakindent         " 自动缩进换行符
 set showbreak=+++       " 设置换行符显示方式
-set mouse=a				 " 启用鼠标
+set mouse=a				" 启用鼠标
+:set list lcs=tab:\|\ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " 性能优化
@@ -25,9 +26,30 @@ set nowritebackup     " 禁用写入时备份文件
 set noswapfile        " 禁用交换文件
 set noundofile        " 禁用撤销文件
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 键盘映射
-nnoremap <F5> :!go run %<CR>
+augroup GoKeymap
+	autocmd!
+	autocmd FileType go nnoremap <buffer> <F5> :!go run %<CR>
+	autocmd FileType go nnoremap <buffer> <C-F5> :!go run .<CR>
+	autocmd FileType go nnoremap <buffer> <C-S-F5> :!go build %<CR>
+augroup END
+
+augroup PythonKeymap
+	autocmd!
+	autocmd FileType python nnoremap <buffer> <F5> :!python %<CR>
+augroup END
+
+nnoremap <F8>  :call BackgroundToggle()<CR>
+nnoremap <F12> :e $MYVIMRC<CR>
+
+
+function! BackgroundToggle()
+	if &background == 'light'
+		set background=dark
+	elseif &background == 'dark'
+		set background=light
+	endif
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -60,10 +82,8 @@ set mouse=a             " 所有模式都支持鼠标
 set ttymouse=sgr        " 鼠标兼容
 set signcolumn=yes      " 打开标志列
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 set shortmess+=I		" 禁用默认的启动屏幕
-" 显示自定义欢迎信息
-autocmd VimEnter * echo "VIM, YES!"
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " 设置状态栏显示的内容
@@ -95,12 +115,14 @@ set hlsearch            " 高亮搜索结果
 set ignorecase          " 使用搜索模式时忽略大小写
 set smartcase           " 智能区分大小写
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 适配配置
+"" 注: 这里的位置不能放到上面的配置上面，这是为了以防万一，会使得主题配置报错
 if (has('win32') || has('win64')) == 1
 	" Windows 系统设置
 	set guifont=Consolas:h12:b:cANSI:qDRAFT
-	colorscheme gruvbox " 设置主题
+	colorscheme gruvbox
+	set ambiwidth=double
+	let $MYVIMRC = expand("$VIM/vimrc")
 
 	if has('gui_running') == 1
 		autocmd GUIENter * simalt ~x
@@ -142,74 +164,74 @@ endif
 " go 语言支持
 let g:go_code_completion_enabled = 1
 if executable('gopls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-remote=auto']},
-        \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
-        \ })
-    autocmd BufWritePre *.go
-        \ call execute('LspDocumentFormatSync') |
-        \ call execute('LspCodeActionSync source.organizeImports')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'gopls',
+				\ 'cmd': {server_info->['gopls', '-remote=auto']},
+				\ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
+				\ })
+	autocmd BufWritePre *.go
+				\ call execute('LspDocumentFormatSync') |
+				\ call execute('LspCodeActionSync source.organizeImports')
 endif
 
 
 " python 语言支持
 if executable('pylsp')
-    " pip install python-lsp-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pylsp',
-        \ 'cmd': {server_info->['pylsp']},
-        \ 'allowlist': ['python'],
-        \ })
+	" pip install python-lsp-server
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'pylsp',
+				\ 'cmd': {server_info->['pylsp']},
+				\ 'allowlist': ['python'],
+				\ })
 endif
 
 " vimL 语言支持
 if executable('vim-language-server')
 	augroup LspVim
-	  autocmd!
-	  autocmd User lsp_setup call lsp#register_server({
-		  \ 'name': 'vim-language-server',
-		  \ 'cmd': {server_info->['vim-language-server', '--stdio']},
-		  \ 'whitelist': ['vim'],
-		  \ 'initialization_options': {
-		  \   'vimruntime': $VIMRUNTIME,
-		  \   'runtimepath': &rtp,
-		  \ }})
+		autocmd!
+		autocmd User lsp_setup call lsp#register_server({
+					\ 'name': 'vim-language-server',
+					\ 'cmd': {server_info->['vim-language-server', '--stdio']},
+					\ 'whitelist': ['vim'],
+					\ 'initialization_options': {
+					\   'vimruntime': $VIMRUNTIME,
+					\   'runtimepath': &rtp,
+					\ }})
 	augroup END
-  endif
+endif
 
 function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
-    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+	setlocal omnifunc=lsp#complete
+	setlocal signcolumn=yes
+	if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+	nmap <buffer> gd <plug>(lsp-definition)
+	nmap <buffer> gs <plug>(lsp-document-symbol-search)
+	nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+	nmap <buffer> gr <plug>(lsp-references)
+	nmap <buffer> gi <plug>(lsp-implementation)
+	nmap <buffer> gt <plug>(lsp-type-definition)
+	nmap <buffer> <leader>rn <plug>(lsp-rename)
+	nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+	nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+	nmap <buffer> K <plug>(lsp-hover)
+	nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+	nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
-    let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-    " refer to doc to add more commands
+	let g:lsp_format_sync_timeout = 1000
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+	" refer to doc to add more commands
 
 	" 折叠
 	set foldmethod=expr
-	\ foldexpr=lsp#ui#vim#folding#foldexpr()
-	\ foldtext=lsp#ui#vim#folding#foldtext()
+				\ foldexpr=lsp#ui#vim#folding#foldexpr()
+				\ foldtext=lsp#ui#vim#folding#foldtext()
 endfunction
 
 augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+	au!
+	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
+	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
 " 补全功能(可以使用tab和cr进行选择)
@@ -217,17 +239,40 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
+" 记录 Vim 启动时间
+let g:start_time = reltime()
+
+" 在 Vim 启动完成后，更新 lightline 状态栏
+autocmd VimEnter * ++nested call timer_start(10, { -> UpdateLightlineWithStartupTime() })
+
+function! UpdateLightlineWithStartupTime()
+    let l:elapsed_time = reltimefloat(reltime(g:start_time)) * 1000
+    let g:startup_time_display = "VIM, YES! " . "🚀 " . printf('%.2f', l:elapsed_time) . " ms"
+    call lightline#update()
+
+    " 10 秒后清除启动时间
+    call timer_start(10000, { -> RemoveStartupTime() })
+endfunction
+
+function! RemoveStartupTime()
+    let g:startup_time_display = ''
+    call lightline#update()
+endfunction
+function! LightlineStartupTime()
+    return get(g:, 'startup_time_display', '')
+endfunction
 
 " 状态栏
 let g:lightline = {
 			\ 'colorscheme': 'wombat',
 			\ 'active': {
-			\   'left': [ [ 'mode', ], [ 'gitbranchstatus', 'gitbranch' ] , ['filename', 'readonly', 'modified'] ],
+			\   'left': [ [ 'mode', ], [ 'gitbranchstatus', 'gitbranch' ] , ['filename', 'readonly', 'modified', 'startup_time'] ],
 			\   'right': [ ['lineinfo'], [ 'percent' ], ['filetype', 'fileformat', 'fileencoding', 'charvaluehex' ] ],
 			\ },
 			\ 'component_function': {
 			\   'gitbranchstatus': 'FugitiveStatusline',
-			\   'gitbranch': 'FugitiveHead'
+			\   'gitbranch': 'FugitiveHead',
+			\	'startup_time': 'LightlineStartupTime'
 			\ },
 			\ 'component': {
 			\   'charvaluehex': '0x%B',
