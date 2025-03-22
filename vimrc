@@ -1,47 +1,30 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 基本设置
 set nocompatible         " 关闭 vi 兼容模式
 set backspace=2          " 允许退格键删除任何字符
 set encoding=utf-8       " 设置文件编码
-set fileencodings=utf-8,ucs-bom,gb18030,cp936,latin1  " 文件编码优先级
-set textwidth=80        " 设置文本宽度为80
-set wrapmargin=80       " 设置自动换行的列数为80
-set linebreak           " 允许在长行中断行
-set breakindent         " 自动缩进换行符
-set showbreak=+++       " 设置换行符显示方式
-set mouse=a				" 启用鼠标
-:set list lcs=tab:\|\ 
+set fileencodings=utf-8,gb2312,gb18030,cp936,latin1  " 文件编码优先级
+set shortmess+=I		" 禁用默认的启动屏幕
+set list lcs=tab:\|\ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" 性能优化
-set lazyredraw           " 延迟重绘，提高性能
-set ttyfast              " 提升屏幕刷新速度
-set updatetime=300       " 设置自动语法检查的时间间隔
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 禁用自动备份相关功能
 set nobackup          " 禁用备份文件
 set nowritebackup     " 禁用写入时备份文件
 set noswapfile        " 禁用交换文件
 set noundofile        " 禁用撤销文件
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 键盘映射
-augroup GoKeymap
-	autocmd!
-	autocmd FileType go nnoremap <buffer> <F5> :!go run %<CR>
-	autocmd FileType go nnoremap <buffer> <C-F5> :!go run .<CR>
-	autocmd FileType go nnoremap <buffer> <C-S-F5> :!go build %<CR>
-augroup END
+" golang
+autocmd FileType go nnoremap <buffer> <F5> :!go run %<CR>
+autocmd FileType go nnoremap <buffer> <C-F5> :!go run .<CR>
+autocmd FileType go nnoremap <buffer> <C-S-F5> :!go build %<CR>
 
-augroup PythonKeymap
-	autocmd!
-	autocmd FileType python nnoremap <buffer> <F5> :!python %<CR>
-augroup END
+" python
+autocmd FileType python nnoremap <buffer> <F5> :!python %<CR>
 
-nnoremap <F8>  :call BackgroundToggle()<CR>
-nnoremap <F12> :e $MYVIMRC<CR>
-
+autocmd FileType * nnoremap <buffer> <F8> :call BackgroundToggle()<CR>
+autocmd BufRead * nmap <F12> :e $MYVIMRC<CR>
 
 function! BackgroundToggle()
 	if &background == 'light'
@@ -52,17 +35,16 @@ function! BackgroundToggle()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 打开文件时回到上次编辑的位置
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缩进设置
 set noexpandtab     " 不用空格代替 Tab 键
 set tabstop=4       " Tab 键显示为 4 个空格宽度
 set shiftwidth=4    " 自动缩进为 4 个空格
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 显示设置
 set number              " 显示行号
 set relativenumber      " 相对行号
@@ -81,41 +63,36 @@ set cmdheight=2         " 设置命令行高度
 set mouse=a             " 所有模式都支持鼠标
 set ttymouse=sgr        " 鼠标兼容
 set signcolumn=yes      " 打开标志列
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set shortmess+=I		" 禁用默认的启动屏幕
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 设置状态栏显示的内容
 set wildmenu            " 开启命令行模式补全
 set pumheight=20	" 补全菜单高度
 set wildmode=longest:full,full   " 让补全更智能
 set wildoptions=pum " 补全模式，弹出菜单
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 文件与自动命令
 filetype plugin on      " 打开文件类型检测
 filetype indent on      " 打开文件类型缩进
 set autochdir           " 自动切换工作路径
-set foldmethod=marker   " 设置折叠方式为标记
-set foldlevelstart=99   " 设置折叠级别为99
-set foldcolumn=3        " 设置折叠栏宽度为3
-set foldnestmax=10      " 设置最大折叠深度为10
-autocmd BufRead,BufNewFile *.vimhex set filetype=xxd	" 设置vimhex文件类型
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 启用语法高亮
 syntax enable	" 启用语法高亮
 syntax on " 启用语法高亮
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 搜索设置
 set incsearch           " 实时搜索
 set hlsearch            " 高亮搜索结果
 set ignorecase          " 使用搜索模式时忽略大小写
 set smartcase           " 智能区分大小写
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 适配配置
+" Linux: Kali
+" Windows: Windows 11
 "" 注: 这里的位置不能放到上面的配置上面，这是为了以防万一，会使得主题配置报错
 if (has('win32') || has('win64')) == 1
 	" Windows 系统设置
@@ -147,8 +124,12 @@ elseif has('unix') == 1
 else
 	echo "未适配或未知操作系统"
 endif
+
+" kali 会对SnipMate报错，但是我没有这个插件
+let g:snipMate = { 'snippet_version' : 1 }
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 其他环境变量
+" 环境变量
 if has('win32') || has('win64')
 	" Windows 系统的 Vimfiles 路径
 	let $LEOVIMRCHOME = expand($VIM . '\vimfiles\')
@@ -159,8 +140,8 @@ else
 	echo "未适配或未知操作系统"
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " 插件管理
+
 " go 语言支持
 let g:go_code_completion_enabled = 1
 if executable('gopls')
@@ -221,39 +202,24 @@ function! s:on_lsp_buffer_enabled() abort
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
 	" refer to doc to add more commands
-
-	" 折叠
-	set foldmethod=expr
-				\ foldexpr=lsp#ui#vim#folding#foldexpr()
-				\ foldtext=lsp#ui#vim#folding#foldtext()
 endfunction
-
-augroup lsp_install
-	au!
-	" call s:on_lsp_buffer_enabled only for languages that has the server registered.
-	autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
 
 " 补全功能(可以使用tab和cr进行选择)
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
+
 " 记录 Vim 启动时间
 let g:start_time = reltime()
-
-" 在 Vim 启动完成后，更新 lightline 状态栏
 autocmd VimEnter * ++nested call timer_start(10, { -> UpdateLightlineWithStartupTime() })
-
 function! UpdateLightlineWithStartupTime()
     let l:elapsed_time = reltimefloat(reltime(g:start_time)) * 1000
     let g:startup_time_display = "VIM, YES! " . "🚀 " . printf('%.2f', l:elapsed_time) . " ms"
     call lightline#update()
-
     " 10 秒后清除启动时间
     call timer_start(10000, { -> RemoveStartupTime() })
 endfunction
-
 function! RemoveStartupTime()
     let g:startup_time_display = ''
     call lightline#update()
@@ -261,6 +227,7 @@ endfunction
 function! LightlineStartupTime()
     return get(g:, 'startup_time_display', '')
 endfunction
+
 
 " 状态栏
 let g:lightline = {
@@ -289,9 +256,5 @@ nnoremap <C-f> :NERDTreeFind<CR>
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 "autocmd BufRead,BufNewFile * :RainbowToggle
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" kali 会对SnipMate报错，但是我没有这个插件
-let g:snipMate = { 'snippet_version' : 1 }
-
 
 finish
