@@ -20,8 +20,6 @@ echo "hello"
 "	vim-go				go语言自动导包和格式化
 "	vim-lsp				vim lsp 插件
 "	vim-lsp-settings	vim lsp 插件配置
-"	vim-wakatime		一个记录编写类型的有趣插件
-
 
 " get OS release
 
@@ -45,7 +43,6 @@ else
 		execute(":!start git clone https://github.com/fatih/vim-go.git " . ' vimfiles\pack\plugins\start\vim-go\')
 		execute(":!start git clone https://github.com/prabirshrestha/vim-lsp.git " . ' vimfiles\pack\plugins\start\vim-lsp\')
 		execute(":!start git clone https://github.com/mattn/vim-lsp-settings.git " . ' vimfiles\pack\plugins\start\vim-lsp-settings\')
-		execute(":!start git clone https://github.com/wakatime/vim-wakatime.git" . ' vimfiles\pack\plugins\start\vim-wakatime\')
 	elseif has('unix') == 1
 		call system("sudo git clone https://github.com/morhetz/gruvbox.git vimfiles/pack/plugins/start/gruvbox/")
 		call system("sudo git clone https://github.com/itchyny/lightline.vim.git" . ' vimfiles/pack/plugins/start/lightline.vim/')
@@ -55,7 +52,6 @@ else
 		call system("sudo git clone https://github.com/fatih/vim-go.git " . ' vimfiles/pack/plugins/start/vim-go/')
 		call system("sudo git clone https://github.com/prabirshrestha/vim-lsp.git " . ' vimfiles/pack/plugins/start/vim-lsp/')
 		call system("sudo git clone https://github.com/mattn/vim-lsp-settings.git " . ' vimfiles/pack/plugins/start/vim-lsp-settings/')
-		call system("sudo git clone https://github.com/wakatime/vim-wakatime.git" . ' vimfiles/pack/plugins/start/vim-wakatime/')
 	endif
 endif
 
