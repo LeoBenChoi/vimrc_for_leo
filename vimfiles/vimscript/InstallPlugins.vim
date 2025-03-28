@@ -42,7 +42,11 @@ endif
 " 克隆每个 Git 项目到指定路径
 for plugin in plugins
     let repo_name = substitute(plugin, '^.*/\(.*\)\.git$', '\1', '')
-    let clone_dir = target_path . '\\' . repo_name
+	if has('win32') || has('win64')
+		let clone_dir = target_path . '\\' . repo_name
+	else
+		let clone_dir = target_path . '/' . repo_name
+	endif
     if !isdirectory(clone_dir)
         echo "Cloning " . plugin . " into " . clone_dir
         " Make sure to quote the paths to handle spaces properly
