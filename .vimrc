@@ -2,10 +2,6 @@
 " Global Base set
 " ========================================================================
 
-let target_path = expand('"' . $VIM . '//vimfiles//pack//plugins/start/"')
-echo target_path
-
-
 " misc
 set nocompatible " Disable compatibility with old vi
 set number
@@ -48,6 +44,7 @@ autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "nor
 set noexpandtab     " No space is used instead of the Tab key
 set tabstop=4       " The Tab key is displayed as four space widths
 set shiftwidth=4    " Automatically indent to 4 Spaces
+set softtabstop=4
 
 " about file&path
 filetype plugin on      
@@ -86,11 +83,11 @@ autocmd FileType python nnoremap <buffer> <F5> :!python %<CR>
 
 " background
 function! ToggleTheme()
-    if &background == "dark"
-        set background=light
-    else
-        set background=dark
-    endif
+	if &background == "dark"
+		set background=light
+	else
+		set background=dark
+	endif
 endfunction
 nnoremap <F8> :call ToggleTheme()<CR>
 
@@ -108,7 +105,11 @@ if filereadable(expand('$VIM\vimfiles\flag\flag_install')) || filereadable(expan
 endif
 
 function! InstallPlugins()
-	source $VIM/vimfiles/vimscript/InstallPlugins.vim
+	if (has('win32') || has('win64')) == 1
+		source $VIM/vimfiles/vimscript/InstallPlugins.vim
+	elseif has('unix') == 1
+		source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
+	endif
 endfunction
 
 " ========================================================================
@@ -116,6 +117,8 @@ endfunction
 " ========================================================================
 " used Linux: Kali
 " used Windows: Windows 11
+
+
 
 " windows
 if (has('win32') || has('win64')) == 1
@@ -131,14 +134,16 @@ if (has('win32') || has('win64')) == 1
 	else
 		colorscheme retrobox
 	endif
-	
+
 	if has('gui_running') == 1
 		autocmd GUIENter * simalt ~x
 	endif
 
 " Linux
 elseif has('unix') == 1
-
+	set packpath+=~/.vim/vimfiles
+	colorscheme unokai
+	"call SetCustomVIMRC()
 " kali 会对SnipMate报错，但是我没有这个插件
 " let g:snipMate = { 'snippet_version' : 1 }
 
@@ -225,18 +230,18 @@ inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 let g:start_time = reltime()
 autocmd VimEnter * ++nested call timer_start(10, { -> UpdateLightlineWithStartupTime() })
 function! UpdateLightlineWithStartupTime()
-    let l:elapsed_time = reltimefloat(reltime(g:start_time)) * 1000
-    let g:startup_time_display = "VIM, YES! " . "🚀 " . printf('%.2f', l:elapsed_time) . " ms"
-    call lightline#update()
-    " It's gone in 10 seconds
-    call timer_start(10000, { -> RemoveStartupTime() })
+	let l:elapsed_time = reltimefloat(reltime(g:start_time)) * 1000
+	let g:startup_time_display = "VIM, YES! " . "🚀 " . printf('%.2f', l:elapsed_time) . " ms"
+	call lightline#update()
+	" It's gone in 10 seconds
+	call timer_start(10000, { -> RemoveStartupTime() })
 endfunction
 function! RemoveStartupTime()
-    let g:startup_time_display = ''
-    call lightline#update()
+	let g:startup_time_display = ''
+	call lightline#update()
 endfunction
 function! LightlineStartupTime()
-    return get(g:, 'startup_time_display', '')
+	return get(g:, 'startup_time_display', '')
 endfunction
 
 " line
