@@ -21,6 +21,8 @@ set textwidth=80       " Automatically wrap lines at 80 characters
 set formatoptions+=t   " Enable automatic text wrapping
 set showfulltag
 set signcolumn=yes " Enable the sign column to always show
+set noshowmode
+
 
 " about line
 set showtabline=2       
@@ -118,6 +120,10 @@ endfunction
 " used Linux: Kali
 " used Windows: Windows 11
 
+" colorscheme color
+if !has('gui_running')
+  set t_Co=256
+endif
 
 
 " windows
