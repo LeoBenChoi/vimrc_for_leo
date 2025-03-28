@@ -4,7 +4,9 @@ vim91/
 vimfiles\pack\*
 vimfiles/pack/*
 
-vimfiles/init_complete_flag
-vimfiles\init_complete_flag
+vimfiles\flag\*
+vimfiles/flag/*
+
+.wakatime*
 
 !.gitignore
