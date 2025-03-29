@@ -76,10 +76,10 @@ Kali：
 
 - 扩展文件名问题：
 
-  | 扩展   | 推荐使用的系统  |
-  | ------ | --------------- |
-  | vimrc  | Windows，CentOS |
-  | .vimrc | Windows         |
-  | _vimrc | Windows，CentOS |
+  | 扩展   | 推荐使用的系统          |
+  | ------ | ----------------------- |
+  | vimrc  | Windows，CentOS         |
+  | .vimrc | Windows，Ubuntu         |
+  | _vimrc | Windows，CentOS，Ubuntu |
 
   
