@@ -40,7 +40,7 @@
 
 ### Linux
 
-Kali、CentOS：
+Kali：
 
 1. 创建.vim文件夹（有些系统没有）
 
@@ -58,6 +58,8 @@ Kali、CentOS：
 
    
 
+   **CentOS的vimrc需要放到~/下，也就是执行了克隆项目之后需要吧**
+
 3. 现在可以使用基本功能了，后续是插件安装
 
 4. 打开vimrc之后，执行以下函数
@@ -70,16 +72,14 @@ Kali、CentOS：
 
 5. 我的vimrc全功能安装完成
 
-
-
 ### 一些小问题
 
 - 扩展文件名问题：
 
-  | 扩展   | 可以使用的系统  |
+  | 扩展   | 推荐使用的系统  |
   | ------ | --------------- |
   | vimrc  | Windows，CentOS |
   | .vimrc | Windows         |
-  | _vimrc | Windows         |
+  | _vimrc | Windows，CentOS |
 
   
