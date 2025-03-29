@@ -28,7 +28,8 @@ let plugins = [
 \ 'https://github.com/tpope/vim-fugitive.git',
 \ 'https://github.com/fatih/vim-go.git',
 \ 'https://github.com/prabirshrestha/vim-lsp.git',
-\ 'https://github.com/mattn/vim-lsp-settings.git'
+\ 'https://github.com/mattn/vim-lsp-settings.git',
+\ 'https://github.com/wakatime/vim-wakatime.git',
 \]
 
 
