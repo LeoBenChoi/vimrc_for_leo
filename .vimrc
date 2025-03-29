@@ -260,7 +260,7 @@ let g:lightline = {
 			\ 'component_function': {
 			\   'gitbranchstatus': 'FugitiveStatusline',
 			\   'gitbranch': 'FugitiveHead',
-			\	'startup_time': 'LightlineStartupTime'
+			\	'startup_time': 'LightlineStartupTime',
 			\ },
 			\ 'component': {
 			\   'charvaluehex': '0x%B',
