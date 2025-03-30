@@ -7,6 +7,6 @@ vimfiles/pack/*
 vimfiles\flag\*
 vimfiles/flag/*
 
-.wakatime*
+.wakatime-project
 
 !.gitignore

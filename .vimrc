@@ -166,7 +166,16 @@ endif
 " plugins
 " ========================================================================
 
-" go 
+" Docker
+if executable('docker-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'docker-langserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+        \ 'whitelist': ['dockerfile'],
+        \ })
+endif
+
+" Go 
 let g:go_code_completion_enabled = 1
 if executable('gopls')
 	au User lsp_setup call lsp#register_server({
@@ -179,7 +188,7 @@ if executable('gopls')
 				\ call execute('LspCodeActionSync source.organizeImports')
 endif
 
-" python 
+" Python 
 if executable('pylsp')
 	" pip install python-lsp-server
 	au User lsp_setup call lsp#register_server({
