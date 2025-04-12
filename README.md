@@ -79,7 +79,7 @@ Kali：
   | 扩展   | 推荐使用的系统                |
   | ------ | ----------------------------- |
   | vimrc  | Windows，CentOS，             |
-  | .vimrc | Windows，Ubuntu，Kali         |
-  | _vimrc | Windows，CentOS，Ubuntu，Kali |
+  | .vimrc | Windows，Ubuntu，Kali，Rocky         |
+  | _vimrc | Windows，CentOS，Ubuntu，Kali，Rocky |
 
   
