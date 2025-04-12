@@ -40,7 +40,7 @@
 
 ### Linux
 
-Kali：
+Kali、CentOS、Ubuntu、Rocky：
 
 1. 创建.vim文件夹（有些系统没有）
 
