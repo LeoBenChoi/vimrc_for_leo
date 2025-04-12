@@ -31,7 +31,7 @@ set cmdheight=2
 set wildmenu            
 set pumheight=20	
 set wildmode=longest:full,full
-set wildoptions=pum 
+"set wildoptions=pum 
 
 "  bak 
 set nobackup          
@@ -151,7 +151,9 @@ if (has('win32') || has('win64')) == 1
 " Linux
 elseif has('unix') == 1
 	set packpath+=~/.vim/vimfiles
-	colorscheme retrobox
+	if g:flag_install == 1
+		colorscheme gruvbox
+	endif
 	"call SetCustomVIMRC()
 " kali 会对SnipMate报错，但是我没有这个插件
 " let g:snipMate = { 'snippet_version' : 1 }
