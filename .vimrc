@@ -22,7 +22,8 @@ set formatoptions+=t   " Enable automatic text wrapping
 set showfulltag
 set signcolumn=yes " Enable the sign column to always show
 set noshowmode
-
+set wildoptions=pum "pum = popup menu
+set pumheight=10 " 限制最大显示行数
 
 " about line
 set showtabline=2       
@@ -292,6 +293,7 @@ function! LightlineStartupTime()
 	return get(g:, 'startup_time_display', '')
 endfunction
 
+
 " line
 let g:lightline = {
 			\ 'colorscheme': 'wombat',
@@ -308,12 +310,6 @@ let g:lightline = {
 			\   'charvaluehex': '0x%B',
 			\ },
 			\ }
-
-" sidebar
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
 
 " rainbow 
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
