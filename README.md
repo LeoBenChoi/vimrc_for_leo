@@ -40,7 +40,7 @@
 
 ### Linux
 
-Kali：
+Kali、CentOS、Ubuntu、Rocky：
 
 1. 创建.vim文件夹（有些系统没有）
 
@@ -79,7 +79,7 @@ Kali：
   | 扩展   | 推荐使用的系统                |
   | ------ | ----------------------------- |
   | vimrc  | Windows，CentOS，             |
-  | .vimrc | Windows，Ubuntu，Kali         |
-  | _vimrc | Windows，CentOS，Ubuntu，Kali |
+  | .vimrc | Windows，Ubuntu，Kali，Rocky         |
+  | _vimrc | Windows，CentOS，Ubuntu，Kali，Rocky |
 
   
