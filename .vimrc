@@ -22,7 +22,8 @@ set formatoptions+=t   " Enable automatic text wrapping
 set showfulltag
 set signcolumn=yes " Enable the sign column to always show
 set noshowmode
-
+set wildoptions=pum "pum = popup menu
+set pumheight=10 " 限制最大显示行数
 
 " about line
 set showtabline=2       
@@ -31,7 +32,7 @@ set cmdheight=2
 set wildmenu            
 set pumheight=20	
 set wildmode=longest:full,full
-set wildoptions=pum 
+"set wildoptions=pum 
 
 "  bak 
 set nobackup          
@@ -151,7 +152,11 @@ if (has('win32') || has('win64')) == 1
 " Linux
 elseif has('unix') == 1
 	set packpath+=~/.vim/vimfiles
+<<<<<<< HEAD
 	colorscheme default
+=======
+	endif
+>>>>>>> 1a42adc1a782af9a91efde91d05e18f4c568edde
 	"call SetCustomVIMRC()
 " kali 会对SnipMate报错，但是我没有这个插件
 " let g:snipMate = { 'snippet_version' : 1 }
@@ -290,6 +295,7 @@ function! LightlineStartupTime()
 	return get(g:, 'startup_time_display', '')
 endfunction
 
+
 " line
 let g:lightline = {
 			\ 'colorscheme': 'wombat',
@@ -306,12 +312,6 @@ let g:lightline = {
 			\   'charvaluehex': '0x%B',
 			\ },
 			\ }
-
-" sidebar
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
 
 " rainbow 
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle

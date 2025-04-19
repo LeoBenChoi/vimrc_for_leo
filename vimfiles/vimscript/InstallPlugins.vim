@@ -58,12 +58,12 @@ for plugin in plugins
 endfor
 
 
-" if (has('win32') || has('win64')) == 1
-" 	execute(":!echo.> " . $VIM . "\\vimfiles\\flag\\flag_install")
-" elseif has('unix') == 1
-" 	execute(":!touch ~/.vim/vimfiles/flag/flag_install")
-" endif
+if (has('win32') || has('win64')) == 1
+	execute(":!echo.> " . $VIM . "\\vimfiles\\flag\\flag_install")
+elseif has('unix') == 1
+	call system('touch ~/.vim/vimfiles/flag/flag_install')
+endif
 
-echo "插件安装任务已启动，请等待完成。"
+echo "插件安装完成。"
 
 finish
