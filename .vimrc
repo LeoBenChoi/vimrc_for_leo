@@ -151,7 +151,7 @@ if (has('win32') || has('win64')) == 1
 " Linux
 elseif has('unix') == 1
 	set packpath+=~/.vim/vimfiles
-	colorscheme retrobox
+	colorscheme default
 	"call SetCustomVIMRC()
 " kali 会对SnipMate报错，但是我没有这个插件
 " let g:snipMate = { 'snippet_version' : 1 }
