@@ -121,8 +121,8 @@ endfunction
 " ========================================================================
 "  OS 
 " ========================================================================
-" used Linux: Kali
-" used Windows: Windows 11
+" used Linux: Kali, Ubuntu, CentOS
+" used Windows: Windows 11, 10
 
 " colorscheme color
 if !has('gui_running')
@@ -152,7 +152,11 @@ if (has('win32') || has('win64')) == 1
 " Linux
 elseif has('unix') == 1
 	set packpath+=~/.vim/vimfiles
-	colorscheme default
+	if g:flag_install == 1
+		colorscheme gruvbox
+	else
+		colorscheme retrobox
+	endif
 else
 	echo "unknow system"
 endif
