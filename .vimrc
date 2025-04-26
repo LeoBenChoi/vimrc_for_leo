@@ -126,8 +126,10 @@ endfunction
 
 " colorscheme color
 if !has('gui_running')
-  set t_Co=256
+	"set notermguicolors
+	set t_Co=256
 endif
+
 
 
 " windows
