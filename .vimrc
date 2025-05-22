@@ -76,18 +76,12 @@ endif
 "  keymap
 " ========================================================================
 
-" golang
-autocmd FileType go nnoremap <buffer> <F5> :terminal go run %<CR>
-autocmd FileType go nnoremap <buffer> <C-F5> :terminal go run .<CR>
-autocmd FileType go nnoremap <buffer> <C-S-F5> :terminal go build %<CR>
+" F5
+autocmd FileType python,go nnoremap <buffer> <C-F5> :call DeBugCode()<CR>
+autocmd FileType python,go nnoremap <buffer> <F5> :call RunCode()<CR>
+" F8
+nnoremap <F8> :call ToggleTheme()<CR>
 
-" python
-"autocmd FileType python nnoremap <buffer> <F5> :terminal !python %<CR>
-"autocmd FileType python nnoremap <buffer> <F5> :vsplit<CR>:terminal python %<CR>
-"autocmd FileType python nnoremap <buffer> <F5> :split<CR>:terminal python %<CR>
-autocmd FileType python nnoremap <buffer> <F5> :terminal python %<CR>
-
-" background
 function! ToggleTheme()
 	if &background == "dark"
 		set background=light
@@ -95,7 +89,24 @@ function! ToggleTheme()
 		set background=dark
 	endif
 endfunction
-nnoremap <F8> :call ToggleTheme()<CR>
+
+function! DeBugCode()
+	if &filetype == 'python'
+		:!python %
+	endif
+	if &filetype == 'go'
+		:!go run %
+	endif
+endfunction
+
+function! RunCode()
+	if &filetype == 'python'
+		:!python %
+	endif
+	if &filetype == 'go'
+		:!go run %
+	endif
+endfunction
 
 " ========================================================================
 "  Flag and env 
