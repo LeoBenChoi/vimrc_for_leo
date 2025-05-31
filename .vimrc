@@ -147,12 +147,12 @@ if filereadable(expand('$VIM\vimfiles\flag\flag_install')) || filereadable(expan
 endif
 
 function! InstallPlugins()
-	if (has('win32') || has('win64')) == 1
-		source $VIM/vimfiles/vimscript/InstallPlugins.vim
-		source $VIM/vimfiles/vimscript/InstallPlugins.vim
-	elseif has('unix') == 1
-		source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
-	endif
+	"if (has('win32') || has('win64')) == 1
+	"	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
+	"elseif has('unix') == 1
+	"	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
+	"endif
+	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
 endfunction
 
 " ========================================================================
