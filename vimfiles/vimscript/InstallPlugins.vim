@@ -34,11 +34,13 @@ let plugins = [
 
 
 
-if has('win32') || has('win64')
-    let target_path = expand($VIM . '\\vimfiles\\pack\\plugins\\start')
-else
-    let target_path = expand('~/.vim/vimfiles/pack/plugins/start')
-endif
+"if has('win32') || has('win64')
+"    let target_path = expand($VIM . '\\vimfiles\\pack\\plugins\\start')
+"else
+"    let target_path = expand('~/.vim/vimfiles/pack/plugins/start')
+"endif
+
+let target_path = expand('~/.vim/vimfiles/pack/plugins/start/')
 
 " 克隆每个 Git 项目到指定路径
 for plugin in plugins

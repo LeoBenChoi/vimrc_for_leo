@@ -16,17 +16,14 @@
 
 1. 到vim官网下载安装包，安装vim
 
-2. 到vim安装目录下，打开cmd，或者下载项目，放到vim安装目录，安装目录类似：
+2. 到用户目录下创建`.vim`文件夹，在`C:\Users\<yourusername>\.vim`下执行git命令
 
+   ```powershell
+   git clone http://github.com/LeoBenChoi/vimrc_for_leo.git ./
+   copy .vimrc ../
    ```
-   C:\Program Files\Vim
-   ```
-
    
-
 3. 现在可以使用基本功能了，后续是插件安装
-
-4. git 克隆可以直接打开vimrc，网页下载需要解压之后打开vimrc
 
 5. 打开vimrc之后，执行以下函数
 
@@ -34,7 +31,7 @@
    :call InstallPlugins()
    ```
 
-6. 我的vimrc全功能安装完成
+6. vimrc全功能安装完成
 
 
 
@@ -44,7 +41,7 @@ Kali、CentOS、Ubuntu、Rocky：
 
 1. 创建.vim文件夹（有些系统没有）
 
-   ```
+   ```bash
    mkdir ~/.vim
    ```
 
@@ -52,7 +49,7 @@ Kali、CentOS、Ubuntu、Rocky：
 
 2. 克隆项目
 
-   ```
+   ```bash
     git clone https://github.com/LeoBenChoi/vimrc_for_leo.git ~/.vim/
    ```
 
