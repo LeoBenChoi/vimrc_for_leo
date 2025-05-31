@@ -34,11 +34,23 @@ set pumheight=20
 set wildmode=longest:full,full
 "set wildoptions=pum 
 
-"  bak 
-set nobackup          
-set nowritebackup     
-set noswapfile        
-set noundofile      
+" bak 
+"set nobackup          
+"set nowritebackup     
+"set noswapfile        
+"set noundofile      
+
+" bak
+" edit file
+set backup
+set backupdir=~/.vim/.backup/
+set backupext=.bak
+" write and undo
+set undofile
+set undodir=~/.vim/.undodir/
+" save and swap
+set swapfile
+set directory=~/.vim/.vimswap/
 
 " When you open the file, go back to where you last edited it
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
@@ -104,9 +116,13 @@ function! RunCode()
 		:!python %
 	endif
 	if &filetype == 'go'
-		:!go run %
+		:!go build %
 	endif
 endfunction
+
+" TODO: next 
+"let mapleader = "\\"
+nnoremap <leader>q :q<CR>
 
 " ========================================================================
 "  Flag and env 
@@ -140,8 +156,6 @@ if !has('gui_running')
 	"set notermguicolors
 	set t_Co=256
 endif
-
-
 
 " windows
 if (has('win32') || has('win64')) == 1
@@ -179,10 +193,10 @@ if g:flag_install == 0
 	finish
 endif
 
-" ========================================================================
-" plugins
-" ========================================================================
-
+"  ========================================================================
+"  plugins
+"  ========================================================================
+ 
 " JavaScript
 " (Use directory with .git as root)
 "if executable('typescript-language-server')
