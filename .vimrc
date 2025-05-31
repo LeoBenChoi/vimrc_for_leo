@@ -43,14 +43,23 @@ set wildmode=longest:full,full
 " bak
 " edit file
 set backup
-set backupdir=~/.vim/.backup/
+set backupdir=~/.vim/.backup//
+if !isdirectory(expand('~/.vim/.backup'))
+    call mkdir(expand('~/.vim/.backup'), 'p')
+endif
 set backupext=.bak
 " write and undo
 set undofile
-set undodir=~/.vim/.undodir/
+set undodir=~/.vim/.undofile//
+if !isdirectory(expand('~/.vim/.undofile'))
+    call mkdir(expand('~/.vim/.undofile'), 'p')
+endif
 " save and swap
 set swapfile
-set directory=~/.vim/.vimswap/
+set directory=~/.vim/.swapfile//
+if !isdirectory(expand('~/.vim/.swapfile'))
+    call mkdir(expand('~/.vim/.swapfile'), 'p')
+endif
 
 " When you open the file, go back to where you last edited it
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
@@ -139,6 +148,7 @@ endif
 
 function! InstallPlugins()
 	if (has('win32') || has('win64')) == 1
+		source $VIM/vimfiles/vimscript/InstallPlugins.vim
 		source $VIM/vimfiles/vimscript/InstallPlugins.vim
 	elseif has('unix') == 1
 		source ~/.vim/vimfiles/vimscript/InstallPlugins.vim

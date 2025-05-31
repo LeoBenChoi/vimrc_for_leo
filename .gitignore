@@ -1,6 +1,13 @@
 vim91\
 vim91/
 
+.backup\
+.swapfile\
+.undofile\
+.backup/
+.swapfile/
+.undofile/
+
 vimfiles\pack\*
 vimfiles/pack/*
 
