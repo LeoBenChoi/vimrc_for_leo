@@ -174,7 +174,9 @@ if (has('win32') || has('win64')) == 1
 		call mkdir(expand('$VIM/vimfiles/flag'), 'p')
 	endif
 
-	set guifont=Consolas:h12:b:cANSI:qDRAFT
+	"set guifont=Sarsa_Fixed_SC:h14:cANSI:qDRAFT,Consolas:h12:b:cANSI:qDRAFT
+	"set guifont="Sarsa Fixed SC":h14:cANSI:qDRAFT
+	:set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
 	set ambiwidth=double
 	if g:flag_install == 1
 		colorscheme gruvbox
