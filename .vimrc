@@ -65,8 +65,6 @@ endif
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
 
 " Indent setting
-set noexpandtab     " No space is used instead of the Tab key
-set tabstop=4       " The Tab key is displayed as four space widths
 set shiftwidth=4    " Automatically indent to 4 Spaces
 set softtabstop=4
 
@@ -169,6 +167,8 @@ endif
 
 " windows
 if (has('win32') || has('win64')) == 1
+
+	set packpath+=~/.vim/vimfiles
 
 	if !isdirectory(expand('$VIM/vimfiles/flag'))
 		call mkdir(expand('$VIM/vimfiles/flag'), 'p')

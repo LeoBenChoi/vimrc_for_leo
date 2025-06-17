@@ -61,9 +61,11 @@ endfor
 
 
 if (has('win32') || has('win64')) == 1
-	execute(":!echo.> " . $VIM . "\\vimfiles\\flag\\flag_install")
+    let filepath = expand('$USERPROFILE') . '/.vim/vimfiles/flag/flag_install'
+    call mkdir(fnamemodify(filepath, ':h'), 'p')  " 创建目录
+    call writefile(['内容写入成功'], filepath)
 elseif has('unix') == 1
-	call system('touch ~/.vim/vimfiles/flag/flag_install')
+    call system('touch ~/.vim/vimfiles/flag/flag_install')
 endif
 
 echo "插件安装完成。"
