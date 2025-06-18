@@ -176,7 +176,7 @@ if (has('win32') || has('win64')) == 1
 
 	"set guifont=Sarsa_Fixed_SC:h14:cANSI:qDRAFT,Consolas:h12:b:cANSI:qDRAFT
 	"set guifont="Sarsa Fixed SC":h14:cANSI:qDRAFT
-	:set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
+	set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
 	set ambiwidth=double
 	if g:flag_install == 1
 		colorscheme gruvbox
@@ -208,19 +208,65 @@ endif
 "  ========================================================================
 "  plugins
 "  ========================================================================
- 
-" JavaScript
-" (Use directory with .git as root)
-"if executable('typescript-language-server')
-"    au User lsp_setup call lsp#register_server({
-"      \ 'name': 'javascript support using typescript-language-server',
-"      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-"      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-"      \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
-"      \ })
-"endif
 
-" JavaScript(Use directory with package.json as root)
+
+"Bash
+"ccls - C/C++
+"Clangd - C/C++
+"Clojure
+"Crystal
+"Css/Less/Sass
+"cquery - C/C++
+"CWL
+"Docker
+"Erlang
+"Flow - Javascript
+"Go
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-remote=auto']},
+        \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
+        \ })
+    autocmd BufWritePre *.go
+        \ call execute('LspDocumentFormatSync') |
+        \ call execute('LspCodeActionSync source.organizeImports')
+endif
+"disable the completion provided by vim-go
+let g:go_code_completion_enabled = 1
+
+"Godot
+"Groovy
+"Hack
+"Haskell
+"HTML
+if executable('html-languageserver')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'html-languageserver',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'html-languageserver --stdio']},
+    \ 'whitelist': ['html'],
+  \ })
+endif
+
+"Java
+if executable('jdtls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'Eclipse JDT Language Server',
+        \ 'cmd': {server_info->['jdtls', '-data', getcwd()]},
+        \ 'allowlist': ['java']
+        \ })
+endif
+
+"JavaScript
+"Use directory with .git as root
+if executable('typescript-language-server')
+ "   au User lsp_setup call lsp#register_server({
+ "     \ 'name': 'javascript support using typescript-language-server',
+ "     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+ "     \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+ "     \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
+ "     \ })
+" Use directory with package.json as root  
   au User lsp_setup call lsp#register_server({
     \ 'name': 'javascript support using typescript-language-server',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
@@ -228,60 +274,128 @@ endif
     \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact'],
     \ })
 
+endif
 
-" Docker
-if executable('docker-langserver')
+"Julia
+"Kotlin
+"Lua
+"Perl
+"PHP
+if executable('intelephense')
+  augroup LspPHPIntelephense
+    au!
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'docker-langserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
-        \ 'whitelist': ['dockerfile'],
-        \ })
+        \ 'name': 'intelephense',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'intelephense --stdio']},
+        \ 'whitelist': ['php'],
+        \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
+        \ 'workspace_config': {
+        \   'intelephense': {
+        \     'files': {
+        \       'maxSize': 1000000,
+        \       'associations': ['*.php', '*.phtml'],
+        \       'exclude': [],
+        \     },
+        \     'completion': {
+        \       'insertUseDeclaration': v:true,
+        \       'fullyQualifyGlobalConstantsAndFunctions': v:false,
+        \       'triggerParameterHints': v:true,
+        \       'maxItems': 100,
+        \     },
+        \     'format': {
+        \       'enable': v:true
+        \     },
+        \   },
+        \ }
+        \})
+   " au User lsp_setup call lsp#register_server({                                    
+   "  \ 'name': 'php-language-server',                                            
+   "  \ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
+   "  \ 'whitelist': ['php'],                                                     
+   "  \ })
+  augroup END
 endif
 
-" Go 
-let g:go_code_completion_enabled = 1
-if executable('gopls')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'gopls',
-				\ 'cmd': {server_info->['gopls', '-remote=auto']},
-				\ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
-				\ })
-	autocmd BufWritePre *.go
-				\ call execute('LspDocumentFormatSync') |
-				\ call execute('LspCodeActionSync source.organizeImports')
-endif
-
-" Python
+"Python
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
+        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
         \ })
 endif
 
-"if executable('pyls')
-"    au User lsp_setup call lsp#register_server({
-"        \ 'name': 'pyls',
-"        \ 'cmd': {server_info->['pyls']},
-"        \ 'whitelist': ['python'],
-"        "\ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
-"        \ })
-"endif
+"Ruby
+"Rust
+"Scala
+"Swift
+"Tex
+"TOML
+"TypeScript
+if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
+        \ })
+endif
 
-" vimL 
+"OCaml+Reason
+"VHDL
+"Vim
 if executable('vim-language-server')
-	augroup LspVim
-		autocmd!
-		autocmd User lsp_setup call lsp#register_server({
-					\ 'name': 'vim-language-server',
-					\ 'cmd': {server_info->['vim-language-server', '--stdio']},
-					\ 'whitelist': ['vim'],
-					\ 'initialization_options': {
-					\   'vimruntime': $VIMRUNTIME,
-					\   'runtimepath': &rtp,
-					\ }})
-	augroup END
+  augroup LspVim
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'vim-language-server',
+        \ 'cmd': {server_info->['vim-language-server', '--stdio']},
+        \ 'whitelist': ['vim'],
+        \ 'initialization_options': {
+        \   'vimruntime': $VIMRUNTIME,
+        \   'runtimepath': &rtp,
+        \ }})
+  augroup END
+endif
+
+"XML
+if executable('java') && filereadable(expand('~/lsp/org.eclipse.lsp4xml-0.3.0-uber.jar'))
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'lsp4xml',
+        \ 'cmd': {server_info->[
+        \     'java',
+        \     '-noverify',
+        \     '-Xmx1G',
+        \     '-XX:+UseStringDeduplication',
+        \     '-Dfile.encoding=UTF-8',
+        \     '-jar',
+        \     expand('~/lsp/org.eclipse.lsp4xml-0.3.0-uber.jar')
+        \ ]},
+        \ 'whitelist': ['xml']
+        \ })
+endif
+
+"YAML
+if executable('yaml-language-server')
+  augroup LspYaml
+   autocmd!
+   autocmd User lsp_setup call lsp#register_server({
+       \ 'name': 'yaml-language-server',
+       \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+       \ 'allowlist': ['yaml', 'yaml.ansible'],
+       \ 'workspace_config': {
+       \   'yaml': {
+       \     'validate': v:true,
+       \     'hover': v:true,
+       \     'completion': v:true,
+       \     'customTags': [],
+       \     'schemas': {},
+       \     'schemaStore': { 'enable': v:true },
+       \   }
+       \ }
+       \})
+  augroup END
 endif
 
 function! s:on_lsp_buffer_enabled() abort
@@ -303,8 +417,12 @@ function! s:on_lsp_buffer_enabled() abort
 
 	let g:lsp_format_sync_timeout = 1000
 	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-
+	
 	" refer to doc to add more commands
+	
+	set foldmethod=expr
+	  \ foldexpr=lsp#ui#vim#folding#foldexpr()
+	  \ foldtext=lsp#ui#vim#folding#foldtext()
 endfunction
 
 " complete
