@@ -257,10 +257,13 @@ if executable('html-languageserver')
 endif
 
 "Java
+autocmd FileType java setlocal omnifunc=lsp#complete
+"\ 'cmd': {server_info->['jdtls', '-data', getcwd()]},
 if executable('jdtls')
+    "autocmd FileType java setlocal omnifunc=lsp#complete
     au User lsp_setup call lsp#register_server({
         \ 'name': 'Eclipse JDT Language Server',
-        \ 'cmd': {server_info->['jdtls', '-data', getcwd()]},
+	\ 'cmd': ['cmd.exe', '/C', 'C:\\Users\\Leo\\tools\\jdtls\\start-jdtls.cmd'],
         \ 'allowlist': ['java']
         \ })
 endif
