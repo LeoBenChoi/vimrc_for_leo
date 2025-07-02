@@ -151,7 +151,7 @@ endif
 endfunction
 " HOTKEY
 " comment
-autocmd FileType go nnoremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
 
 function! CommentCurrentLine()
     " 注释风格配置（可以扩展更多语言）
@@ -198,6 +198,7 @@ endfunction
 " TODO: next 
 "let mapleader = "\\"
 nnoremap <leader>q :q<CR>
+nnoremap <leader>ci :set ignorecase!<CR>
 
 " ========================================================================
 "  Flag and env 
