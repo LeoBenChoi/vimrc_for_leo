@@ -311,6 +311,10 @@ function! s:on_lsp_buffer_enabled() abort
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
     
     " refer to doc to add more commands
+
+    " after add for leo(from vim-go)
+    "autocmd BufWritePre *.go silent! execute '!goimports -w %'
+    autocmd BufWritePre *.go :GoImports
 endfunction
 
 augroup lsp_install
@@ -351,7 +355,7 @@ if executable('gopls')
         \ call execute('LspCodeActionSync source.organizeImports')
 endif
 " disable the completion provided by vim-go
-"let g:go_code_completion_enabled = 0
+let g:go_code_completion_enabled = 1
 
 "Godot
 "Groovy
