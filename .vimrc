@@ -24,6 +24,7 @@ set signcolumn=yes " Enable the sign column to always show
 set noshowmode
 set wildoptions=pum "pum = popup menu
 set pumheight=10 " 限制最大显示行数
+set noignorecase " 搜索、补全区分大小写
 
 " about line
 set showtabline=2       
@@ -120,8 +121,8 @@ endif
 " ========================================================================
 
 " F5
-autocmd FileType python,go nnoremap <buffer> <C-F5> :call DeBugCode()<CR>
 autocmd FileType python,go nnoremap <buffer> <F5> :call RunCode()<CR>
+autocmd FileType python,go nnoremap <buffer> <C-F5> :call DeBugCode()<CR>
 " F8
 nnoremap <F8> :call ToggleTheme()<CR>
 
@@ -138,7 +139,7 @@ function! DeBugCode()
 		:!python %
 	endif
 	if &filetype == 'go'
-		:!go run %
+		:!go build .
 	endif
 endfunction
 function! RunCode()
@@ -146,7 +147,7 @@ function! RunCode()
 		:!python %
 	endif
 	if &filetype == 'go'
-		:!go build %
+		::belowright terminal go run .
 endif
 endfunction
 " HOTKEY
