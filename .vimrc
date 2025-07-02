@@ -129,6 +129,52 @@ function! RunCode()
 	endif
 endfunction
 
+" HOTKEY
+" comment
+autocmd FileType go nnoremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+
+function! CommentCurrentLine()
+    " 注释风格配置（可以扩展更多语言）
+    let l:comment_map = {
+                \ 'go':     '//',
+                \ 'c':      '//',
+                \ 'cpp':    '//',
+                \ 'java':   '//',
+                \ 'python': '#',
+                \ 'sh':     '#',
+                \ 'bash':   '#',
+                \ 'lua':    '--',
+                \ }
+
+    " 获取当前文件类型
+    let l:filetype = &filetype
+
+    " 获取注释前缀
+    let l:prefix = get(l:comment_map, l:filetype, '')
+
+    " 如果不支持该语言注释，直接返回
+    if l:prefix == ''
+        echo "Not compatible with this language annotation: " . l:filetype
+        return
+    endif
+
+    " 获取当前行内容
+    let l:line = getline('.')
+
+    " 判断是否已被注释
+    if l:line =~ '^\s*' . escape(l:prefix, '#')  " escape 处理特殊字符
+        " 取消注释：去掉注释前缀
+        let l:line = substitute(l:line, '^\(\s*\)' . escape(l:prefix, '#') . '\s*', '\1', '')
+    else
+        " 添加注释：在前面加注释前缀
+        let l:line = substitute(l:line, '^\s*', '\0' . l:prefix . ' ', '')
+    endif
+
+    " 写回当前行
+    call setline('.', l:line)
+endfunction
+
+" <leader> use
 " TODO: next 
 "let mapleader = "\\"
 nnoremap <leader>q :q<CR>
@@ -271,8 +317,8 @@ if executable('gopls')
         \ call execute('LspDocumentFormatSync') |
         \ call execute('LspCodeActionSync source.organizeImports')
 endif
-"disable the completion provided by vim-go
-let g:go_code_completion_enabled = 1
+" disable the completion provided by vim-go
+"let g:go_code_completion_enabled = 0
 
 "Godot
 "Groovy
