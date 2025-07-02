@@ -47,13 +47,23 @@ set foldcolumn=1
 
 set foldtext=CustomFoldText()
 function! CustomFoldText()
-    let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
-    let end = substitute(getline(v:foldend), '\t', '    ', 'g')
-    let folded = start . ' ... ' . end
+    " 获取首尾行的原始内容
+    let start = getline(v:foldstart)
+    let end = getline(v:foldend)
+
+    " 仅替换行内的制表符，不改变缩进
+    let start_content = substitute(start, '\t', '    ', 'g')
+    let end_content = substitute(end, '\t', '    ', 'g')
+
+    " 移除最后一行的缩进
+    let end_content_no_indent = substitute(end_content, '^\s*', '', '')
+
+    " 合并首行和修改后的最后一行内容
+    let folded = start_content . ' ... ' . end_content_no_indent
 
     " 计算折叠行数（记得 +1）
     let counts = v:foldend - v:foldstart + 1
-    let info = '==> ' . counts . ' lines <  '
+    let info = '[ ' . v:foldstart . ' - ' . v:foldend  . ' ] ==> ' . counts . ' lines <  '
 
     let width = &textwidth > 0 ? &textwidth : 80
     let spacing = width - strwidth(folded) - strwidth(info)
@@ -61,7 +71,6 @@ function! CustomFoldText()
 
     return folded . padding . info
 endfunction
-
 
 " bak
 " edit file
@@ -147,9 +156,10 @@ function! RunCode()
 		:!python %
 	endif
 	if &filetype == 'go'
-		::belowright terminal go run .
+		:belowright terminal go run .
 endif
 endfunction
+
 " HOTKEY
 " comment
 autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
