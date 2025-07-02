@@ -34,11 +34,33 @@ set pumheight=20
 set wildmode=longest:full,full
 "set wildoptions=pum 
 
-" bak 
-"set nobackup          
-"set nowritebackup     
-"set noswapfile        
-"set noundofile      
+" 基于文件类型自动设置折叠方式
+set foldenable
+augroup SetFoldingByFiletype
+    autocmd!
+    nnoremap <space> za
+    autocmd FileType go      setlocal foldmethod=syntax foldlevelstart=99  foldlevel=99
+    autocmd FileType python  setlocal foldmethod=indent foldlevelstart=99  foldlevel=99
+augroup END
+set foldcolumn=1
+
+set foldtext=CustomFoldText()
+function! CustomFoldText()
+    let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
+    let end = substitute(getline(v:foldend), '\t', '    ', 'g')
+    let folded = start . ' ... ' . end
+
+    " 计算折叠行数（记得 +1）
+    let counts = v:foldend - v:foldstart + 1
+    let info = '==> ' . counts . ' lines <  '
+
+    let width = &textwidth > 0 ? &textwidth : 80
+    let spacing = width - strwidth(folded) - strwidth(info)
+    let padding = repeat(' ', spacing > 0 ? spacing : 1)
+
+    return folded . padding . info
+endfunction
+
 
 " bak
 " edit file
@@ -119,16 +141,14 @@ function! DeBugCode()
 		:!go run %
 	endif
 endfunction
-
 function! RunCode()
 	if &filetype == 'python'
 		:!python %
 	endif
 	if &filetype == 'go'
 		:!go build %
-	endif
+endif
 endfunction
-
 " HOTKEY
 " comment
 autocmd FileType go nnoremap <buffer> <C-/> :call CommentCurrentLine()<CR>
