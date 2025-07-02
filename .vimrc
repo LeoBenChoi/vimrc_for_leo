@@ -199,6 +199,7 @@ endfunction
 " TODO: next 
 "let mapleader = "\\"
 nnoremap <leader>q :q<CR>
+nnoremap <leader>w :w<CR>
 nnoremap <leader>ci :set ignorecase!<CR>
 
 " ========================================================================
