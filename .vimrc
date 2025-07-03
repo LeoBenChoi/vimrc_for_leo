@@ -152,6 +152,7 @@ function! DeBugCode()
 	endif
 endfunction
 function! RunCode()
+    update
 	if &filetype == 'python'
 		:!python %
 	endif
@@ -313,7 +314,6 @@ function! s:on_lsp_buffer_enabled() abort
     " refer to doc to add more commands
 
     " after add for leo(from vim-go)
-    "autocmd BufWritePre *.go silent! execute '!goimports -w %'
     autocmd BufWritePre *.go :GoImports
 endfunction
 
