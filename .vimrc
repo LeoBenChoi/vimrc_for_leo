@@ -154,7 +154,8 @@ endfunction
 function! RunCode()
     update
 	if &filetype == 'python'
-		:!python %
+		":!python %
+		:belowright terminal python %
 	endif
 	if &filetype == 'go'
 		:belowright terminal go run .
