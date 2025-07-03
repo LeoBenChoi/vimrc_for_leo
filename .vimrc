@@ -105,6 +105,7 @@ set tabstop=4
 " about file&path
 filetype plugin on      
 filetype indent on      
+filetype on
 set autochdir     
 
 " about syntax 
