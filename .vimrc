@@ -25,6 +25,7 @@ set noshowmode
 set wildoptions=pum "pum = popup menu
 set pumheight=10 " 限制最大显示行数
 set noignorecase " 搜索、补全区分大小写
+set mouse=a
 
 " about line
 set showtabline=2       
