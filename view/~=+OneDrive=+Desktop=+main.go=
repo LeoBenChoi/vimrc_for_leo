@@ -1,0 +1,171 @@
+let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-1 siso=-1
+argglobal
+nnoremap <buffer> <expr>  lsp#scroll(-4)
+nnoremap <buffer> <expr>  lsp#scroll(+4)
+let s:cpo_save=&cpo
+set cpo&vim
+nmap <buffer> K <Plug>(lsp-hover)
+nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+nmap <buffer> \rn <Plug>(lsp-rename)
+nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+nmap <buffer> gt <Plug>(lsp-type-definition)
+nmap <buffer> gi <Plug>(lsp-implementation)
+nmap <buffer> gr <Plug>(lsp-references)
+nmap <buffer> gS <Plug>(lsp-workspace-symbol-search)
+nmap <buffer> gs <Plug>(lsp-document-symbol-search)
+nmap <buffer> gd <Plug>(lsp-definition)
+nnoremap <buffer> <expr> <C-D> lsp#scroll(-4)
+nnoremap <buffer> <expr> <C-F> lsp#scroll(+4)
+noremap <buffer> <C-/> :call CommentCurrentLine()
+nnoremap <buffer> <C-F5> :call DeBugCode()
+nnoremap <buffer> <F5> :call RunCode()
+let &cpo=s:cpo_save
+unlet s:cpo_save
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal backupcopy=
+setlocal balloonexpr=
+setlocal nobinary
+setlocal nobreakindent
+setlocal breakindentopt=
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinscopedecls=public,protected,private
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=80
+setlocal comments=s1:/*,mb:*,ex:*/,://
+setlocal commentstring=//\ %s
+setlocal complete=.,w,b,u,t,i
+setlocal completefunc=
+setlocal completeslash=
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal cursorcolumn
+setlocal cursorline
+setlocal cursorlineopt=both
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != 'go'
+setlocal filetype=go
+endif
+setlocal fillchars=
+setlocal fixendofline
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=99
+setlocal foldmarker={{{,}}}
+setlocal foldmethod=syntax
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=CustomFoldText()
+setlocal formatexpr=
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal formatoptions=cq
+setlocal formatprg=
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=-1
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=GoIndent(v:lnum)
+setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,<:>,0=},0=)
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal lispoptions=
+setlocal lispwords=
+setlocal list
+setlocal listchars=
+setlocal makeencoding=
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=bin,octal,hex
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=lsp#complete
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal relativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal noscrollbind
+setlocal scrolloff=-1
+setlocal shiftwidth=4
+setlocal noshortname
+setlocal showbreak=
+setlocal sidescrolloff=-1
+setlocal signcolumn=yes
+setlocal nosmartindent
+setlocal nosmoothscroll
+setlocal softtabstop=4
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal spelloptions=
+setlocal statusline=%{lightline#link()}%#LightlineLeft_active_0#%(\ %{lightline#mode()}\ %)%#LightlineLeft_active_0_1#%#LightlineLeft_active_1#%(\ %{FugitiveStatusline()}\ %)%{FugitiveStatusline()!=#\"\"&&(FugitiveHead()!=#\"\")?\"|\":\"\"}%(\ %{FugitiveHead()}\ %)%#LightlineLeft_active_1_2#%#LightlineLeft_active_2#%(\ %t\ %)%{(&readonly)||(&modified||!&modifiable)||LightlineStartupTime()!=#\"\"?\"|\":\"\"}%(\ %R\ %)%{(&readonly)&&((&modified||!&modifiable)||LightlineStartupTime()!=#\"\")?\"|\":\"\"}%(\ %M\ %)%{(&modified||!&modifiable)&&(LightlineStartupTime()!=#\"\")?\"|\":\"\"}%(\ %{LightlineStartupTime()}\ %)%#LightlineLeft_active_2_3#%#LightlineMiddle_active#%=%#LightlineRight_active_2_3#%#LightlineRight_active_2#%(\ %{&ft!=#\"\"?&ft:\"no\ ft\"}\ %)%{1||1||1?\"|\":\"\"}%(\ %{&ff}\ %)%{1||1?\"|\":\"\"}%(\ %{&fenc!=#\"\"?&fenc:&enc}\ %)%{1?\"|\":\"\"}%(\ 0x%B\ %)%#LightlineRight_active_1_2#%#LightlineRight_active_1#%(\ %3p%%\ %)%#LightlineRight_active_0_1#%#LightlineRight_active_0#%(\ %3l:%-2c\ %)
+setlocal suffixesadd=
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != 'go'
+setlocal syntax=go
+endif
+setlocal tabstop=4
+setlocal tagcase=
+setlocal tagfunc=lsp#tagfunc
+setlocal tags=
+setlocal termwinkey=
+setlocal termwinscroll=10000
+setlocal termwinsize=
+setlocal textwidth=80
+setlocal thesaurus=
+setlocal thesaurusfunc=
+setlocal undofile
+setlocal undolevels=-123456
+setlocal varsofttabstop=
+setlocal vartabstop=
+setlocal virtualedit=
+setlocal wincolor=
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+3
+normal! zc
+18
+normal! zc
+27
+normal! zc
+35
+normal! zc
+let s:l = 36 - ((35 * winheight(0) + 17) / 35)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 36
+normal! 0
+let &g:so = s:so_save | let &g:siso = s:siso_save
+nohlsearch
+doautoall SessionLoadPost
+" vim: set ft=vim :

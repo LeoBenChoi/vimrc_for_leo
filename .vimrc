@@ -37,14 +37,16 @@ set wildmode=longest:full,full
 "set wildoptions=pum 
 
 " 基于文件类型自动设置折叠方式
+set viewdir=~/.vim/view
 set foldenable
 augroup SetFoldingByFiletype
     autocmd!
     nnoremap <space> za
-    autocmd FileType go      setlocal foldmethod=syntax foldlevelstart=99  foldlevel=99
-    autocmd FileType python  setlocal foldmethod=indent foldlevelstart=99  foldlevel=99
+    autocmd FileType go      setlocal foldmethod=syntax 
+    autocmd FileType python  setlocal foldmethod=indent
+    autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
+    autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif    
 augroup END
-set foldcolumn=1
 
 set foldtext=CustomFoldText()
 function! CustomFoldText()
