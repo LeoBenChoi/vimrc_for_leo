@@ -166,7 +166,13 @@ endfunction
 
 " HOTKEY
 " comment
-autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+
+if (has('win32') || has('win64')) == 1
+    autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+endif
+if (has('unix')) == 1
+    autocmd FileType go noremap <buffer> <C-_> :call CommentCurrentLine()<CR>
+endif
 
 function! CommentCurrentLine()
     " 注释风格配置（可以扩展更多语言）
