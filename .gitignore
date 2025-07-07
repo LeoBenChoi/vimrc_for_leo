@@ -16,8 +16,8 @@ vimfiles/flag/*
 
 .wakatime-project
 
-view\
-view/
+.view\
+.view/
 
 !.gitignore
 

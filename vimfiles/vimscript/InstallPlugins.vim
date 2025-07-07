@@ -12,13 +12,15 @@
 "目前插件：
 ""	start 自动加载
 "	gruvbox				主题
-"	lightline			状态行
+"	lightline			状态行 轻量
 "	nerdtree			左边文件树
 "	vim-cyberpunk		主题
 "	vim-fugitive		git插件
 "	vim-go				go语言自动导包和格式化
 "	vim-lsp				vim lsp 插件
 "	vim-lsp-settings	vim lsp 插件配置
+"	vim-airline         状态行
+"	tagbar              
 
 let plugins = [
 \ 'https://github.com/morhetz/gruvbox.git',
@@ -30,6 +32,21 @@ let plugins = [
 \ 'https://github.com/prabirshrestha/vim-lsp.git',
 \ 'https://github.com/mattn/vim-lsp-settings.git',
 \ 'https://github.com/wakatime/vim-wakatime.git',
+\ 'https://github.com/vim-airline/vim-airline.git',
+\ 'https://github.com/preservim/tagbar.git',
+\ 'https://github.com/mhinz/vim-signify.git',
+\ 'https://github.com/airblade/vim-gitgutter.git',
+\ 'https://github.com/lambdalisue/vim-battery.git',
+\ 'https://github.com/ryanoasis/vim-devicons.git',
+\ 'https://github.com/vim-airline/vim-airline-themes.git',
+\
+\ 'https://github.com/prabirshrestha/asyncomplete.vim.git',
+\ 'https://github.com/prabirshrestha/asyncomplete-lsp.vim.git',
+\ 'https://github.com/prabirshrestha/asyncomplete-buffer.vim.git',
+\ 'https://github.com/prabirshrestha/asyncomplete-file.vim.git',
+\ 
+\ 'https://github.com/prabirshrestha/vim-lsp.git',
+\ 'https://github.com/mattn/vim-lsp-settings.git'
 \]
 
 
