@@ -1,340 +1,266 @@
 " ========================================================================
-" Global Base set
+" Global 基础设置
 " ========================================================================
+set nocompatible             " 禁用 vi 兼容模式
+set number                  " 显示行号
+set relativenumber          " 相对行号
+set numberwidth=4           " 行号列宽
+set showmatch               " 高亮匹配括号
+set cursorline              " 高亮当前行
+set cursorcolumn            " 高亮当前列
+set colorcolumn=80          " 高亮显示第80列
+set list lcs=tab:\|\       " 可见化制表符（示例：tab 用 '|' 表示）
+set signcolumn=yes          " 永远显示符号列（用于 Gutter 插件）
+set shortmess+=I            " 关闭启动信息
+set showfulltag             " 完整显示标签内容
+set mouse=a                 " 启用鼠标
+set backspace=2             " 退格键删除
 
-" misc
-set nocompatible " Disable compatibility with old vi
-set number
-set relativenumber
-set backspace=2     
-set numberwidth=4       " Column width
-set fileformat=unix 
-set encoding=utf-8
-set fileencodings=utf-8,gb2312,gb18030,cp936,latin1
-set shortmess+=I " default startup screen 
-set list lcs=tab:\|\ 
-set showmatch           " Highlight bracket
-set cursorline "highlights the current line
-set cursorcolumn "highlights the current column
-set colorcolumn=80      " Set column 80 to be highlighted
-set textwidth=80       " Automatically wrap lines at 80 characters
-set formatoptions+=t   " Enable automatic text wrapping
-set showfulltag
-set signcolumn=yes " Enable the sign column to always show
-set noshowmode
-set wildoptions=pum "pum = popup menu
-set pumheight=10 " 限制最大显示行数
-set noignorecase " 搜索、补全区分大小写
-set mouse=a
 
-" about line
-set showtabline=2       
-set laststatus=2        
-set cmdheight=2   
-set wildmenu            
-set pumheight=20	
+" 搜索设置（大小写智能感知）
+set noignorecase              " 搜索区分大小写, 区分大小写用ignorecase
+set smartcase               " 搜索时包含大写即区分大小写:contentReference[oaicite:4]{index=4}
+set incsearch               " 增量搜索
+set hlsearch                " 高亮搜索结果
+
+" 命令行补全
+set wildmenu                " 使用增量命令补全菜单
 set wildmode=longest:full,full
-"set wildoptions=pum 
+set wildoptions=pum         " 在补全时使用垂直弹出菜单:contentReference[oaicite:5]{index=5}
+set pumheight=20            " 弹出菜单最大行数
 
-" 基于文件类型自动设置折叠方式
-set viewdir=~/.vim/view
-set foldenable
+" ========================================================================
+" 界面显示
+" ========================================================================
+set showtabline=2          " 标签页行始终显示
+set laststatus=2          " 始终显示状态栏
+set cmdheight=2           " 命令行高度 2
+set guifont=Consolas:h12   " GUI 模式下字体（Windows 环境示例）
+"set ambiwidth=double      " 宽字符占两个位置
+set background=dark       " 默认背景（自动切换在后面设置）
+" 注意：自动背景设置逻辑见下方
+
+" ========================================================================
+" 折叠配置
+" ========================================================================
+set viewdir=~/.vim/.view   " 保存视图信息（折叠/光标等）
+set foldenable            " 启用折叠
 augroup SetFoldingByFiletype
-    autocmd!
-    nnoremap <space> za
-    autocmd FileType go      setlocal foldmethod=syntax 
-    autocmd FileType python  setlocal foldmethod=indent
-    autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
-    autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif    
+  autocmd!
+  nnoremap <space> za           " 空格切换折叠
+  autocmd FileType go setlocal foldmethod=syntax
+  autocmd FileType python setlocal foldmethod=indent
+  autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
+  autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif
 augroup END
 
+" 自定义折叠文本
 set foldtext=CustomFoldText()
 function! CustomFoldText()
-    " 获取首尾行的原始内容
-    let start = getline(v:foldstart)
-    let end = getline(v:foldend)
-
-    " 仅替换行内的制表符，不改变缩进
-    let start_content = substitute(start, '\t', '    ', 'g')
-    let end_content = substitute(end, '\t', '    ', 'g')
-
-    " 移除最后一行的缩进
-    let end_content_no_indent = substitute(end_content, '^\s*', '', '')
-
-    " 合并首行和修改后的最后一行内容
-    let folded = start_content . ' ... ' . end_content_no_indent
-
-    " 计算折叠行数（记得 +1）
-    let counts = v:foldend - v:foldstart + 1
-    let info = '[ ' . v:foldstart . ' - ' . v:foldend  . ' ] ==> ' . counts . ' lines <  '
-
-    let width = &textwidth > 0 ? &textwidth : 80
-    let spacing = width - strwidth(folded) - strwidth(info)
-    let padding = repeat(' ', spacing > 0 ? spacing : 1)
-
-    return folded . padding . info
+  let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
+  let end = substitute(getline(v:foldend), '\t', '    ', 'g')
+  let end_no_indent = substitute(end, '^\s*', '', '')
+  let folded = start . ' ... ' . end_no_indent
+  let count = v:foldend - v:foldstart + 1
+  let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
+  let width = &textwidth > 0 ? &textwidth : 80
+  let spacing = width - strwidth(folded) - strwidth(info)
+  let pad = repeat(' ', spacing > 0 ? spacing : 1)
+  return folded . pad . info
 endfunction
 
-" bak
-" edit file
+" ========================================================================
+" 备份、交换和撤销
+" ========================================================================
+" 备份设置
 set backup
 set backupdir=~/.vim/.backup//
-if !isdirectory(expand('~/.vim/.backup'))
-    call mkdir(expand('~/.vim/.backup'), 'p')
+if !isdirectory(expand(&backupdir))
+  call mkdir(expand(&backupdir), 'p')
 endif
 set backupext=.bak
-" write and undo
-set undofile
-set undodir=~/.vim/.undofile//
-if !isdirectory(expand('~/.vim/.undofile'))
-    call mkdir(expand('~/.vim/.undofile'), 'p')
-endif
-" save and swap
+
+" 交换文件
 set swapfile
 set directory=~/.vim/.swapfile//
-if !isdirectory(expand('~/.vim/.swapfile'))
-    call mkdir(expand('~/.vim/.swapfile'), 'p')
+if !isdirectory(expand(&directory))
+  call mkdir(expand(&directory), 'p')
 endif
 
-" When you open the file, go back to where you last edited it
-autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
+" 持久化撤销
+set undofile
+set undodir=~/.vim/.undofile//
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), 'p')
+endif
 
-" Indent setting
-set shiftwidth=4    " Automatically indent to 4 Spaces
-set softtabstop=4
-set expandtab
+" 自动恢复上次编辑位置
+autocmd! BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
+
+" ========================================================================
+" 缩进设置
+" ========================================================================
 set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab     " 使用空格代替制表符
 
-" about file&path
-filetype plugin on      
-filetype indent on      
-filetype on
-set autochdir     
+" ========================================================================
+" 文件类型与语法
+" ========================================================================
+filetype plugin indent on  " 一次性启用文件类型检测、插件和缩进:contentReference[oaicite:6]{index=6}
+syntax on                  " 启用语法高亮
 
-" about syntax 
-syntax enable	
-syntax on 
-
-" about search
-set incsearch          
-set hlsearch            
-set ignorecase          
-set smartcase           
-
-" Automatically set background
+" ========================================================================
+" 主题切换（根据时间自动亮/暗）
+" ========================================================================
 let hour = strftime("%H")
 if hour >= 7 && hour < 19
-	set background=light
+  set background=light
 else
-	set background=dark
+  set background=dark
 endif
 
 " ========================================================================
-"  keymap
+" 键盘映射与快捷键
 " ========================================================================
+let mapleader = "\\"
+nnoremap <leader>q :q<CR>
+nnoremap <leader>w :w<CR>
 
-" F5
-autocmd FileType python,go nnoremap <buffer> <F5> :call RunCode()<CR>
-autocmd FileType python,go nnoremap <buffer> <C-F5> :call DeBugCode()<CR>
-" F8
-nnoremap <F8> :call ToggleTheme()<CR>
+" 切换主题（F4）
+nnoremap <silent> <F4> :execute (&background ==# 'dark' ? 'set background=light' : 'set background=dark')<CR>
 
-function! ToggleTheme()
-	if &background == "dark"
-		set background=light
-	else
-		set background=dark
-	endif
+" 代码运行/调试（F5/F6）
+autocmd FileType python,go nnoremap <buffer> <F5>  :call RunCode()<CR>
+autocmd FileType python,go nnoremap <buffer> <C-F5>:call DeBugCode()<CR>
+
+function! RunCode()
+  update
+  if &filetype ==# 'python'
+    :belowright terminal python %
+  elseif &filetype ==# 'go'
+    :belowright terminal go run .
+  endif
 endfunction
 
 function! DeBugCode()
-	if &filetype == 'python'
-		:!python %
-	endif
-	if &filetype == 'go'
-		:!go build .
-	endif
-endfunction
-function! RunCode()
-    update
-	if &filetype == 'python'
-		":!python %
-		:belowright terminal python %
-	endif
-	if &filetype == 'go'
-		:belowright terminal go run .
-endif
+  if &filetype ==# 'python'
+    :!python %
+  elseif &filetype ==# 'go'
+    :!go build .
+  endif
 endfunction
 
-" HOTKEY
-" comment
-
-if (has('win32') || has('win64')) == 1
-    autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+" 注释当前行（仅 Go 示例，支持多种语言）
+if has('win32') || has('win64')
+  autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+else
+  autocmd FileType go noremap <buffer> <C-_> :call CommentCurrentLine()<CR>
 endif
-if (has('unix')) == 1
-    autocmd FileType go noremap <buffer> <C-_> :call CommentCurrentLine()<CR>
-endif
-
 function! CommentCurrentLine()
-    " 注释风格配置（可以扩展更多语言）
-    let l:comment_map = {
-                \ 'go':     '//',
-                \ 'c':      '//',
-                \ 'cpp':    '//',
-                \ 'java':   '//',
-                \ 'python': '#',
-                \ 'sh':     '#',
-                \ 'bash':   '#',
-                \ 'lua':    '--',
-                \ }
-
-    " 获取当前文件类型
-    let l:filetype = &filetype
-
-    " 获取注释前缀
-    let l:prefix = get(l:comment_map, l:filetype, '')
-
-    " 如果不支持该语言注释，直接返回
-    if l:prefix == ''
-        echo "Not compatible with this language annotation: " . l:filetype
-        return
-    endif
-
-    " 获取当前行内容
-    let l:line = getline('.')
-
-    " 判断是否已被注释
-    if l:line =~ '^\s*' . escape(l:prefix, '#')  " escape 处理特殊字符
-        " 取消注释：去掉注释前缀
-        let l:line = substitute(l:line, '^\(\s*\)' . escape(l:prefix, '#') . '\s*', '\1', '')
-    else
-        " 添加注释：在前面加注释前缀
-        let l:line = substitute(l:line, '^\s*', '\0' . l:prefix . ' ', '')
-    endif
-
-    " 写回当前行
-    call setline('.', l:line)
+  let s:map = {
+        \ 'go': '//',
+        \ 'c': '//',
+        \ 'cpp': '//',
+        \ 'java': '//',
+        \ 'python': '#',
+        \ 'sh': '#',
+        \ 'bash': '#',
+        \ 'lua': '--',
+        \ }
+  let ft = &filetype
+  let prefix = get(s:map, ft, '')
+  if empty(prefix)
+    echo "Unsupported filetype: " . ft
+    return
+  endif
+  let line = getline('.')
+  if line =~ '^\s*' . escape(prefix, '#') 
+    let line = substitute(line, '^\(\s*\)' . escape(prefix, '#') . '\s*', '\1', '')
+  else
+    let line = substitute(line, '^\s*', '\0' . prefix . ' ', '')
+  endif
+  call setline('.', line)
 endfunction
 
-" <leader> use
-" TODO: next 
-"let mapleader = "\\"
-nnoremap <leader>q :q<CR>
-nnoremap <leader>w :w<CR>
-nnoremap <leader>ci :set ignorecase!<CR>
-
 " ========================================================================
-"  Flag and env 
+" 标志和环境变量
 " ========================================================================
-
-" Example Initialize the environment flag
 let g:flag_git = 0
 let g:flag_install = 0
-
-" Checking the flag status
-if filereadable(expand('$VIM\vimfiles\flag\flag_install')) || filereadable(expand('~/.vim/vimfiles/flag/flag_install'))
-	let g:flag_install = 1
+if filereadable(expand('~/.vim/vimfiles/flag/flag_install'))
+  let g:flag_install = 1
 endif
 
 function! InstallPlugins()
-	"if (has('win32') || has('win64')) == 1
-	"	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
-	"elseif has('unix') == 1
-	"	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
-	"endif
-	source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
+  source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
 endfunction
 
+if g:flag_install == 0
+  finish
+endif
+
 " ========================================================================
-"  OS 
+" 不同操作系统的设置
 " ========================================================================
 " used Linux: Kali, Ubuntu, CentOS
 " used Windows: Windows 11, 10
 
 " colorscheme color
-if !has('gui_running')
-	"set notermguicolors
-	set t_Co=256
+ set t_Co=256
+if has('termguicolors')
+  set termguicolors
 endif
-
-" windows
-if (has('win32') || has('win64')) == 1
-
-	set packpath+=~/.vim/vimfiles
-
-	if !isdirectory(expand('$VIM/vimfiles/flag'))
-		call mkdir(expand('$VIM/vimfiles/flag'), 'p')
-	endif
-
-	"set guifont=Sarsa_Fixed_SC:h14:cANSI:qDRAFT,Consolas:h12:b:cANSI:qDRAFT
-	"set guifont="Sarsa Fixed SC":h14:cANSI:qDRAFT
-	set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
-	set ambiwidth=double
-	if g:flag_install == 1
-		colorscheme gruvbox
-	else
-		colorscheme retrobox
-	endif
-
-	if has('gui_running') == 1
-		autocmd GUIENter * simalt ~x
-	endif
-
-" Linux
-elseif has('unix') == 1
-	set packpath+=~/.vim/vimfiles
-	if g:flag_install == 1
-		colorscheme gruvbox
-	else
-		colorscheme retrobox
-	endif
+if has('win32') || has('win64')
+    set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
+  set packpath+=~/.vim/vimfiles
+  if !isdirectory(expand('$VIM/vimfiles/flag'))
+    call mkdir(expand('$VIM/vimfiles/flag'), 'p')
+  endif
+  colorscheme gruvbox       " Windows 下默认主题
+  if has('gui_running')
+    autocmd GUIEnter * simalt ~x
+  endif
+elseif has('unix')
+  set packpath+=~/.vim/vimfiles
+  colorscheme gruvbox       " Unix 下默认主题
 else
-	echo "unknow system"
+  echo "Unrecognized system"
 endif
 
-" If you do not load the plug-in, you do not need to load the content
-if g:flag_install == 0
-	finish
-endif
-
-"  ========================================================================
-"  plugins
-"  ========================================================================
-
+" ========================================================================
+" 插件配置（LSP 和其他）
+" ========================================================================
+" LSP 缓冲区初始化时映射常用命令
 function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
-    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
-
-    let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-    " refer to doc to add more commands
-
-    " after add for leo(from vim-go)
-    autocmd BufWritePre *.go :GoImports
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  nnoremap <buffer> gd <plug>(lsp-definition)
+  nnoremap <buffer> gs <plug>(lsp-document-symbol-search)
+  nnoremap <buffer> gr <plug>(lsp-references)
+  nnoremap <buffer> gi <plug>(lsp-implementation)
+  nnoremap <buffer> gt <plug>(lsp-type-definition)
+  nnoremap <buffer> <leader>rn <plug>(lsp-rename)
+  nnoremap <buffer> [g <plug>(lsp-previous-diagnostic)
+  nnoremap <buffer> ]g <plug>(lsp-next-diagnostic)
+  nnoremap <buffer> K <plug>(lsp-hover)
+  nnoremap <buffer> <expr> <C-f> lsp#scroll(+4)
+  nnoremap <buffer> <expr> <C-d> lsp#scroll(-4)
+  let g:lsp_format_sync_timeout = 1000
+  autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+  autocmd BufWritePre *.go :GoImports
 endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup lsp_setup
+  autocmd!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-
+" 配置各语言的 LSP 服务器
 "Bash
 "ccls - C/C++
 "Clangd - C/C++
@@ -345,28 +271,30 @@ augroup END
 "CWL
 "Docker
 if executable('docker-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'docker-langserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
-        \ 'whitelist': ['dockerfile'],
-        \ })
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'docker-langserver',
+    \ 'cmd': {server_info->['docker-langserver', '--stdio']},
+    \ 'allowlist': ['dockerfile']
+    \ })
 endif
 
 "Erlang
 "Flow - Javascript
 "Go
 if executable('gopls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-remote=auto']},
-        \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl'],
-        \ })
-    autocmd BufWritePre *.go
-        \ call execute('LspDocumentFormatSync') |
-        \ call execute('LspCodeActionSync source.organizeImports')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'gopls',
+    \ 'cmd': ['gopls', '-remote=auto'],
+    \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl']
+    \ })
+  let g:go_def_mode = 'gopls'
+  let g:go_info_mode = 'gopls'
+  let g:go_fmt_command = "goimports"   " 保存时自动格式化并排序 import
+  let g:go_gopls_enabled = 1
+  let g:go_code_completion_enabled = 1
+  let g:go_doc_keywordprg_enabled = 0
+  autocmd BufWritePre *.go :silent! GoImports
 endif
-" disable the completion provided by vim-go
-let g:go_code_completion_enabled = 1
 
 "Godot
 "Groovy
@@ -375,42 +303,37 @@ let g:go_code_completion_enabled = 1
 "HTML
 if executable('html-languageserver')
   au User lsp_setup call lsp#register_server({
-    \ 'name': 'html-languageserver',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'html-languageserver --stdio']},
-    \ 'whitelist': ['html'],
-  \ })
+    \ 'name': 'html-ls',
+    \ 'cmd': ['html-languageserver', '--stdio'],
+    \ 'allowlist': ['html']
+    \ })
 endif
 
 "Java
-autocmd FileType java setlocal omnifunc=lsp#complete
-"\ 'cmd': {server_info->['jdtls', '-data', getcwd()]},
 if executable('jdtls')
-    "autocmd FileType java setlocal omnifunc=lsp#complete
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'Eclipse JDT Language Server',
-	\ 'cmd': ['cmd.exe', '/C', 'C:\\Users\\Leo\\tools\\jdtls\\start-jdtls.cmd'],
-        \ 'allowlist': ['java']
-        \ })
-endif
-
-"JavaScript
-"Use directory with .git as root
-if executable('typescript-language-server')
- "   au User lsp_setup call lsp#register_server({
- "     \ 'name': 'javascript support using typescript-language-server',
- "     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
- "     \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
- "     \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
- "     \ })
-" Use directory with package.json as root  
   au User lsp_setup call lsp#register_server({
-    \ 'name': 'javascript support using typescript-language-server',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-    \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact'],
+    \ 'name': 'Eclipse JDT LS',
+    \ 'cmd': ['jdtls'],
+    \ 'allowlist': ['java']
     \ })
-
 endif
+
+"JavaScript and TypeScript
+if executable('typescript-language-server')
+  augroup LspJS_TS
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+      \ 'name': 'typescript-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(
+      \     lsp#utils#find_nearest_parent_file_directory(
+      \         lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+      \ 'allowlist': ['javascript', 'javascript.jsx', 'typescript', 'typescript.tsx', 'typescriptreact'],
+      \ })
+  augroup END
+endif
+autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspCodeActionSync source.organizeImports')
+autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspDocumentFormatSync')
 
 "Julia
 "Kotlin
@@ -418,48 +341,29 @@ endif
 "Perl
 "PHP
 if executable('intelephense')
-  augroup LspPHPIntelephense
-    au!
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'intelephense',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'intelephense --stdio']},
-        \ 'whitelist': ['php'],
-        \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
-        \ 'workspace_config': {
-        \   'intelephense': {
-        \     'files': {
-        \       'maxSize': 1000000,
-        \       'associations': ['*.php', '*.phtml'],
-        \       'exclude': [],
-        \     },
-        \     'completion': {
-        \       'insertUseDeclaration': v:true,
-        \       'fullyQualifyGlobalConstantsAndFunctions': v:false,
-        \       'triggerParameterHints': v:true,
-        \       'maxItems': 100,
-        \     },
-        \     'format': {
-        \       'enable': v:true
-        \     },
-        \   },
-        \ }
-        \})
-   " au User lsp_setup call lsp#register_server({                                    
-   "  \ 'name': 'php-language-server',                                            
-   "  \ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
-   "  \ 'whitelist': ['php'],                                                     
-   "  \ })
-  augroup END
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'intelephense',
+    \ 'cmd': ['intelephense', '--stdio'],
+    \ 'allowlist': ['php'],
+    \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
+    \ 'workspace_config': {
+    \   'intelephense': {
+    \     'files': {'maxSize': 1000000, 'associations': ['*.php','*.phtml'], 'exclude': []},
+    \     'completion': {'insertUseDeclaration': v:true, 'triggerParameterHints': v:true},
+    \     'format': {'enable': v:true},
+    \   }
+    \ }
+    \ })
 endif
 
 "Python
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
-        \ })
+if executable('pyls') " or 'pylsp'
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls',
+    \ 'cmd': ['pyls'],
+    \ 'allowlist': ['python'],
+    \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
+    \ })
 endif
 
 "Ruby
@@ -468,132 +372,208 @@ endif
 "Swift
 "Tex
 "TOML
-"TypeScript
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
-        \ })
+
+if executable('vim-language-server')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'vimls',
+    \ 'cmd': ['vim-language-server', '--stdio'],
+    \ 'allowlist': ['vim'],
+    \ 'initialization_options': {
+    \   'vimruntime': $VIMRUNTIME,
+    \   'runtimepath': &rtp,
+    \ }})
 endif
 
 "OCaml+Reason
 "VHDL
 "Vim
-if executable('vim-language-server')
-  augroup LspVim
-    autocmd!
-    autocmd User lsp_setup call lsp#register_server({
-        \ 'name': 'vim-language-server',
-        \ 'cmd': {server_info->['vim-language-server', '--stdio']},
-        \ 'whitelist': ['vim'],
-        \ 'initialization_options': {
-        \   'vimruntime': $VIMRUNTIME,
-        \   'runtimepath': &rtp,
-        \ }})
-  augroup END
-endif
-
-"XML
-if executable('java') && filereadable(expand('~/lsp/org.eclipse.lsp4xml-0.3.0-uber.jar'))
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'lsp4xml',
-        \ 'cmd': {server_info->[
-        \     'java',
-        \     '-noverify',
-        \     '-Xmx1G',
-        \     '-XX:+UseStringDeduplication',
-        \     '-Dfile.encoding=UTF-8',
-        \     '-jar',
-        \     expand('~/lsp/org.eclipse.lsp4xml-0.3.0-uber.jar')
-        \ ]},
-        \ 'whitelist': ['xml']
-        \ })
-endif
-
 "YAML
 if executable('yaml-language-server')
-  augroup LspYaml
-   autocmd!
-   autocmd User lsp_setup call lsp#register_server({
-       \ 'name': 'yaml-language-server',
-       \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
-       \ 'allowlist': ['yaml', 'yaml.ansible'],
-       \ 'workspace_config': {
-       \   'yaml': {
-       \     'validate': v:true,
-       \     'hover': v:true,
-       \     'completion': v:true,
-       \     'customTags': [],
-       \     'schemas': {},
-       \     'schemaStore': { 'enable': v:true },
-       \   }
-       \ }
-       \})
-  augroup END
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'yamlls',
+    \ 'cmd': ['yaml-language-server', '--stdio'],
+    \ 'allowlist': ['yaml', 'yaml.ansible'],
+    \ 'workspace_config': {
+    \   'yaml': {'validate': v:true, 'hover': v:true, 'completion': v:true}
+    \ }
+    \ })
 endif
 
-" complete
+" === 启用 LSP 自动补全（支持 JavaScript / TypeScript / Go / Python 等） ===
+let g:lsp_async_completion = 1
+
+" === 补全行为优化 ===
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_remove_duplicates = 1
+
+" === 注册补全源 ===
+" LSP 补全源
+" 延迟注册所有补全源，确保 asyncomplete 插件已加载
+augroup AsyncompleteRegister
+  autocmd!
+  autocmd VimEnter * call s:asyncomplete_register_sources()
+augroup END
+
+function! s:asyncomplete_register_sources() abort
+  if exists('*asyncomplete#register_source')
+    " 注册 LSP 补全源
+    if exists('*asyncomplete#sources#lsp#get_source_options')
+      call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({
+      \ 'name': 'lsp',
+      \ 'whitelist': ['go', 'python', 'javascript', 'typescript', 'json', 'html', 'css'],
+      \ }))
+    endif
+    " 注册 Buffer 补全源
+    if exists('*asyncomplete#sources#buffer#get_source_options')
+      call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+      \ 'name': 'buffer',
+      \ 'whitelist': ['*'],
+      \ }))
+    endif
+    " 注册文件路径补全源
+    if exists('*asyncomplete#sources#file#get_source_options')
+      call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+      \ 'name': 'file',
+      \ 'whitelist': ['*'],
+      \ }))
+    endif
+  endif
+endfunction
+" 补全快捷键：Tab 在弹出菜单时可上下选择
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+" For Vim 8 (<c-@> corresponds to <c-space>):
+" imap <c-@> <Plug>(asyncomplete_force_refresh)
+let g:asyncomplete_auto_popup = 0
 
-" The Vim startup time is displayed
-let g:start_time = reltime()
-autocmd VimEnter * ++nested call timer_start(10, { -> UpdateLightlineWithStartupTime() })
-function! UpdateLightlineWithStartupTime()
-	let l:elapsed_time = reltimefloat(reltime(g:start_time)) * 1000
-	let g:startup_time_display = "VIM, YES! " . "🚀 " . printf('%.2f', l:elapsed_time) . " ms"
-	call lightline#update()
-	" It's gone in 10 seconds
-	call timer_start(10000, { -> RemoveStartupTime() })
-endfunction
-function! RemoveStartupTime()
-	let g:startup_time_display = ''
-	call lightline#update()
-endfunction
-function! LightlineStartupTime()
-	return get(g:, 'startup_time_display', '')
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" allow modifying the completeopt variable, or it will
+" be overridden all the time
+let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert,noselect,preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" line
-let g:lightline = {
-			\ 'colorscheme': 'wombat',
-			\ 'active': {
-			\   'left': [ [ 'mode', ], [ 'gitbranchstatus', 'gitbranch' ] , ['filename', 'readonly', 'modified', 'startup_time'] ],
-			\   'right': [ ['lineinfo'], [ 'percent' ], ['filetype', 'fileformat', 'fileencoding', 'charvaluehex' ] ],
-			\ },
-			\ 'component_function': {
-			\   'gitbranchstatus': 'FugitiveStatusline',
-			\   'gitbranch': 'FugitiveHead',
-			\	'startup_time': 'LightlineStartupTime',
-			\ },
-			\ 'component': {
-			\   'charvaluehex': '0x%B',
-			\ },
-			\ }
+" rainbow 括号高亮
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+\ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\ 'ctermfgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta'],
+\ 'operators': '_,_',
+\ 'separately': {
+\   '*': {},
+\   'go': {
+\     'parentheses': ['start=/(/ end=/)/ fold', 'containedin=goFunction'],
+\     'braces': ['start=/{/ end=/}/ fold'],
+\     'brackets': ['start=/\[/ end=/\]/ fold'],
+\   }
+\ }
+\}
 
-" rainbow 
-let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
-"autocmd BufRead,BufNewFile * :RainbowToggle
+" NERDTree 文件树设置
+"let g:NERDTreeShowHidden = 1
+"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+"  \ quit |
+"  \ endif
+"autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+"  \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | buffer#buf | endif
+"autocmd BufWinEnter * if &buftype !=# 'quickfix' && getcmdwintype() ==# '' | silent NERDTreeMirror | endif
+"nnoremap <leader>t :NERDTreeToggle<CR>
+" ===============================
+" NERDTree 配置
+" ===============================
 
-" NERDTree
-" show file line
+" 显示隐藏文件（.gitignore 中的也会显示）
+let g:NERDTreeShowHidden = 1
+
+" 在 Vim 启动时打开 NERDTree（如果无文件参数）
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" 自动关闭 Vim 如果 NERDTree 是唯一窗口
+autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'nerdtree' | quit | endif
+
+" 打开新 tab 时自动启动 NERDTree
+"autocmd TabNewEntered * NERDTree
+autocmd TabNew * NERDTree
+
+" 启用文件行统计（可能略耗资源）
 let g:NERDTreeFileLines = 1
-"nnoremap <leader>n :NERDTreeFocus<CR>
-"nnoremap <C-n> :NERDTree<CR>
-"nnoremap <C-t> :NERDTreeToggle<CR>
-"nnoremap <C-f> :NERDTreeFind<CR> 
+
+" 设置 NERDTree 快捷键（使用 <leader>t）
 nnoremap <leader>t :NERDTreeToggle<CR>
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent NERDTreeMirror | endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>f :NERDTreeFind<CR>     " 定位当前文件
+
+" 禁用 netrw 以避免冲突
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
+
+" NERDTree 图标支持（如果已装 devicons）
+let g:webdevicons_enable = 1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+
+let g:NERDTreeShowHidden = 1                    " 显示隐藏文件
+let g:NERDTreeMinimalUI = 0                     " 显示帮助文本
+"let g:NERDTreeDirArrows = 0                     " 不用箭头，避免渲染卡顿
+let g:NERDTreeAutoDeleteBuffer = 1              " 自动关闭 buffer
+let g:NERDTreeStatusline = ''                   " 禁用状态栏显示
+
+" 快捷键：<Leader>t 打开/关闭 NERDTree
+nnoremap <leader>t :NERDTreeToggle<CR>
+" 新 tab 自动打开 NERDTree（保留更好的用户体验）
+"autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent! NERDTreeMirror | endif
+"autocmd VimEnter * NERDTree
+" 如果当前只有 NERDTree 窗口，自动退出
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" 若你想设置默认宽度
+let g:NERDTreeWinSize = 32
+" 显示书签标志（可手动设置书签）
+"let g:NERDTreeShowBookmarks = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+
+" vim-signify 更新延时
+"set updatetime=100
+
+" GitGutter 快捷键
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+
+" Vim-airline 状态栏与图标
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'luna'
+"let g:airline_theme = 'default'
+"let g:airline_section_z = '%3p%% | %l:%c'
+let g:airline_section_z = '%3p%% ☰ %l:%c %{g:startup_time_display}'
+
+" vim-fugitive 设置
+let g:netrw_banner = 0
+let g:fugitive_no_autochdir = 1
+
+" Devicons 文件图标
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
 
 finish
+
