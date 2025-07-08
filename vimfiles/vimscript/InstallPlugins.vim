@@ -1,55 +1,57 @@
-" 初始化环境和插件脚本
-" 需要提前安装git环境
-" 使用方法
-" Windows
-" 1. 增加vimrc或者替换vimrc
-" 2. 打开此文件，输入:source运行
-" 3. 等待窗口全部关闭，插件安装完成
-" Linux
-" 放到~/.vim/下
-" 打开此文件，输入:source运行
-
-"目前插件：
-""	start 自动加载
-"	gruvbox				主题
-"	lightline			状态行 轻量
-"	nerdtree			左边文件树
-"	vim-cyberpunk		主题
-"	vim-fugitive		git插件
-"	vim-go				go语言自动导包和格式化
-"	vim-lsp				vim lsp 插件
-"	vim-lsp-settings	vim lsp 插件配置
-"	vim-airline         状态行
-"	tagbar              
-
+" ============================================================================
+" 🧩 Vim 插件自动安装脚本（适用于 pack 目录）
+" ============================================================================
+" ✅ 使用场景：
+"   - 初次配置 Vim 环境
+"   - 跨平台快速安装常用插件
+"   - 使用 Vim 原生插件管理（不依赖插件管理器）
+"
+" ✅ 支持平台：
+"   - Windows: 安装到 $VIM/vimfiles/pack/plugins/start
+"   - Linux/macOS: 安装到 ~/.vim/vimfiles/pack/plugins/start
+"
+" ✅ 使用说明：
+"   1. 将本文件命名为 plugin_installer.vim，放入 ~/.vim 或 $VIM 目录中
+"   2. 在 Vim 中执行 `:source %` 运行该脚本
+"   3. 等待 Git 克隆完成
+"   4. 插件将在下次启动 Vim 时自动加载
+"
+" ✅ 插件列表（支持功能）：
+"   - gruvbox / cyberpunk：主题
+"   - vim-airline / lightline：状态栏
+"   - vim-fugitive / vim-flog：Git 交互与历史
+"   - fern.vim / nerdtree：文件树（推荐 fern）
+"   - vim-go：Go 开发支持
+"   - vim-lsp / vim-lsp-settings：LSP 支持
+"   - asyncomplete：自动补全框架
+"   - vim-battery：电量显示
+"   - vim-signify：Git 差异标记
+"   - vim-startuptime：启动时间分析
+"
+" ============================================================================
+" 插件 Git 地址列表
 let plugins = [
 \ 'https://github.com/morhetz/gruvbox.git',
-\ 'https://github.com/itchyny/lightline.vim.git',
-\ 'https://github.com/preservim/nerdtree.git',
-\ 'https://github.com/rainbow-me/rainbow.git',
 \ 'https://github.com/tpope/vim-fugitive.git',
+\ 'https://github.com/mhinz/vim-signify.git',
+\ 'https://github.com/lambdalisue/vim-fern.git',
+\ 'https://github.com/lambdalisue/fern-renderer-nerdfont.vim.git',
+\ 'https://github.com/lambdalisue/fern-git-status.vim.git',
+\ 'https://github.com/lambdalisue/nerdfont.vim.git',
+\ 'https://github.com/rbong/vim-flog.git',
 \ 'https://github.com/fatih/vim-go.git',
 \ 'https://github.com/prabirshrestha/vim-lsp.git',
 \ 'https://github.com/mattn/vim-lsp-settings.git',
-\ 'https://github.com/wakatime/vim-wakatime.git',
 \ 'https://github.com/vim-airline/vim-airline.git',
-\ 'https://github.com/preservim/tagbar.git',
-\ 'https://github.com/mhinz/vim-signify.git',
-\ 'https://github.com/airblade/vim-gitgutter.git',
-\ 'https://github.com/lambdalisue/vim-battery.git',
-\ 'https://github.com/ryanoasis/vim-devicons.git',
 \ 'https://github.com/vim-airline/vim-airline-themes.git',
-\
+\ 'https://github.com/ryanoasis/vim-devicons.git',
+\ 'https://github.com/lambdalisue/vim-battery.git',
 \ 'https://github.com/prabirshrestha/asyncomplete.vim.git',
 \ 'https://github.com/prabirshrestha/asyncomplete-lsp.vim.git',
 \ 'https://github.com/prabirshrestha/asyncomplete-buffer.vim.git',
 \ 'https://github.com/prabirshrestha/asyncomplete-file.vim.git',
-\ 
-\ 'https://github.com/prabirshrestha/vim-lsp.git',
-\ 'https://github.com/mattn/vim-lsp-settings.git'
-\]
-
-
+\ 'https://github.com/dstein64/vim-startuptime.git'
+\ ]
 
 "if has('win32') || has('win64')
 "    let target_path = expand($VIM . '\\vimfiles\\pack\\plugins\\start')
