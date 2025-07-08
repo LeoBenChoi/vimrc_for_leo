@@ -1,3 +1,4 @@
+let g:start_time = reltime()
 " ========================================================================
 " Global 基础设置
 " ========================================================================
@@ -10,7 +11,7 @@ set cursorline              " 高亮当前行
 set cursorcolumn            " 高亮当前列
 set colorcolumn=80          " 高亮显示第80列
 set list lcs=tab:\|\       " 可见化制表符（示例：tab 用 '|' 表示）
-set signcolumn=yes          " 永远显示符号列（用于 Gutter 插件）
+set signcolumn=yes          " 永远显示符号列（用于 vim-signify 插件）
 set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
 set mouse=a                 " 启用鼠标
@@ -444,7 +445,7 @@ endfunction
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+"inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 " For Vim 8 (<c-@> corresponds to <c-space>):
 " imap <c-@> <Plug>(asyncomplete_force_refresh)
@@ -482,98 +483,160 @@ let g:rainbow_conf = {
 \ }
 \}
 
-" NERDTree 文件树设置
-"let g:NERDTreeShowHidden = 1
-"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-"  \ quit |
-"  \ endif
-"autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-"  \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | buffer#buf | endif
-"autocmd BufWinEnter * if &buftype !=# 'quickfix' && getcmdwintype() ==# '' | silent NERDTreeMirror | endif
-"nnoremap <leader>t :NERDTreeToggle<CR>
-" ===============================
-" NERDTree 配置
-" ===============================
-
-" 显示隐藏文件（.gitignore 中的也会显示）
-let g:NERDTreeShowHidden = 1
-
-" 在 Vim 启动时打开 NERDTree（如果无文件参数）
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" 自动关闭 Vim 如果 NERDTree 是唯一窗口
-autocmd BufEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), '&filetype') ==# 'nerdtree' | quit | endif
-
-" 打开新 tab 时自动启动 NERDTree
-"autocmd TabNewEntered * NERDTree
-autocmd TabNew * NERDTree
-
-" 启用文件行统计（可能略耗资源）
-let g:NERDTreeFileLines = 1
-
-" 设置 NERDTree 快捷键（使用 <leader>t）
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>     " 定位当前文件
-
-" 禁用 netrw 以避免冲突
-let g:loaded_netrw       = 1
-let g:loaded_netrwPlugin = 1
-
-" NERDTree 图标支持（如果已装 devicons）
-let g:webdevicons_enable = 1
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-
-let g:NERDTreeShowHidden = 1                    " 显示隐藏文件
-let g:NERDTreeMinimalUI = 0                     " 显示帮助文本
-"let g:NERDTreeDirArrows = 0                     " 不用箭头，避免渲染卡顿
-let g:NERDTreeAutoDeleteBuffer = 1              " 自动关闭 buffer
-let g:NERDTreeStatusline = ''                   " 禁用状态栏显示
-
-" 快捷键：<Leader>t 打开/关闭 NERDTree
-nnoremap <leader>t :NERDTreeToggle<CR>
-" 新 tab 自动打开 NERDTree（保留更好的用户体验）
-"autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent! NERDTreeMirror | endif
-"autocmd VimEnter * NERDTree
-" 如果当前只有 NERDTree 窗口，自动退出
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" 若你想设置默认宽度
-let g:NERDTreeWinSize = 32
-" 显示书签标志（可手动设置书签）
-"let g:NERDTreeShowBookmarks = 1
-
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-
-" vim-signify 更新延时
-"set updatetime=100
-
-" GitGutter 快捷键
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
-function! GitStatus()
-  let [a,m,r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
-endfunction
-
 " Vim-airline 状态栏与图标
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'luna'
-"let g:airline_theme = 'default'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 "let g:airline_section_z = '%3p%% | %l:%c'
-let g:airline_section_z = '%3p%% ☰ %l:%c %{g:startup_time_display}'
+"let g:airline_section_b = '%{fugitive#head()}'
+let g:airline_section_z = '%3p%% ☰ %l:%c %{get(g:, "startup_time_display", " ")}%{" "}%{battery#component()}'
+"let g:airline_section_y = '%{GitStatus()}'
+" 把 battery 组件插到 section_y 末尾
+"let g:airline_section_y = g:airline_section_y . ' %{battery#component()}'
+"let g:airline_section_z = '%{battery#component()}'
 
-" vim-fugitive 设置
-let g:netrw_banner = 0
-let g:fugitive_no_autochdir = 1
+" Tagbar
+"let g:tagbar_ctags_bin = 'D:rogramPortable/ctags-v6.1.0-clang-x64/ctags.exe'
+"let g:tagbar_ctags_bin = 'D:/ProgramPortable/ctags-v6.1.8-clang-x64/ctags.exe'
+"let g:tagbar_ctags_bin = 'D:\\ProgramPortable\\ctags-v6.1.8-clang-x64\\ctags.exe'
+"let g:tagbar_ctags_bin = 'D:\ProgramPortable\ctags-v6.1.0-clang-x64\exuberant-ctags.exe'
+" 打开 Tagbar 快捷键，F8 是例子
+"nnoremap <F8> :TagbarToggle<CR>
+" 设置 Tagbar 宽度（默认是 30）
+"let g:tagbar_width = 30
+" 设置打开时自动聚焦 Tagbar 窗口
+"let g:tagbar_autofocus = 1
+" 当关闭文件时自动关闭 Tagbar
+"let g:tagbar_autoclose = 1
+" 允许 Tagbar 用快速打开方式刷新
+"let g:tagbar_recreate = 1
+" 如果想让 Tagbar 高亮当前符号
+"let g:tagbar_highlight_cursor = 1
 
-" Devicons 文件图标
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_nerdtree = 1
+" 显示启动时间
+function! UpdateAirlineWithStartupTime() abort
+  let l:elapsed = reltimefloat(reltime(g:start_time)) * 1000
+  let g:startup_time_display = '🚀 ' . printf('%.2f ms', l:elapsed)
+  call timer_start(10, { -> execute('redrawstatus!') })
+
+  " 自动清除
+  call timer_start(10000, { -> RemoveStartupTime() })
+endfunction
+
+function! RemoveStartupTime() abort
+  let g:startup_time_display = ''
+  call timer_start(10, { -> execute('redrawstatus!') })
+endfunction
+
+autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
+
+
+" fern 基础设置
+let g:fern#renderer = "nerdfont"
+let g:fern#default_hidden = 1           " 默认显示隐藏文件
+let g:fern#disable_default_mappings = 0 " 自定义快捷键更自由, 但是没有键盘映射了
+" 打开 Fern 的快捷键（<leader>t，类似 NERDTree）
+nnoremap <silent> <leader>t :Fern . -drawer -reveal=% -toggle -width=30<CR>
+" 额外增强：Git 状态显示
+let g:fern_git_status#disable_ignored = 1
+let g:fern_git_status#disable_untracked = 0
+" 图标美化（可选）：不显示括号，只显示图标
+let g:fern#renderer#nerdfont#indent_markers = 0
+let g:fern#renderer#nerdfont#root_symbol = ' ' " root 文件夹图标
+let g:fern#renderer#nerdfont#leaf_symbol = ' ' " 文件图标
+" 使用 Tab 键在 fern 中快速跳转
+autocmd FileType fern nnoremap <buffer> <Tab> <Plug>(fern-action-expand)
+autocmd FileType fern nnoremap <buffer> <S-Tab> <Plug>(fern-action-collapse)
+" 在 Fern buffer 中定义自定义快捷键
+autocmd FileType fern call s:fern_my_keys()
+function! s:fern_my_keys() abort
+  " 使用 <Enter> 打开文件
+  nmap <buffer> <CR> <Plug>(fern-action-open:edit)
+  " 使用 t 在新 tab 打开
+  nmap <buffer> t     <Plug>(fern-action-open:tabedit)
+  " 使用 v 垂直打开
+  nmap <buffer> v     <Plug>(fern-action-open:vsplit)
+  " 使用 s 水平打开
+  nmap <buffer> s     <Plug>(fern-action-open:split)
+  " 使用 u 返回上层目录
+  nmap <buffer> u     <Plug>(fern-action-leave)
+  " 使用 q 退出 fern
+  nmap <buffer> q     <Plug>(fern-action-leave)
+endfunction
+
+" vim-signify
+let g:signify_vcs_list = ['git'] " 仅使用 git，可根据需要添加其他
+" 设置更新频率（默认为 4000ms，可调低加快反馈）
+set updatetime=100
+" 快捷键：跳转到下一个 / 上一个 hunk
+nmap ]h <Plug>(signify-next-hunk)
+nmap [h <Plug>(signify-prev-hunk)
+" 显示当前文件的 hunks 概要（可在状态栏调用）
+function! GitStatus()
+  let [a,m,r] = sy#repo#get_stats()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+" 自定义图标（默认也很好看，可根据喜好调整）
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '-'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+" 保持变更同步
+augroup signify_refresh
+  autocmd!
+  autocmd BufWritePost * :SignifyRefresh
+augroup END
+
+" fugitive & Flog 配置
+" 启用 flog 插件图谱命令（默认已有 :Flog）
+nnoremap <Leader>gl :Flog<CR>
+nnoremap <Leader>gs :G<CR>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gp :Gpush<CR>
+nnoremap <Leader>gf :Gfetch<CR>
+nnoremap <Leader>gb :Gblame<CR>
+" 打开 Flog 图谱时限制最多加载最近 100 次提交，加快加载速度
+command! -nargs=* GL Flog -limit=100 <args>
+" 用 TAB 折叠提交详情（在 flog buffer 内）
+autocmd FileType flog nnoremap <buffer> <Tab> <Plug>(flog-toggle-fold)
+" 使用 Gdiff 查看提交差异（需要 Fugitive）
+autocmd FileType flog nnoremap <buffer> <CR> <Plug>(flog-open-preview)
+" 打开 flog 时自动聚焦到光标处最近的一次提交
+let g:flog_default_arguments = ['--date=short', '--decorate', '--all']
+" 美化 Flog 显示（可选）
+let g:flog_enable_fold_markers = 1
+" Fugitive 状态显示（airline扩展）
+let g:airline#extensions#branch#enabled = 1
+
+" vim.battery 
+" 启用 airline 的 battery 扩展
+"let g:airline#extensions#battery#enabled = 1
+" battery 图标风格：ascii | unicode | bar | nerd
+"let g:battery#display_mode = 'nerd'
+" battery 更新频率（单位：秒）
+"let g:battery#update_interval = 60
+" 对于 Linux，确保正确设置电池路径（可用 ls /sys/class/power_supply 查看）
+" 例如某些系统使用 BAT1、BATC 等
+"let g:battery#battery_path = '/sys/class/power_supply/BAT0'
+" 使用 airline 自定义格式
+"let g:airline_section_z = '%3p%% ☰ %l:%c | Batt: %{battery#status()}'
+" ============================================================================
+" battery.vim (https://github.com/lambdalisue/vim-battery) 配置
+" ============================================================================
+" 让 battery.vim 在 statusline 中自动更新
+"let g:battery#update_statusline = 1
+" 让 battery.vim 在 tabline 中自动更新（如果你也用 tabline）
+"let g:battery#update_tabline = 1
+" 选择显示模式（可选）：
+" 'text'（默认）  → e.g. "82%"
+" 'bar'           → ███████--- 82%
+" 'icon'          → 🔋 82%
+"let g:battery#display_mode = 'bar'
+"let g:battery#display_mode = 'icon'
+"let g:battery#display_mode = 'text'
+
 
 finish
-
