@@ -14,8 +14,12 @@ set list lcs=tab:\|\       " 可见化制表符（示例：tab 用 '|' 表示）
 set signcolumn=yes          " 永远显示符号列（用于 vim-signify 插件）
 set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
-set mouse=a                 " 启用鼠标
 set backspace=2             " 退格键删除
+set mouse=a                 " 启用鼠标
+" 防止光标抖动
+set scrolloff=3
+set nocursorline
+set lazyredraw
 
 
 " 搜索设置（大小写智能感知）
@@ -47,27 +51,27 @@ set background=dark       " 默认背景（自动切换在后面设置）
 set viewdir=~/.vim/.view   " 保存视图信息（折叠/光标等）
 set foldenable            " 启用折叠
 augroup SetFoldingByFiletype
-  autocmd!
-  nnoremap <space> za           " 空格切换折叠
-  autocmd FileType go setlocal foldmethod=syntax
-  autocmd FileType python setlocal foldmethod=indent
-  autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
-  autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif
+    autocmd!
+    nnoremap <space> za           " 空格切换折叠
+    autocmd FileType go setlocal foldmethod=syntax
+    autocmd FileType python setlocal foldmethod=indent
+    autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
+    autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif
 augroup END
 
 " 自定义折叠文本
 set foldtext=CustomFoldText()
 function! CustomFoldText()
-  let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
-  let end = substitute(getline(v:foldend), '\t', '    ', 'g')
-  let end_no_indent = substitute(end, '^\s*', '', '')
-  let folded = start . ' ... ' . end_no_indent
-  let count = v:foldend - v:foldstart + 1
-  let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
-  let width = &textwidth > 0 ? &textwidth : 80
-  let spacing = width - strwidth(folded) - strwidth(info)
-  let pad = repeat(' ', spacing > 0 ? spacing : 1)
-  return folded . pad . info
+    let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
+    let end = substitute(getline(v:foldend), '\t', '    ', 'g')
+    let end_no_indent = substitute(end, '^\s*', '', '')
+    let folded = start . ' ... ' . end_no_indent
+    let count = v:foldend - v:foldstart + 1
+    let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
+    let width = &textwidth > 0 ? &textwidth : 80
+    let spacing = width - strwidth(folded) - strwidth(info)
+    let pad = repeat(' ', spacing > 0 ? spacing : 1)
+    return folded . pad . info
 endfunction
 
 " ========================================================================
@@ -77,7 +81,7 @@ endfunction
 set backup
 set backupdir=~/.vim/.backup//
 if !isdirectory(expand(&backupdir))
-  call mkdir(expand(&backupdir), 'p')
+    call mkdir(expand(&backupdir), 'p')
 endif
 set backupext=.bak
 
@@ -85,21 +89,21 @@ set backupext=.bak
 set swapfile
 set directory=~/.vim/.swapfile//
 if !isdirectory(expand(&directory))
-  call mkdir(expand(&directory), 'p')
+    call mkdir(expand(&directory), 'p')
 endif
 
 " 持久化撤销
 set undofile
 set undodir=~/.vim/.undofile//
 if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), 'p')
+    call mkdir(expand(&undodir), 'p')
 endif
 
 " 自动恢复上次编辑位置
 autocmd! BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-  \   exe "normal! g'\"" |
-  \ endif
+            \ if line("'\"") > 1 && line("'\"") <= line("$") |
+            \   exe "normal! g'\"" |
+            \ endif
 
 " ========================================================================
 " 缩进设置
@@ -120,9 +124,9 @@ syntax on                  " 启用语法高亮
 " ========================================================================
 let hour = strftime("%H")
 if hour >= 7 && hour < 19
-  set background=light
+    set background=light
 else
-  set background=dark
+    set background=dark
 endif
 
 " ========================================================================
@@ -140,52 +144,52 @@ autocmd FileType python,go nnoremap <buffer> <F5>  :call RunCode()<CR>
 autocmd FileType python,go nnoremap <buffer> <C-F5>:call DeBugCode()<CR>
 
 function! RunCode()
-  update
-  if &filetype ==# 'python'
-    :belowright terminal python %
-  elseif &filetype ==# 'go'
-    :belowright terminal go run .
-  endif
+    update
+    if &filetype ==# 'python'
+        :belowright terminal python %
+    elseif &filetype ==# 'go'
+        :belowright terminal go run .
+    endif
 endfunction
 
 function! DeBugCode()
-  if &filetype ==# 'python'
-    :!python %
-  elseif &filetype ==# 'go'
-    :!go build .
-  endif
+    if &filetype ==# 'python'
+        :!python %
+    elseif &filetype ==# 'go'
+        :!go build .
+    endif
 endfunction
 
 " 注释当前行（仅 Go 示例，支持多种语言）
 if has('win32') || has('win64')
-  autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
+    autocmd FileType go noremap <buffer> <C-/> :call CommentCurrentLine()<CR>
 else
-  autocmd FileType go noremap <buffer> <C-_> :call CommentCurrentLine()<CR>
+    autocmd FileType go noremap <buffer> <C-_> :call CommentCurrentLine()<CR>
 endif
 function! CommentCurrentLine()
-  let s:map = {
-        \ 'go': '//',
-        \ 'c': '//',
-        \ 'cpp': '//',
-        \ 'java': '//',
-        \ 'python': '#',
-        \ 'sh': '#',
-        \ 'bash': '#',
-        \ 'lua': '--',
-        \ }
-  let ft = &filetype
-  let prefix = get(s:map, ft, '')
-  if empty(prefix)
-    echo "Unsupported filetype: " . ft
-    return
-  endif
-  let line = getline('.')
-  if line =~ '^\s*' . escape(prefix, '#') 
-    let line = substitute(line, '^\(\s*\)' . escape(prefix, '#') . '\s*', '\1', '')
-  else
-    let line = substitute(line, '^\s*', '\0' . prefix . ' ', '')
-  endif
-  call setline('.', line)
+    let s:map = {
+                \ 'go': '//',
+                \ 'c': '//',
+                \ 'cpp': '//',
+                \ 'java': '//',
+                \ 'python': '#',
+                \ 'sh': '#',
+                \ 'bash': '#',
+                \ 'lua': '--',
+                \ }
+    let ft = &filetype
+    let prefix = get(s:map, ft, '')
+    if empty(prefix)
+        echo "Unsupported filetype: " . ft
+        return
+    endif
+    let line = getline('.')
+    if line =~ '^\s*' . escape(prefix, '#') 
+        let line = substitute(line, '^\(\s*\)' . escape(prefix, '#') . '\s*', '\1', '')
+    else
+        let line = substitute(line, '^\s*', '\0' . prefix . ' ', '')
+    endif
+    call setline('.', line)
 endfunction
 
 " ========================================================================
@@ -194,15 +198,15 @@ endfunction
 let g:flag_git = 0
 let g:flag_install = 0
 if filereadable(expand('~/.vim/vimfiles/flag/flag_install'))
-  let g:flag_install = 1
+    let g:flag_install = 1
 endif
 
 function! InstallPlugins()
-  source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
+    source ~/.vim/vimfiles/vimscript/InstallPlugins.vim
 endfunction
 
 if g:flag_install == 0
-  finish
+    finish
 endif
 
 " ========================================================================
@@ -212,25 +216,25 @@ endif
 " used Windows: Windows 11, 10
 
 " colorscheme color
- set t_Co=256
+set t_Co=256
 if has('termguicolors')
-  set termguicolors
+    set termguicolors
 endif
 if has('win32') || has('win64')
     set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT,Consolas,h12:b:cANSI:qDRAFT
-  set packpath+=~/.vim/vimfiles
-  if !isdirectory(expand('$VIM/vimfiles/flag'))
-    call mkdir(expand('$VIM/vimfiles/flag'), 'p')
-  endif
-  colorscheme gruvbox       " Windows 下默认主题
-  if has('gui_running')
-    autocmd GUIEnter * simalt ~x
-  endif
+    set packpath+=~/.vim/vimfiles
+    if !isdirectory(expand('$VIM/vimfiles/flag'))
+        call mkdir(expand('$VIM/vimfiles/flag'), 'p')
+    endif
+    colorscheme gruvbox       " Windows 下默认主题
+    if has('gui_running')
+        autocmd GUIEnter * simalt ~x
+    endif
 elseif has('unix')
-  set packpath+=~/.vim/vimfiles
-  colorscheme gruvbox       " Unix 下默认主题
+    set packpath+=~/.vim/vimfiles
+    colorscheme gruvbox       " Unix 下默认主题
 else
-  echo "Unrecognized system"
+    echo "Unrecognized system"
 endif
 
 " ========================================================================
@@ -238,27 +242,27 @@ endif
 " ========================================================================
 " LSP 缓冲区初始化时映射常用命令
 function! s:on_lsp_buffer_enabled() abort
-  setlocal omnifunc=lsp#complete
-  setlocal signcolumn=yes
-  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-  nnoremap <buffer> gd <plug>(lsp-definition)
-  nnoremap <buffer> gs <plug>(lsp-document-symbol-search)
-  nnoremap <buffer> gr <plug>(lsp-references)
-  nnoremap <buffer> gi <plug>(lsp-implementation)
-  nnoremap <buffer> gt <plug>(lsp-type-definition)
-  nnoremap <buffer> <leader>rn <plug>(lsp-rename)
-  nnoremap <buffer> [g <plug>(lsp-previous-diagnostic)
-  nnoremap <buffer> ]g <plug>(lsp-next-diagnostic)
-  nnoremap <buffer> K <plug>(lsp-hover)
-  nnoremap <buffer> <expr> <C-f> lsp#scroll(+4)
-  nnoremap <buffer> <expr> <C-d> lsp#scroll(-4)
-  let g:lsp_format_sync_timeout = 1000
-  autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-  autocmd BufWritePre *.go :GoImports
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nnoremap <buffer> gd <plug>(lsp-definition)
+    nnoremap <buffer> gs <plug>(lsp-document-symbol-search)
+    nnoremap <buffer> gr <plug>(lsp-references)
+    nnoremap <buffer> gi <plug>(lsp-implementation)
+    nnoremap <buffer> gt <plug>(lsp-type-definition)
+    nnoremap <buffer> <leader>rn <plug>(lsp-rename)
+    nnoremap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nnoremap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nnoremap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr> <C-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr> <C-d> lsp#scroll(-4)
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    autocmd BufWritePre *.go :GoImports
 endfunction
 augroup lsp_setup
-  autocmd!
-  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+    autocmd!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
 " 配置各语言的 LSP 服务器
@@ -272,29 +276,29 @@ augroup END
 "CWL
 "Docker
 if executable('docker-langserver')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'docker-langserver',
-    \ 'cmd': {server_info->['docker-langserver', '--stdio']},
-    \ 'allowlist': ['dockerfile']
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'docker-langserver',
+                \ 'cmd': {server_info->['docker-langserver', '--stdio']},
+                \ 'allowlist': ['dockerfile']
+                \ })
 endif
 
 "Erlang
 "Flow - Javascript
 "Go
 if executable('gopls')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'gopls',
-    \ 'cmd': ['gopls', '-remote=auto'],
-    \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl']
-    \ })
-  let g:go_def_mode = 'gopls'
-  let g:go_info_mode = 'gopls'
-  let g:go_fmt_command = "goimports"   " 保存时自动格式化并排序 import
-  let g:go_gopls_enabled = 1
-  let g:go_code_completion_enabled = 1
-  let g:go_doc_keywordprg_enabled = 0
-  autocmd BufWritePre *.go :silent! GoImports
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'gopls',
+                \ 'cmd': ['gopls', '-remote=auto'],
+                \ 'allowlist': ['go', 'gomod', 'gohtmltmpl', 'gotexttmpl']
+                \ })
+    let g:go_def_mode = 'gopls'
+    let g:go_info_mode = 'gopls'
+    let g:go_fmt_command = "goimports"   " 保存时自动格式化并排序 import
+    let g:go_gopls_enabled = 1
+    let g:go_code_completion_enabled = 1
+    let g:go_doc_keywordprg_enabled = 0
+    autocmd BufWritePre *.go :silent! GoImports
 endif
 
 "Godot
@@ -303,35 +307,35 @@ endif
 "Haskell
 "HTML
 if executable('html-languageserver')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'html-ls',
-    \ 'cmd': ['html-languageserver', '--stdio'],
-    \ 'allowlist': ['html']
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'html-ls',
+                \ 'cmd': ['html-languageserver', '--stdio'],
+                \ 'allowlist': ['html']
+                \ })
 endif
 
 "Java
 if executable('jdtls')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'Eclipse JDT LS',
-    \ 'cmd': ['jdtls'],
-    \ 'allowlist': ['java']
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'Eclipse JDT LS',
+                \ 'cmd': ['jdtls'],
+                \ 'allowlist': ['java']
+                \ })
 endif
 
 "JavaScript and TypeScript
 if executable('typescript-language-server')
-  augroup LspJS_TS
-    autocmd!
-    autocmd User lsp_setup call lsp#register_server({
-      \ 'name': 'typescript-language-server',
-      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-      \ 'root_uri': {server_info->lsp#utils#path_to_uri(
-      \     lsp#utils#find_nearest_parent_file_directory(
-      \         lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-      \ 'allowlist': ['javascript', 'javascript.jsx', 'typescript', 'typescript.tsx', 'typescriptreact'],
-      \ })
-  augroup END
+    augroup LspJS_TS
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'typescript-language-server',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+                    \ 'root_uri': {server_info->lsp#utils#path_to_uri(
+                    \     lsp#utils#find_nearest_parent_file_directory(
+                    \         lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+                    \ 'allowlist': ['javascript', 'javascript.jsx', 'typescript', 'typescript.tsx', 'typescriptreact'],
+                    \ })
+    augroup END
 endif
 autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspCodeActionSync source.organizeImports')
 autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspDocumentFormatSync')
@@ -342,29 +346,29 @@ autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspDocumentFormatSync')
 "Perl
 "PHP
 if executable('intelephense')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'intelephense',
-    \ 'cmd': ['intelephense', '--stdio'],
-    \ 'allowlist': ['php'],
-    \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
-    \ 'workspace_config': {
-    \   'intelephense': {
-    \     'files': {'maxSize': 1000000, 'associations': ['*.php','*.phtml'], 'exclude': []},
-    \     'completion': {'insertUseDeclaration': v:true, 'triggerParameterHints': v:true},
-    \     'format': {'enable': v:true},
-    \   }
-    \ }
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'intelephense',
+                \ 'cmd': ['intelephense', '--stdio'],
+                \ 'allowlist': ['php'],
+                \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
+                \ 'workspace_config': {
+                \   'intelephense': {
+                \     'files': {'maxSize': 1000000, 'associations': ['*.php','*.phtml'], 'exclude': []},
+                \     'completion': {'insertUseDeclaration': v:true, 'triggerParameterHints': v:true},
+                \     'format': {'enable': v:true},
+                \   }
+                \ }
+                \ })
 endif
 
 "Python
 if executable('pyls') " or 'pylsp'
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls',
-    \ 'cmd': ['pyls'],
-    \ 'allowlist': ['python'],
-    \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'pyls',
+                \ 'cmd': ['pyls'],
+                \ 'allowlist': ['python'],
+                \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}}}}
+                \ })
 endif
 
 "Ruby
@@ -375,14 +379,14 @@ endif
 "TOML
 
 if executable('vim-language-server')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'vimls',
-    \ 'cmd': ['vim-language-server', '--stdio'],
-    \ 'allowlist': ['vim'],
-    \ 'initialization_options': {
-    \   'vimruntime': $VIMRUNTIME,
-    \   'runtimepath': &rtp,
-    \ }})
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'vimls',
+                \ 'cmd': ['vim-language-server', '--stdio'],
+                \ 'allowlist': ['vim'],
+                \ 'initialization_options': {
+                \   'vimruntime': $VIMRUNTIME,
+                \   'runtimepath': &rtp,
+                \ }})
 endif
 
 "OCaml+Reason
@@ -390,14 +394,14 @@ endif
 "Vim
 "YAML
 if executable('yaml-language-server')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'yamlls',
-    \ 'cmd': ['yaml-language-server', '--stdio'],
-    \ 'allowlist': ['yaml', 'yaml.ansible'],
-    \ 'workspace_config': {
-    \   'yaml': {'validate': v:true, 'hover': v:true, 'completion': v:true}
-    \ }
-    \ })
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'yamlls',
+                \ 'cmd': ['yaml-language-server', '--stdio'],
+                \ 'allowlist': ['yaml', 'yaml.ansible'],
+                \ 'workspace_config': {
+                \   'yaml': {'validate': v:true, 'hover': v:true, 'completion': v:true}
+                \ }
+                \ })
 endif
 
 " === 启用 LSP 自动补全（支持 JavaScript / TypeScript / Go / Python 等） ===
@@ -412,34 +416,34 @@ let g:asyncomplete_remove_duplicates = 1
 " LSP 补全源
 " 延迟注册所有补全源，确保 asyncomplete 插件已加载
 augroup AsyncompleteRegister
-  autocmd!
-  autocmd VimEnter * call s:asyncomplete_register_sources()
+    autocmd!
+    autocmd VimEnter * call s:asyncomplete_register_sources()
 augroup END
 
 function! s:asyncomplete_register_sources() abort
-  if exists('*asyncomplete#register_source')
-    " 注册 LSP 补全源
-    if exists('*asyncomplete#sources#lsp#get_source_options')
-      call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({
-      \ 'name': 'lsp',
-      \ 'whitelist': ['go', 'python', 'javascript', 'typescript', 'json', 'html', 'css'],
-      \ }))
+    if exists('*asyncomplete#register_source')
+        " 注册 LSP 补全源
+        if exists('*asyncomplete#sources#lsp#get_source_options')
+            call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({
+                        \ 'name': 'lsp',
+                        \ 'whitelist': ['go', 'python', 'javascript', 'typescript', 'json', 'html', 'css'],
+                        \ }))
+        endif
+        " 注册 Buffer 补全源
+        if exists('*asyncomplete#sources#buffer#get_source_options')
+            call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+                        \ 'name': 'buffer',
+                        \ 'whitelist': ['*'],
+                        \ }))
+        endif
+        " 注册文件路径补全源
+        if exists('*asyncomplete#sources#file#get_source_options')
+            call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+                        \ 'name': 'file',
+                        \ 'whitelist': ['*'],
+                        \ }))
+        endif
     endif
-    " 注册 Buffer 补全源
-    if exists('*asyncomplete#sources#buffer#get_source_options')
-      call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-      \ 'name': 'buffer',
-      \ 'whitelist': ['*'],
-      \ }))
-    endif
-    " 注册文件路径补全源
-    if exists('*asyncomplete#sources#file#get_source_options')
-      call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-      \ 'name': 'file',
-      \ 'whitelist': ['*'],
-      \ }))
-    endif
-  endif
 endfunction
 " 补全快捷键：Tab 在弹出菜单时可上下选择
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -457,9 +461,9 @@ function! s:check_back_space() abort
 endfunction
 
 inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ asyncomplete#force_refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " allow modifying the completeopt variable, or it will
 " be overridden all the time
@@ -470,18 +474,18 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " rainbow 括号高亮
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-\ 'ctermfgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta'],
-\ 'operators': '_,_',
-\ 'separately': {
-\   '*': {},
-\   'go': {
-\     'parentheses': ['start=/(/ end=/)/ fold', 'containedin=goFunction'],
-\     'braces': ['start=/{/ end=/}/ fold'],
-\     'brackets': ['start=/\[/ end=/\]/ fold'],
-\   }
-\ }
-\}
+            \ 'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+            \ 'ctermfgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta'],
+            \ 'operators': '_,_',
+            \ 'separately': {
+            \   '*': {},
+            \   'go': {
+            \     'parentheses': ['start=/(/ end=/)/ fold', 'containedin=goFunction'],
+            \     'braces': ['start=/{/ end=/}/ fold'],
+            \     'brackets': ['start=/\[/ end=/\]/ fold'],
+            \   }
+            \ }
+            \}
 
 " Vim-airline 状态栏与图标
 let g:airline#extensions#tabline#enabled = 1
@@ -518,17 +522,17 @@ let g:airline_section_z = '%3p%% ☰ %l:%c %{get(g:, "startup_time_display", " "
 
 " 显示启动时间
 function! UpdateAirlineWithStartupTime() abort
-  let l:elapsed = reltimefloat(reltime(g:start_time)) * 1000
-  let g:startup_time_display = '🚀 ' . printf('%.2f ms', l:elapsed)
-  call timer_start(10, { -> execute('redrawstatus!') })
+    let l:elapsed = reltimefloat(reltime(g:start_time)) * 1000
+    let g:startup_time_display = '🚀 ' . printf('%.2f ms', l:elapsed)
+    call timer_start(10, { -> execute('redrawstatus!') })
 
-  " 自动清除
-  call timer_start(10000, { -> RemoveStartupTime() })
+    " 自动清除
+    call timer_start(10000, { -> RemoveStartupTime() })
 endfunction
 
 function! RemoveStartupTime() abort
-  let g:startup_time_display = ''
-  call timer_start(10, { -> execute('redrawstatus!') })
+    let g:startup_time_display = ''
+    call timer_start(10, { -> execute('redrawstatus!') })
 endfunction
 
 autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
@@ -553,18 +557,18 @@ autocmd FileType fern nnoremap <buffer> <S-Tab> <Plug>(fern-action-collapse)
 " 在 Fern buffer 中定义自定义快捷键
 autocmd FileType fern call s:fern_my_keys()
 function! s:fern_my_keys() abort
-  " 使用 <Enter> 打开文件
-  nmap <buffer> <CR> <Plug>(fern-action-open:edit)
-  " 使用 t 在新 tab 打开
-  nmap <buffer> t     <Plug>(fern-action-open:tabedit)
-  " 使用 v 垂直打开
-  nmap <buffer> v     <Plug>(fern-action-open:vsplit)
-  " 使用 s 水平打开
-  nmap <buffer> s     <Plug>(fern-action-open:split)
-  " 使用 u 返回上层目录
-  nmap <buffer> u     <Plug>(fern-action-leave)
-  " 使用 q 退出 fern
-  nmap <buffer> q     <Plug>(fern-action-leave)
+    " 使用 <Enter> 打开文件
+    nmap <buffer> <CR> <Plug>(fern-action-open:edit)
+    " 使用 t 在新 tab 打开
+    nmap <buffer> t     <Plug>(fern-action-open:tabedit)
+    " 使用 v 垂直打开
+    nmap <buffer> v     <Plug>(fern-action-open:vsplit)
+    " 使用 s 水平打开
+    nmap <buffer> s     <Plug>(fern-action-open:split)
+    " 使用 u 返回上层目录
+    nmap <buffer> u     <Plug>(fern-action-leave)
+    " 使用 q 退出 fern
+    nmap <buffer> q     <Plug>(fern-action-leave)
 endfunction
 
 " vim-signify
@@ -576,8 +580,8 @@ nmap ]h <Plug>(signify-next-hunk)
 nmap [h <Plug>(signify-prev-hunk)
 " 显示当前文件的 hunks 概要（可在状态栏调用）
 function! GitStatus()
-  let [a,m,r] = sy#repo#get_stats()
-  return printf('+%d ~%d -%d', a, m, r)
+    let [a,m,r] = sy#repo#get_stats()
+    return printf('+%d ~%d -%d', a, m, r)
 endfunction
 " 自定义图标（默认也很好看，可根据喜好调整）
 let g:signify_sign_add               = '+'
@@ -586,8 +590,8 @@ let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '~'
 " 保持变更同步
 augroup signify_refresh
-  autocmd!
-  autocmd BufWritePost * :SignifyRefresh
+    autocmd!
+    autocmd BufWritePost * :SignifyRefresh
 augroup END
 
 " fugitive & Flog 配置
@@ -637,6 +641,7 @@ let g:airline#extensions#branch#enabled = 1
 "let g:battery#display_mode = 'bar'
 "let g:battery#display_mode = 'icon'
 "let g:battery#display_mode = 'text'
+
 
 
 finish
