@@ -21,6 +21,13 @@ set scrolloff=3
 set nocursorline
 set lazyredraw
 
+" 防止命令行光标抖动
+autocmd VimEnter * if &columns % 2 != 0 | let &columns = &columns + 1 | endif
+"autocmd VimEnter * if argc() == 0 | execute 'belowright terminal' | endif
+"nnoremap <leader>tt :botright terminal<CR>
+
+
+
 
 " 搜索设置（大小写智能感知）
 set noignorecase              " 搜索区分大小写, 区分大小写用ignorecase
