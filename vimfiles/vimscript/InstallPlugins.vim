@@ -27,6 +27,7 @@
 "   - vim-battery：电量显示
 "   - vim-signify：Git 差异标记
 "   - vim-startuptime：启动时间分析
+"   - fzf.vim: 模糊查询
 "
 " ============================================================================
 " 插件 Git 地址列表
@@ -50,7 +51,9 @@ let plugins = [
 \ 'https://github.com/prabirshrestha/asyncomplete-lsp.vim.git',
 \ 'https://github.com/prabirshrestha/asyncomplete-buffer.vim.git',
 \ 'https://github.com/prabirshrestha/asyncomplete-file.vim.git',
-\ 'https://github.com/dstein64/vim-startuptime.git'
+\ 'https://github.com/dstein64/vim-startuptime.git',
+\ 'https://github.com/junegunn/fzf.vim.git',
+\ 'https://github.com/junegunn/fzf.git',
 \ ]
 
 "if has('win32') || has('win64')

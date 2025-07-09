@@ -138,8 +138,14 @@ endif
 " ========================================================================
 " 键盘映射与快捷键
 " ========================================================================
+
 " 打开 Fern 左侧侧边栏
-nnoremap <Leader>e :Fern . -drawer -toggle -reveal=% -width=30<CR>
+"nnoremap <Leader>e :Fern . -drawer -toggle -width=30 -reveal=%<CR>
+
+
+" 使用 Tab 键在 fern 中快速跳转
+autocmd FileType fern nnoremap <buffer> <Tab> <Plug>(fern-action-expand)
+autocmd FileType fern nnoremap <buffer> <S-Tab> <Plug>(fern-action-collapse)
 
 " airline bufers 
 nnoremap [b :bprevious<CR>
@@ -170,6 +176,7 @@ nnoremap <S-Tab> :tabprevious<CR>
 let mapleader = "\\"
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
+nnoremap <Leader>bd :bp \| bd #<CR>
 
 " 切换主题（F4）
 nnoremap <silent> <F4> :execute (&background ==# 'dark' ? 'set background=light' : 'set background=dark')<CR>
@@ -577,35 +584,48 @@ autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
 
 
 " fern 基础设置
-let g:fern#renderer = "nerdfont"
-let g:fern#default_hidden = 1           " 默认显示隐藏文件
-let g:fern#disable_default_mappings = 0 " 自定义快捷键更自由, 但是没有键盘映射了
-" 额外增强：Git 状态显示
-let g:fern_git_status#disable_ignored = 1
-let g:fern_git_status#disable_untracked = 0
-" 图标美化（可选）：不显示括号，只显示图标
-let g:fern#renderer#nerdfont#indent_markers = 0
-let g:fern#renderer#nerdfont#root_symbol = ' ' " root 文件夹图标
-let g:fern#renderer#nerdfont#leaf_symbol = ' ' " 文件图标
-" 使用 Tab 键在 fern 中快速跳转
-autocmd FileType fern nnoremap <buffer> <Tab> <Plug>(fern-action-expand)
-autocmd FileType fern nnoremap <buffer> <S-Tab> <Plug>(fern-action-collapse)
-" 在 Fern buffer 中定义自定义快捷键
-autocmd FileType fern call s:fern_my_keys()
-function! s:fern_my_keys() abort
-    " 使用 <Enter> 打开文件
-    nmap <buffer> <CR> <Plug>(fern-action-open:edit)
-    " 使用 t 在新 tab 打开
-    nmap <buffer> t     <Plug>(fern-action-open:tabedit)
-    " 使用 v 垂直打开
-    nmap <buffer> v     <Plug>(fern-action-open:vsplit)
-    " 使用 s 水平打开
-    nmap <buffer> s     <Plug>(fern-action-open:split)
-    " 使用 u 返回上层目录
-    nmap <buffer> u     <Plug>(fern-action-leave)
-    " 使用 q 退出 fern
-    nmap <buffer> q     <Plug>(fern-action-leave)
+":Fern {url} -drawer [-opener={opener}] [-reveal={reveal}] [-stay] [-wait] [-width=30] [-keep] [-toggle]
+nnoremap <Leader>e :Fern . -drawer -reveal=reveal -stay -width=30 -keep -toggle<CR>
+" 给 fern 单独设置一套快捷键
+function! s:fern_custom_mappings() abort
+    " 右方向键：展开文件夹或打开文件（智能行为）
+    nnoremap <buffer> <Right> <Plug>(fern-action-expand)
+    " 左方向键：折叠文件夹
+    nnoremap <buffer> <Left> <Plug>(fern-action-collapse)
+    " 右侧打开
+    nmap <buffer> <CR>    <Plug>(fern-action-open:select)
+    " 刷新
+    nnoremap <buffer> R     <Plug>(fern-action-reload)
 endfunction
+
+augroup FernCustomKeymaps
+  autocmd!
+  autocmd FileType fern call s:fern_custom_mappings()
+augroup END
+
+" 设置默认打开节点方式为select
+function! s:init_fern() abort
+  " Use 'select' instead of 'edit' for default 'open' action
+  nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
+endfunction
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
+
+let g:fern#renderer#default#leading = "│"
+let g:fern#renderer#default#root_symbol = "┬ "
+let g:fern#renderer#default#leaf_symbol = "├─ "
+let g:fern#renderer#default#collapsed_symbol = "├─ "
+let g:fern#renderer#default#expanded_symbol = "├┬ "
+
+"let g:fern#mark_symbol                       = '●'
+"let g:fern#renderer#default#collapsed_symbol = '▷ '
+"let g:fern#renderer#default#expanded_symbol  = '▼ '
+"let g:fern#renderer#default#leading          = ' '
+"let g:fern#renderer#default#leaf_symbol      = ' '
+"let g:fern#renderer#default#root_symbol      = '~ '
+
 
 " vim-signify
 let g:signify_vcs_list = ['git'] " 仅使用 git，可根据需要添加其他
@@ -651,33 +671,60 @@ let g:flog_enable_fold_markers = 1
 " Fugitive 状态显示（airline扩展）
 let g:airline#extensions#branch#enabled = 1
 
-" vim.battery 
-" 启用 airline 的 battery 扩展
-"let g:airline#extensions#battery#enabled = 1
-" battery 图标风格：ascii | unicode | bar | nerd
-"let g:battery#display_mode = 'nerd'
-" battery 更新频率（单位：秒）
-"let g:battery#update_interval = 60
-" 对于 Linux，确保正确设置电池路径（可用 ls /sys/class/power_supply 查看）
-" 例如某些系统使用 BAT1、BATC 等
-"let g:battery#battery_path = '/sys/class/power_supply/BAT0'
-" 使用 airline 自定义格式
-"let g:airline_section_z = '%3p%% ☰ %l:%c | Batt: %{battery#status()}'
-" ============================================================================
-" battery.vim (https://github.com/lambdalisue/vim-battery) 配置
-" ============================================================================
-" 让 battery.vim 在 statusline 中自动更新
-"let g:battery#update_statusline = 1
-" 让 battery.vim 在 tabline 中自动更新（如果你也用 tabline）
-"let g:battery#update_tabline = 1
-" 选择显示模式（可选）：
-" 'text'（默认）  → e.g. "82%"
-" 'bar'           → ███████--- 82%
-" 'icon'          → 🔋 82%
-"let g:battery#display_mode = 'bar'
-"let g:battery#display_mode = 'icon'
-"let g:battery#display_mode = 'text'
+" fzf.vim 配置
+" 初始化fzf.vim
+let g:fzf_vim = {}
+" 必须启用这些基础功能
+set rtp+=~/.vim/vimfiles/pack/plugins/start/fzf
+" 窗口
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_layout = { 'down': '~30%' }
+" - Window using a Vim command
+"let g:fzf_layout = { 'window': 'enew' }
+"let g:fzf_layout = { 'window': '-tabnew' }
+"let g:fzf_layout = { 'window': '10new' }
 
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+"let g:fzf_colors =
+"\ { 'fg':      ['fg', 'Normal'],
+"  \ 'bg':      ['bg', 'Normal'],
+"  \ 'query':   ['fg', 'Normal'],
+"  \ 'hl':      ['fg', 'Comment'],
+"  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"  \ 'hl+':     ['fg', 'Statement'],
+"  \ 'info':    ['fg', 'PreProc'],
+"  \ 'border':  ['fg', 'Ignore'],
+"  \ 'prompt':  ['fg', 'Conditional'],
+"  \ 'pointer': ['fg', 'Exception'],
+"  \ 'marker':  ['fg', 'Keyword'],
+"  \ 'spinner': ['fg', 'Label'],
+"  \ 'header':  ['fg', 'Comment'] }
 
+" 快捷键绑定
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+" 文件模糊搜索
+nnoremap <leader>ff :Files<CR>
+" Git 文件
+nnoremap <leader>fg :GFiles<CR>
+" 搜索内容（使用 rg）
+nnoremap <leader>fa :Rg<CR>
+" 打开 buffer
+nnoremap <leader>fb :Buffers<CR>
+" 书签
+nnoremap <leader>fm :Marks<CR>
+" 历史
+nnoremap <leader>fh :History<CR>
+" 避免和 airline 冲突的映射
+let g:fzf_buffers_jump = 1
+let $FZF_DEFAULT_OPTS = '--bind=ctrl-j:preview-down,ctrl-k:preview-up'
 
 finish
