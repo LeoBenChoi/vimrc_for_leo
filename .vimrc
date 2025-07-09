@@ -16,6 +16,7 @@ set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
 set backspace=2             " 退格键删除
 set mouse=a                 " 启用鼠标
+
 " 防止光标抖动
 set scrolloff=3
 set nocursorline
@@ -25,9 +26,6 @@ set lazyredraw
 autocmd VimEnter * if &columns % 2 != 0 | let &columns = &columns + 1 | endif
 "autocmd VimEnter * if argc() == 0 | execute 'belowright terminal' | endif
 "nnoremap <leader>tt :botright terminal<CR>
-
-
-
 
 " 搜索设置（大小写智能感知）
 set noignorecase              " 搜索区分大小写, 区分大小写用ignorecase
@@ -51,6 +49,7 @@ set guifont=Consolas:h12   " GUI 模式下字体（Windows 环境示例）
 "set ambiwidth=double      " 宽字符占两个位置
 set background=dark       " 默认背景（自动切换在后面设置）
 " 注意：自动背景设置逻辑见下方
+
 
 " ========================================================================
 " 折叠配置
@@ -139,6 +138,35 @@ endif
 " ========================================================================
 " 键盘映射与快捷键
 " ========================================================================
+" 打开 Fern 左侧侧边栏
+nnoremap <Leader>e :Fern . -drawer -toggle -reveal=% -width=30<CR>
+
+" airline bufers 
+nnoremap [b :bprevious<CR>
+nnoremap ]b :bnext<CR>
+
+" tab 功能
+" 新建 tab
+nnoremap <Leader>tn :tabnew<CR>
+" 关闭当前 tab
+nnoremap <Leader>tc :tabclose<CR>
+" 切换到下一个 tab
+nnoremap <Leader>tl :tabnext<CR>
+nnoremap <Leader>tj :tabnext<CR>
+" 切换到上一个 tab
+nnoremap <Leader>th :tabprevious<CR>
+nnoremap <Leader>tk :tabprevious<CR>
+" 重载当前 tab（可选：执行 :e）
+nnoremap <Leader>tr :e<CR>
+" 跳转到第 N 个 tab，比如 <Leader>t3
+for i in range(1, 9)
+    execute 'nnoremap <silent> <Leader>t'.i ':.tabnext '.i.'<CR>'
+endfor
+" 使用 <Tab> / <S-Tab> 快速切换 tab 页
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabprevious<CR>
+
+" test <leader>
 let mapleader = "\\"
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
@@ -496,6 +524,7 @@ let g:rainbow_conf = {
 
 " Vim-airline 状态栏与图标
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
@@ -508,6 +537,8 @@ let g:airline_section_z = '%3p%% ☰ %l:%c %{get(g:, "startup_time_display", " "
 " 把 battery 组件插到 section_y 末尾
 "let g:airline_section_y = g:airline_section_y . ' %{battery#component()}'
 "let g:airline_section_z = '%{battery#component()}'
+
+
 
 " Tagbar
 "let g:tagbar_ctags_bin = 'D:rogramPortable/ctags-v6.1.0-clang-x64/ctags.exe'
@@ -549,8 +580,6 @@ autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
 let g:fern#renderer = "nerdfont"
 let g:fern#default_hidden = 1           " 默认显示隐藏文件
 let g:fern#disable_default_mappings = 0 " 自定义快捷键更自由, 但是没有键盘映射了
-" 打开 Fern 的快捷键（<leader>t，类似 NERDTree）
-nnoremap <silent> <leader>t :Fern . -drawer -reveal=% -toggle -width=30<CR>
 " 额外增强：Git 状态显示
 let g:fern_git_status#disable_ignored = 1
 let g:fern_git_status#disable_untracked = 0
