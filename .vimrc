@@ -16,6 +16,7 @@ set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
 set backspace=2             " 退格键删除
 set mouse=a                 " 启用鼠标
+set encoding=utf-8
 
 " 防止光标抖动
 set scrolloff=3
@@ -148,8 +149,10 @@ autocmd FileType fern nnoremap <buffer> <Tab> <Plug>(fern-action-expand)
 autocmd FileType fern nnoremap <buffer> <S-Tab> <Plug>(fern-action-collapse)
 
 " airline bufers 
-nnoremap [b :bprevious<CR>
-nnoremap ]b :bnext<CR>
+nnoremap <Leader>bp :bprevious<CR>
+nnoremap <Leader>bn :bnext<CR>
+nnoremap <Leader>bl :buffers<CR>
+nnoremap <Leader>bc :bp \| bd #<CR>
 
 " tab 功能
 " 新建 tab
@@ -176,7 +179,6 @@ nnoremap <S-Tab> :tabprevious<CR>
 let mapleader = "\\"
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :w<CR>
-nnoremap <Leader>bd :bp \| bd #<CR>
 
 " 切换主题（F4）
 nnoremap <silent> <F4> :execute (&background ==# 'dark' ? 'set background=light' : 'set background=dark')<CR>
@@ -487,6 +489,23 @@ function! s:asyncomplete_register_sources() abort
         endif
     endif
 endfunction
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'gopls',
+                \ 'cmd': ['gopls'],
+                \ 'allowlist': ['go'],
+                \ 'workspace_config': {
+                \   'gopls': {
+                \     'ui.completion.usePlaceholders': v:true,
+                \     'ui.navigation.importShortcut': 'Both'
+                \   }
+                \ }
+                \ })
+endif
+
+" 结构大纲查看：使用 LSP 的 :LspDocumentSymbol
+nnoremap <Leader>o :LspDocumentSymbol<CR>
+
 " 补全快捷键：Tab 在弹出菜单时可上下选择
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -586,38 +605,44 @@ autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
 " fern 基础设置
 ":Fern {url} -drawer [-opener={opener}] [-reveal={reveal}] [-stay] [-wait] [-width=30] [-keep] [-toggle]
 nnoremap <Leader>e :Fern . -drawer -reveal=reveal -stay -width=30 -keep -toggle<CR>
-" 给 fern 单独设置一套快捷键
+let g:fern#renderer = "nerdfont"
+
+" Fern 快捷键配置
 function! s:fern_custom_mappings() abort
     " 右方向键：展开文件夹或打开文件（智能行为）
     nnoremap <buffer> <Right> <Plug>(fern-action-expand)
     " 左方向键：折叠文件夹
     nnoremap <buffer> <Left> <Plug>(fern-action-collapse)
     " 右侧打开
-    nmap <buffer> <CR>    <Plug>(fern-action-open:select)
+    nmap <buffer> <CR> <Plug>(fern-action-open:select)
     " 刷新
-    nnoremap <buffer> R     <Plug>(fern-action-reload)
+    nnoremap <buffer> R <Plug>(fern-action-reload)
 endfunction
-
 augroup FernCustomKeymaps
-  autocmd!
-  autocmd FileType fern call s:fern_custom_mappings()
+    autocmd!
+    autocmd FileType fern call s:fern_custom_mappings()
 augroup END
 
-" 设置默认打开节点方式为select
-function! s:init_fern() abort
-  " Use 'select' instead of 'edit' for default 'open' action
-  nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
-endfunction
-augroup fern-custom
-  autocmd! *
-  autocmd FileType fern call s:init_fern()
-augroup END
+" 禁用显示被 .gitignore 忽略的文件或目录
+let g:fern_git_status#disable_ignored = 1
 
-let g:fern#renderer#default#leading = "│"
-let g:fern#renderer#default#root_symbol = "┬ "
-let g:fern#renderer#default#leaf_symbol = "├─ "
-let g:fern#renderer#default#collapsed_symbol = "├─ "
-let g:fern#renderer#default#expanded_symbol = "├┬ "
+" 禁用显示未跟踪（untracked）的文件
+let g:fern_git_status#disable_untracked = 1
+
+" 禁用显示 Git 子模块的状态
+let g:fern_git_status#disable_submodules = 1
+
+" 禁用显示目录的 Git 状态（即不为目录标记 Git 变化）
+let g:fern_git_status#disable_directories = 1
+
+
+
+" 左侧图标
+"let g:fern#renderer#default#leading = "│"
+"let g:fern#renderer#default#root_symbol = "┬ "
+"let g:fern#renderer#default#leaf_symbol = "├─ "
+"let g:fern#renderer#default#collapsed_symbol = "├─ "
+"let g:fern#renderer#default#expanded_symbol = "├┬ "
 
 "let g:fern#mark_symbol                       = '●'
 "let g:fern#renderer#default#collapsed_symbol = '▷ '
@@ -670,6 +695,7 @@ let g:flog_default_arguments = ['--date=short', '--decorate', '--all']
 let g:flog_enable_fold_markers = 1
 " Fugitive 状态显示（airline扩展）
 let g:airline#extensions#branch#enabled = 1
+
 
 " fzf.vim 配置
 " 初始化fzf.vim
@@ -726,5 +752,67 @@ nnoremap <leader>fh :History<CR>
 " 避免和 airline 冲突的映射
 let g:fzf_buffers_jump = 1
 let $FZF_DEFAULT_OPTS = '--bind=ctrl-j:preview-down,ctrl-k:preview-up'
+
+
+" vista 配置 | 查看类大纲
+" 快捷键：打开/关闭 Vista 侧边栏
+nnoremap <Leader>v :Vista!!<CR>
+
+" 默认使用 LSP （配合 vim-lsp）
+let g:vista_default_executive = 'lsp'
+"let g:vista_default_executive = 'ctags'
+
+" 如果当前 buffer 没有 LSP 支持，则回退到 ctags
+let g:vista_executive_for = {
+      \ 'go': 'ctags',
+      \ 'python': 'lsp',
+      \ 'javascript': 'lsp',
+      \ 'typescript': 'lsp',
+      \ 'vim': 'ctags',
+      \ }
+
+" 设置 Vista 窗口的位置（默认右侧）
+" 配置值	效果说明
+" 'vertical topleft'	左侧打开
+" 'vertical botright'	右侧打开
+" 'topleft'	顶部（水平分屏）
+" 'botright'	底部（水平分屏）
+let g:vista_sidebar_position = 'vertical botright'
+
+" Vista窗口宽度
+let g:vista_sidebar_width = 40
+" 设置 Vista 侧边栏宽度为当前窗口宽度的 30%
+function! SetVistaWidthToPercent()
+    " 保存当前窗口ID
+    let original_win = win_getid()
+    
+    " 获取当前窗口宽度（列数）
+    let current_width = winwidth(0)
+    
+    " 计算 30% 的宽度并取整
+    let new_width = float2nr(current_width * 0.3)
+    
+    " 确保最小宽度为 20（防止计算结果过小）
+   " 确保最小宽度为 20 , 最大宽度为 60
+    let min_width = 20
+    let max_width = 60
+    if new_width > max_width
+        let new_width = max_width
+    else new_width < min_width
+        let new_width = min_width
+    endif
+endfunction
+
+" 仅在打开 Vista 窗口时调用一次设置函数
+autocmd User VistaOpening call SetVistaWidthToPercent()
+
+" 自动跳转到 symbol，选中后关闭 Vista（可选）
+let g:vista_close_on_jump = 1
+
+" 支持 Nerd Fonts 图标（推荐配合 vim-devicons）
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+
+" 打开文件时自动加载 Vista（可选）
+" autocmd VimEnter * Vista
 
 finish
