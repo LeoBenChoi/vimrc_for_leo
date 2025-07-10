@@ -36,8 +36,9 @@ let plugins = [
 \ 'https://github.com/tpope/vim-fugitive.git',
 \ 'https://github.com/mhinz/vim-signify.git',
 \ 'https://github.com/lambdalisue/vim-fern.git',
-\ 'https://github.com/lambdalisue/fern-renderer-nerdfont.vim.git',
-\ 'https://github.com/lambdalisue/fern-git-status.vim.git',
+\ 'https://github.com/lambdalisue/vim-nerdfont.git',
+\ 'https://github.com/lambdalisue/vim-fern-renderer-nerdfont.git',
+\ 'https://github.com/lambdalisue/vim-fern-git-status.git',
 \ 'https://github.com/lambdalisue/nerdfont.vim.git',
 \ 'https://github.com/rbong/vim-flog.git',
 \ 'https://github.com/fatih/vim-go.git',
@@ -54,6 +55,7 @@ let plugins = [
 \ 'https://github.com/dstein64/vim-startuptime.git',
 \ 'https://github.com/junegunn/fzf.vim.git',
 \ 'https://github.com/junegunn/fzf.git',
+\ 'https://github.com/liuchengxu/vista.vim.git'
 \ ]
 
 "if has('win32') || has('win64')
