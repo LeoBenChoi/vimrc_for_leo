@@ -614,7 +614,7 @@ function! s:fern_custom_mappings() abort
     " 左方向键：折叠文件夹
     nnoremap <buffer> <Left> <Plug>(fern-action-collapse)
     " 右侧打开
-    nmap <buffer> <CR> <Plug>(fern-action-open:select)
+    "nmap <buffer> <CR> <Plug>(fern-action-open:select)
     " 刷新
     nnoremap <buffer> R <Plug>(fern-action-reload)
 endfunction
