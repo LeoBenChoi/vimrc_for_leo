@@ -180,7 +180,7 @@ set viewdir=~/.vim/.view   " 保存视图信息（折叠/光标等）
 set foldenable            " 启用折叠
 augroup SetFoldingByFiletype
     autocmd!
-    nnoremap <space> za           " 空格切换折叠
+    " nnoremap <space> za " 切换折叠 写到base里面了
     autocmd FileType go setlocal foldmethod=syntax
     autocmd FileType python setlocal foldmethod=indent
     autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif

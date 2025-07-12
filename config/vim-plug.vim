@@ -50,6 +50,10 @@ Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 文件树
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " 模糊搜索
 Plug 'junegunn/fzf.vim'
 
+" >>>>>>>>> 会话管理 <<<<<<<<<
+Plug 'xolox/vim-session'    " 会话自动保存与恢复
+Plug 'xolox/vim-misc'       " 会话依赖项
+
 " >>>>>>>>> Git集成 <<<<<<<<<
 Plug 'tpope/vim-fugitive'   " Git命令集成
 Plug 'airblade/vim-gitgutter' " 变更标记
