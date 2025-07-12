@@ -12,18 +12,12 @@ endif
 let g:plug_load_vista = 1
 
 " ========================
-" 解决依赖
-" ========================
-
-
-
-
-" ========================
 " 基础配置
 " ========================
 
 " 默认后端优先级（LSP > ctags > coc.nvim）
 let g:vista_default_executive = 'lsp'
+" let g:vista_default_executive = 'ctags'
 
 " 禁用默认快捷键（避免冲突）
 let g:vista_disable_enable_shortcut = 1
@@ -32,8 +26,30 @@ let g:vista_disable_enable_shortcut = 1
 let g:vista_update_on_text_changed_delay = 500
 
 " 符号图标配置（需Nerd Font）
-let g:vista_icon_indent = ["╰─ ", "├─ "]
+" let g:vista_icon_indent = ["╰─ ", "├─ "]
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista#renderer#enable_icon = 1
+
+" 通过 LSP 获取代码结构
+let g:vista_executive_for = {
+    \ 'go': 'vim_lsp',
+    \ 'php': 'vim_lsp',
+    \ }
+
+" 请确保已安装一些不错的字体来显示这些漂亮的符号，然后您就可以为该种类启用图标了。
+" let g:vista#renderer#enable_icon = 1
+
+" “默认图标可能并不适用于所有的文件类型，您可以根据需要对其进行扩展。”
+
+" 符号图标集
+" let g:vista#renderer#icons = {
+" \   'function': '',
+" \   'variable': '',
+" \   'class':    '',
+" \   'method':   '',
+" \   'module':   '',
+" \   'constant': '',
+" \ }
 
 " ========================
 " 界面定制
@@ -46,16 +62,6 @@ let g:vista_sidebar_width = 40
 " 高亮当前符号
 let g:vista_cursor_delay = 300
 highlight link VistaCursorLine CursorLine
-
-" 符号图标集
-let g:vista#renderer#icons = {
-\   'function': '',
-\   'variable': '',
-\   'class':    '',
-\   'method':   '',
-\   'module':   '',
-\   'constant': '',
-\ }
 
 " 开关大纲视图
 nnoremap <silent> <Leader>v :Vista!!<CR>

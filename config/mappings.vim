@@ -97,8 +97,10 @@ xnoremap <leader>r "sy:%s/<C-r>s//g<Left><Left>
 " ===================================================
 
 " === 代码折叠 ===
-" nnoremap <space> za                        " 切换折叠 写到base里面了
-vnoremap <space> zf                        " 创建折叠
+" 切换折叠
+nnoremap <space> za
+" 创建折叠
+vnoremap <space> zf
 
 " === 快速跳转 ===
 nnoremap gb `[                            " 跳转到上次编辑位置
@@ -146,3 +148,14 @@ nnoremap <leader>cw :%s/\s\+$//<CR>:let @/=''<CR>
 
 " 检查未使用的键位（需要插件）
 " nnoremap <leader>ck :map<CR>
+
+" ===================================================
+" 会话管理（依赖插件）
+" ===================================================
+
+nnoremap <leader>ss :SaveSession<CR>
+nnoremap <leader>sl :OpenSession<space>
+nnoremap <leader>sd :DeleteSession<CR>
+
+" 模糊查找会话文件（依赖 fzf.vim）
+nnoremap <leader>fs :execute 'OpenSession ' . fzf#run({'source': 'ls ~/.vim/.sessions', 'sink': 'OpenSession'})<CR>

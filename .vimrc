@@ -80,16 +80,22 @@ if filereadable(plug_config_lsp)
   source ~/.vim/config/plug-lsp.vim
 endif
 
+" vista
+" 需要在 lsp 之后加载
+let plug_config_vista = expand('~/.vim/config/plug-vista.vim')
+if filereadable(plug_config_vista)
+  source ~/.vim/config/plug-vista.vim
+endif
 " git
 let plug_config_git = expand('~/.vim/config/plug-git.vim')
 if filereadable(plug_config_git)
   source ~/.vim/config/plug-git.vim
 endif
 
-" 其他插件
-let plug_config_vista = expand('~/.vim/config/plug-vista.vim')
-if filereadable(plug_config_vista)
-  source ~/.vim/config/plug-vista.vim
+" session
+let plug_config_session = expand('~/.vim/config/plug-vim-session.vim')
+if filereadable(plug_config_session)
+  source ~/.vim/config/plug-vim-session.vim
 endif
 
 " 加载主题(要在包管理器后面，不然会报错)
