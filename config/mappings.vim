@@ -29,6 +29,7 @@ nnoremap <F8> :call ToggleRelativeNumber()<CR>
 
 " 切换主题
 " <F4> 占用 to theme.vim
+nnoremap <silent> <F4> :call ToggleThemeMode()<CR>
 
 " 分析启动时间
 nnoremap <F12> :StartupTime<CR>
