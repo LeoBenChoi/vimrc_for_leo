@@ -55,12 +55,11 @@ endfunction
 " habamax
 " koehler
 " lunaperche
-if !has('gui_running')
+if !has('gui_running') && (has('win32') || has('win64'))
   colorscheme lunaperche
   call s:custom_highlights() 
   finish
 endif
-
 
 " 根据时间切换主题深浅色
 let hour = strftime("%H")

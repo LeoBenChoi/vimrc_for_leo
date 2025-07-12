@@ -18,7 +18,16 @@ if !filereadable(s:plug_path)
 endif
 
 " 初始化插件系统
-let g:plug_dir = substitute(expand('~/.vim/plugged'), '/', '\\', 'g')
+
+" 或者更兼容的写法：
+if has('win32') || has('win64')
+    " Windows 系统使用反斜杠
+    let g:plug_dir = substitute(expand('~/.vim/plugged'), '/', '\\', 'g')
+else
+    " Unix-like 系统使用正斜杠
+    let g:plug_dir = expand('~/.vim/plugged')
+endif
+
 call plug#begin(g:plug_dir)
 
 " >>>>>>>>> 基础增强 <<<<<<<<<
