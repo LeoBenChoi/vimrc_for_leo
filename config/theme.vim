@@ -55,9 +55,8 @@ endfunction
 " habamax
 " koehler
 " lunaperche
-
 if !has('gui_running')
-  colorscheme habamax
+  colorscheme lunaperche
   call s:custom_highlights() 
   finish
 endif
@@ -119,11 +118,6 @@ if g:theme_mode ==# 'dark'
     
 
 endfunction
-
-" 快捷键切换
-nnoremap <silent> <F4> :call ToggleThemeMode()<CR>
-
-
 
 " ========================
 " 5. 状态栏与标签栏美化

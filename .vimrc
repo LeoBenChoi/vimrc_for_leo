@@ -25,7 +25,6 @@ echomsg '主要配置路径不存在，请检查路径: ~/.vim/config'
 finish
 endif
 
-
 " 加载基础配置
 let config_basic = expand('~/.vim/config/basic.vim')
 if filereadable(config_basic)
@@ -98,7 +97,6 @@ let config_theme = expand('~/.vim/config/theme.vim')
 if filereadable(config_theme)
   source ~/.vim/config/theme.vim
 endif
-
 
 " 显示启动时间
 function! UpdateAirlineWithStartupTime() abort

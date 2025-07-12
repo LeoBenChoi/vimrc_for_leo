@@ -59,5 +59,8 @@ Plug 'dstein64/vim-startuptime' " 启动时间分析
 Plug 'mhinz/vim-startify'  " 启动页
 Plug 'lambdalisue/vim-battery' " 电池状态显示
 
+" >>>>>>>>> 性能优化 <<<<<<<<<
+Plug 'vim-scripts/LargeFile' " 大文件优化
+
 call plug#end()
 " 加载插件路径

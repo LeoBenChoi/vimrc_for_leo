@@ -63,8 +63,8 @@ let g:airline#extensions#battery#enabled = 0  " 显示电池状态
 " 修改 section_b 的显示顺序
 " let g:airline_section_b = '%f'  " 文件名
 " let g:airline_section_c = '%{getcwd()}'  " 当前目录
-let g:airline_section_x = '
-\ g:airline_section_a'
+" let g:airline_section_x = '
+" \ g:airline_section_a'
 
 " let g:airline_section_y = '%3p%%'  " 文件百分比
 " let g:airline_section_z = ' %3l:%-2v'  " 行号:列号
