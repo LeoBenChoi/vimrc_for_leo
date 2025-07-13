@@ -172,19 +172,33 @@ autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspDocumentFormatSync')
 "Perl
 "PHP
 if executable('intelephense')
+  augroup LspPHPIntelephense
+    au!
     au User lsp_setup call lsp#register_server({
-                \ 'name': 'intelephense',
-                \ 'cmd': ['intelephense', '--stdio'],
-                \ 'allowlist': ['php'],
-                \ 'initialization_options': {'storagePath': '/tmp/intelephense'},
-                \ 'workspace_config': {
-                \   'intelephense': {
-                \     'files': {'maxSize': 1000000, 'associations': ['*.php','*.phtml'], 'exclude': []},
-                \     'completion': {'insertUseDeclaration': v:true, 'triggerParameterHints': v:true},
-                \     'format': {'enable': v:true},
-                \   }
-                \ }
-                \ })
+        \ 'name': 'intelephense',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'intelephense --stdio']},
+        \ 'whitelist': ['php'],
+        \   'initialization_options': {'storagePath': has('win32') ? expand('~/AppData/Local/Temp/intelephense') : '/tmp/intelephense'},
+        \ 'workspace_config': {
+        \   'intelephense': {
+        \     'files': {
+        \       'maxSize': 1000000,
+        \       'associations': ['*.php', '*.phtml'],
+        \       'exclude': [],
+        \     },
+        \     'completion': {
+        \       'insertUseDeclaration': v:true,
+        \       'fullyQualifyGlobalConstantsAndFunctions': v:false,
+        \       'triggerParameterHints': v:true,
+        \       'maxItems': 100,
+        \     },
+        \     'format': {
+        \       'enable': v:true
+        \     },
+        \   },
+        \ }
+        \})
+  augroup END
 endif
 
 "Python

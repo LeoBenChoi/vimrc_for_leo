@@ -67,6 +67,11 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim' " LSP 补全源
 Plug 'liuchengxu/vista.vim' " 代码结构浏览
 Plug 'universal-ctags/ctags'  " 代码标签生成
 
+Plug 'felixfbecker/php-language-server', {
+    \ 'do': 'composer install && composer run-script parse-stubs',
+    \ 'for': ['php']
+    \ }
+
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
 Plug 'dstein64/vim-startuptime' " 启动时间分析
 Plug 'mhinz/vim-startify'  " 启动页
