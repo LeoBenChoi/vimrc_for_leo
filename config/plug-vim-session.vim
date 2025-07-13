@@ -13,7 +13,6 @@ let g:plug_load_vim_session = 1
 " 推荐配置
 " ========================
 
-
 let g:session_directory = '~/.vim/.sessions'  " 会话文件存储目录
 " let g:session_autosave = 'no'               " 默认禁用自动保存（按需开启）
 " let g:session_autoload = 'no'               " 默认禁用自动加载

@@ -81,4 +81,3 @@ Plug 'lambdalisue/vim-battery' " 电池状态显示
 Plug 'vim-scripts/LargeFile' " 大文件优化
 
 call plug#end()
-" 加载插件路径
