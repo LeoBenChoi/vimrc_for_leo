@@ -114,10 +114,11 @@ set matchpairs+=<:>             " 增加HTML标签匹配
 set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
 
+" 全屏打开
 " guifont 设置（仅 GUI 环境）
-    if has('gui_running')
-        autocmd GUIEnter * simalt ~x
-    endif
+    " if has('gui_running')
+    "     autocmd GUIEnter * simalt ~x
+    " endif
 
 " 设置文本宽度（根据团队规范调整，常用值如下）
 set textwidth=80   " 经典Unix风格（Linux内核等使用）
@@ -228,13 +229,13 @@ if has('mouse')
 endif
 
 " 剪贴板集成
-if has('clipboard')
-  if has('unnamedplus')         " 优先使用+寄存器
-    set clipboard=unnamed,unnamedplus
-  else                          " 回退到*寄存器
-    set clipboard=unnamed
-  endif
-endif
+" if has('clipboard')
+"   if has('unnamedplus')         " 优先使用+寄存器
+"     set clipboard=unnamed,unnamedplus
+"   else                          " 回退到*寄存器
+"     set clipboard=unnamed
+"   endif
+" endif
 
 " ========================
 " 其他关键配置
