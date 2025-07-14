@@ -12,12 +12,6 @@ if index(split(&rtp, ','), $VIMHOME) == -1
   set rtp^=$VIMHOME
 endif
 
-" plug 包管理器的插件路径
-let $VIMPLUGHOME = expand('~/.vim/plugged')
-if index(split(&rtp, ','), $VIMPLUGHOME) == -1
-  set rtp^=$VIMPLUGHOME
-endif
-
 " 默认配置文件夹是否存在
 let config_dir = expand('~/.vim/config')
 if isdirectory(config_dir) == 0
@@ -25,8 +19,20 @@ echomsg '主要配置路径不存在，请检查路径: ~/.vim/config'
 finish
 endif
 
+" plug 包管理器的插件路径
+let $VIMPLUGHOME = expand('~/.vim/plugged')
+if index(split(&rtp, ','), $VIMPLUGHOME) == -1
+  set rtp^=$VIMPLUGHOME
+endif
+
 " 加载基础配置
 let config_basic = expand('~/.vim/config/basic.vim')
+if filereadable(config_basic)
+	source ~/.vim/config/basic.vim
+endif
+
+" 兼容性配置
+let config_basic = expand('~/.vim/config/compat.vim')
 if filereadable(config_basic)
 	source ~/.vim/config/basic.vim
 endif
