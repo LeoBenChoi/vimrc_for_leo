@@ -5,7 +5,6 @@
 " ========================
 
 " 确保只加载一次
-" 确保只加载一次
 if exists('g:plug_load_lsp')
     finish
 endif

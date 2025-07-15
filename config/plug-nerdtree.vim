@@ -95,5 +95,7 @@ let g:NERDTreeCustomFilter = 'filter({node -> node.path.getLastPathComponent() !
 " ========================
 
 " 禁用不必要的渲染
-let g:NERDTreeMinimalMenu = 1
+let g:NERDTreeAutoCD = 0
+let g:NERDTreeChDirMode = 0
 let g:NERDTreeAutoCenter = 0
+let g:NERDTreeMinimalMenu = 1

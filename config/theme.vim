@@ -23,8 +23,6 @@ if has('termguicolors')
   set termguicolors
 endif
 
-
-
 " ========================
 " 4. 自定义高亮组
 " ========================
@@ -139,19 +137,3 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 highlight TabLine      guifg=#5c6370 guibg=#282c34 gui=NONE
 highlight TabLineSel   guifg=#abb2bf guibg=#3e4452 gui=BOLD
 highlight TabLineFill  guifg=NONE    guibg=#282c34 gui=NONE
-
-" ========================
-" 6. 光标样式配置
-" ========================
-
-" 不同模式下的光标样式
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " 插入模式：竖线
-  let &t_SR = "\<Esc>]50;CursorShape=2\x7" " 替换模式：下划线
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " 普通模式：方块
-endif
-

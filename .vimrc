@@ -31,12 +31,6 @@ if filereadable(config_basic)
 	source ~/.vim/config/basic.vim
 endif
 
-" 兼容性配置
-let config_basic = expand('~/.vim/config/compat.vim')
-if filereadable(config_basic)
-	source ~/.vim/config/basic.vim
-endif
-
 " 加载字体配置
 let config_font = expand('~/.vim/config/font.vim')
 if filereadable(config_font)
@@ -108,6 +102,12 @@ endif
 let config_theme = expand('~/.vim/config/theme.vim')
 if filereadable(config_theme)
   source ~/.vim/config/theme.vim
+endif
+
+" 兼容性配置（优化，需要放到最后面，覆盖之前的不合理配置以及兼容）
+let config_compat = expand('~/.vim/config/compat.vim')
+if filereadable(config_compat)
+	source ~/.vim/config/compat.vim
 endif
 
 " 显示启动时间
