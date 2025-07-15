@@ -86,11 +86,8 @@ if has('timers')
         \ {'repeat': -1})
 endif
 
-let g:airline#extensions#battery#symbols = {
-  \ 'charging': '',
-  \ 'discharging': '',
-  \ 'full': '',
-\ }
+" 显示电池状态
+let g:battery#update_time = -1  " 禁用自动更新
 
 " 添加到airline的Z区（最右侧）
 " let g:airline_section_z = get(g:, 'airline_section_z', '') . ''
