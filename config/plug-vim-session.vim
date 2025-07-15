@@ -5,7 +5,7 @@
 
 " 确保只加载一次
 if exists('g:plug_load_vim_session')
-  finish
+    finish
 endif
 let g:plug_load_vim_session = 1
 
@@ -26,23 +26,23 @@ nnoremap <leader>ss :SaveSession<CR>       " 保存会话
 nnoremap <leader>ss :<C-U>call SaveSessionWithVistaCheck()<CR>
 
 function! SaveSessionWithVistaCheck()
-  " 检查Vista窗口是否存在（通过窗口变量或缓冲区类型）
-  let vista_open = 0
-  for winnr in range(1, winnr('$'))
-    if getwinvar(winnr, '&filetype') == 'vista'
-      let vista_open = 1
-      break
+    " 检查Vista窗口是否存在（通过窗口变量或缓冲区类型）
+    let vista_open = 0
+    for winnr in range(1, winnr('$'))
+        if getwinvar(winnr, '&filetype') == 'vista'
+            let vista_open = 1
+            break
+        endif
+    endfor
+
+    " 如果Vista开启则先关闭
+    if vista_open && exists(':Vista')
+        Vista!
+        echo "Closed Vista before saving session..."
     endif
-  endfor
 
-  " 如果Vista开启则先关闭
-  if vista_open && exists(':Vista')
-    Vista!
-    echo "Closed Vista before saving session..."
-  endif
-
-  " 保存会话
-  SaveSession
+    " 保存会话
+    SaveSession
 endfunction
 
 nnoremap <leader>sl :OpenSession<CR>        " 加载会话
@@ -55,11 +55,11 @@ nnoremap <leader>sl :OpenSession<CR>        " 加载会话
 "     \ 'tagbar.*',     " 忽略Tagbar窗口
 " \ ]
 let g:session_skip_files = [
-    \ 'NERD_tree.*',
-    \ 'term://.*',
-    \ 'COMMIT_EDITMSG',
-    \ 'tagbar.*',
-\ ]
+            \ 'NERD_tree.*',
+            \ 'term://.*',
+            \ 'COMMIT_EDITMSG',
+            \ 'tagbar.*',
+            \ ]
 
 " ========================
 " 快捷键

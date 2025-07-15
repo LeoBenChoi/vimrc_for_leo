@@ -32,38 +32,38 @@
 
 " 确保只加载一次
 if exists('g:package_manage_tool_vim_pack')
-  finish
+    finish
 endif
 let g:package_manage_tool_vim_pack = 1
 
 " ============================================================================
 " 插件 Git 地址列表
 let plugins = [
-\ 'https://github.com/morhetz/gruvbox.git',
-\ 'https://github.com/tpope/vim-fugitive.git',
-\ 'https://github.com/mhinz/vim-signify.git',
-\ 'https://github.com/lambdalisue/vim-fern.git',
-\ 'https://github.com/lambdalisue/vim-nerdfont.git',
-\ 'https://github.com/lambdalisue/vim-fern-renderer-nerdfont.git',
-\ 'https://github.com/lambdalisue/vim-fern-git-status.git',
-\ 'https://github.com/lambdalisue/nerdfont.vim.git',
-\ 'https://github.com/rbong/vim-flog.git',
-\ 'https://github.com/fatih/vim-go.git',
-\ 'https://github.com/prabirshrestha/vim-lsp.git',
-\ 'https://github.com/mattn/vim-lsp-settings.git',
-\ 'https://github.com/vim-airline/vim-airline.git',
-\ 'https://github.com/vim-airline/vim-airline-themes.git',
-\ 'https://github.com/ryanoasis/vim-devicons.git',
-\ 'https://github.com/lambdalisue/vim-battery.git',
-\ 'https://github.com/prabirshrestha/asyncomplete.vim.git',
-\ 'https://github.com/prabirshrestha/asyncomplete-lsp.vim.git',
-\ 'https://github.com/prabirshrestha/asyncomplete-buffer.vim.git',
-\ 'https://github.com/prabirshrestha/asyncomplete-file.vim.git',
-\ 'https://github.com/dstein64/vim-startuptime.git',
-\ 'https://github.com/junegunn/fzf.vim.git',
-\ 'https://github.com/junegunn/fzf.git',
-\ 'https://github.com/liuchengxu/vista.vim.git'
-\ ]
+            \ 'https://github.com/morhetz/gruvbox.git',
+            \ 'https://github.com/tpope/vim-fugitive.git',
+            \ 'https://github.com/mhinz/vim-signify.git',
+            \ 'https://github.com/lambdalisue/vim-fern.git',
+            \ 'https://github.com/lambdalisue/vim-nerdfont.git',
+            \ 'https://github.com/lambdalisue/vim-fern-renderer-nerdfont.git',
+            \ 'https://github.com/lambdalisue/vim-fern-git-status.git',
+            \ 'https://github.com/lambdalisue/nerdfont.vim.git',
+            \ 'https://github.com/rbong/vim-flog.git',
+            \ 'https://github.com/fatih/vim-go.git',
+            \ 'https://github.com/prabirshrestha/vim-lsp.git',
+            \ 'https://github.com/mattn/vim-lsp-settings.git',
+            \ 'https://github.com/vim-airline/vim-airline.git',
+            \ 'https://github.com/vim-airline/vim-airline-themes.git',
+            \ 'https://github.com/ryanoasis/vim-devicons.git',
+            \ 'https://github.com/lambdalisue/vim-battery.git',
+            \ 'https://github.com/prabirshrestha/asyncomplete.vim.git',
+            \ 'https://github.com/prabirshrestha/asyncomplete-lsp.vim.git',
+            \ 'https://github.com/prabirshrestha/asyncomplete-buffer.vim.git',
+            \ 'https://github.com/prabirshrestha/asyncomplete-file.vim.git',
+            \ 'https://github.com/dstein64/vim-startuptime.git',
+            \ 'https://github.com/junegunn/fzf.vim.git',
+            \ 'https://github.com/junegunn/fzf.git',
+            \ 'https://github.com/liuchengxu/vista.vim.git'
+            \ ]
 
 "if has('win32') || has('win64')
 "    let target_path = expand($VIM . '\\vimfiles\\pack\\plugins\\start')
@@ -76,11 +76,11 @@ let target_path = expand('~/.vim/vimfiles/pack/plugins/start/')
 " 克隆每个 Git 项目到指定路径
 for plugin in plugins
     let repo_name = substitute(plugin, '^.*/\(.*\)\.git$', '\1', '')
-	if has('win32') || has('win64')
-		let clone_dir = target_path . '\\' . repo_name
-	else
-		let clone_dir = target_path . '/' . repo_name
-	endif
+    if has('win32') || has('win64')
+        let clone_dir = target_path . '\\' . repo_name
+    else
+        let clone_dir = target_path . '/' . repo_name
+    endif
     if !isdirectory(clone_dir)
         echo "Cloning " . plugin . " into " . clone_dir
         " Make sure to quote the paths to handle spaces properly

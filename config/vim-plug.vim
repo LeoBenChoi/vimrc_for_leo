@@ -6,15 +6,15 @@
 
 " 确保只加载一次
 if exists('g:package_manage_tool_vim_plug')
-  finish
+    finish
 endif
 let g:package_manage_tool_vim_plug = 1
 
 " 自动安装 vim-plug（Windows 特供版）
 let s:plug_path = expand('~/.vim/autoload/plug.vim')
 if !filereadable(s:plug_path)
-  silent execute '!powershell -c "iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | ni \"' . s:plug_path . '\" -Force"'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent execute '!powershell -c "iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | ni \"' . s:plug_path . '\" -Force"'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " 初始化插件系统
@@ -68,9 +68,9 @@ Plug 'liuchengxu/vista.vim' " 代码结构浏览
 Plug 'universal-ctags/ctags'  " 代码标签生成
 
 Plug 'felixfbecker/php-language-server', {
-    \ 'do': 'composer install && composer run-script parse-stubs',
-    \ 'for': ['php']
-    \ }
+            \ 'do': 'composer install && composer run-script parse-stubs',
+            \ 'for': ['php']
+            \ }
 
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
 Plug 'dstein64/vim-startuptime' " 启动时间分析

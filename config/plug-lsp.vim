@@ -55,10 +55,10 @@ nmap <silent> <F8> :Vista!!<CR>       " 开关大纲
 
 " 或者针对不同文件类型指定不同的后端（更灵活）
 let g:vista_executive_for = {
-  \ 'go': 'vim_lsp',
-  \ 'python': 'ctags',
-  \ 'cpp': 'vim_lsp',
-  \ }
+            \ 'go': 'vim_lsp',
+            \ 'python': 'ctags',
+            \ 'cpp': 'vim_lsp',
+            \ }
 
 
 " ========================
@@ -172,33 +172,33 @@ autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call execute('LspDocumentFormatSync')
 "Perl
 "PHP
 if executable('intelephense')
-  augroup LspPHPIntelephense
-    au!
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'intelephense',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'intelephense --stdio']},
-        \ 'whitelist': ['php'],
-        \   'initialization_options': {'storagePath': has('win32') ? expand('~/AppData/Local/Temp/intelephense') : '/tmp/intelephense'},
-        \ 'workspace_config': {
-        \   'intelephense': {
-        \     'files': {
-        \       'maxSize': 1000000,
-        \       'associations': ['*.php', '*.phtml'],
-        \       'exclude': [],
-        \     },
-        \     'completion': {
-        \       'insertUseDeclaration': v:true,
-        \       'fullyQualifyGlobalConstantsAndFunctions': v:false,
-        \       'triggerParameterHints': v:true,
-        \       'maxItems': 100,
-        \     },
-        \     'format': {
-        \       'enable': v:true
-        \     },
-        \   },
-        \ }
-        \})
-  augroup END
+    augroup LspPHPIntelephense
+        au!
+        au User lsp_setup call lsp#register_server({
+                    \ 'name': 'intelephense',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'intelephense --stdio']},
+                    \ 'whitelist': ['php'],
+                    \   'initialization_options': {'storagePath': has('win32') ? expand('~/AppData/Local/Temp/intelephense') : '/tmp/intelephense'},
+                    \ 'workspace_config': {
+                    \   'intelephense': {
+                    \     'files': {
+                    \       'maxSize': 1000000,
+                    \       'associations': ['*.php', '*.phtml'],
+                    \       'exclude': [],
+                    \     },
+                    \     'completion': {
+                    \       'insertUseDeclaration': v:true,
+                    \       'fullyQualifyGlobalConstantsAndFunctions': v:false,
+                    \       'triggerParameterHints': v:true,
+                    \       'maxItems': 100,
+                    \     },
+                    \     'format': {
+                    \       'enable': v:true
+                    \     },
+                    \   },
+                    \ }
+                    \})
+    augroup END
 endif
 
 "Python

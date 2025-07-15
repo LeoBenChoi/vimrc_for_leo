@@ -5,7 +5,7 @@
 
 " 确保只加载一次
 if exists('g:plug_load_fzf')
-  finish
+    finish
 endif
 let g:plug_load_fzf = 1
 

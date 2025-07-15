@@ -6,12 +6,12 @@
 
 " 设置不兼容vi
 if &compatible
-  set nocompatible
+    set nocompatible
 endif
 
 " 确保只加载一次
 if exists('g:loaded_basic_config')
-  finish
+    finish
 endif
 let g:loaded_basic_config = 1
 
@@ -116,9 +116,9 @@ set showfulltag             " 完整显示标签内容
 
 " 全屏打开
 " guifont 设置（仅 GUI 环境）
-    " if has('gui_running')
-    "     autocmd GUIEnter * simalt ~x
-    " endif
+" if has('gui_running')
+"     autocmd GUIEnter * simalt ~x
+" endif
 
 " 设置文本宽度（根据团队规范调整，常用值如下）
 set textwidth=80   " 经典Unix风格（Linux内核等使用）
@@ -139,11 +139,11 @@ highlight ColorColumn ctermbg=lightgrey guibg=#eeeeee
 
 " 文件类型特定行宽设置
 augroup filetype_settings
-  autocmd!
-  " Python遵循PEP8标准
-  autocmd FileType python setlocal textwidth=88
-  " Go语言使用制表符
-  autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+    autocmd!
+    " Python遵循PEP8标准
+    autocmd FileType python setlocal textwidth=88
+    " Go语言使用制表符
+    autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
 augroup END
 
 " 当前行高亮
@@ -156,9 +156,9 @@ highlight CursorColumn cterm=NONE ctermbg=darkgrey guibg=#eeeeee
 
 " 只在普通模式下高亮当前行（避免插入模式干扰）
 augroup cursor_highlight
-  autocmd!
-  autocmd InsertEnter * set nocursorline nocursorcolumn
-  autocmd InsertLeave * set cursorline cursorcolumn
+    autocmd!
+    autocmd InsertEnter * set nocursorline nocursorcolumn
+    autocmd InsertLeave * set cursorline cursorcolumn
 augroup END
 
 " 边界线增强显示
@@ -222,10 +222,10 @@ set cmdheight=1                 " 命令行高度
 
 " 跨平台鼠标支持
 if has('mouse')
-  set mouse=a                   " 全模式鼠标支持
-  if !has('nvim')
-    set ttymouse=xterm2         " 确保终端鼠标支持
-  endif
+    set mouse=a                   " 全模式鼠标支持
+    if !has('nvim')
+        set ttymouse=xterm2         " 确保终端鼠标支持
+    endif
 endif
 
 " 剪贴板集成
@@ -256,21 +256,21 @@ set splitbelow                  " 水平分割在下方打开
 
 " 快速切换相对行号
 function! ToggleRelativeNumber()
-  if &relativenumber
-    set norelativenumber
-  else
-    set relativenumber
-  endif
+    if &relativenumber
+        set norelativenumber
+    else
+        set relativenumber
+    endif
 endfunction
 nnoremap <silent> <leader>rn :call ToggleRelativeNumber()<CR>
 
 " 清除尾随空格
 function! StripTrailingWhitespace()
-  if !&binary && &filetype != 'diff'
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-  endif
+    if !&binary && &filetype != 'diff'
+        let l:save = winsaveview()
+        keeppatterns %s/\s\+$//e
+        call winrestview(l:save)
+    endif
 endfunction
 
 " ========================

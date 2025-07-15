@@ -5,7 +5,7 @@
 
 " 确保只加载一次
 if exists('g:plug_load_nerdtree')
-  finish
+    finish
 endif
 let g:plug_load_nerdtree = 1
 
@@ -68,17 +68,17 @@ autocmd ColorScheme * highlight NERDTreeDir ctermfg=Blue guifg=#81A1C1
 
 " Git 状态集成
 let g:NERDTreeGitStatusIndicatorMap = {
-    \ 'Modified'  : '✹',
-    \ 'Staged'    : '✚',
-    \ 'Untracked' : '✭',
-    \ 'Renamed'   : '➜',
-    \ 'Unmerged'  : '═',
-    \ 'Deleted'   : '✖',
-    \ 'Dirty'     : '✗',
-    \ 'Clean'     : '✔︎',
-    \ 'Ignored'   : '☒',
-    \ 'Unknown'   : '?'
-\ }
+            \ 'Modified'  : '✹',
+            \ 'Staged'    : '✚',
+            \ 'Untracked' : '✭',
+            \ 'Renamed'   : '➜',
+            \ 'Unmerged'  : '═',
+            \ 'Deleted'   : '✖',
+            \ 'Dirty'     : '✗',
+            \ 'Clean'     : '✔︎',
+            \ 'Ignored'   : '☒',
+            \ 'Unknown'   : '?'
+            \ }
 
 " 自动行为
 " 当最后一个窗口是 NERDTree 时自动关闭

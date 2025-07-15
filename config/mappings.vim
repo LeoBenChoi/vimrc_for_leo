@@ -9,7 +9,7 @@
 
 " 确保只加载一次
 if exists('g:loaded_mappings_config')
-  finish
+    finish
 endif
 let g:loaded_mappings_config = 1
 
@@ -19,11 +19,11 @@ let g:loaded_mappings_config = 1
 
 " 快速切换相对行号
 function! ToggleRelativeNumber()
-  if &relativenumber
-    set norelativenumber
-  else
-    set relativenumber
-  endif
+    if &relativenumber
+        set norelativenumber
+    else
+        set relativenumber
+    endif
 endfunction
 nnoremap <F8> :call ToggleRelativeNumber()<CR>
 
