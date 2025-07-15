@@ -32,9 +32,9 @@ let g:vista#renderer#enable_icon = 1
 
 " 通过 LSP 获取代码结构
 let g:vista_executive_for = {
-    \ 'go': 'vim_lsp',
-    \ 'php': 'vim_lsp',
-    \ }
+            \ 'go': 'vim_lsp',
+            \ 'php': 'vim_lsp',
+            \ }
 
 " 请确保已安装一些不错的字体来显示这些漂亮的符号，然后您就可以为该种类启用图标了。
 " let g:vista#renderer#enable_icon = 1

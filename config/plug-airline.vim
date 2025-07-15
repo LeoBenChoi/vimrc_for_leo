@@ -5,7 +5,7 @@
 
 " 确保只加载一次
 if exists('g:plug_load_airline')
-  finish
+    finish
 endif
 let g:plug_load_airline = 1
 
@@ -69,21 +69,21 @@ let g:airline#extensions#battery#enabled = 0  " 显示电池状态
 " let g:airline_section_y = '%3p%%'  " 文件百分比
 " let g:airline_section_z = ' %3l:%-2v'  " 行号:列号
 let g:airline_section_z = '
-\ %3p%% ☰ %l:%c
-\ %{get(g:, "startup_time_display", " ")}
-\ %{battery#component()}
-\ %{strftime("%Y-%m-%d")}
-\ %{strftime("%H:%M")}'
+            \ %3p%% ☰ %l:%c
+            \ %{get(g:, "startup_time_display", " ")}
+            \ %{battery#component()}
+            \ %{strftime("%Y-%m-%d")}
+            \ %{strftime("%H:%M")}'
 
 
 " let g:airline_section_x = '%{lsp#get_server_status()}'
 
 " 自动更新时间（需Vim 8.0+）
 if has('timers')
-  let g:airline_clock_timer = timer_start(
-        \ 1000,
-        \ {-> execute('let g:airline_section_z = g:airline_section_z')},
-        \ {'repeat': -1})
+    let g:airline_clock_timer = timer_start(
+                \ 1000,
+                \ {-> execute('let g:airline_section_z = g:airline_section_z')},
+                \ {'repeat': -1})
 endif
 
 " 显示电池状态
