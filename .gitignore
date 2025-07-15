@@ -14,8 +14,8 @@ vimfiles/pack/*
 vimfiles\flag\*
 vimfiles/flag/*
 
-~\.vim\.sessions\*
-~/.vim/.sessions/*
+.sessions\*
+.sessions/*
 
 .wakatime-project
 
