@@ -58,25 +58,28 @@ let g:airline#extensions#battery#enabled = 0  " 显示电池状态
 
 " 修改状态栏布局
 " let g:airline_section_a = g:airline_section_a + ' %{airline#extensions#branch#head()}'  " 模式 + Git 分支
-
+" let g:airline_section_a = '%{coc#status()}'  " 仅显示 Git 分支
 " let g:airline_section_b = airline#section#create(['%{strftime("%H:%M")}', 'branch'])
-" 修改 section_b 的显示顺序
 " let g:airline_section_b = '%f'  " 文件名
+" let g:airline_section_b = '%{coc#status()}'  " CoC 状态
 " let g:airline_section_c = '%{getcwd()}'  " 当前目录
-" let g:airline_section_x = '
-" \ g:airline_section_a'
-
+" let g:airline_section_x = '%{airline#extensions#lsp#status()}'  " LSP 状态
 " let g:airline_section_y = '%3p%%'  " 文件百分比
 " let g:airline_section_z = ' %3l:%-2v'  " 行号:列号
+" let g:airline_section_z = '
+"             \ %3p%% ☰ %l:%c
+"             \ %{get(g:, "startup_time_display", " ")}
+"             \ %{battery#component()}
+"             \ %{strftime("%Y-%m-%d")}
+"             \ %{strftime("%H:%M")}'
 let g:airline_section_z = '
             \ %3p%% ☰ %l:%c
             \ %{get(g:, "startup_time_display", " ")}
-            \ %{battery#component()}
             \ %{strftime("%Y-%m-%d")}
-            \ %{strftime("%H:%M")}'
+            \ %{strftime("%H:%M")}
+            \ %{coc#status()}'
 
 
-" let g:airline_section_x = '%{lsp#get_server_status()}'
 
 " 自动更新时间（需Vim 8.0+）
 if has('timers')
