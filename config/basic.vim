@@ -113,6 +113,7 @@ set matchtime=2                 " 括号匹配高亮时间(0.1s单位)
 set matchpairs+=<:>             " 增加HTML标签匹配
 set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
+set signcolumn=yes          " 始终显示符号列
 
 " 全屏打开
 " guifont 设置（仅 GUI 环境）
@@ -182,11 +183,33 @@ set foldenable            " 启用折叠
 augroup SetFoldingByFiletype
     autocmd!
     " nnoremap <space> za " 切换折叠 写到base里面了
-    autocmd FileType go setlocal foldmethod=syntax
-    autocmd FileType python setlocal foldmethod=indent
-    autocmd BufWinLeave *.py,*.go if &buftype == '' | silent! mkview | endif
-    autocmd BufWinEnter *.py,*.go if &buftype == '' | silent! loadview | endif
+    autocmd FileType go      setlocal foldmethod=syntax
+    autocmd FileType python  setlocal foldmethod=indent
+    autocmd FileType html    setlocal foldmethod=expr foldexpr=HTMLFold()
+    autocmd FileType css     setlocal foldmethod=marker foldmarker={{{,}}}
+    autocmd FileType javascript setlocal foldmethod=syntax
+    autocmd FileType typescript setlocal foldmethod=syntax
+    autocmd FileType json    setlocal foldmethod=syntax
+    " === 智能视图管理 ===
+    " 保存时记录除折叠外的状态
+    autocmd BufWinLeave *.py,*.go,*.html,*.css,*.js 
+                \ if &buftype == '' | silent! mkview! | endif
+    " 加载时强制展开折叠
+    autocmd BufWinEnter *.py,*.go,*.html,*.css,*.js 
+                \ if &buftype == '' | silent! loadview | setlocal foldlevel=99 | endif
 augroup END
+
+" === HTML 折叠表达式（需自定义） ===
+function! HTMLFold()
+    let line = getline(v:lnum)
+    " 计算标签嵌套深度
+    if line =~? '<\([^/!][^>]*\)>'
+        return 'a' . len(split(matchstr(line, '<\zs[^ >]*\ze'), '\.'))
+    elseif line =~? '</[^>]*>'
+        return 's' . len(split(matchstr(line, '</\zs[^ >]*\ze'), '\.'))
+    endif
+    return '='
+endfunction
 
 " 自定义折叠文本
 set foldtext=CustomFoldText()
@@ -202,7 +225,6 @@ function! CustomFoldText()
     let pad = repeat(' ', spacing > 0 ? spacing : 1)
     return folded . pad . info
 endfunction
-
 
 " ========================
 " 命令行行为

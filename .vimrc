@@ -75,9 +75,9 @@ if filereadable(plug_config_nerdtree)
 endif
 
 " lsp
-let plug_config_lsp = expand('~/.vim/config/plug-lsp.vim')
+let plug_config_lsp = expand('~/.vim/config/plug-vim-lsp.vim')
 if filereadable(plug_config_lsp)
-  source ~/.vim/config/plug-lsp.vim
+  source ~/.vim/config/plug-vim-lsp.vim
 endif
 
 " vista
