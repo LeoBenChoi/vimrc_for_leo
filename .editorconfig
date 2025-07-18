@@ -1,0 +1,42 @@
+# EditorConfig is awesome: https://editorconfig.org
+
+# 这里是根文件
+root = true
+
+# 全局设置
+# 统一使用 utf-8 字符集
+# 统一使用 lf 结尾
+# 确保文件末尾有一个空行
+# 自动删除每行行尾的空格
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# a
+# b
+# c
+# d
+# e
+# f
+# g
+# h
+# i
+# j
+# k
+# l
+# m
+# n
+# o
+# p
+# q
+# r
+# s
+# t
+# u
+# v
+# w
+# x
+# y
+# z

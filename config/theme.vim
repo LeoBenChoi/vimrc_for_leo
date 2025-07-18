@@ -15,39 +15,8 @@ endif
 let g:loaded_theme_config = 1
 
 " ========================
-" 1. 基础主题配置
+" 主题选择
 " ========================
-
-" 启用真彩色支持（终端需支持）
-if has('termguicolors')
-    set termguicolors
-endif
-
-" ========================
-" 4. 自定义高亮组
-" ========================
-
-function! s:custom_highlights()
-    " 通用高亮设置
-    if !has('gui')
-        highlight Normal       guibg=NONE ctermbg=NONE  " 透明背景
-    endif
-    highlight LineNr       guifg=#5c6370 ctermfg=242
-    highlight CursorLineNr guifg=#e5c07b ctermfg=214 gui=bold cterm=bold
-
-    " 特殊语法高亮增强
-    highlight! link TSVariable Identifier
-    highlight! link TSParameter Special
-
-    " Git 相关高亮
-    highlight GitGutterAdd    guifg=#98c379 ctermfg=114
-    highlight GitGutterChange guifg=#61afef ctermfg=75
-    highlight GitGutterDelete guifg=#e06c75 ctermfg=168
-
-    " 诊断信息高亮
-    highlight DiagnosticError guifg=#e06c75 ctermfg=168
-    highlight DiagnosticWarn  guifg=#e5c07b ctermfg=180
-endfunction
 
 " 终端推荐的主题
 " habamax
@@ -55,7 +24,7 @@ endfunction
 " lunaperche
 if !has('gui_running') && (has('win32') || has('win64'))
     colorscheme lunaperche
-    call s:custom_highlights() 
+    autocmd VimEnter s:custom_highlights() 
     finish
 endif
 
@@ -66,12 +35,13 @@ if hour >= 7 && hour < 19
 else
     let g:theme_mode = 'dark'  " 'dark' 或 'light'
 endif
+" let g:theme_mode = 'dark'
 
 " 默认主题设置
 let g:theme_name = 'gruvbox'
 
 " ========================
-" 2. 主题加载函数
+" 主题加载函数
 " ========================
 
 function! s:load_theme()
@@ -99,27 +69,24 @@ endfunction
 call s:load_theme()
 
 " ========================
-" 3. 亮/暗模式切换（迁移到mapping里）
+" 3. 亮/暗模式切换（已迁移到mapping里）
 " ========================
 
-function! ToggleThemeMode()
-    if g:theme_mode ==# 'dark'
-        let g:theme_mode = 'light'
-    else
-        let g:theme_mode = 'dark'
-    endif
-    execute 'set background=' . g:theme_mode
-    call s:load_theme()
-    " call s:custom_highlights() " 重新应用自定义高亮
-
-
-endfunction
+" function! ToggleThemeMode()
+"     if g:theme_mode ==# 'dark'
+"         let g:theme_mode = 'light'
+"     else
+"         let g:theme_mode = 'dark'
+"     endif
+"     execute 'set background=' . g:theme_mode
+"     call s:load_theme()
+" endfunction
 
 " ========================
-" 5. 状态栏与标签栏美化
+" 状态栏
 " ========================
 
-" 方法2：检查全局变量（适用于所有插件管理器）
+" airline 主题配置
 if exists('g:loaded_airline') && exists('g:loaded_airline_themes')
     " airline 主题配置
     let g:airline_theme = g:theme_name
@@ -131,6 +98,30 @@ else
     " echomsg "[theme.vim] vim-airline-themes 未安装，状态栏主题未配置"
     "echohl None
 endif
+
+" ========================
+" 高亮配置(放到主题加载后)
+" ========================
+
+function! s:custom_highlights()
+    " 基础背景色
+    if !has('gui')
+        highlight Normal       guibg=NONE ctermbg=NONE  " 透明背景
+    endif
+    " 行号高亮
+    highlight LineNr       guifg=#5c6370 ctermfg=242
+    highlight CursorLineNr guifg=#e5c07b ctermfg=214 gui=bold cterm=bold
+    " 特殊语法高亮增强
+    highlight! link TSVariable Identifier
+    highlight! link TSParameter Special
+    " Git 相关高亮
+    highlight GitGutterAdd    guifg=#98c379 ctermfg=114
+    highlight GitGutterChange guifg=#61afef ctermfg=75
+    highlight GitGutterDelete guifg=#e06c75 ctermfg=168
+    " 诊断信息高亮
+    highlight DiagnosticError guifg=#e06c75 ctermfg=168
+    highlight DiagnosticWarn  guifg=#e5c07b ctermfg=180
+endfunction
 
 " 标签栏样式
 highlight TabLine      guifg=#5c6370 guibg=#282c34 gui=NONE

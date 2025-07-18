@@ -26,3 +26,5 @@ vimfiles/flag/*
 
 plugged
 *.netrwhist
+
+tags
