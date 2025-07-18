@@ -41,7 +41,7 @@ let g:NERDTreeMapActivateNode = 'o'       " 打开文件/目录 (原 'o')
 let g:NERDTreeMapPreview = 'p'            " 预览文件 (原 'go')
 let g:NERDTreeMapOpenSplit = 's'          " 水平分割打开 (原 'i')
 let g:NERDTreeMapOpenVSplit = 'v'         " 垂直分割打开 (原 'gi')
-let g:NERDTreeMapRefresh = 'r'            " 刷新节点 (原 'R')
+" let g:NERDTreeMapRefresh = 'r'            " 刷新节点 (原 'R')
 
 " ========================
 " 视觉美化
@@ -59,7 +59,7 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 " 颜色主题适配
 " 在 colorscheme 后重置高亮
-autocmd ColorScheme * highlight NERDTreeFile ctermfg=LightGray guifg=#D8DEE9
+" autocmd ColorScheme * highlight NERDTreeFile ctermfg=LightGray guifg=#D8DEE9      " 会导致颜色过浅
 autocmd ColorScheme * highlight NERDTreeDir ctermfg=Blue guifg=#81A1C1
 
 " ========================
@@ -94,8 +94,10 @@ let g:NERDTreeCustomFilter = 'filter({node -> node.path.getLastPathComponent() !
 " 优化
 " ========================
 
+" 保留 （不优化）
+let g:NERDTreeChDirMode = 2
+
 " 禁用不必要的渲染
 let g:NERDTreeAutoCD = 0
-let g:NERDTreeChDirMode = 0
 let g:NERDTreeAutoCenter = 0
 let g:NERDTreeMinimalMenu = 1

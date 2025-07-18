@@ -11,12 +11,52 @@ endif
 let g:config_load_compat = 1
 
 " ========================
-" 防止光标闪烁
+" 目录兼容性
 " ========================
 
-" 默认光标样式
-" set guicursor=
-" 调整为更平滑的光标样式
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-" 限制光标闪烁频率
-set updatetime=1000
+let config_dir = has('win32') ? '$HOME/vimfiles' : '~/.vim'
+let plugin_path = expand(config_dir . '/plugins')
+" coc config 路径
+let $COC_CONFIG_HOME = 'D:\configs\coc'
+
+" ========================
+" 文件编码兼容
+" ========================
+
+" 强制统一换行格式
+set fileformat=unix
+set fileformats=unix,dos
+
+" ======================== ======================== ========================
+" 兼容 coc 前加载 
+" 这里必须在coc.nvim 前加载
+" ======================== ======================== ========================
+
+" 设置 cocconfig 路径
+let g:coc_config_home = expand('~/.vim')
+" 设置 coc.nvim 的 Go 专用配置（替代 coc-settings.json）
+" - command: gopls 路径（自动从 PATH 查找）
+" - rootPatterns: 识别项目根目录的标记文件
+" - initializationOptions: gopls 专属配置
+let g:coc_user_config = {
+  \ "languageserver": {
+  \   "golang": {
+  \     "command": "gopls",
+  \     "rootPatterns": ["go.mod", ".git/"],
+  \     "filetypes": ["go"],
+  \     "initializationOptions": {
+  \       "build.experimentalWorkspaceModule": v:true,
+  \       "analyses": {
+  \         "unusedparams": v:true,
+  \         "unusedwrite": v:false
+  \       }
+  \     }
+  \   }
+  \ },
+  \ "go.goplsOptions": {
+  \   "staticcheck": v:true,
+  \   "completeUnimported": v:true
+  \ }
+\ }
+" ======================== ======================== ========================
+" ======================== ======================== ========================

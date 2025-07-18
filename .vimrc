@@ -5,6 +5,12 @@ let g:start_time = reltime()
 " used Linux: Kali, Ubuntu, CentOS
 " used Windows: Windows 11, 10
 
+" 兼容性配置（优化，需要放到最后面，覆盖之前的不合理配置以及兼容）
+let config_compat = expand('~/.vim/config/compat.vim')
+if filereadable(config_compat)
+	source ~/.vim/config/compat.vim
+endif
+
 " 保证windows .vim/ 路径正常
 let $VIMHOME = expand('~/.vim')
 " 确保 ~/.vim 在 runtimepath 中
@@ -55,11 +61,20 @@ if filereadable(plug_manager_vim_plug)
   source ~/.vim/config/vim-plug.vim
 endif
 
+" ===================================================================
 " 插件配置
+" ===================================================================
+
 " airline
 let plug_config_airline = expand('~/.vim/config/plug-airline.vim')
 if filereadable(plug_config_airline)
   source ~/.vim/config/plug-airline.vim
+endif
+
+" coc.nvim
+let plug_config_cocnvim = expand('~/.vim/config/plug-coc.vim')
+if filereadable(plug_config_cocnvim)
+  source ~/.vim/config/plug-coc.vim
 endif
 
 " fzf
@@ -74,18 +89,6 @@ if filereadable(plug_config_nerdtree)
   source ~/.vim/config/plug-nerdtree.vim
 endif
 
-" lsp
-let plug_config_lsp = expand('~/.vim/config/plug-vim-lsp.vim')
-if filereadable(plug_config_lsp)
-  source ~/.vim/config/plug-vim-lsp.vim
-endif
-
-" vista
-" 需要在 lsp 之后加载
-let plug_config_vista = expand('~/.vim/config/plug-vista.vim')
-if filereadable(plug_config_vista)
-  source ~/.vim/config/plug-vista.vim
-endif
 " git
 let plug_config_git = expand('~/.vim/config/plug-git.vim')
 if filereadable(plug_config_git)
@@ -98,16 +101,24 @@ if filereadable(plug_config_session)
   source ~/.vim/config/plug-vim-session.vim
 endif
 
+" jsonc
+let plug_config_jsonc = expand('~/.vim/config/plug-jsonc.vim')
+if filereadable(plug_config_jsonc)
+  source ~/.vim/config/plug-jsonc.vim
+endif
+
+let plug_config_commentary = expand('~/.vim/config/plug-commentary.vim')
+if filereadable(plug_config_commentary)
+  source ~/.vim/config/plug-commentary.vim
+endif
+
+" ===================================================================
+" ===================================================================
+
 " 加载主题(要在包管理器后面，不然会报错)
 let config_theme = expand('~/.vim/config/theme.vim')
 if filereadable(config_theme)
   source ~/.vim/config/theme.vim
-endif
-
-" 兼容性配置（优化，需要放到最后面，覆盖之前的不合理配置以及兼容）
-let config_compat = expand('~/.vim/config/compat.vim')
-if filereadable(config_compat)
-	source ~/.vim/config/compat.vim
 endif
 
 " 显示启动时间
