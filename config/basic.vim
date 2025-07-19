@@ -155,9 +155,9 @@ augroup END
 
 " 边界线增强显示
 let &showbreak='↪ ' " 设置折行符号，与下面那行等价
-" set showbreak=↪\ 
+" set showbreak=↪\
 set list           " 显示不可见字符
-set listchars=tab:▸\ ,trail:·,nbsp:␣,extends:❯,precedes:❮
+let &listchars='tab:▸\ ,trail:-,extends:❯,precedes:❮,nbsp:+,eol:↴'
 
 " 行号高亮
 highlight LineNr ctermfg=darkgrey guifg=#5c6370
@@ -366,3 +366,8 @@ autocmd BufWritePre * call StripTrailingWhitespace()
 " ========================
 " 兼容性配置
 " ========================
+
+" 需要双宽度字符保证正文内容显示，但是需要单宽度字符保证图标显示正常
+set ambiwidth=single
+" 但允许文件内容中的 CJK 字符使用双宽度
+autocmd BufEnter * if &filetype =~ 'markdown\|text' | setlocal ambiwidth=double | endif
