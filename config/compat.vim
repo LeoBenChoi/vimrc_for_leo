@@ -28,7 +28,7 @@ set fileformat=unix
 set fileformats=unix,dos
 
 " ======================== ======================== ========================
-" 兼容 coc 前加载 
+" 兼容 coc 前加载
 " 这里必须在coc.nvim 前加载
 " ======================== ======================== ========================
 
@@ -45,7 +45,6 @@ let g:coc_user_config = {
   \     "rootPatterns": ["go.mod", ".git/"],
   \     "filetypes": ["go"],
   \     "initializationOptions": {
-  \       "build.experimentalWorkspaceModule": v:true,
   \       "analyses": {
   \         "unusedparams": v:true,
   \         "unusedwrite": v:false

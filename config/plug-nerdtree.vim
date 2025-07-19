@@ -14,8 +14,9 @@ let g:plug_load_nerdtree = 1
 " ========================
 
 " 基本设置
+let g:NERDTreeWinPos = "left"  " 固定 NERDTree 在左侧
 let g:NERDTreeShowHidden = 1          " 显示隐藏文件
-let g:NERDTreeMinimalUI = 1           " 隐藏帮助提示
+let g:NERDTreeMinimalUI = 0           " 隐藏帮助提示
 " let g:NERDTreeIgnore = ['\.DS_Store$', '\.git$']  " 忽略文件
 " let g:NERDTreeIgnore = []  " 不忽略任何文件
 " let g:NERDTreeIgnore = ['\.DS_Store$', '\.swp$']  " 只忽略临时文件，不忽略 .git
@@ -24,9 +25,10 @@ let g:NERDTreeAutoDeleteBuffer = 1    " 删除文件后自动删除缓冲区
 let g:NERDTreeCaseSensitiveSort = 1   " 大小写敏感排序
 
 " 窗口行为
-let g:NERDTreeWinSize = 30            " 窗口宽度
-let g:NERDTreeQuitOnOpen = 0          " 打开文件后不关闭 NERDTree
-let g:NERDTreeRespectWildIgnore = 1   " 遵守 wildignore 规则
+let g:NERDTreeWinSize = 30              " 窗口宽度
+let g:NERDTreeQuitOnOpen = 0            " 打开文件后不关闭 NERDTree
+let g:NERDTreeRespectWildIgnore = 1     " 遵守 wildignore 规则
+let g:NERDTreeFileLines = 0             " 显示文件行
 
 " ========================
 " 快捷键优化
@@ -89,6 +91,13 @@ let g:NERDTreeGitStatusIndicatorMap = {
 
 " 动态过滤文件
 let g:NERDTreeCustomFilter = 'filter({node -> node.path.getLastPathComponent() !~? "\\v(tmp|temp)"})'
+
+" 防止其他缓冲区在其窗口中替换
+autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" 如果 NERDTree 是其中唯一剩余的窗口，请关闭选项卡
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
 " ========================
 " 优化与兼容配置

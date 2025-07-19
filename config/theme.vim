@@ -18,15 +18,32 @@ let g:loaded_theme_config = 1
 " 主题选择
 " ========================
 
+" 默认主题设置
 " 终端推荐的主题
 " habamax
 " koehler
 " lunaperche
-if !has('gui_running') && (has('win32') || has('win64'))
-    colorscheme lunaperche
-    autocmd VimEnter s:custom_highlights()
-    finish
-endif
+" retrobox
+" if !has('gui_running') && (has('win32') || has('win64'))
+function! s:set_theme()
+    try
+        if !has('gui_running') && (has('win32') || has('win64'))
+            " colorscheme lunaperche
+            let g:theme_name = 'lunaperche'
+            augroup CustomHighlights
+                autocmd!
+                " 在 Vim 完全初始化后执行（包括插件加载）
+                autocmd VimEnter * call s:custom_highlights()
+            augroup END
+        else
+            let g:theme_name = 'gruvbox'
+        endif
+    catch /^Vim\%((\a\+)\)\=:E185/
+        echo "主题未加载"
+    endtry
+endfunction
+call s:set_theme()
+
 
 " 根据时间切换主题深浅色
 let hour = strftime("%H")
@@ -37,8 +54,6 @@ else
 endif
 " let g:theme_mode = 'dark'
 
-" 默认主题设置
-let g:theme_name = 'gruvbox'
 
 " ========================
 " 主题加载函数
@@ -94,7 +109,7 @@ call s:load_theme()
 
 function! s:custom_highlights()
     " 基础背景色
-    if !has('gui')
+    if has('gui') == '0'
         highlight Normal       guibg=NONE ctermbg=NONE  " 透明背景
     endif
     " 行号高亮

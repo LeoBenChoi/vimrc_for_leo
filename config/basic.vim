@@ -86,12 +86,32 @@ set wrapscan                    " 搜索到文件尾时循环
 " 缩进与制表符
 " ========================
 
-set autoindent                  " 自动继承上一行缩进
-set expandtab                   " 将制表符转为空格
-set tabstop=4                   " 制表符显示宽度
-set shiftwidth=4                " 自动缩进步长
-set softtabstop=4               " 退格键删除缩进
-set shiftround                  " 缩进对齐到shiftwidth倍数
+set expandtab    " 将 Tab 转为空格
+set tabstop=2    " 制表符显示为2空格宽度
+set shiftwidth=2 " 自动缩进2空格
+
+set list                " 显示不可见字符
+" let &listchars='tab:▸\ ,trail:-,extends:❯,precedes:❮,nbsp:+,eol:↴'
+set listchars=tab:▸\ ,trail:·,space:·,extends:❯,precedes:❮,nbsp:+,eol:↴,multispace:▸
+" set listchars=space:▸
+highlight SpecialKey ctermfg=7 guifg=#555555  " 灰色显示不可见字符et listchars=space:▸   " 用 ▸ 符号显示空格（4 个空格会显示为 1 个 ▸）
+" 将 4 个空格显示为 1 个 Tab 符号（如 ▸）
+set tabstop=4           " Tab 显示为 4 字符宽度
+set softtabstop=4       " 按 Tab 键插入 4 空格
+set shiftwidth=4        " 自动缩进 4 空格
+set expandtab           " 输入 Tab 时转为空格
+
+" 基础缩进
+" set autoindent                 " 自动继承上一行缩进
+" set copyindent                 " 复制缩进格式
+" set preserveindent             " 保留缩进结构
+" set shiftround                  " 缩进对齐到shiftwidth倍数
+
+" 调试用
+" set tabstop=2                  " Tab显示为2空格宽度
+" set shiftwidth=2               " 自动缩进2空格
+" set softtabstop=2              " 按Tab插入2空格
+" set expandtab                  " 将Tab转为空格
 
 " ========================
 " 界面显示
@@ -109,6 +129,7 @@ set matchpairs+=<:>             " 增加HTML标签匹配
 set shortmess+=I            " 关闭启动信息
 set showfulltag             " 完整显示标签内容
 set signcolumn=yes          " 始终显示符号列
+set numberwidth=4           " 设置行号列宽度（默认4字符）
 
 " 启用真彩色支持（终端需支持）
 if has('termguicolors')
@@ -153,11 +174,6 @@ augroup cursor_highlight
     autocmd InsertLeave * set cursorline cursorcolumn
 augroup END
 
-" 边界线增强显示
-let &showbreak='↪ ' " 设置折行符号，与下面那行等价
-" set showbreak=↪\
-set list           " 显示不可见字符
-let &listchars='tab:▸\ ,trail:-,extends:❯,precedes:❮,nbsp:+,eol:↴'
 
 " 行号高亮
 highlight LineNr ctermfg=darkgrey guifg=#5c6370
@@ -173,7 +189,8 @@ set laststatus=2   " 总是显示状态栏
 
 set viewdir=~/.vim/.view   " 保存视图信息（折叠/光标等）
 set viewoptions=cursor,folds,slash,unix " 保存视图信息（折叠/光标等）
-set foldenable            " 启用折叠
+set foldenable              " 启用折叠
+set foldlevelstart=99       " 默认不折叠
 " nnoremap <space> za " 切换折叠 写到base里面了
 " 自动加载视图并根据文件是否保存了视图进行折叠设置
 augroup AutoFold
@@ -219,6 +236,7 @@ augroup SetFoldingByFiletype
     autocmd FileType typescript setlocal foldmethod=syntax
     " u
     " v
+    autocmd FileType vue        setlocal foldmethod=syntax
     " w
     " x
     autocmd FileType xhtml      setlocal foldmethod=expr foldexpr=HTMLFold()
@@ -302,7 +320,8 @@ set wildignorecase              " 补全时忽略大小写
 set wildcharm=<Tab>             " 允许在宏中使用 Tab 触发补全
 " 高级补全增强
 set wildchar=<Tab>             " 设置补全触发键
-set completeopt=menuone,noselect " 补全选项优化
+" set completeopt=menu,menuone,noselect
+set completeopt=menu,menuone,noselect
 set pumheight=10               " 补全菜单最大高度
 
 " ========================
@@ -371,3 +390,10 @@ autocmd BufWritePre * call StripTrailingWhitespace()
 set ambiwidth=single
 " 但允许文件内容中的 CJK 字符使用双宽度
 autocmd BufEnter * if &filetype =~ 'markdown\|text' | setlocal ambiwidth=double | endif
+
+"""" editorconfig 兼容 """"
+" editorconfig 加载 依赖 editorconfig-vim 插件
+augroup ForceExpandTab
+    autocmd!
+    autocmd FileType * nested setlocal expandtab
+augroup END
