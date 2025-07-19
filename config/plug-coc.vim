@@ -72,6 +72,8 @@ let g:coc_global_extensions = [
             \ 'coc-json',
             \ 'coc-html',
             \ '@yaegassy/coc-volar',
+            \ 'coc-eslint',
+            \ 'coc-tsserver',
             \ ]
 
   autocmd BufWritePre *.go,*.vue :call CocAction('format')

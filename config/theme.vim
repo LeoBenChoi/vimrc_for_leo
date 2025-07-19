@@ -24,7 +24,7 @@ let g:loaded_theme_config = 1
 " lunaperche
 if !has('gui_running') && (has('win32') || has('win64'))
     colorscheme lunaperche
-    autocmd VimEnter s:custom_highlights() 
+    autocmd VimEnter s:custom_highlights()
     finish
 endif
 
@@ -86,18 +86,7 @@ call s:load_theme()
 " 状态栏
 " ========================
 
-" airline 主题配置
-if exists('g:loaded_airline') && exists('g:loaded_airline_themes')
-    " airline 主题配置
-    let g:airline_theme = g:theme_name
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#formatter = 'unique_tail'
-else 
-    "echohl WarningMsg
-    " echomsg "[theme.vim] vim-airline-themes 未安装，状态栏主题未配置"
-    "echohl None
-endif
+" 我的原生配置很久版本前删除了，现在这部分配置交给 plug-airline.vim 这个文件配置
 
 " ========================
 " 高亮配置(放到主题加载后)
