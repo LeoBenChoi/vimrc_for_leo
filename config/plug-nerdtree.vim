@@ -82,7 +82,7 @@ let g:NERDTreeGitStatusIndicatorMap = {
 
 " 自动行为
 " 当最后一个窗口是 NERDTree 时自动关闭
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " 启动时自动打开 NERDTree (可选)
 " autocmd VimEnter * NERDTree | wincmd p
@@ -91,7 +91,7 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 let g:NERDTreeCustomFilter = 'filter({node -> node.path.getLastPathComponent() !~? "\\v(tmp|temp)"})'
 
 " ========================
-" 优化
+" 优化与兼容配置
 " ========================
 
 " 保留 （不优化）

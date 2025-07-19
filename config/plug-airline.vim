@@ -15,7 +15,7 @@ let g:plug_load_airline = 1
 
 " :AirlineTheme <Tab>  " 自动补全可用主题
 " let g:airline_theme = 'gruvbox'  " 可选主题：solarized, onedark, molokai 等
-let g:airline_theme = 'luna'  
+let g:airline_theme = 'luna'
 let g:airline_powerline_fonts = 1                           " 启用特殊符号
 let g:airline#extensions#tabline#formatter = 'unique_tail'  " 文件名显示方式
 " 可选 formatter：
@@ -28,13 +28,13 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'  " 文件名显示方
 " ========================
 
 " air基本设置
-let g:airline#extensions#lsp#enabled = 1            " LSP 显示
-let g:airline#extensions#battery#enabled = 0  " 显示电池状态
-let g:airline#extensions#tabline#enabled = 1                " 启用顶部 Tab 栏
-let g:airline#extensions#tabline#enabled = 1        " 显示缓冲区列表
-let g:airline#extensions#wordcount#enabled = 1  " 显示字数统计
-let g:airline#extensions#whitespace#enabled = 1  " 显示尾随空格/混合缩进警告
-let g:airline#extensions#lsp#show_line_status = 1   " 显示当前行 LSP 状态
+" let g:airline#extensions#lsp#enabled = 1            " LSP 显示
+" let g:airline#extensions#battery#enabled = 0  " 显示电池状态
+" let g:airline#extensions#tabline#enabled = 1                " 启用顶部 Tab 栏
+" let g:airline#extensions#tabline#enabled = 1        " 显示缓冲区列表
+" let g:airline#extensions#wordcount#enabled = 1  " 显示字数统计
+" let g:airline#extensions#whitespace#enabled = 1  " 显示尾随空格/混合缩进警告
+" let g:airline#extensions#lsp#show_line_status = 1   " 显示当前行 LSP 状态
 
 " Git
 let g:airline#extensions#hunks#enabled = 1      " 显示Git变更统计
@@ -45,6 +45,15 @@ let g:airline#extensions#branch#enabled = 1     " 显示 Git 分支
 let g:airline#extensions#ale#enabled = 1  " 使用 ALE
 " 或
 " let g:airline#extensions#syntastic#enabled = 1  " 使用 Syntastic
+
+" 图标
+let g:airline_symbols = {}  " 符号表初始化
+" vue
+" let g:airline_symbols.vue = ""  " Unicode 字符 
+let g:airline_symbols = get(g:, 'airline_symbols', {})
+let g:airline_symbols.vue = ""  " 强制覆盖
+let g:airline#extensions#filetype#symbols = {}  " 重置文件类型符号表
+let g:airline#extensions#filetype#symbols.vue = g:airline_symbols.vue  " 重新映射
 
 " ========================
 " 扩高级自定义
@@ -64,6 +73,9 @@ let g:airline#extensions#ale#enabled = 1  " 使用 ALE
 "             \ %{strftime("%H:%M")}
             " \ %{coc#status()}'
             "   \'
+" let g:airline_section_y = '
+"             \ %{strftime("%H:%M")}'
+
 let g:airline_section_z = '
             \ %3p%% ☰ %l:%c
             \ %{get(g:, "startup_time_display", " ")}
@@ -77,9 +89,19 @@ if has('timers')
                 \ {'repeat': -1})
 endif
 
+
 " ========================
 " 兼容性配置
 " ========================
 
 " 让 Airline 不覆盖 fzf 的界面
-let g:airline#extensions#fzf#enabled = 0  " 禁用 fzf 的 Airline 集成
+let g:airline#extensions#fzf#enabled = 0  " 禁用 fzf 的 Airline 集成, 解决fzf 界面异常
+" let g:webdevicons_enable_airline_statusline = 0  " 禁止图标插件修改状态栏
+" let g:webdevicons_enable_airline_tabline = 0     " 禁止图标插件修改标签栏
+
+"""" 这里的兼容性配置是 vim-devicons 的配置 兼容，由于内容很少，就先放这
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}            "
+" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'  " 直接粘贴 Unicode 字符
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'  " 直接粘贴 Unicode 字符
+" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.vue'] = '󰡄'   " 针对 .vue 文件

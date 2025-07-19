@@ -65,6 +65,12 @@ endif
 " 插件配置
 " ===================================================================
 
+" nerdtree
+let plug_config_nerdtree = expand('~/.vim/config/plug-nerdtree.vim')
+if filereadable(plug_config_nerdtree)
+  source ~/.vim/config/plug-nerdtree.vim
+endif
+
 " airline
 let plug_config_airline = expand('~/.vim/config/plug-airline.vim')
 if filereadable(plug_config_airline)
@@ -81,12 +87,6 @@ endif
 let plug_config_fzf = expand('~/.vim/config/plug-fzf.vim')
 if filereadable(plug_config_fzf)
   source ~/.vim/config/plug-fzf.vim
-endif
-
-" nerdtree
-let plug_config_nerdtree = expand('~/.vim/config/plug-nerdtree.vim')
-if filereadable(plug_config_nerdtree)
-  source ~/.vim/config/plug-nerdtree.vim
 endif
 
 " git

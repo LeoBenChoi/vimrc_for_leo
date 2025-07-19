@@ -31,19 +31,21 @@ call plug#begin(g:plug_dir)
 " >>>>>>>>> 基础增强 <<<<<<<<<
 Plug 'tpope/vim-sensible'         " 合理默认设置
 
-" >>>>>>>>> 界面美化 <<<<<<<<<
-Plug 'morhetz/gruvbox'            " 经典配色
-Plug 'vim-airline/vim-airline'    " 状态栏
-Plug 'vim-airline/vim-airline-themes'
-Plug 'ryanoasis/vim-devicons'     " 文件图标（需Nerd Font）
-
-" >>>>>>>>> 高效编辑 <<<<<<<<<
-Plug 'tpope/vim-commentary'       " 快速注释
-
 " >>>>>>>>> 文件管理 <<<<<<<<<
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 文件树
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " 模糊搜索
 Plug 'junegunn/fzf.vim' " fzf.vim 集成 调用vim-fugitive 调用ctags
+
+" >>>>>>>>> 界面美化 <<<<<<<<<
+Plug 'morhetz/gruvbox'            " 经典配色
+Plug 'vim-airline/vim-airline'    " 状态栏
+Plug 'vim-airline/vim-airline-themes'
+" 文件图标(需Nerd Font) (需要在NERDTree | vim-airline | CtrlP | powerline | Denite | unite | lightline.vim | vim-startify | vimfiler | flagship
+Plug 'ryanoasis/vim-devicons'
+
+" >>>>>>>>> 高效编辑 <<<<<<<<<
+Plug 'tpope/vim-commentary'       " 快速注释
+
 
 " >>>>>>>>> 会话管理 <<<<<<<<<
 Plug 'xolox/vim-session'    " 会话自动保存与恢复
