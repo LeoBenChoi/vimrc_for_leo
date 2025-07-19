@@ -84,12 +84,3 @@ let g:coc_global_extensions = [
 
 " 指定 python 路径, 解决 coc 无法找到 python 的问题
 "  let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'
-
-" 限制 gopls 内存
-  let g:coc_user_config = {
-              \ "go.goplsOptions": {
-              \ "completeUnimported": v:true,
-              \ "staticcheck": v:true,
-              \ "memoryMode": "DegradeClosed",
-              \ }
-              \ }

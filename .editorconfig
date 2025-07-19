@@ -4,28 +4,37 @@
 root = true
 
 # 全局设置
-# 统一使用 utf-8 字符集
-# 统一使用 lf 结尾
-# 确保文件末尾有一个空行
-# 自动删除每行行尾的空格
 [*]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
-trim_trailing_whitespace = true
+charset = utf-8                     # 统一字符集
+end_of_line = lf                    # 使用 unix 方式的换行
+insert_final_newline = true         # 在文件末尾
+trim_trailing_whitespace = true     # 删除行尾空格
+indent_style = space                # 默认使用空格进行缩进
 
 # a
 # b
 # c
+[*.{css,scss}]
+indent_size = 2
 # d
 # e
 # f
 # g
+[*.go]
+indent_style = tab   # Go 强制使用制表符（非空格）
+tab_width = 8        # 制表符显示为8字符（Go官方标准）
+indent_size = 8      # 缩进对齐到8字符（与tab_width一致）
 # h
+[*.html]
+indent_size = 2
 # i
 # j
+[*.{js,jsx}]
+indent_size = 2
 # k
 # l
+[*.{less}]
+indent_size = 2
 # m
 # n
 # o
@@ -34,9 +43,16 @@ trim_trailing_whitespace = true
 # r
 # s
 # t
+[*.{ts,tsx}]
+indent_size = 2
 # u
 # v
+[*.vue]
+indent_size = 2
 # w
 # x
 # y
+[*.yaml]
+indent_style = space
+indent_size = 2
 # z

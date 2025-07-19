@@ -1,5 +1,4 @@
 {
-    "eslint.enable": true,
     "eslint.options": {
         "overrideConfig": {
             "extends": [
@@ -14,6 +13,6 @@
         "typescript",
         "typescriptreact"
     ],
-    "volar.languageServerPath": "vue-language-server",
-    "volar.takeOverMode.enabled": true
+    "suggest.noselect": true,
+    "suggest.enablePreselect": false
 }

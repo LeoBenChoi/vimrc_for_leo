@@ -43,10 +43,6 @@ Plug 'vim-airline/vim-airline-themes'
 " 文件图标(需Nerd Font) (需要在NERDTree | vim-airline | CtrlP | powerline | Denite | unite | lightline.vim | vim-startify | vimfiler | flagship
 Plug 'ryanoasis/vim-devicons'
 
-" >>>>>>>>> 高效编辑 <<<<<<<<<
-Plug 'tpope/vim-commentary'       " 快速注释
-
-
 " >>>>>>>>> 会话管理 <<<<<<<<<
 Plug 'xolox/vim-session'    " 会话自动保存与恢复
 Plug 'xolox/vim-misc'       " 会话依赖项
@@ -67,6 +63,11 @@ Plug 'junegunn/gv.vim'      " 提交历史浏览
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kevinoid/vim-jsonc'  " 支持 JSONC 语法高亮和注释
 Plug 'posva/vim-vue'       " vue 语法高亮
+
+" >>>>>>>>> 高效编辑 <<<<<<<<<
+Plug 'tpope/vim-commentary'     " 快速注释
+Plug 'ap/vim-css-color'         " 高亮颜色
+Plug 'editorconfig/editorconfig-vim'    " editorconfig
 
 " 代码浏览与分析
 Plug 'universal-ctags/ctags'  " 代码标签生成
