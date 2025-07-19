@@ -99,9 +99,15 @@ let g:airline#extensions#fzf#enabled = 0  " 禁用 fzf 的 Airline 集成, 解�
 " let g:webdevicons_enable_airline_statusline = 0  " 禁止图标插件修改状态栏
 " let g:webdevicons_enable_airline_tabline = 0     " 禁止图标插件修改标签栏
 
+" 解决宽字符设置显示问题
+set conceallevel=2
+set concealcursor=nvic
+" let g:airline_left_sep = '>'  " 用 '>' 替代默认的 '▶'（避免双宽度问题）
+" let g:airline_right_sep = '<'
+" 默认使用单宽度（防止符号错位）
+
 """" 这里的兼容性配置是 vim-devicons 的配置 兼容，由于内容很少，就先放这
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}            "
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'  " 直接粘贴 Unicode 字符
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'  " 直接粘贴 Unicode 字符
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.vue'] = '󰡄'   " 针对 .vue 文件
