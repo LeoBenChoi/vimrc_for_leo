@@ -221,9 +221,10 @@ nnoremap <silent> <C-Right> :vertical resize +5<CR>
 nnoremap <silent> <C-Up> :resize -5<CR>
 " <down>
 nnoremap <silent> <C-Down> :resize +5<CR>
-" / 注释功能 依赖 vim-commentary 插件
-nmap <C-/> <Plug>CommentaryLine
-xmap <C-/> <Plug>Commentary
+
+" / 注释功能 依赖 vim-commentary 插件, 移动到 plug-commentary.vim
+" nmap <C-/> <Plug>CommentaryLine
+" xmap <C-/> <Plug>Commentary
 
 " ===================================================
 " 其他按键映射
