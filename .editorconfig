@@ -10,6 +10,8 @@ end_of_line = lf                    # 使用 unix 方式的换行
 insert_final_newline = true         # 在文件末尾
 trim_trailing_whitespace = true     # 删除行尾空格
 indent_style = space                # 默认使用空格进行缩进
+# indent_style = tab                  # 使用制表符缩进
+# tab_width = 4                       # 每个Tab显示为4字符宽度
 
 # a
 # b

@@ -61,13 +61,13 @@ function! SmartVueCommentary() range
     " 更精确的语法组检测
     let synGroup = map(synstack(l:line, l:col), 'synIDattr(v:val, "name")')
     " 调试信息：显示检测到的语法组
-    echom "Detected syntax groups: " . string(synGroup)
+    " echom "Detected syntax groups: " . string(synGroup)
     " 检测当前区域类型
     if index(synGroup, 'vueTemplate') >= 0 ||
                 \ index(synGroup, 'htmlTagName') >= 0 ||
                 \ index(synGroup, 'xmlTagName') >= 0
         setlocal commentstring=<!--\ %s\ -->
-        echom "Setting HTML comment"
+        " echom "Setting HTML comment"
     " 处理 CSS 区域 - 优先检测
     elseif index(synGroup, 'vueStyle') >= 0 ||
                 \ index(synGroup, 'cssStyle') >= 0 ||
@@ -75,7 +75,7 @@ function! SmartVueCommentary() range
                 \ index(synGroup, 'css') >= 0 ||
                 \ search('<style\>', 'bnW') > 0
         setlocal commentstring=/*\ %s\ */
-        echom "Setting CSS comment"
+        " echom "Setting CSS comment"
     " 处理 script 区域
     elseif index(synGroup, 'vueScript') >= 0 ||
                 \ index(synGroup, 'typescript') >= 0 ||
@@ -83,11 +83,11 @@ function! SmartVueCommentary() range
                 \ index(synGroup, 'javaScript') >= 0 ||
                 \ search('<script\>', 'bnW') > 0
         setlocal commentstring=//\ %s
-        echom "Setting JS/TS comment"
+        " echom "Setting JS/TS comment"
     else
         " 回退到原始 commentstring
         setlocal commentstring=<!--\ %s\ -->
-        echom "Falling back to HTML comment"
+        " echom "Falling back to HTML comment"
     endif
     " 调试信息：显示最终使用的 commentstring
     " echom "Using commentstring: " . &commentstring

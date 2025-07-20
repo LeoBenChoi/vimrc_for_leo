@@ -28,7 +28,6 @@ let g:NERDTreeCaseSensitiveSort = 1   " 大小写敏感排序
 let g:NERDTreeWinSize = 30              " 窗口宽度
 let g:NERDTreeQuitOnOpen = 0            " 打开文件后不关闭 NERDTree
 let g:NERDTreeRespectWildIgnore = 1     " 遵守 wildignore 规则
-let g:NERDTreeFileLines = 0             " 显示文件行
 
 " ========================
 " 快捷键优化
@@ -110,3 +109,4 @@ let g:NERDTreeChDirMode = 2
 let g:NERDTreeAutoCD = 0
 let g:NERDTreeAutoCenter = 0
 let g:NERDTreeMinimalMenu = 1
+let g:NERDTreeFileLines = 0             " 显示文件行
