@@ -34,11 +34,13 @@ set confirm                     " 未保存时显示确认对话框
 " ========================
 
 set lazyredraw                  " 执行宏/寄存器时不重绘
-" set ttyfast                     " 快速终端连接
-set timeoutlen=500              " 映射等待时间(ms)
-set updatetime=300              " 写入交换文件间隔(ms)(影响插件)
+set ttyfast                     " 快速终端连接, 优化终端重绘
+" set timeoutlen=500              " 映射等待时间(ms)
+set updatetime=3000              " 写入交换文件间隔(ms)(影响插件)
 set synmaxcol=200               " 只高亮行前100列
 set re=1                        " 使用旧版正则引擎（对复杂语法更快）
+set notimeout                   " 禁用命令超时
+set nottimeout                  " 禁用键盘映射超时
 
 " ========================
 " 文件备份与恢复
@@ -96,7 +98,8 @@ function! SmartIndentDisplay()
     " 获取当前缩进宽度 (优先级: shiftwidth > tabstop)
     let width = &shiftwidth > 0 ? &shiftwidth : &tabstop
     if width == 2
-        let symbol = '»·'
+        " let symbol = '»\ '
+        let symbol = '▸\ '
     elseif width == 4
         let symbol = '▸····'
     elseif width == 8
@@ -239,8 +242,11 @@ augroup SetFoldingByFiletype
     autocmd FileType typescript setlocal foldmethod=syntax
     " u
     " v
-    autocmd FileType vue        setlocal foldmethod=indent
     autocmd BufRead,BufNewFile *.vue set filetype=vue
+    " autocmd FileType vue        setlocal foldmethod=indent
+    autocmd FileType vue set foldmethod=syntax   " 使用语法折叠
+    autocmd FileType vue set foldlevelstart=99   " 默认展开所有折叠
+    autocmd FileType vue set foldnestmax=5       " 最大嵌套折叠层数
     " w
     " x
     autocmd FileType xhtml      setlocal foldmethod=expr foldexpr=HTMLFold()
@@ -298,26 +304,6 @@ endfunction
 
 " 自定义折叠文本
 set foldtext=CustomFoldText()
-" function! CustomFoldText()
-"     " 获取开始行
-"     let start_line = getline(v:foldstart)
-"     let end_line = getline(min([v:foldend, line('$')]))  " 防止 v:foldend 越界
-"     " 获取开始结束位置
-"     let start = substitute(start_line, '\t', '    ', 'g')
-"     let end = substitute(end_line, '\t', '    ', 'g')
-"     let end_no_indent = substitute(end, '^\s*', '', '')
-"     " 组合信息
-"     let count = max([v:foldend - v:foldstart + 1, 1])
-"     let info = printf('[%d-%d] %d lines', v:foldstart, v:foldend, count)
-"     " let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
-"     " 显示逻辑
-"     let width = &textwidth > 0 ? &textwidth : 80
-"     let folded = (start_line == end_line) ? start : start . ' ... ' . end_no_indent
-"     let spacing = width - strwidth(folded) - strwidth(info)
-"     let pad = repeat(' ', spacing > 0 ? spacing : 1)
-"     " 返回
-"     return folded . pad . info
-" endfunction
 function! CustomFoldText()
     " 安全获取行内容（防止越界）
     let start_line = v:foldstart <= line('$') ? getline(v:foldstart) : ''
@@ -441,3 +427,105 @@ augroup ForceExpandTab
     autocmd!
     autocmd FileType * nested setlocal expandtab
 augroup END
+
+" 解决vite.config.ts 卡死问题
+" 针对 TypeScript 配置文件的优化
+" autocmd BufRead,BufNewFile vite.config.* set filetype=typescript
+" " 禁用复杂语法高亮
+" autocmd FileType typescript set syntax=off
+" autocmd FileType typescript set foldmethod=manual
+" " 限制语法解析范围
+" autocmd FileType typescript set synmaxcol=200  " 每行最多解析200列
+" autocmd FileType typescript set redrawtime=2000 " 增加重绘时间
+" " 禁用某些耗时的语法组
+" autocmd FileType typescript syntax clear typescriptDocComment
+" autocmd FileType typescript syntax clear typescriptDecorator
+" ===== 文件类型特定优化 =====
+autocmd FileType typescript,vue set synmaxcol=800
+autocmd FileType typescript,vue set redrawtime=40000
+autocmd FileType json,yaml set foldmethod=indent
+
+" " 创建专门针对 vite.config.ts 的优化
+" function! OptimizeViteConfig()
+"     " 禁用所有插件功能
+"     " set eventignore=all
+"     set syntax=off
+"     set foldmethod=manual
+"     set nocursorline
+"     set norelativenumber
+"     set nolazyredraw
+"     " 仅启用基本功能
+"     syntax enable
+"     set syntax=typescript
+"     autocmd FileType typescript set regexpengine=1      " 使用旧版正则引擎 (更稳定)
+"     " 手动重新启用必要功能
+"     " autocmd BufWinLeave <buffer> set eventignore=
+" endfunction
+" autocmd BufReadPre vite.config.* call OptimizeViteConfig()
+
+" 突破限制 ===========================================================================
+" ===== 核心性能优化 =====
+set redrawtime=30000       " 增加重绘超时到 30 秒 (充分利用高性能硬件)
+set maxmempattern=8000000  " 模式匹配内存提升到 8GB (默认 1MB)
+set maxmem=4000000         " 每个缓冲区最大内存提升到 4GB (默认取决于系统)
+set maxmemtot=32000000     " Vim 总内存限制提升到 32GB (匹配您的物理内存)
+set maxfuncdepth=400       " 最大函数嵌套深度 (默认 100)
+set maxmapdepth=200        " 最大映射深度 (默认 1000)
+set maxcombine=8           " 最大组合字符 (默认 6)
+set mmp=1000000            " 模式匹配内存限制 (默认 100000)
+
+" ===== CPU 优化 =====
+set regexpengine=2         " 使用新版正则引擎 (i9 能更好处理)
+set lazyredraw             " 脚本执行时不重绘屏幕
+set ttyfast                " 快速终端连接
+set notimeout              " 无命令超时
+set nottimeout             " 无键映射超时
+set updatetime=50          " 降低更新时间 (默认 4000ms)
+
+" ===== 渲染优化 =====
+" set nocursorline           " 禁用光标行高亮
+" set nocursorcolumn         " 禁用光标列高亮
+" set norelativenumber       " 禁用相对行号
+" set noshowcmd              " 禁用命令显示
+" set noshowmode             " 禁用模式显示
+" set foldmethod=manual      " 手动折叠 (语法折叠消耗大)
+set synmaxcol=500          " 每行只高亮前500列
+syntax sync minlines=500   " 增加语法同步行数
+
+" ===== GPU 加速 (需要 GUI 版本) =====
+if has('gui_running')
+    set renderoptions=type:directx,geom:1,renmode:5 " Windows 专用 GPU 加速
+    set linespace=0           " 优化文本渲染
+    set guifont=Consolas:h12  " 使用等宽字体提高渲染效率
+endif
+
+" ===== 大型文件处理 =====
+function! LargeFileMode()
+    if getfsize(expand("%")) > 10485760 " 10MB
+        set eventignore=all
+        set syntax=off
+        set foldmethod=manual
+        set nolist
+        set number
+        echo "Large file mode activated"
+    endif
+endfunction
+autocmd BufReadPre * call LargeFileMode()
+
+" ===== 插件优化 =====
+let g:polyglot_disabled = ['typescript', 'vue'] " 禁用部分语法插件
+let g:loaded_matchparen = 1                     " 禁用括号匹配
+let g:loaded_netrwPlugin = 1                    " 禁用内置文件浏览器
+
+" ===== 内存监控命令 =====
+function! MemoryUsage()
+    let total_mem = system('wmic computersystem get TotalPhysicalMemory')/1024/1024
+    let used_mem = system('wmic process where ProcessId="'.getpid().'" get WorkingSetSize')/1024/1024
+    echo "Vim memory: ".used_mem."MB / System memory: ".total_mem."MB"
+endfunction
+
+command! MemInfo call MemoryUsage()
+
+" ===== 性能分析工具 =====
+command! ProfileStart :profile start vim-profile.log | profile func * | profile file *
+command! ProfileStop :profile pause | noautocmd qall!
