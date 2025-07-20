@@ -29,7 +29,7 @@ endif
 call plug#begin(g:plug_dir)
 
 " >>>>>>>>> 基础增强 <<<<<<<<<
-Plug 'tpope/vim-sensible'         " 合理默认设置
+Plug 'tpope/vim-sensible'           " 合理默认设置
 
 " >>>>>>>>> 文件管理 <<<<<<<<<
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 文件树

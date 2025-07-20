@@ -86,32 +86,36 @@ set wrapscan                    " 搜索到文件尾时循环
 " 缩进与制表符
 " ========================
 
-set expandtab    " 将 Tab 转为空格
-set tabstop=2    " 制表符显示为2空格宽度
-set shiftwidth=2 " 自动缩进2空格
+" 基础设置
+set list
+" let &listchars='tab:▸ '+',trail:·'
+set listchars=tab:▸\ ,space:.,multispace:▸,extends:❯,precedes:❮,eol:↴
 
-set list                " 显示不可见字符
-" let &listchars='tab:▸\ ,trail:-,extends:❯,precedes:❮,nbsp:+,eol:↴'
-set listchars=tab:▸\ ,trail:·,space:·,extends:❯,precedes:❮,nbsp:+,eol:↴,multispace:▸
-" set listchars=space:▸
-highlight SpecialKey ctermfg=7 guifg=#555555  " 灰色显示不可见字符et listchars=space:▸   " 用 ▸ 符号显示空格（4 个空格会显示为 1 个 ▸）
-" 将 4 个空格显示为 1 个 Tab 符号（如 ▸）
-set tabstop=4           " Tab 显示为 4 字符宽度
-set softtabstop=4       " 按 Tab 键插入 4 空格
-set shiftwidth=4        " 自动缩进 4 空格
-set expandtab           " 输入 Tab 时转为空格
+" 智能缩进显示函数
+function! SmartIndentDisplay()
+    " 获取当前缩进宽度 (优先级: shiftwidth > tabstop)
+    let width = &shiftwidth > 0 ? &shiftwidth : &tabstop
+    if width == 2
+        let symbol = '»·'
+    elseif width == 4
+        let symbol = '▸····'
+    elseif width == 8
+        let symbol = '▸\ \ \ \ \ \ \ '
+    else
+        let symbol = '→' . repeat('\ ', width - 1)
+    endif
 
-" 基础缩进
-" set autoindent                 " 自动继承上一行缩进
-" set copyindent                 " 复制缩进格式
-" set preserveindent             " 保留缩进结构
-" set shiftround                  " 缩进对齐到shiftwidth倍数
+    if has('patch-9.0.0')
+        execute 'set listchars+=multispace:' . symbol
+    endif
 
-" 调试用
-" set tabstop=2                  " Tab显示为2空格宽度
-" set shiftwidth=2               " 自动缩进2空格
-" set softtabstop=2              " 按Tab插入2空格
-" set expandtab                  " 将Tab转为空格
+    " 高亮组
+    highlight SpecialKey ctermfg=7 guifg=#555555
+endfunction
+
+" 文件加载时应用智能缩进
+autocmd BufEnter * call SmartIndentDisplay()
+autocmd FileType * call SmartIndentDisplay()
 
 " ========================
 " 界面显示
@@ -190,7 +194,6 @@ set laststatus=2   " 总是显示状态栏
 set viewdir=~/.vim/.view   " 保存视图信息（折叠/光标等）
 set viewoptions=cursor,folds,slash,unix " 保存视图信息（折叠/光标等）
 set foldenable              " 启用折叠
-set foldlevelstart=99       " 默认不折叠
 " nnoremap <space> za " 切换折叠 写到base里面了
 " 自动加载视图并根据文件是否保存了视图进行折叠设置
 augroup AutoFold
@@ -236,13 +239,15 @@ augroup SetFoldingByFiletype
     autocmd FileType typescript setlocal foldmethod=syntax
     " u
     " v
-    autocmd FileType vue        setlocal foldmethod=syntax
+    autocmd FileType vue        setlocal foldmethod=indent
+    autocmd BufRead,BufNewFile *.vue set filetype=vue
     " w
     " x
     autocmd FileType xhtml      setlocal foldmethod=expr foldexpr=HTMLFold()
     " y
     " z
 augroup END
+set foldlevelstart=99       " 默认不折叠, 需要放到所有类型之后
 
 " === HTML 折叠表达式（需自定义） ===
 " HTML 语法折叠函数（优化版）
@@ -293,18 +298,57 @@ endfunction
 
 " 自定义折叠文本
 set foldtext=CustomFoldText()
+" function! CustomFoldText()
+"     " 获取开始行
+"     let start_line = getline(v:foldstart)
+"     let end_line = getline(min([v:foldend, line('$')]))  " 防止 v:foldend 越界
+"     " 获取开始结束位置
+"     let start = substitute(start_line, '\t', '    ', 'g')
+"     let end = substitute(end_line, '\t', '    ', 'g')
+"     let end_no_indent = substitute(end, '^\s*', '', '')
+"     " 组合信息
+"     let count = max([v:foldend - v:foldstart + 1, 1])
+"     let info = printf('[%d-%d] %d lines', v:foldstart, v:foldend, count)
+"     " let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
+"     " 显示逻辑
+"     let width = &textwidth > 0 ? &textwidth : 80
+"     let folded = (start_line == end_line) ? start : start . ' ... ' . end_no_indent
+"     let spacing = width - strwidth(folded) - strwidth(info)
+"     let pad = repeat(' ', spacing > 0 ? spacing : 1)
+"     " 返回
+"     return folded . pad . info
+" endfunction
 function! CustomFoldText()
-    let start = substitute(getline(v:foldstart), '\t', '    ', 'g')
-    let end = substitute(getline(v:foldend), '\t', '    ', 'g')
+    " 安全获取行内容（防止越界）
+    let start_line = v:foldstart <= line('$') ? getline(v:foldstart) : ''
+    let end_line = v:foldend <= line('$') ? getline(v:foldend) : ''
+
+    " 处理制表符
+    let start = substitute(start_line, '\t', '    ', 'g')
+    let end = substitute(end_line, '\t', '    ', 'g')
     let end_no_indent = substitute(end, '^\s*', '', '')
-    let folded = start . ' ... ' . end_no_indent
-    let count = v:foldend - v:foldstart + 1
-    let info = printf('[ %d - %d ] ==> %d lines <  ', v:foldstart, v:foldend, count)
+
+    " 强制计算有效行数
+    let valid_foldend = min([v:foldend, line('$')])
+    let count = max([valid_foldend - v:foldstart + 1, 1]) " 双重保险
+
+    " 如果仍然异常，直接使用行号差
+    if count <= 0
+        let count = abs(v:foldend - v:foldstart) + 1
+    endif
+
+    " 构建显示内容
+    let info = printf('[%d-%d] %d lines', v:foldstart, valid_foldend, count)
+    let folded = empty(end_no_indent) ? start : start . ' ... ' . end_no_indent
+
+    " 计算对齐
     let width = &textwidth > 0 ? &textwidth : 80
-    let spacing = width - strwidth(folded) - strwidth(info)
-    let pad = repeat(' ', spacing > 0 ? spacing : 1)
+    let spacing = max([width - strwidth(folded) - strwidth(info), 1])
+    let pad = repeat(' ', spacing)
+
     return folded . pad . info
 endfunction
+highlight Folded guifg=#888888
 
 " ========================
 " 命令行行为
