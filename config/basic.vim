@@ -88,10 +88,17 @@ set wrapscan                    " 搜索到文件尾时循环
 " 缩进与制表符
 " ========================
 
+" 交给 editorconfig
+" set tabstop=4       " tab 宽度
+" set shiftwidth=4    " 字符前 tab 空格
+" set softtabstop=4   " 字符后 tab 空格
+" set expandtab       " 将字符转换成空格
+
+
 " 基础设置
 set list
-" let &listchars='tab:▸ '+',trail:·'
-set listchars=tab:▸\ ,space:.,multispace:▸,extends:❯,precedes:❮,eol:↴
+" let &listchars='tab:▸ '+',trail:·'eol:↴,space:.
+set listchars=tab:▸\ ,multispace:▸,extends:❯,precedes:❮,eol:↵
 
 " 智能缩进显示函数
 function! SmartIndentDisplay()
@@ -101,7 +108,7 @@ function! SmartIndentDisplay()
         " let symbol = '»\ '
         let symbol = '▸\ '
     elseif width == 4
-        let symbol = '▸····'
+        let symbol = '▸\ \ \ '
     elseif width == 8
         let symbol = '▸\ \ \ \ \ \ \ '
     else
@@ -112,8 +119,8 @@ function! SmartIndentDisplay()
         execute 'set listchars+=multispace:' . symbol
     endif
 
-    " 高亮组
-    highlight SpecialKey ctermfg=7 guifg=#555555
+    " 调整高亮组（建议不动）
+    " highlight SpecialKey ctermfg=7 guifg=#888888
 endfunction
 
 " 文件加载时应用智能缩进
@@ -133,10 +140,10 @@ set display+=lastline           " 尽量显示长行最后的内容
 set showmatch                   " 显示括号匹配
 set matchtime=2                 " 括号匹配高亮时间(0.1s单位)
 set matchpairs+=<:>             " 增加HTML标签匹配
-set shortmess+=I            " 关闭启动信息
-set showfulltag             " 完整显示标签内容
-set signcolumn=yes          " 始终显示符号列
-set numberwidth=4           " 设置行号列宽度（默认4字符）
+set shortmess+=I                " 关闭启动信息
+set showfulltag                 " 完整显示标签内容
+set signcolumn=yes              " 始终显示符号列
+set numberwidth=4               " 设置行号列宽度（默认4字符）
 
 " 启用真彩色支持（终端需支持）
 if has('termguicolors')

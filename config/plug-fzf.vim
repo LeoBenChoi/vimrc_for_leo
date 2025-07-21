@@ -29,17 +29,17 @@ let g:fzf_vim = {}
 " 完全禁用预览窗口
 " let g:fzf_vim.preview_window = []
 " 主窗口显示在屏幕下方，高度约30% 【兼容性问题，只能选择显示在下方】
-" let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'down': '~30%' }
 " 最终方案 [ AI 推荐 ]
-let g:fzf_layout = {
-            \ 'window': {
-            \   'width': 0.9,
-            \   'height': 0.6,
-            \   'xoffset': 0.5,
-            \   'yoffset': 0.5,
-            \   'highlight': 'Comment',
-            \   'border': 'sharp'
-            \ }}
+" let g:fzf_layout = {
+"             \ 'window': {
+"             \   'width': 0.9,
+"             \   'height': 0.6,
+"             \   'xoffset': 0.5,
+"             \   'yoffset': 0.5,
+"             \   'highlight': 'Comment',
+"             \   'border': 'sharp'
+"             \ }}
 
 " ========================
 " 命令级选项
@@ -245,7 +245,7 @@ let g:fzf_colors = {
 " ========================
 
 " Rg
-let g:fzf_files_options = '--no-ignore-parent --no-follow'
+" let g:fzf_files_options = '--no-ignore-parent --no-follow'
 
 " ctags 权限不足目录和文件 跳过
 let g:fzf_vim.tags_command = 'ctags -R --exclude=node_modules --exclude=.git --exclude=build'
