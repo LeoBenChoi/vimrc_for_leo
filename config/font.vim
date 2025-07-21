@@ -24,8 +24,8 @@ if has('gui_running')
 
     " Windows 平台字体优先级设置
     if has('win32') || has('win64')
-        if s:font_exists('更纱终端书呆黑体-简:h12:cGB2312:qDRAFT')
-            set guifont=更纱终端书呆黑体-简:h12:cGB2312:qDRAFT
+        if s:font_exists('更纱终端书呆黑体-简:h14:cGB2312:qDRAFT')
+            set guifont=更纱终端书呆黑体-简:h14:cGB2312:qDRAFT
         elseif s:font_exists('Consolas:h12:cANSI:qDRAFT')
             set guifont=Consolas:h12:cANSI:qDRAFT
         endif

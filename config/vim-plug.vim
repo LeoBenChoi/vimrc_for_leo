@@ -38,6 +38,7 @@ Plug 'junegunn/fzf.vim' " fzf.vim 集成 调用vim-fugitive 调用ctags
 
 " >>>>>>>>> 界面美化 <<<<<<<<<
 Plug 'morhetz/gruvbox'            " 经典配色
+" Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-airline/vim-airline'    " 状态栏
 Plug 'vim-airline/vim-airline-themes'
 " 文件图标(需Nerd Font) (需要在NERDTree | vim-airline | CtrlP | powerline | Denite | unite | lightline.vim | vim-startify | vimfiler | flagship

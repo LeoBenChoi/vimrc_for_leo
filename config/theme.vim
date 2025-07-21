@@ -18,6 +18,15 @@ let g:loaded_theme_config = 1
 " 主题选择
 " ========================
 
+" 根据时间切换主题深浅色
+let hour = strftime("%H")
+if hour >= 7 && hour < 19
+    let g:theme_mode = 'light'  " 'dark' 或 'light'
+else
+    let g:theme_mode = 'dark'  " 'dark' 或 'light'
+endif
+
+" let g:theme_mode = 'dark'
 " 默认主题设置
 " 终端推荐的主题
 " habamax
@@ -28,6 +37,7 @@ let g:loaded_theme_config = 1
 function! s:set_theme()
     try
         if !has('gui_running') && (has('win32') || has('win64'))
+            let g:theme_mode = 'dark'
             " colorscheme lunaperche
             let g:theme_name = 'lunaperche'
             augroup CustomHighlights
@@ -45,14 +55,6 @@ endfunction
 call s:set_theme()
 
 
-" 根据时间切换主题深浅色
-let hour = strftime("%H")
-if hour >= 7 && hour < 19
-    let g:theme_mode = 'light'  " 'dark' 或 'light'
-else
-    let g:theme_mode = 'dark'  " 'dark' 或 'light'
-endif
-" let g:theme_mode = 'dark'
 
 
 " ========================
