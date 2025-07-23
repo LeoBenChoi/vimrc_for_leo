@@ -67,6 +67,7 @@ Plug 'posva/vim-vue'       " vue 语法和高亮
 
 " >>>>>>>>> 高效编辑 <<<<<<<<<
 Plug 'tpope/vim-commentary'     " 快速注释
+Plug 'suy/vim-context-commentstring' " 增强注释，根据高亮组切换注释符
 Plug 'ap/vim-css-color'         " 高亮颜色
 Plug 'editorconfig/editorconfig-vim'    " editorconfig
 

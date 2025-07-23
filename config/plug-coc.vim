@@ -71,9 +71,10 @@ let g:coc_global_extensions = [
             \ 'coc-eslint',
             \ 'coc-json',
             \ 'coc-html',
+            \ 'coc-css',
+            \ 'coc-tsserver',
             \ '@yaegassy/coc-volar',
             \ 'coc-eslint',
-            \ 'coc-tsserver',
             \ 'coc-vetur',
             \ ]
 

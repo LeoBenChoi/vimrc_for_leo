@@ -249,7 +249,7 @@ augroup SetFoldingByFiletype
     autocmd FileType typescript setlocal foldmethod=syntax
     " u
     " v
-    autocmd BufRead,BufNewFile *.vue set filetype=vue
+    " autocmd BufRead,BufNewFile *.vue set filetype=vue
     " autocmd FileType vue        setlocal foldmethod=indent
     autocmd FileType vue set foldmethod=syntax   " 使用语法折叠
     autocmd FileType vue set foldlevelstart=99   " 默认展开所有折叠
