@@ -63,7 +63,7 @@ Plug 'junegunn/gv.vim'      " 提交历史浏览
 " Use release branch (recommended)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kevinoid/vim-jsonc'  " 支持 JSONC 语法高亮和注释
-Plug 'posva/vim-vue'       " 语法高亮
+Plug 'posva/vim-vue'       " vue 语法和高亮
 
 " >>>>>>>>> 高效编辑 <<<<<<<<<
 Plug 'tpope/vim-commentary'     " 快速注释

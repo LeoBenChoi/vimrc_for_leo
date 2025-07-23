@@ -423,10 +423,9 @@ autocmd BufWritePre * call StripTrailingWhitespace()
 " 兼容性配置
 " ========================
 
-" 需要双宽度字符保证正文内容显示，但是需要单宽度字符保证图标显示正常
+" 使用 single 格式的字符，避免状态栏错位
 set ambiwidth=single
-" 但允许文件内容中的 CJK 字符使用双宽度
-autocmd BufEnter * if &filetype =~ 'markdown\|text' | setlocal ambiwidth=double | endif
+
 
 """" editorconfig 兼容 """"
 " editorconfig 加载 依赖 editorconfig-vim 插件
