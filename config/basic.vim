@@ -35,11 +35,11 @@ set confirm                     " 未保存时显示确认对话框
 
 set lazyredraw                  " 执行宏/寄存器时不重绘
 set ttyfast                     " 快速终端连接, 优化终端重绘
-" set timeoutlen=500              " 映射等待时间(ms)
+set timeoutlen=300              " 映射等待时间(ms)
 set updatetime=3000              " 写入交换文件间隔(ms)(影响插件)
 set synmaxcol=200               " 只高亮行前100列
 set re=1                        " 使用旧版正则引擎（对复杂语法更快）
-set notimeout                   " 禁用命令超时
+" set notimeout                   " 禁用命令超时
 set nottimeout                  " 禁用键盘映射超时
 
 " ========================
@@ -309,39 +309,63 @@ function! HTMLFold()
     return '='
 endfunction
 
+
 " 自定义折叠文本
 set foldtext=CustomFoldText()
 function! CustomFoldText()
-    " 安全获取行内容（防止越界）
-    let start_line = v:foldstart <= line('$') ? getline(v:foldstart) : ''
-    let end_line = v:foldend <= line('$') ? getline(v:foldend) : ''
+    " 获取折叠的起始和结束行号
+    " v:foldstart 和 v:foldend 是 Vim 提供的特殊变量，表示当前折叠的范围
+    let l:start_line_num = v:foldstart
+    let l:end_line_num = v:foldend
 
-    " 处理制表符
-    let start = substitute(start_line, '\t', '    ', 'g')
-    let end = substitute(end_line, '\t', '    ', 'g')
-    let end_no_indent = substitute(end, '^\s*', '', '')
+    " 计算折叠包含的行数
+    " 即使是单行折叠 (start_line_num == end_line_num)，结果也是 1
+    " 理论上，Vim 不会创建 start_line_num > end_line_num 的折叠
+    let l:line_count = l:end_line_num - l:start_line_num + 1
 
-    " 强制计算有效行数
-    let valid_foldend = min([v:foldend, line('$')])
-    let count = max([valid_foldend - v:foldstart + 1, 1]) " 双重保险
+    " 获取折叠起始行和结束行的内容
+    " getline() 函数在行号超出缓冲区范围时会返回空字符串，这里不需要额外检查
+    " 因为 v:foldstart 和 v:foldend 总是有效的行号
+    let l:start_line_content = getline(l:start_line_num)
+    let l:end_line_content = getline(l:end_line_num)
 
-    " 如果仍然异常，直接使用行号差
-    if count <= 0
-        let count = abs(v:foldend - v:foldstart) + 1
+    " 处理行内容：将制表符替换为空格，并移除结束行的前导空白（为了美观）
+    let l:processed_start = substitute(l:start_line_content, '\t', '    ', 'g')
+    let l:processed_end = substitute(l:end_line_content, '\t', '    ', 'g')
+    let l:processed_end_no_indent = substitute(l:processed_end, '^\s*', '', '')
+
+    " 构建折叠内容的显示部分
+    " 如果结束行在去除缩进后为空，则只显示起始行内容
+    let l:folded_display_text = empty(l:processed_end_no_indent) ? l:processed_start : l:processed_start . ' ... ' . l:processed_end_no_indent
+
+    " 限制折叠文本的显示长度，防止过长导致信息部分被挤出屏幕
+    " 假设信息部分至少需要 20 个字符的宽度，加上最小间隔 3 个字符
+    let l:max_folded_width = &columns - 20 - 3
+    if strwidth(l:folded_display_text) > l:max_folded_width && l:max_folded_width > 3
+        " 如果文本过长，截断并添加省略号
+        let l:folded_display_text = strcharpart(l:folded_display_text, 0, l:max_folded_width - 3) . '...'
+    elseif l:max_folded_width <= 3 " 如果可用空间太小，直接清空折叠文本，只显示信息
+        let l:folded_display_text = ''
     endif
 
-    " 构建显示内容
-    let info = printf('[%d-%d] %d lines', v:foldstart, valid_foldend, count)
-    let folded = empty(end_no_indent) ? start : start . ' ... ' . end_no_indent
+    " 构建信息部分的显示内容
+    let l:info_display_text = printf('[%d-%d] %d lines', l:start_line_num, l:end_line_num, l:line_count)
 
-    " 计算对齐
-    let width = &textwidth > 0 ? &textwidth : 80
-    let spacing = max([width - strwidth(folded) - strwidth(info), 1])
-    let pad = repeat(' ', spacing)
+    " 计算填充空格的数量，确保信息部分右对齐
+    " &columns 是当前终端的列数
+    let l:current_display_width = strwidth(l:folded_display_text) + strwidth(l:info_display_text)
+    let l:spacing = max([80 - l:current_display_width, 1]) " 至少一个空格
 
-    return folded . pad . info
+    " 返回最终的折叠文本
+    return l:folded_display_text . repeat(' ', l:spacing) . l:info_display_text
 endfunction
-highlight Folded guifg=#888888
+
+" 设置折叠文本的颜色（如果需要）
+" highlight Folded guifg=#888888
+" 如果你使用的是终端 Vim (不是 gVim/MacVim)，可能需要使用 ctermfg
+" highlight Folded ctermfg=888888 (或一个终端颜色代码，如 240)
+" 建议在你的 .vimrc 中根据你的 Vim 版本和终端类型选择合适的 highlight 命令
+
 
 " ========================
 " 命令行行为
@@ -392,12 +416,20 @@ set virtualedit=block           " 可视块模式允许越过行尾
 set splitright                  " 垂直分割在右侧打开
 set splitbelow                  " 水平分割在下方打开
 
-" tags 生成与查询路径
-set tags=./tags;,tags
-
 " ========================
 " 实用函数
 " ========================
+
+" 查看当前高亮组
+function! PrintSyntaxGroup()
+    let l:line = line('.')
+    let l:col = col('.')
+    " echo 'Syntax groups at cursor:'
+    echo map(synstack(l:line, l:col), 'synIDattr(v:val, "name")')
+    " echo 'Current commentstring: ' . &commentstring
+endfunction
+" 映射调试命令
+nnoremap <leader>db :call PrintSyntaxGroup()<CR>
 
 " 清除尾随空格
 function! StripTrailingWhitespace()
@@ -484,7 +516,7 @@ set mmp=1000000            " 模式匹配内存限制 (默认 100000)
 set regexpengine=2         " 使用新版正则引擎 (i9 能更好处理)
 set lazyredraw             " 脚本执行时不重绘屏幕
 set ttyfast                " 快速终端连接
-set notimeout              " 无命令超时
+" set notimeout              " 无命令超时
 set nottimeout             " 无键映射超时
 set updatetime=50          " 降低更新时间 (默认 4000ms)
 

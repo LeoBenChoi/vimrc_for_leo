@@ -62,21 +62,32 @@ Plug 'junegunn/gv.vim'      " 提交历史浏览
 " 或coc，lsp只能二选一
 " Use release branch (recommended)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'weirongxu/coc-explorer'
 Plug 'kevinoid/vim-jsonc'  " 支持 JSONC 语法高亮和注释
-Plug 'posva/vim-vue'       " vue 语法和高亮
 
 " >>>>>>>>> 高效编辑 <<<<<<<<<
-Plug 'tpope/vim-commentary'     " 快速注释
-Plug 'suy/vim-context-commentstring' " 增强注释，根据高亮组切换注释符
+Plug 'tomtom/tcomment_vim'      " 代码注释
 Plug 'ap/vim-css-color'         " 高亮颜色
 Plug 'editorconfig/editorconfig-vim'    " editorconfig
+Plug 'prettier/vim-prettier', { 'do': 'npm install' } " 格式化
+" Plug 'ycm-core/YouCompleteMe'    " 代码大纲
+" Plug 'ubaldot/vim-outline'       " 代码大纲
+Plug 'liuchengxu/vista.vim'          " 代码大纲
+" Plug 'majutsushi/tagbar'
 
-" 代码浏览与分析
-Plug 'universal-ctags/ctags'  " 代码标签生成
+" vue 相关
+Plug 'mattn/emmet-vim'                        " HTML快速编写
+Plug 'posva/vim-vue'       " vue 语法和高亮 会导致注释出现问题
 
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
 Plug 'mhinz/vim-startify'  " 启动页
+Plug 'wakatime/vim-wakatime'    " 代码时间统计,需要在 ~/.wakatime.cfg 配置 API 密钥
 " Plug 'dstein64/vim-startuptime' " 启动时间分析
 " Plug 'lambdalisue/vim-battery' " 电池状态显示
 
 call plug#end()
+
+" wakatime 配置
+" let g:wakatime_show_status_bar_icon = 0   " 隐藏状态栏图标
+let g:wakatime_cli_path = expand('~/.wakatime/wakatime-cli.exe') " 替换为你的 wakatime CLI 实际路径
+" let g:wakatime_debug = 1    " 调试模式

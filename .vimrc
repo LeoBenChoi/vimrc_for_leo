@@ -107,10 +107,18 @@ if filereadable(plug_config_jsonc)
   source ~/.vim/config/plug-jsonc.vim
 endif
 
+" commentary
 let plug_config_commentary = expand('~/.vim/config/plug-commentary.vim')
 if filereadable(plug_config_commentary)
   source ~/.vim/config/plug-commentary.vim
 endif
+
+" vista
+let plug_config_vista = expand('~/.vim/config/plug-vista.vim')
+if filereadable(plug_config_vista)
+  source ~/.vim/config/plug-vista.vim
+endif
+
 
 " ===================================================================
 " ===================================================================
