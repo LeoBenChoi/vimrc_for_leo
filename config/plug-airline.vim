@@ -30,7 +30,11 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'  " 文件名显示方
 " air基本设置
 " let g:airline#extensions#lsp#enabled = 1            " LSP 显示
 " let g:airline#extensions#battery#enabled = 0  " 显示电池状态
-" let g:airline#extensions#tabline#enabled = 1                " 启用顶部 Tab 栏
+let g:airline#extensions#tabline#enabled = 1                " 启用顶部 Tab 栏
+let g:airline#extensions#tabline#show_tabs = 1   " 显示标签页
+let g:airline#extensions#tabline#tab_nr_type = 1   " 显示标签序号
+let g:airline#extensions#tabline#preserve_pwd = 1  " 保持当前工作目录
+
 " let g:airline#extensions#tabline#enabled = 1        " 显示缓冲区列表
 " let g:airline#extensions#wordcount#enabled = 1  " 显示字数统计
 " let g:airline#extensions#whitespace#enabled = 1  " 显示尾随空格/混合缩进警告
@@ -79,7 +83,8 @@ let g:airline#extensions#filetype#symbols.vue = g:airline_symbols.vue  " 重新�
 let g:airline_section_z = '
             \ %3p%% ☰ %l:%c
             \ %{get(g:, "startup_time_display", " ")}
-            \ %{strftime("%H:%M")}'
+            \ %{strftime("%H:%M")}
+            \ %{NearestMethodOrFunction()}'
 
 " 自动更新时间（需Vim 8.0+）
 if has('timers')

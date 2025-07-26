@@ -64,19 +64,25 @@ call SetupCommandAbbrs('C', 'CocConfig')
 "   \ 'coc-vetur'        " vue lsp
 "   \ ]
 
-" go vue
+" 默认的json
+" go
+" vue
 let g:coc_global_extensions = [
-            \ 'coc-go',
-            \ 'coc-pyright',
-            \ 'coc-eslint',
-            \ 'coc-json',
-            \ 'coc-html',
-            \ 'coc-css',
-            \ 'coc-tsserver',
-            \ '@yaegassy/coc-volar',
-            \ 'coc-eslint',
-            \ 'coc-vetur',
-            \ ]
+  \ 'coc-json',
+  \
+  \ 'coc-go',
+  \ 'coc-pyright',
+  \ 'coc-eslint',
+  \
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-tsserver',
+  \ '@yaegassy/coc-volar',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-snippets',
+  \ ]
+
 
   autocmd BufWritePre *.go,*.vue :call CocAction('format')
 
@@ -86,3 +92,6 @@ let g:coc_global_extensions = [
 
 " 指定 python 路径, 解决 coc 无法找到 python 的问题
 "  let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'
+
+" 取消对 CoC 插件一次性应用修改数量的限制，允许它进行批量修改
+let g:coc_edits_maximum_count = 0

@@ -24,7 +24,7 @@ let g:loaded_mappings_config = 1
 " F5
 " F6
 " F7
-" F8
+" F8    " 代码大纲 依赖vista 配置在 config/plug-vista.vim
 " F9
 " F10
 " F11
@@ -126,11 +126,12 @@ nmap <leader>ac  <Plug>(coc-codeaction-cursor)
 nmap <leader>as  <Plug>(coc-codeaction-source)
     " aq 快速修复
 nmap <leader>aq  <Plug>(coc-fix-current)
-" b 缓冲区管理
-" nnoremap <silent> <leader>bn :bn<CR>       " 下一个缓冲区
-" nnoremap <silent> <leader>bp :bp<CR>       " 上一个缓冲区
-" nnoremap <silent> <leader>bd :bd<CR>       " 关闭当前缓冲区
-" nnoremap <leader>bl :buffers<CR>           " 列出缓冲区
+    " b 缓冲区管理
+nnoremap <silent> <leader>bn :bn<CR>       " 下一个缓冲区
+nnoremap <silent> <leader>bp :bp<CR>       " 上一个缓冲区
+nnoremap <silent> <leader>bd :bd<CR>       " 关闭当前缓冲区
+        " 列出缓冲区
+nnoremap <leader>bl :buffers<CR>
 " c 代码透镜
 nmap <leader>cl  <Plug>(coc-codelens-action)
 " d
@@ -149,6 +150,12 @@ nmap <leader>cl  <Plug>(coc-codelens-action)
 "     " 历史
 " nnoremap <leader>fh :History<CR>
 " g
+    " 注释相关 依赖 tcomment_vim 插件
+    " gcc 注释当前行
+    " gcc
+    " gc 注释选中区域
+    " gc
+" nnoremap <leader>cl :Commentary<CR>
 " h
 " i
 " j
@@ -225,6 +232,8 @@ nnoremap <silent> <C-Down> :resize +5<CR>
 " / 注释功能 依赖 vim-commentary 插件, 移动到 plug-commentary.vim
 " nmap <C-/> <Plug>CommentaryLine
 " xmap <C-/> <Plug>Commentary
+nmap <C-/> gcc
+xmap <C-/> gc
 
 " ===================================================
 " 其他按键映射
