@@ -39,12 +39,15 @@ if has('gui_running')
         "     endif
 
         " Linux 字体配置
-        "   elseif has('unix')
-        "     if s:font_exists('JetBrainsMono\ Nerd\ Font\ Mono:h12')
-        "       set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12
-        "     elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono:h12')
-        "       set guifont=FiraCode\ Nerd\ Font\ Mono:h12
-        "     endif
-
+       elseif has('unix')
+                if s:font_exists('Sarasa\ Term\ SC\ Nerd\ 10')
+                        set guifont=Sarasa\ Term\ SC\ Nerd\ 10
+                endif
+                if s:font_exists('JetBrainsMono\ Nerd\ Font\ Mono:h12')
+                        set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12
+                elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono:h12')
+                        set guifont=FiraCode\ Nerd\ Font\ Mono:h12
+                endif
+        endif
     endif
 endif
