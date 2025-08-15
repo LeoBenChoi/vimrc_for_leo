@@ -17,4 +17,4 @@ git clone https://github.com/LeoBenChoi/vimrc_for_leo.git ./
 :PlugInstall
 ```
 
-退出vim，查询进入，配置完成
+退出vim，重新进入，配置完成
