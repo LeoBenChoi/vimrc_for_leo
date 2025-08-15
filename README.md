@@ -1,9 +1,12 @@
 # 说明
 
-前置条件
+## 前置条件
 
-- nodejs
-- npm
+- nodejs（必须）
+- npm（必须）
+- 字体：[更纱终端书呆黑体-简](https://github.com/laishulu/Sarasa-Term-SC-Nerd) （可选，推荐）
+
+## 配置方法
 
 第一次打开会报错（这个后面有空再改），在Windows或者Linux的~/.vim（需要手动创建）目录下，使用以下命令克隆并复制vimrc
 
