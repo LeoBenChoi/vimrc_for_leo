@@ -81,10 +81,12 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-snippets',
+  \
+  \ 'coc-phpls',
   \ ]
 
 
-  autocmd BufWritePre *.go,*.vue :call CocAction('format')
+  autocmd BufWritePre *.go,*.vue,*.php :call CocAction('format')
 
 " ========================
 " 优化 与 兼容

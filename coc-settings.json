@@ -59,6 +59,7 @@
   "coc.source.vue.priority": 99,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+
 }
 
