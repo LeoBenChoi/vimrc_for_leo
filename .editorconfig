@@ -7,15 +7,14 @@ root = true
 [*]
 charset = utf-8                     # 统一字符集
 end_of_line = lf                    # 使用 unix 方式的换行
-insert_final_newline = true         # 在文件末尾
+insert_final_newline = true         # 在文件末尾插入换行
 trim_trailing_whitespace = true     # 删除行尾空格
 indent_style = space                # 默认使用空格进行缩进
-# indent_style = tab                  # 使用制表符缩进
-# tab_width = 4                       # 每个Tab显示为4字符宽度
 
 # a
 # b
 # c
+# CSS 和 SCSS 文件的设置
 [*.{css,scss}]
 indent_size = 2
 # d
@@ -23,37 +22,51 @@ indent_size = 2
 # f
 # g
 [*.go]
-indent_style = tab   # Go 强制使用制表符（非空格）
-tab_width = 8        # 制表符显示为8字符（Go官方标准）
-indent_size = 8      # 缩进对齐到8字符（与tab_width一致）
+indent_style = tab                  # Go 强制使用制表符（非空格）
+tab_width = 8                       # 制表符显示为8字符（Go官方标准）
+indent_size = 8                     # 缩进对齐到8字符（与tab_width一致）
 # h
+# HTML 文件的设置
 [*.html]
 indent_size = 2
 # i
 # j
+# JavaScript 和 JSX 文件的设置
 [*.{js,jsx}]
 indent_size = 2
 # k
 # l
-[*.{less}]
+# Less 文件的设置
+[*.less]
 indent_size = 2
 # m
 # n
 # o
 # p
+[*.php]
+indent_style = space                # 使用空格进行缩进
+indent_size = 4                     # 缩进大小为4个空格
+tab_width = 4                       # 制表符显示为4字符宽度
+charset = utf-8                     # 字符集设置为 UTF-8
+trim_trailing_whitespace = true     # 删除行尾空格
+insert_final_newline = true         # 在文件末尾插入换行
+max_line_length = 120               # 最大行长度为120个字符
 # q
 # r
 # s
 # t
+# TypeScript 和 TSX 文件的设置
 [*.{ts,tsx}]
 indent_size = 2
 # u
 # v
+# Vue 文件的设置
 [*.vue]
 indent_size = 2
 # w
 # x
 # y
+# YAML 文件的设置
 [*.yaml]
 indent_style = space
 indent_size = 2

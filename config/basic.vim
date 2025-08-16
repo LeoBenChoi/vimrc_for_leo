@@ -89,10 +89,10 @@ set wrapscan                    " 搜索到文件尾时循环
 " ========================
 
 " 交给 editorconfig
-" set tabstop=4       " tab 宽度
-" set shiftwidth=4    " 字符前 tab 空格
-" set softtabstop=4   " 字符后 tab 空格
-" set expandtab       " 将字符转换成空格
+set tabstop=4       " tab 宽度
+set shiftwidth=4    " 字符前 tab 空格
+set softtabstop=4   " 字符后 tab 空格
+set expandtab       " 将字符转换成空格
 
 
 " 基础设置
