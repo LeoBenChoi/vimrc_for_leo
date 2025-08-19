@@ -1,65 +1,6 @@
 {
-  // ===== 基础行为配置 =====
-  "suggest.noselect": true,
-  "suggest.enablePreview": true,
-  "suggest.enablePreselect": false,
-  "signature.target": "float",
-  "diagnostic.virtualText": true,
-  "diagnostic.virtualTextCurrentLineOnly": false,
-  "diagnostic.virtualTextPrefix": "■ ",
-
-  // ===== LSP 核心配置 =====
-  "languageserver": {
-    "tsserver": {
-      "command": "typescript-language-server",
-      "args": ["--stdio"],
-      "filetypes": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
-      "rootPatterns": ["package.json", "tsconfig.json"],
-      "settings": {}
-    }
-  },
-
-  // ===== Vetur 专属配置 =====
-  "vetur.format.enable": true,
-  "vetur.format.defaultFormatter.html": "prettier",
-  "vetur.format.defaultFormatter.js": "prettier",
-  "vetur.format.defaultFormatter.ts": "prettier",
-  "vetur.format.options": {
-    "tabSize": 2,
-    "useTabs": false,
-    "singleQuote": true,
-    "semi": false,
-    "trailingComma": "none",
-    "printWidth": 100
-  },
-  "vetur.validation.template": true,
-  "vetur.validation.script": true,
-  "vetur.validation.style": true,
-  "vetur.trace.server": "verbose",
-
-  // ===== 格式化工具统一 =====
-  "coc.preferences.formatOnSaveFiletypes": ["vue", "javascript", "typescript"],
-  "prettier.enable": true,
-  "prettier.singleQuote": true,
-  "prettier.semi": false,
-  "prettier.tabWidth": 2,
-  "prettier.trailingComma": "none",
-  "prettier.printWidth": 100,
-
-  // ===== ESLint 集成 =====
-  "eslint.enable": true,
-  "eslint.filetypes": ["vue", "javascript", "typescript"],
-  "eslint.run": "onType",
-  "eslint.autoFixOnSave": true,
-
-  // ===== 代码片段增强 =====
-  "snippets.ultisnips.pythonPrompt": false,
-  "coc.source.vue.autoTrigger": "always",
-  "coc.source.vue.shortcut": "VUE",
-  "coc.source.vue.priority": 99,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-
+  // 当使用 UltiSnips 片段补全时，在某些 Python 环境下可能会显示一个额外的提示或确认对话框
+  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断。
+  // 效果：用户触发片段时直接插入内容，不会出现中间确认步骤，提升编码效率。
+  "snippets.ultisnips.pythonPrompt": false
 }
-

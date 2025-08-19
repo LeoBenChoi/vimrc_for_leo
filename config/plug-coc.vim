@@ -17,6 +17,10 @@ let g:config_load_cocnvim = 1
 " ========================
 
 " coc config 文件路径
+" 设置 cocconfig 路径
+let g:coc_config_home = expand('~/.vim')
+" let g:coc_config_file="~/.vim/coc-settings.jsonc"
+" let g:coc_config_file="~/.vim/coc-settings.jsonc"
 "  let g:coc_config_home = '~/.vim/'
 "  let g:coc_config_home = expand('~/.vim')
 "  let g:coc_config_home = expand('$USERPROFILE/.vim')
@@ -76,7 +80,6 @@ let g:coc_global_extensions = [
   \
   \ 'coc-html',
   \ 'coc-css',
-  \ 'coc-tsserver',
   \ '@yaegassy/coc-volar',
   \ 'coc-eslint',
   \ 'coc-prettier',
