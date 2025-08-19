@@ -32,8 +32,6 @@ set fileformats=unix,dos
 " 这里必须在coc.nvim 前加载
 " ======================== ======================== ========================
 
-" 设置 cocconfig 路径
-let g:coc_config_home = expand('~/.vim')
 " 设置 coc.nvim 的 Go 专用配置（替代 coc-settings.json）
 " - command: gopls 路径（自动从 PATH 查找）
 " - rootPatterns: 识别项目根目录的标记文件
