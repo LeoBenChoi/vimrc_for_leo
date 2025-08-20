@@ -74,6 +74,7 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' } " 格式化
 " Plug 'ubaldot/vim-outline'       " 代码大纲
 Plug 'liuchengxu/vista.vim'          " 代码大纲
 " Plug 'majutsushi/tagbar'
+Plug 'FittenTech/fittencode.vim'    " AI 代码补全
 
 " vue 相关
 Plug 'mattn/emmet-vim'                        " HTML快速编写
