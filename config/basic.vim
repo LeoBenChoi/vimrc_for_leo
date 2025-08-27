@@ -1,38 +1,26 @@
-" ==================================================
-" BASIC.VIM - 核心编辑器配置
-" 功能：基础设置/性能优化/通用行为
-" 加载顺序：应在其他配置前最先加载
-" ==================================================
-
-" 确保只加载一次
-if exists('g:loaded_basic_config')
-    finish
-endif
-let g:loaded_basic_config = 1
-
 " 设置不兼容vi
 if &compatible
     set nocompatible
 endif
 
-" ========================
-" 基础行为配置
-" ========================
-
+" ===================================================================
+" 基础配置
+" ===================================================================
 " 文件编码设置（跨平台兼容）
 set encoding=utf-8              " 内部编码
 set fileencoding=utf-8          " 新文件默认编码
 set fileencodings=utf-8,gb2312,gbk,cp936,latin1 " 自动检测编码顺序
+
+" 强制统一换行格式
+set fileformat=unix
+set fileformats=unix,dos
 
 " 文件处理行为
 set autoread                    " 文件被外部修改时自动重新加载
 set hidden                      " 允许缓冲区隐藏而不保存
 set confirm                     " 未保存时显示确认对话框
 
-" ========================
-" 性能优化
-" ========================
-
+" 基础杂项
 set lazyredraw                  " 执行宏/寄存器时不重绘
 set ttyfast                     " 快速终端连接, 优化终端重绘
 set timeoutlen=300              " 映射等待时间(ms)
@@ -41,6 +29,12 @@ set synmaxcol=200               " 只高亮行前100列
 set re=1                        " 使用旧版正则引擎（对复杂语法更快）
 " set notimeout                   " 禁用命令超时
 set nottimeout                  " 禁用键盘映射超时
+set backspace=indent,eol,start  " 退格键行为
+set history=100                " 命令历史记录数
+set virtualedit=block           " 可视块模式允许越过行尾
+set splitright                  " 垂直分割在右侧打开
+set splitbelow                  " 水平分割在下方打开
+set ambiwidth=single            " 使用 single 格式的字符，避免状态栏错位
 
 " ========================
 " 文件备份与恢复
@@ -94,8 +88,7 @@ set shiftwidth=4    " 字符前 tab 空格
 set softtabstop=4   " 字符后 tab 空格
 set expandtab       " 将字符转换成空格
 
-
-" 基础设置
+" 显示不可见字符
 set list
 " let &listchars='tab:▸ '+',trail:·'eol:↴,space:.
 set listchars=tab:▸\ ,multispace:▸,extends:❯,precedes:❮,eol:↵
@@ -187,7 +180,6 @@ augroup cursor_highlight
     autocmd InsertEnter * set nocursorline nocursorcolumn
     autocmd InsertLeave * set cursorline cursorcolumn
 augroup END
-
 
 " 行号高亮
 highlight LineNr ctermfg=darkgrey guifg=#5c6370
@@ -309,7 +301,6 @@ function! HTMLFold()
     return '='
 endfunction
 
-
 " 自定义折叠文本
 set foldtext=CustomFoldText()
 function! CustomFoldText()
@@ -366,7 +357,6 @@ endfunction
 " highlight Folded ctermfg=888888 (或一个终端颜色代码，如 240)
 " 建议在你的 .vimrc 中根据你的 Vim 版本和终端类型选择合适的 highlight 命令
 
-
 " ========================
 " 命令行行为
 " ========================
@@ -397,39 +387,9 @@ if has('mouse')
     endif
 endif
 
-" 剪贴板集成
-" if has('clipboard')
-"   if has('unnamedplus')         " 优先使用+寄存器
-"     set clipboard=unnamed,unnamedplus
-"   else                          " 回退到*寄存器
-"     set clipboard=unnamed
-"   endif
-" endif
-
 " ========================
-" 其他关键配置
+" 功能函数
 " ========================
-
-set backspace=indent,eol,start  " 退格键行为
-set history=100                " 命令历史记录数
-set virtualedit=block           " 可视块模式允许越过行尾
-set splitright                  " 垂直分割在右侧打开
-set splitbelow                  " 水平分割在下方打开
-
-" ========================
-" 实用函数
-" ========================
-
-" 查看当前高亮组
-function! PrintSyntaxGroup()
-    let l:line = line('.')
-    let l:col = col('.')
-    " echo 'Syntax groups at cursor:'
-    echo map(synstack(l:line, l:col), 'synIDattr(v:val, "name")')
-    " echo 'Current commentstring: ' . &commentstring
-endfunction
-" 映射调试命令
-nnoremap <leader>db :call PrintSyntaxGroup()<CR>
 
 " 清除尾随空格
 function! StripTrailingWhitespace()
@@ -451,62 +411,16 @@ autocmd BufWritePre * call StripTrailingWhitespace()
 "   set verbose=1
 " endif
 
-" ========================
-" 兼容性配置
-" ========================
+" ===================================================================
+" 性能优化
+" 突破限制
+" ===================================================================
 
-" 使用 single 格式的字符，避免状态栏错位
-set ambiwidth=single
-
-
-"""" editorconfig 兼容 """"
-" editorconfig 加载 依赖 editorconfig-vim 插件
-augroup ForceExpandTab
-    autocmd!
-    autocmd FileType * nested setlocal expandtab
-augroup END
-
-" 解决vite.config.ts 卡死问题
-" 针对 TypeScript 配置文件的优化
-" autocmd BufRead,BufNewFile vite.config.* set filetype=typescript
-" " 禁用复杂语法高亮
-" autocmd FileType typescript set syntax=off
-" autocmd FileType typescript set foldmethod=manual
-" " 限制语法解析范围
-" autocmd FileType typescript set synmaxcol=200  " 每行最多解析200列
-" autocmd FileType typescript set redrawtime=2000 " 增加重绘时间
-" " 禁用某些耗时的语法组
-" autocmd FileType typescript syntax clear typescriptDocComment
-" autocmd FileType typescript syntax clear typescriptDecorator
-" ===== 文件类型特定优化 =====
-autocmd FileType typescript,vue set synmaxcol=800
-autocmd FileType typescript,vue set redrawtime=40000
-autocmd FileType json,yaml set foldmethod=indent
-
-" " 创建专门针对 vite.config.ts 的优化
-" function! OptimizeViteConfig()
-"     " 禁用所有插件功能
-"     " set eventignore=all
-"     set syntax=off
-"     set foldmethod=manual
-"     set nocursorline
-"     set norelativenumber
-"     set nolazyredraw
-"     " 仅启用基本功能
-"     syntax enable
-"     set syntax=typescript
-"     autocmd FileType typescript set regexpengine=1      " 使用旧版正则引擎 (更稳定)
-"     " 手动重新启用必要功能
-"     " autocmd BufWinLeave <buffer> set eventignore=
-" endfunction
-" autocmd BufReadPre vite.config.* call OptimizeViteConfig()
-
-" 突破限制 ===========================================================================
 " ===== 核心性能优化 =====
 set redrawtime=30000       " 增加重绘超时到 30 秒 (充分利用高性能硬件)
 set maxmempattern=8000000  " 模式匹配内存提升到 8GB (默认 1MB)
 set maxmem=4000000         " 每个缓冲区最大内存提升到 4GB (默认取决于系统)
-set maxmemtot=32000000     " Vim 总内存限制提升到 32GB (匹配您的物理内存)
+set maxmemtot=16000000     " Vim 总内存限制提升到 16GB (匹配您的物理内存)
 set maxfuncdepth=400       " 最大函数嵌套深度 (默认 100)
 set maxmapdepth=200        " 最大映射深度 (默认 1000)
 set maxcombine=8           " 最大组合字符 (默认 6)
@@ -527,43 +441,16 @@ set updatetime=50          " 降低更新时间 (默认 4000ms)
 " set noshowcmd              " 禁用命令显示
 " set noshowmode             " 禁用模式显示
 " set foldmethod=manual      " 手动折叠 (语法折叠消耗大)
-set synmaxcol=500          " 每行只高亮前500列
-syntax sync minlines=500   " 增加语法同步行数
+set synmaxcol=800          " 每行只高亮前500列
+" 增加语法同步行数
+syntax sync minlines=300
 
 " ===== GPU 加速 (需要 GUI 版本) =====
 if has('gui_running')
     set renderoptions=type:directx,geom:1,renmode:5 " Windows 专用 GPU 加速
     set linespace=0           " 优化文本渲染
-    set guifont=Consolas:h12  " 使用等宽字体提高渲染效率
+    " set guifont=Consolas:h12  " 使用等宽字体提高渲染效率
 endif
 
-" ===== 大型文件处理 =====
-function! LargeFileMode()
-    if getfsize(expand("%")) > 10485760 " 10MB
-        set eventignore=all
-        set syntax=off
-        set foldmethod=manual
-        set nolist
-        set number
-        echo "Large file mode activated"
-    endif
-endfunction
-autocmd BufReadPre * call LargeFileMode()
-
-" ===== 插件优化 =====
-let g:polyglot_disabled = ['typescript', 'vue'] " 禁用部分语法插件
-let g:loaded_matchparen = 1                     " 禁用括号匹配
-let g:loaded_netrwPlugin = 1                    " 禁用内置文件浏览器
-
-" ===== 内存监控命令 =====
-function! MemoryUsage()
-    let total_mem = system('wmic computersystem get TotalPhysicalMemory')/1024/1024
-    let used_mem = system('wmic process where ProcessId="'.getpid().'" get WorkingSetSize')/1024/1024
-    echo "Vim memory: ".used_mem."MB / System memory: ".total_mem."MB"
-endfunction
-
-command! MemInfo call MemoryUsage()
-
-" ===== 性能分析工具 =====
-command! ProfileStart :profile start vim-profile.log | profile func * | profile file *
-command! ProfileStop :profile pause | noautocmd qall!
+finish
+" ===================================================================

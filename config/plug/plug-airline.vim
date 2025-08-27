@@ -1,18 +1,3 @@
-" ========================
-" airline 配置
-" 功能：状态栏
-" ========================
-
-" 确保只加载一次
-if exists('g:plug_load_airline')
-    finish
-endif
-let g:plug_load_airline = 1
-
-" ========================
-" 基本配置
-" ========================
-
 " :AirlineTheme <Tab>  " 自动补全可用主题
 " let g:airline_theme = 'gruvbox'  " 可选主题：solarized, onedark, molokai 等
 let g:airline_theme = 'luna'
@@ -83,8 +68,8 @@ let g:airline#extensions#filetype#symbols.vue = g:airline_symbols.vue  " 重新�
 let g:airline_section_z = '
             \ %3p%% ☰ %l:%c
             \ %{get(g:, "startup_time_display", " ")}
-            \ %{strftime("%H:%M")}
-            \ %{NearestMethodOrFunction()}'
+            \ %{strftime("%H:%M")}'
+
 
 " 自动更新时间（需Vim 8.0+）
 if has('timers')

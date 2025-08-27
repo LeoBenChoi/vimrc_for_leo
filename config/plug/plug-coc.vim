@@ -1,15 +1,3 @@
-" ~/.vim/config/vim-plug.vim
-" ========================
-" coc 语言服务器
-" 功能：coc LSP
-" ========================
-
-" 确保只加载一次
-if exists('g:config_load_cocnvim')
-    finish
-endif
-let g:config_load_cocnvim = 1
-
 " 这个配置文件比较特殊，它的大部分配置在 mapping 里面，一部分在 fzf 里面， 少数配置散落在其他地方
 
 " ========================
@@ -89,7 +77,7 @@ let g:coc_global_extensions = [
   \ ]
 
 
-  autocmd BufWritePre *.go,*.vue,*.php :call CocAction('format')
+  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts :call CocAction('format')
 
 " ========================
 " 优化 与 兼容

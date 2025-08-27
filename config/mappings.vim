@@ -135,6 +135,8 @@ nnoremap <leader>bl :buffers<CR>
 " c 代码透镜
 nmap <leader>cl  <Plug>(coc-codelens-action)
 " d
+" db 调试，打印当前高亮组 函数实现在下方
+nnoremap <leader>db :call PrintSyntaxGroup()<CR>
 " e
 " f fzf 模糊搜索 配置原因，原配置留在 config/plug-fzf.vim
 "     " 文件模糊搜索
@@ -181,6 +183,8 @@ nnoremap <leader>sd :DeleteSession<CR>
 " nnoremap <leader>w :w<CR>
 " x
 " y
+" 复制到系统剪贴板
+map <Leader>y "+y
 " z
 " [ 上一个错误位置 依赖coc
 nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
@@ -417,7 +421,7 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 
 " 添加（Neo）Vim 的原生状态栏支持
 " 注意：有关与提供自定义状态栏的外部插件（如 lightline.vim、vim-airline）的集成，请参阅 `:h coc-status` 。
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " 不常用 暂不移动
 " 显示所有诊断信息
@@ -436,4 +440,17 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " 更新最新的合作方列表
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" ===================================================
+" 函数实现
+" ===================================================
+
+" 查看当前高亮组（调试用）
+function! PrintSyntaxGroup()
+    let l:line = line('.')
+    let l:col = col('.')
+    " echo 'Syntax groups at cursor:'
+    echo map(synstack(l:line, l:col), 'synIDattr(v:val, "name")')
+    " echo 'Current commentstring: ' . &commentstring
+endfunction
 
