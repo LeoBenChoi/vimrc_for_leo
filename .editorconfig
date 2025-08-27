@@ -28,12 +28,12 @@ indent_size = 8                     # 缩进对齐到8字符（与tab_width一�
 # h
 # HTML 文件的设置
 [*.html]
-indent_size = 2
+indent_size = 4
 # i
 # j
 # JavaScript 和 JSX 文件的设置
 [*.{js,jsx}]
-indent_size = 2
+indent_size = 4
 # k
 # l
 # Less 文件的设置
@@ -57,12 +57,14 @@ max_line_length = 120               # 最大行长度为120个字符
 # t
 # TypeScript 和 TSX 文件的设置
 [*.{ts,tsx}]
-indent_size = 2
+indent_size = 4
 # u
 # v
+[*.vim]
+indent_size = 4
 # Vue 文件的设置
 [*.vue]
-indent_size = 2
+indent_size = 4
 # w
 # x
 # y

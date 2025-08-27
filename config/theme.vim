@@ -1,19 +1,3 @@
-" ~/.vim/config/theme.vim
-" ========================
-" THEME.VIM - 主题与界面美化
-" 功能：
-"   1. 主题加载与配色方案
-"   2. 自适应亮/暗模式
-"   3. 语法高亮增强
-"   4. 界面元素微调
-" ========================
-
-" 确保只加载一次
-if exists('g:loaded_theme_config')
-    finish
-endif
-let g:loaded_theme_config = 1
-
 " ========================
 " 主题选择
 " ========================
@@ -21,7 +5,8 @@ let g:loaded_theme_config = 1
 " 根据时间切换主题深浅色
 let hour = strftime("%H")
 if hour >= 7 && hour < 19
-    let g:theme_mode = 'light'  " 'dark' 或 'light'
+    " let g:theme_mode = 'light'  " 'dark' 或 'light'
+    let g:theme_mode = 'dark'  " 暂时将 light 模式禁用
 else
     let g:theme_mode = 'dark'  " 'dark' 或 'light'
 endif
