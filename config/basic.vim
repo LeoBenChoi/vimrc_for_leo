@@ -424,7 +424,6 @@ set maxmemtot=16000000     " Vim 总内存限制提升到 16GB (匹配您的物�
 set maxfuncdepth=400       " 最大函数嵌套深度 (默认 100)
 set maxmapdepth=200        " 最大映射深度 (默认 1000)
 set maxcombine=8           " 最大组合字符 (默认 6)
-set mmp=1000000            " 模式匹配内存限制 (默认 100000)
 
 " ===== CPU 优化 =====
 set regexpengine=2         " 使用新版正则引擎 (i9 能更好处理)
