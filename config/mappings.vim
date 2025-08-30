@@ -34,6 +34,8 @@ let g:loaded_mappings_config = 1
 nnoremap <silent> <F2> :call ToggleNumberMode()<CR>
 " F4 切换主题
 nnoremap <silent> <F4> :call ToggleThemeMode()<CR>
+" F8 代码大纲 依赖vista 配置在 config/plug-vista.vim
+nnoremap <silent> <F8> :Vista!!<CR>
 
 " ===================================================
 " F1 - F1 2实现函数
