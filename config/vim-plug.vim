@@ -56,7 +56,7 @@ Plug 'liuchengxu/vista.vim'       " 代码大纲
 
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
 " Plug 'mhinz/vim-startify'  " 启动页
-Plug 'wakatime/vim-wakatime'    " 代码时间统计,需要在 ~/.wakatime.cfg 配置 API 密钥
+"Plug 'wakatime/vim-wakatime'    " 代码时间统计,需要在 ~/.wakatime.cfg 配置 API 密钥
 " Plug 'dstein64/vim-startuptime' " 启动时间分析
 " Plug 'lambdalisue/vim-battery' " 电池状态显示
 
