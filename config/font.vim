@@ -18,6 +18,7 @@ if has('gui_running')
         elseif s:font_exists('Consolas:h12:cANSI:qDRAFT')
             set guifont=Consolas:h12:cANSI:qDRAFT
         endif
+    endif
 
     " macOS 字体配置
     "   elseif has('macunix')
@@ -28,16 +29,19 @@ if has('gui_running')
     "     endif
 
     " Linux 字体配置
-    elseif has('unix')
+    if has('unix')
+        if has('gui')
+            if s:font_exists('更纱终端书呆黑体-简')
+                set guifont=更纱终端书呆黑体-简\ 12
+            endif
+        endif
         " 需要安装字体 等距更纱黑体 SC Nerd Font
-        if s:font_exists('Sarasa\ Term\ SC\ Nerd\ 10')
-            set guifont=Sarasa\ Term\ SC\ Nerd\ 10
-        endif
-        if s:font_exists('JetBrainsMono\ Nerd\ Font\ Mono:h12')
-            set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12
-        elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono:h12')
-            set guifont=FiraCode\ Nerd\ Font\ Mono:h12
-        endif
+    elseif s:font_exists('Sarasa\ Term\ SC\ Nerd')
+        set guifont=Sarasa\ Term\ SC\ Nerd\ 10
+    elseif s:font_exists('JetBrainsMono\ Nerd\ Font\ Mono:h12')
+        set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h12
+    elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono:h12')
+        set guifont=FiraCode\ Nerd\ Font\ Mono:h12
     endif
 endif
 

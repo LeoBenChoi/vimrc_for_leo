@@ -145,7 +145,7 @@ endif
 
 " 全屏打开
 " guifont 设置（仅 GUI 环境）
-if has('gui_running')
+if has('gui_running') && !has('unix')
     autocmd GUIEnter * simalt ~x
 endif
 
