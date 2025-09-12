@@ -59,6 +59,7 @@ call SetupCommandAbbrs('C', 'CocConfig')
 " 默认的json
 " go
 " vue
+" java
 let g:coc_global_extensions = [
   \ 'coc-json',
   \
@@ -74,6 +75,8 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \
   \ 'coc-phpls',
+  \
+  \ 'coc-java',
   \ ]
 
 
