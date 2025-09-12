@@ -37,17 +37,25 @@
   // 自动补全建议的触发方式
   "suggest.autoTrigger": "always",
   // 自动补全时是否默认选中第一个项
-  "suggest.noselect": false,
+  // "suggest.noselect": false, // Removed duplicate key
   // 自动补全的超时时间（毫秒）
   "suggest.timeout": 500,
 
-    // 启用代码操作（Code Action），如快速修复、重构等
+  // 启用代码操作（Code Action），如快速修复、重构等
   "codeAction.enable": true,
   // 代码操作是否在浮动窗口中显示
   "codeAction.showInFloat": true,
 
-    // 启用函数签名帮助
+  // 启用函数签名帮助
   "signature.enable": true,
   // 函数签名帮助是否在浮动窗口中显示
-  "signature.floatEnable": true
+  "signature.floatEnable": true,
+
+  // 禁止自动选中第一个补全项
+  // 启用用补全项的预览窗口
+  // 禁止自动预选补全项
+  "suggest.noselect": true,
+  "suggest.enablePreview": true,
+  "suggest.enablePreselect": false
+
 }
