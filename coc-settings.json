@@ -56,6 +56,14 @@
   // 禁止自动预选补全项
   "suggest.noselect": true,
   "suggest.enablePreview": true,
-  "suggest.enablePreselect": false
+  "suggest.enablePreselect": false,
 
+  // 配置 Go 语言服务器
+    "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
+    }
+  }
 }
