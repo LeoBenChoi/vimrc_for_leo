@@ -136,6 +136,8 @@ nnoremap <silent> <leader>bd :bd<CR>       " 关闭当前缓冲区
 nnoremap <leader>bl :buffers<CR>
 " c 代码透镜
 nmap <leader>cl  <Plug>(coc-codelens-action)
+" cc 代码注释 依赖 nerdcommenter 插件
+" nnoremap <leader>cc :NERDCommenterToggle<CR>
 " d
 " db 调试，打印当前高亮组 函数实现在下方
 nnoremap <leader>db :call PrintSyntaxGroup()<CR>
@@ -178,7 +180,9 @@ nmap <leader>rn <Plug>(coc-rename)
 nnoremap <leader>ss :SaveSession
 nnoremap <leader>sl :OpenSession<space>
 nnoremap <leader>sd :DeleteSession<CR>
-" t
+" t 代码注释 依赖 nerdcommenter 插件
+nmap <leader>tt <Plug>NERDCommenterToggle
+vmap <leader>tt <Plug>NERDCommenterToggle
 " u
 " v
 " w 退出
@@ -238,8 +242,12 @@ nnoremap <silent> <C-Down> :resize +5<CR>
 " / 注释功能 依赖 vim-commentary 插件, 移动到 plug-commentary.vim
 " nmap <C-/> <Plug>CommentaryLine
 " xmap <C-/> <Plug>Commentary
-nmap <C-/> gcc
-xmap <C-/> gc
+" nmap <C-/> gcc
+" xmap <C-/> gc
+nmap <C-/> <Plug>NERDCommenterToggle
+vmap <C-/> <Plug>NERDCommenterToggle
+" nmap <M-c> <Plug>NERDCommenterToggle
+" vmap <M-c> <Plug>NERDCommenterToggle
 
 " ===================================================
 " 其他按键映射

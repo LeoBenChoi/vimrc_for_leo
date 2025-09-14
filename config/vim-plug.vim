@@ -40,6 +40,7 @@ Plug 'weirongxu/coc-explorer'                   " 文件树
 " Plug 'kevinoid/vim-jsonc'                     " 支持 JSONC 语法高亮和注释
 
 " >>>>>>>>> 高效编辑 <<<<<<<<<
+Plug 'preservim/nerdcommenter'         " 代码注释
 " Plug 'tomtom/tcomment_vim'          " 代码注释
 Plug 'ap/vim-css-color'             " 高亮颜色
 " Plug 'ycm-core/YouCompleteMe'     " 代码大纲
@@ -72,3 +73,23 @@ let g:vista_default_executive = 'coc' " ctags 或 'coc'
 " 设置 vista.vim 在使用 coc 作为执行器时等待的毫秒数
 " 建议值：100-300 毫秒，您可以根据实际情况调整
 let g:vista_coc_executive_delay = 200
+
+" NERD Commenter 配置
+" 创建默认映射
+let g:NERDCreateDefaultMappings = 1
+" 默认在注释分隔符后添加空格
+let g:NERDSpaceDelims = 1
+" 使用紧凑语法美化多行注释
+let g:NERDCompactSexyComs = 1
+" 将行内注释分隔符左对齐而非跟随代码缩进
+let g:NERDDefaultAlign = 'left'
+" 设置语言默认使用替代分隔符
+let g:NERDAltDelims_java = 1
+" 添加自定义格式或覆盖默认设置
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+" 允许注释和反转空行（注释区域时有用）
+let g:NERDCommentEmptyLines = 1
+" 启用取消注释时的尾随空格修剪
+let g:NERDTrimTrailingWhitespace = 1
+" 启用 NERDCommenterToggle 以检查所有选中行是否被注释
+let g:NERDToggleCheckAllLines = 1
