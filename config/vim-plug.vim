@@ -56,7 +56,9 @@ Plug 'liuchengxu/vista.vim'       " 代码大纲
 " Plug 'posva/vim-vue'       " vue 语法和高亮 会导致注释出现问题
 
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
-" Plug 'mhinz/vim-startify'  " 启动页
+" Plug 'vim-scripts/mru.vim'  " 启动页
+" Plug 'yegappan/mru'     " 启动页
+Plug 'mhinz/vim-startify'  " 启动页
 " Plug 'wakatime/vim-wakatime'    " 代码时间统计,需要在 ~/.wakatime.cfg 配置 API 密钥
 " Plug 'dstein64/vim-startuptime' " 启动时间分析
 " Plug 'lambdalisue/vim-battery' " 电池状态显示
@@ -93,3 +95,22 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 " 启用 NERDCommenterToggle 以检查所有选中行是否被注释
 let g:NERDToggleCheckAllLines = 1
+
+" 启动页配置
+" 假设你的 ASCII 艺术字文件位于 ~/.vim/my_ascii_header.txt
+" 使用 expand() 来确保路径在不同操作系统下都能正确解析 ~
+let s:ascii_file_path = expand('~/.vim/startify_header.txt')
+" 检查文件是否存在且可读
+if filereadable(s:ascii_file_path)
+    " readfile() 读取文件内容，返回一个字符串列表（每行一个元素）
+    let g:startify_custom_header =
+          \ startify#pad(readfile(s:ascii_file_path))
+else
+    " 如果文件不存在，提供一个简单的备用标题
+    let g:startify_custom_header = [
+        \ ' ',
+        \ '  Welcome to Vim!',
+        \ '  (Custom header file not found: ' . s:ascii_file_path . ')',
+        \ ' '
+        \ ]
+endif

@@ -65,5 +65,10 @@
       "rootPatterns": ["go.mod"],
       "filetypes": ["go"]
     }
-  }
+  },
+
+// 关闭 Vetur 的部分验证功能，避免与其他工具冲突,防止编写javaScript和模板时出现不必要的错误提示
+"vetur.validation.script": false,
+"vetur.validation.template": false
+
 }
