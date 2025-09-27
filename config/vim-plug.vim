@@ -7,6 +7,7 @@ else
     let g:plug_dir = expand('~/.vim/plugged')
 endif
 
+
 call plug#begin(g:plug_dir)
 
 " >>>>>>>>> 文件管理 <<<<<<<<<
@@ -48,9 +49,10 @@ Plug 'ap/vim-css-color'             " 高亮颜色
 Plug 'liuchengxu/vista.vim'       " 代码大纲
 " Plug 'majutsushi/tagbar'          " 代码大纲（严重拖慢启动速度）
 " Plug 'preservim/tagbar'           " 代码大纲（冲突）
-
 " Plug 'FittenTech/fittencode.vim'    " AI 代码补全(使用体验较为单一，暂时弃用)
 
+" >>>>>>>>> 语言支持 <<<<<<<<<
+" Plug 'fatih/vim-go'         " Go 语言支持
 " vue 相关
 " Plug 'mattn/emmet-vim'                        " HTML快速编写
 " Plug 'posva/vim-vue'       " vue 语法和高亮 会导致注释出现问题
@@ -114,3 +116,14 @@ else
         \ ' '
         \ ]
 endif
+
+" ========================
+" Go 语言缩进配置
+" ========================
+" 在 call plug#end() 之后配置，确保不被插件覆盖
+autocmd FileType go setlocal tabstop=4
+autocmd FileType go setlocal shiftwidth=4
+autocmd FileType go setlocal softtabstop=4
+autocmd FileType go setlocal noexpandtab
+autocmd FileType go setlocal smartindent
+

@@ -2734,7 +2734,7 @@ function! s:section(flags)
 endfunction
 
 function! s:format_git_log(line)
-  let    = '  '
+  let indent = '  '
   let tokens = split(a:line, nr2char(1))
   if len(tokens) != 5
     return indent.substitute(a:line, '\s*$', '', '')

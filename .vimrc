@@ -125,6 +125,15 @@ if !exists('g:load_config_mappings')
   let g:load_config_mappings = 1
 endif
 
+" 缩进配置(要在包管理器后面，不然会被插件覆盖)
+if !exists('g:load_config_indent')
+  let config_indent = expand('~/.vim/config/indent.vim')
+  if filereadable(config_indent)
+      source ~/.vim/config/indent.vim
+  endif
+  let g:load_config_indent = 1
+endif
+
 " ===================================================================
 " 显示启动时间
 " ===================================================================
