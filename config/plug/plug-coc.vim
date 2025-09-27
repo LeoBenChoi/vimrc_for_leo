@@ -42,7 +42,7 @@ call SetupCommandAbbrs('C', 'CocConfig')
 "     \ 'coc-css'
 "     \ ]
 " go 语言
-"   \ 'coc-go',          # Go 语言支持（核心）
+"   \ 'coc-go',          # Go 语言支持（核心）如果有内置的 gopls 可以不装
 "   \ 'coc-json',        # 辅助 JSON 配置
 "   \ 'coc-yaml',        # 用于 Go Mod 等配置
 "   \ 'coc-diagnostic',  # 增强诊断
@@ -57,13 +57,11 @@ call SetupCommandAbbrs('C', 'CocConfig')
 "   \ ]
 
 " 默认的json
-" go
 " vue
 " java
 let g:coc_global_extensions = [
   \ 'coc-json',
   \
-  \ 'coc-go',
   \ 'coc-pyright',
   \ 'coc-eslint',
   \
@@ -91,3 +89,5 @@ let g:coc_global_extensions = [
 
 " 取消对 CoC 插件一次性应用修改数量的限制，允许它进行批量修改
 let g:coc_edits_maximum_count = 0
+
+autocmd CursorHold * silent! lua vim.lsp.diagnostic.show_line_diagnostics()
