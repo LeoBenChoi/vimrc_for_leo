@@ -1,4 +1,9 @@
 {
+  // 当使用 UltiSnips 片段补全时，在某些 Python 环境下可能会显示一个额外的提示或确认对话框
+  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断。
+  // 效果：用户触发片段时直接插入内容，不会出现中间确认步骤，提升编码效率。
+  "snippets.ultisnips.pythonPrompt": false,
+
   //诊断功能
   //
   // 启用诊断功能（错误、警告等）
@@ -8,6 +13,11 @@
   "diagnostic.warningSign": "W",
   "diagnostic.infoSign": "I",
   "diagnostic.hintSign": "H",
+
+
+  // 虚拟文本显示诊断信息 （如错误和警告）
+  // 可能错位，影响阅读
+  "diagnostic.virtualText": false,
 
   // 自动补全
   //
@@ -26,22 +36,8 @@
   // 启用代码操作（Code Action），如快速修复、重构等
   "codeAction.enable": true,
 
-  // 配置 Go 语言服务器
-  // "languageserver": {
-  //   "golang": {
-  //     "command": "gopls",
-  //     "rootPatterns": ["go.mod"],
-  //     "filetypes": ["go"]
-  //   }
-  // },
-  // "go.useLanguageServer": false,
-
   // 关闭 Vetur 的部分验证功能，避免与其他工具冲突,防止编写javaScript和模板时出现不必要的错误提示
   "vetur.validation.script": false,
-  "vetur.validation.template": false,
+  "vetur.validation.template": false
 
-  // 当使用 UltiSnips 片段补全时，在某些 Python 环境下可能会显示一个额外的提示或确认对话框
-  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断。
-  // 效果：用户触发片段时直接插入内容，不会出现中间确认步骤，提升编码效率。
-  "snippets.ultisnips.pythonPrompt": false,
 }
