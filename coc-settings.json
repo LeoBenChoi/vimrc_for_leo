@@ -27,13 +27,13 @@
   "codeAction.enable": true,
 
   // 配置 Go 语言服务器
-  "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod"],
-      "filetypes": ["go"]
-    }
-  },
+  // "languageserver": {
+  //   "golang": {
+  //     "command": "gopls",
+  //     "rootPatterns": ["go.mod"],
+  //     "filetypes": ["go"]
+  //   }
+  // },
   // "go.useLanguageServer": false,
 
   // 关闭 Vetur 的部分验证功能，避免与其他工具冲突,防止编写javaScript和模板时出现不必要的错误提示
