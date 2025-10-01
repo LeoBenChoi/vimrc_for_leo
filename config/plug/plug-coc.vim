@@ -25,6 +25,10 @@ endfunction
 " Use C to open coc config
 call SetupCommandAbbrs('C', 'CocConfig')
 
+" 启用代码透镜
+let g:coc_enable_code_lens = 1
+
+
 " ========================
 " 语言支持
 " ========================
@@ -90,4 +94,5 @@ let g:coc_global_extensions = [
 " 取消对 CoC 插件一次性应用修改数量的限制，允许它进行批量修改
 let g:coc_edits_maximum_count = 0
 
-autocmd CursorHold * silent! lua vim.lsp.diagnostic.show_line_diagnostics()
+" 自动显示诊断信息
+autocmd CursorHold * silent! lua vim.lsp.diagnostic.show_line_diagnostics() 

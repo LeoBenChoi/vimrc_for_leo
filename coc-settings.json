@@ -14,7 +14,6 @@
   "diagnostic.infoSign": "I",
   "diagnostic.hintSign": "H",
 
-
   // 虚拟文本显示诊断信息 （如错误和警告）
   // 可能错位，影响阅读
   "diagnostic.virtualText": false,
@@ -38,6 +37,47 @@
 
   // 关闭 Vetur 的部分验证功能，避免与其他工具冲突,防止编写javaScript和模板时出现不必要的错误提示
   "vetur.validation.script": false,
-  "vetur.validation.template": false
+  "vetur.validation.template": false,
 
+  // Go 语言支持
+  // 使用 gopls 作为 Go 语言服务器
+  "go.useLanguageServer": true,
+  // "go.languageServerFlags": [
+  //   "-rpc.trace" // 可选：用于调试
+  // ],
+  "languageserver": {
+    "go": {
+      // 指定 LSP 服务器的命令
+      "command": "gopls",
+      // 传递给 LSP 服务器的额外参数
+      "args": [],
+      // 文件类型，表示此 LSP 服务器处理的文件类型
+      "filetypes": ["go"],
+      // 初始化选项，提供给 LSP 服务器的配置
+      "initializationOptions": {
+        // 是否使用占位符
+        "usePlaceholders": true,
+        // 是否完成未导入的包
+        "completeUnimported": true,
+        // 是否启用静态检查
+        "staticcheck": true
+      },
+      // 服务器设置，具体配置 gopls 的行为
+      "settings": {
+        "gopls": {
+          // 是否使用占位符
+          "usePlaceholders": true,
+          // 是否完成未导入的包
+          "completeUnimported": true,
+          // 是否启用静态检查
+          "staticcheck": true,
+        }
+      }
+    }
+  },
+
+  // 启用代码透镜功能
+  "codeLens.enable": true,
+  "codeLens.references": true,
+  "codeLens.tests": true
 }
