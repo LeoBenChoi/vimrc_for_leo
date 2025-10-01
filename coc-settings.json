@@ -70,7 +70,7 @@
           // 是否完成未导入的包
           "completeUnimported": true,
           // 是否启用静态检查
-          "staticcheck": true,
+          "staticcheck": true
         }
       }
     }
@@ -79,5 +79,14 @@
   // 启用代码透镜功能
   "codeLens.enable": true,
   "codeLens.references": true,
-  "codeLens.tests": true
+  "codeLens.tests": true,
+
+  // 设置格式化
+  "coc.preferences.formatOnSaveFiletypes": [
+      "javascript",
+      "typescript",
+      "json",
+      "go",
+      "python"
+  ]
 }
