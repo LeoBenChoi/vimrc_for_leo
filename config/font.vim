@@ -13,8 +13,8 @@ if has('gui_running')
 
     " Windows 平台字体优先级设置
     if has('win32') || has('win64')
-        if s:font_exists('更纱终端书呆黑体-简')
-            set guifont=更纱终端书呆黑体-简:h12:cGB2312:qDRAFT
+        if s:font_exists('Maple\ Mono\ NF\ CN')
+            set guifont=Maple\ Mono\ NF\ CN:h12:cANSI:qDRAFT
         elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono')
             set guifont=FiraCode\ Nerd\ Font\ Mono:h12:cANSI:qDRAFT
         elseif s:font_exists('Consolas:h10:cANSI:qDRAFT')
