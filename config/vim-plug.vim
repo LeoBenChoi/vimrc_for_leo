@@ -32,13 +32,14 @@ Plug 'junegunn/gv.vim'          " 提交历史浏览
 " 语言服务器协议（LSP）支持
 " Plug 'prabirshrestha/vim-lsp' " LSP 支持
 " Plug 'mattn/vim-lsp-settings' " LSP 配置
-" Plug 'prabirshrestha/asyncomplete.vim' " 异步补全
+" Plug 'prabirshrestha/asyncomplete.vim' " 异步补全框架
 " Plug 'prabirshrestha/asyncomplete-lsp.vim' " LSP 补全源
-" 或coc，lsp只能二选一
 " Use release branch (recommended)
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " 代码补全
 Plug 'weirongxu/coc-explorer'                   " 文件树
 " Plug 'kevinoid/vim-jsonc'                     " 支持 JSONC 语法高亮和注释
+" Plug 'dense-analysis/ale' " 异步语法检查
+
 
 " >>>>>>>>> 高效编辑 <<<<<<<<<
 Plug 'preservim/nerdcommenter'         " 代码注释
@@ -56,6 +57,7 @@ Plug 'liuchengxu/vista.vim'       " 代码大纲
 " vue 相关
 " Plug 'mattn/emmet-vim'                        " HTML快速编写
 " Plug 'posva/vim-vue'       " vue 语法和高亮 会导致注释出现问题
+
 
 " >>>>>>>>> 其他实用插件 <<<<<<<<<
 " Plug 'vim-scripts/mru.vim'  " 启动页
@@ -106,7 +108,7 @@ let s:ascii_file_path = expand('~/.vim/startify_header.txt')
 if filereadable(s:ascii_file_path)
     " readfile() 读取文件内容，返回一个字符串列表（每行一个元素）
     let g:startify_custom_header =
-          \ startify#pad(readfile(s:ascii_file_path))
+        \ startify#pad(readfile(s:ascii_file_path))
 else
     " 如果文件不存在，提供一个简单的备用标题
     let g:startify_custom_header = [
@@ -117,13 +119,8 @@ else
         \ ]
 endif
 
-" ========================
-" Go 语言缩进配置
-" ========================
-" 在 call plug#end() 之后配置，确保不被插件覆盖
-autocmd FileType go setlocal tabstop=4
-autocmd FileType go setlocal shiftwidth=4
-autocmd FileType go setlocal softtabstop=4
-autocmd FileType go setlocal noexpandtab
-autocmd FileType go setlocal smartindent
-
+" ALE 设置
+" let g:ale_completion_enabled = 1
+" let g:ale_fix_on_save = 1
+" let g:ale_java_javac_executable = 'javac'
+" let g:ale_env = {'LANG': 'en_US.UTF-8', 'LC_ALL': 'en_US.UTF-8'}
