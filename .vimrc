@@ -36,7 +36,7 @@ endif
 " 插件包管理器
 " ===================================================================
 
-" 原生包管理器(瞎jb搓的，已经弃用，目前留着做纪念)
+" 原生包管理器(瞎jb搓的，已经弃用，目前留着做纪念)`
 " let plug_manager_pack = expand('~/.vim/config/vimPackInstallPlug.vim')
 " if filereadable(plug_manager_pack)
 "   source ~/.vim/config/vimPackInstallPlug.vim

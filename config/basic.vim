@@ -63,10 +63,24 @@ if !isdirectory(expand(&undodir))
 endif
 
 " 自动恢复上次编辑位置
-autocmd! BufReadPost *
-            \ if line("'\"") > 1 && line("'\"") <= line("$") |
-            \   exe "normal! g'\"" |
-            \ endif
+" autocmd! BufReadPost *
+"             \ if line("'\"") > 1 && line("'\"") <= line("$") |
+"             \   exe "normal! g'\"" |
+"             \ endif
+function! LastPositionJump()
+    if &filetype =~# 'commit'
+        return
+    endif
+
+    let line = line("'\"")
+    if line >= 1 && line <= line("$")
+        execute "normal! '\""
+    else
+        execute "normal! $"
+    endif
+endfunction
+
+autocmd BufReadPost * call LastPositionJump()
 
 " ========================
 "  搜索行为

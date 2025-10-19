@@ -39,6 +39,20 @@
   "vetur.validation.script": false,
   "vetur.validation.template": false,
 
+  // 启用代码透镜功能
+  "codeLens.enable": true,
+  "codeLens.references": true,
+  "codeLens.tests": true,
+
+  // 设置格式化
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "json",
+    "go",
+    "python"
+  ],
+
   // Go 语言支持
   // 使用 gopls 作为 Go 语言服务器
   "go.useLanguageServer": true,
@@ -76,42 +90,6 @@
     }
   },
 
-  // 启用代码透镜功能
-  "codeLens.enable": true,
-  "codeLens.references": true,
-  "codeLens.tests": true,
-
-  // 设置格式化
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "json",
-    "go",
-    "python"
-  ],
-
-  // jdk 1.5 - 22
-  "java.jdt.ls.java.home": "D:\\ProgramPortable\\ENV\\Java\\jdk-21.0.8+9",
-  "java.configuration.runtimes": [
-    {
-      "name": "JavaSE-1.8",
-      "path": "/path/to/jdk-8"
-    },
-    {
-      "name": "JavaSE-11",
-      "path": "/path/to/jdk-11"
-    },
-    {
-      "name": "JavaSE-21",
-      "path": "D:\\ProgramPortable\\ENV\\Java\\jdk-21.0.8+9",
-      "default": true
-    }
-  ],
-  "java.trace.server": "verbose",
-  "java.server.launchMode": "Standard",
-  "java": {
-    "command": "jdlts",
-    "filetypes": ["java"],
-    "trace.server": "verbose"
-  }
+  // Python 语言支持
+  "inlayHint.enable": false
 }
