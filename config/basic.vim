@@ -105,7 +105,7 @@ set expandtab       " 将字符转换成空格
 " 显示不可见字符
 set list
 " let &listchars='tab:▸ '+',trail:·'eol:↴,space:.
-set listchars=tab:▸\ ,multispace:▸,extends:❯,precedes:❮,eol:↵
+set listchars=tab:▸\ ,multispace:▸,extends:❯,precedes:❮,eol:↲
 
 " 智能缩进显示函数
 function! SmartIndentDisplay()
