@@ -81,7 +81,7 @@ let g:coc_global_extensions = [
   \ ]
 
 
-  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts :call CocAction('format')
+  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.py,*.php :call CocAction('format')
 
 " ========================
 " 优化 与 兼容
