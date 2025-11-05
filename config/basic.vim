@@ -171,8 +171,8 @@ set textwidth=80   " 经典Unix风格（Linux内核等使用）
 " 自动折行设置
 set wrap                " 启用视觉折行
 set linebreak           " 只在单词边界折行
-set textwidth=80        " 自动换行
-set wrapmargin=8        " 自动换行边距
+set textwidth=120       " 自动换行
+set wrapmargin=20       " 自动换行边距
 set breakindent         " 折行后保持缩进
 set display+=lastline   " 显示长行最后的内容
 
