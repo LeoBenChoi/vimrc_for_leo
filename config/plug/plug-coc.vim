@@ -17,9 +17,9 @@ let g:coc_config_home = expand('~/.vim')
 autocmd BufRead,BufNewFile coc-settings.json set filetype=jsonc
 
 function! SetupCommandAbbrs(from, to)
-  exec 'cnoreabbrev <expr> '.a:from
-        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
-        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+    exec 'cnoreabbrev <expr> '.a:from
+                \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+                \ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfunction
 
 " Use C to open coc config
@@ -58,30 +58,32 @@ let g:coc_enable_code_lens = 1
 "   \ 'coc-eslint',      " ESLint 集成（可选）
 "   \ 'coc-prettier',    " 代码格式化（可选）
 "   \ 'coc-vetur'        " vue lsp
+"   \ 'coc-clangd'
 "   \ ]
 
 " 默认的json
 " vue
 " java
 let g:coc_global_extensions = [
-  \ 'coc-json',
-  \
-  \ 'coc-pyright',
-  \ 'coc-eslint',
-  \
-  \ 'coc-html',
-  \ 'coc-css',
-  \ '@yaegassy/coc-volar',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-snippets',
-  \
-  \ 'coc-phpls',
-  \
-  \ ]
+            \ 'coc-json',
+            \
+            \ 'coc-pyright',
+            \ 'coc-eslint',
+            \
+            \ 'coc-html',
+            \ 'coc-css',
+            \ '@yaegassy/coc-volar',
+            \ 'coc-eslint',
+            \ 'coc-prettier',
+            \ 'coc-snippets',
+            \
+            \ 'coc-phpls',
+            \
+            \ 'coc-clangd',
+            \ ]
 
 
-  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.py,*.php :call CocAction('format')
+autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.py,*.php,*.c,*.cpp :call CocAction('format')
 
 " ========================
 " 优化 与 兼容
@@ -94,4 +96,4 @@ let g:coc_global_extensions = [
 let g:coc_edits_maximum_count = 0
 
 " 自动显示诊断信息
-autocmd CursorHold * silent! lua vim.lsp.diagnostic.show_line_diagnostics() 
+autocmd CursorHold * silent! lua vim.lsp.diagnostic.show_line_diagnostics()

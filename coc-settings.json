@@ -91,5 +91,6 @@
   },
 
   // Python 语言支持
-  "inlayHint.enable": false
+  "inlayHint.enable": false,
+  "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
 }

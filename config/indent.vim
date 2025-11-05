@@ -7,3 +7,9 @@ autocmd FileType go setlocal shiftwidth=4
 autocmd FileType go setlocal softtabstop=4
 autocmd FileType go setlocal noexpandtab
 autocmd FileType go setlocal smartindent
+
+autocmd FileType c setlocal tabstop=2
+autocmd FileType c setlocal shiftwidth=2
+autocmd FileType c setlocal softtabstop=2
+autocmd FileType c setlocal noexpandtab
+autocmd FileType c setlocal smartindent
