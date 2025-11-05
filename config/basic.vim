@@ -164,9 +164,9 @@ if has('gui_running') && !has('unix')
 endif
 
 " 设置文本宽度（根据团队规范调整，常用值如下）
-set textwidth=80   " 经典Unix风格（Linux内核等使用）
+" set textwidth=80   " 经典Unix风格（Linux内核等使用）
 " set textwidth=100 " 现代项目常用
-" set textwidth=120 " 大型项目可能使用
+set textwidth=120 " 大型项目可能使用
 
 " 自动折行设置
 set wrap                " 启用视觉折行
