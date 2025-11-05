@@ -4,7 +4,8 @@
 
 - nodejs（必须）
 - npm（必须）
-- 字体：[更纱终端书呆黑体-简](https://github.com/laishulu/Sarasa-Term-SC-Nerd) （可选，推荐）
+- 字体：[maple momo](https://font.subf.dev/zh-cn/download/) （当前在用）
+- [更纱终端书呆黑体-简](https://github.com/laishulu/Sarasa-Term-SC-Nerd) （可选）
 
 ## 配置方法
 
