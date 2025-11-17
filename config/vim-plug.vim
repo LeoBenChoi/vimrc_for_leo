@@ -51,6 +51,7 @@ Plug 'liuchengxu/vista.vim'       " 代码大纲
 " Plug 'majutsushi/tagbar'          " 代码大纲（严重拖慢启动速度）
 " Plug 'preservim/tagbar'           " 代码大纲（冲突）
 " Plug 'FittenTech/fittencode.vim'    " AI 代码补全(使用体验较为单一，暂时弃用)
+Plug 'vim-scripts/DrawIt'            " 画图工具
 
 " >>>>>>>>> 语言支持 <<<<<<<<<
 " Plug 'fatih/vim-go'         " Go 语言支持
