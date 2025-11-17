@@ -25,7 +25,7 @@ set lazyredraw                  " 执行宏/寄存器时不重绘
 set ttyfast                     " 快速终端连接, 优化终端重绘
 set timeoutlen=300              " 映射等待时间(ms)
 set updatetime=3000              " 写入交换文件间隔(ms)(影响插件)
-set synmaxcol=200               " 只高亮行前100列
+"set synmaxcol=200               " 只高亮行前100列
 set re=1                        " 使用旧版正则引擎（对复杂语法更快）
 " set notimeout                   " 禁用命令超时
 set nottimeout                  " 禁用键盘映射超时
@@ -170,9 +170,9 @@ set textwidth=120 " 大型项目可能使用
 
 " 自动折行设置
 set wrap                " 启用视觉折行
+set textwidth=0         " 禁用自动换行
+set wrapmargin=0        " 禁用自动换行边距
 set linebreak           " 只在单词边界折行
-set textwidth=120       " 自动换行
-set wrapmargin=20       " 自动换行边距
 set breakindent         " 折行后保持缩进
 set display+=lastline   " 显示长行最后的内容
 
