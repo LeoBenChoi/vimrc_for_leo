@@ -34,7 +34,7 @@ set history=100                " 命令历史记录数
 set virtualedit=block           " 可视块模式允许越过行尾
 set splitright                  " 垂直分割在右侧打开
 set splitbelow                  " 水平分割在下方打开
-set ambiwidth=single            " 使用 single 格式的字符，避免状态栏错位
+set ambiwidth=double            " 使用 double 格式的字符，双宽度字符
 
 " ========================
 " 文件备份与恢复
