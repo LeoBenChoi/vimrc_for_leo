@@ -13,8 +13,12 @@ if has('gui_running')
 
     " Windows 平台字体优先级设置
     if has('win32') || has('win64')
-        if s:font_exists('Maple\ Mono\ NF\ CN')
-            set guifont=Maple\ Mono\ NF\ CN:h12:cANSI:qDRAFT
+        " Maple Mono NF CN 字体 gvim 图标过大，渲染显示的时候可能只有一半
+        " if s:font_exists('Maple\ Mono\ NF\ CN')        
+        "     set guifont=Maple\ Mono\ NF\ CN:h12:cANSI:qDRAFT
+        if s:font_exists('0xProto\ Nerd\ Font\ Mono')
+            set guifont=0xProto\ Nerd\ Font\ Mono:h12:cANSI:qDRAFT
+        " FiraCode Nerd Font Mono 字体 gvim连字符渲染异常
         elseif s:font_exists('FiraCode\ Nerd\ Font\ Mono')
             set guifont=FiraCode\ Nerd\ Font\ Mono:h12:cANSI:qDRAFT
         elseif s:font_exists('Consolas:h10:cANSI:qDRAFT')

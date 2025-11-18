@@ -13,8 +13,9 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'  " 文件名显示方
 " ========================
 
 " air基本设置
-" let g:airline#extensions#lsp#enabled = 1            " LSP 显示
+let g:airline#extensions#lsp#enabled = 1            " LSP 显示
 " let g:airline#extensions#battery#enabled = 0  " 显示电池状态
+
 let g:airline#extensions#tabline#enabled = 1                " 启用顶部 Tab 栏
 let g:airline#extensions#tabline#show_tabs = 1   " 显示标签页
 let g:airline#extensions#tabline#tab_nr_type = 1   " 显示标签序号
@@ -22,7 +23,7 @@ let g:airline#extensions#tabline#preserve_pwd = 1  " 保持当前工作目录
 
 " let g:airline#extensions#tabline#enabled = 1        " 显示缓冲区列表
 " let g:airline#extensions#wordcount#enabled = 1  " 显示字数统计
-" let g:airline#extensions#whitespace#enabled = 1  " 显示尾随空格/混合缩进警告
+let g:airline#extensions#whitespace#enabled = 0  " 显示尾随空格/混合缩进警告
 " let g:airline#extensions#lsp#show_line_status = 1   " 显示当前行 LSP 状态
 
 " Git
@@ -65,10 +66,10 @@ let g:airline#extensions#filetype#symbols.vue = g:airline_symbols.vue  " 重新�
 " let g:airline_section_y = '
 "             \ %{strftime("%H:%M")}'
 
-let g:airline_section_z = '
-            \ %3p%% ☰ %l:%c
-            \ %{get(g:, "startup_time_display", " ")}
-            \ %{strftime("%H:%M")}'
+" let g:airline_section_z = '
+"             \ %3p%% ☰ %l:%c
+"             \ %{get(g:, "startup_time_display", " ")}
+"             \ %{strftime("%H:%M")}'
 
 
 " 自动更新时间（需Vim 8.0+）
@@ -92,9 +93,13 @@ let g:airline#extensions#fzf#enabled = 0  " 禁用 fzf 的 Airline 集成, 解�
 " 解决宽字符设置显示问题
 set conceallevel=2
 set concealcursor=nvic
-" let g:airline_left_sep = '>'  " 用 '>' 替代默认的 '▶'（避免双宽度问题）
-" let g:airline_right_sep = '<'
+" let g:airline_left_sep = ''  " 用 '>' 替代默认的 '▶'（避免双宽度问题）
+" let g:airline_right_sep = ''
 " 默认使用单宽度（防止符号错位）
+
+" 强制单字符宽度渲染
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 
 """" 这里的兼容性配置是 vim-devicons 的配置 兼容，由于内容很少，就先放这
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}            "
