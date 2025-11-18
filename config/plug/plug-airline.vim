@@ -1,7 +1,7 @@
 " :AirlineTheme <Tab>  " 自动补全可用主题
 " let g:airline_theme = 'gruvbox'  " 可选主题：solarized, onedark, molokai 等
 let g:airline_theme = 'luna'
-let g:airline_powerline_fonts = 1                           " 启用特殊符号
+let g:airline_powerline_fonts = 0                           " 启用特殊符号
 let g:airline#extensions#tabline#formatter = 'unique_tail'  " 文件名显示方式
 " 可选 formatter：
 "     default（完整路径）
