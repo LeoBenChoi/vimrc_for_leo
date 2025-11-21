@@ -1,50 +1,62 @@
 {
+  // coc.nvim 全局配置文件
+  // 位置：~/.vim/coc-settings.json
+  // 文档：:h coc-config
+  // 打开此文件：:CocConfig 或 :C
+
+  // ============================================================
+  // 片段补全配置
+  // ============================================================
   // 当使用 UltiSnips 片段补全时，在某些 Python 环境下可能会显示一个额外的提示或确认对话框
-  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断。
-  // 效果：用户触发片段时直接插入内容，不会出现中间确认步骤，提升编码效率。
+  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断
   "snippets.ultisnips.pythonPrompt": false,
 
-  //诊断功能
-  //
+  // ============================================================
+  // 诊断功能
+  // ============================================================
   // 启用诊断功能（错误、警告等）
   "diagnostic.enable": true,
-  // 配置诊断信息在行号旁显示的符号（可选，但推荐）
+  // 配置诊断信息在行号旁显示的符号
   "diagnostic.errorSign": "E",
   "diagnostic.warningSign": "W",
   "diagnostic.infoSign": "I",
   "diagnostic.hintSign": "H",
-
-  // 虚拟文本显示诊断信息 （如错误和警告）
-  // 可能错位，影响阅读
+  // 虚拟文本显示诊断信息（可能错位，影响阅读）
   "diagnostic.virtualText": false,
 
-  // 自动补全
-  //
+  // ============================================================
+  // 自动补全配置
+  // ============================================================
   // 自动补全建议的触发方式
   "suggest.autoTrigger": "always",
   // 自动补全的超时时间（毫秒）
   "suggest.timeout": 500,
   // 禁止自动选中第一个补全项
   "suggest.noselect": true,
-  // 启用用补全项的预览窗口
+  // 启用补全项的预览窗口
   "suggest.enablePreview": true,
   // 禁止自动预选补全项
   "suggest.enablePreselect": false,
+  // 最大补全项数量
+  "coc.preferences.maxCompleteItemCount": 20,
+  // 使用代码片段文本编辑
+  "coc.preferences.snippetTextEdit": true,
+  // 使用 quickfix 位置列表
+  "coc.preferences.useQuickfixForLocations": false,
 
+  // ============================================================
   // 代码操作功能
+  // ============================================================
   // 启用代码操作（Code Action），如快速修复、重构等
   "codeAction.enable": true,
 
-  // 关闭 Vetur 的部分验证功能，避免与其他工具冲突,防止编写javaScript和模板时出现不必要的错误提示
-  "vetur.validation.script": false,
-  "vetur.validation.template": false,
-
-  // 启用代码透镜功能
-  "codeLens.enable": true,
-  "codeLens.references": true,
-  "codeLens.tests": true,
-
-  // 设置格式化
+  // ============================================================
+  // 格式化配置
+  // ============================================================
+  // 保存时自动格式化（全局）
+  "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnSaveTimeout": 2000,
+  // 按文件类型设置格式化
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
@@ -53,44 +65,46 @@
     "python"
   ],
 
+  // ============================================================
+  // Vue 语言支持（Vetur）
+  // ============================================================
+  // 关闭 Vetur 的部分验证功能，避免与其他工具冲突
+  // 防止编写 JavaScript 和模板时出现不必要的错误提示
+  "vetur.validation.script": false,
+  "vetur.validation.template": false,
+
+  // ============================================================
   // Go 语言支持
+  // ============================================================
   // 使用 gopls 作为 Go 语言服务器
   "go.useLanguageServer": true,
-  // "go.languageServerFlags": [
-  //   "-rpc.trace" // 可选：用于调试
-  // ],
-  "languageserver": {
-    "go": {
-      // 指定 LSP 服务器的命令
-      "command": "gopls",
-      // 传递给 LSP 服务器的额外参数
-      "args": [],
-      // 文件类型，表示此 LSP 服务器处理的文件类型
-      "filetypes": ["go"],
-      // 初始化选项，提供给 LSP 服务器的配置
-      "initializationOptions": {
-        // 是否使用占位符
-        "usePlaceholders": true,
-        // 是否完成未导入的包
-        "completeUnimported": true,
-        // 是否启用静态检查
-        "staticcheck": true
-      },
-      // 服务器设置，具体配置 gopls 的行为
-      "settings": {
-        "gopls": {
-          // 是否使用占位符
-          "usePlaceholders": true,
-          // 是否完成未导入的包
-          "completeUnimported": true,
-          // 是否启用静态检查
-          "staticcheck": true
-        }
-      }
-    }
-  },
+  // 如果需要自定义 gopls 配置，可以使用 languageserver 配置
+  // "languageserver": {
+  //   "go": {
+  //     "command": "gopls",
+  //     "args": [],
+  //     "filetypes": ["go"],
+  //     "initializationOptions": {
+  //       "usePlaceholders": true,
+  //       "completeUnimported": true,
+  //       "staticcheck": true
+  //     },
+  //     "settings": {
+  //       "gopls": {
+  //         "usePlaceholders": true,
+  //         "completeUnimported": true,
+  //         "staticcheck": true
+  //       }
+  //     }
+  //   }
+  // },
 
-  // Python 语言支持
-  "inlayHint.enable": false,
-  "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
+  // ============================================================
+  // 其他配置
+  // ============================================================
+  // 禁用内联提示（可选）
+  "inlayHint.enable": false
+  // 如果需要指定 clangd 路径（Windows 示例）
+  // "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
 }
+

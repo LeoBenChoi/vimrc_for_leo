@@ -1,157 +1,111 @@
-let g:start_time = reltime()
-" 上面是记录启动时间的开始
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 全局入口：最小依赖，可在未安装插件时正常加载
+" 目录结构假设：
+"   ~/.vim/
+"     ├── .vimrc          (当前文件，将被复制到 ~ 使用)
+"     ├── config/
+"     │     ├── init/     (基础设置模块)
+"     │     ├── plugins/  (插件与依赖管理)
+"     │     ├── ui/       (主题/状态栏等外观)
+"     │     ├── mappings/ (快捷键)
+"     │     └── bootstrap/(环境检测与修复脚本)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" vimrc - 兼容所有平台的入口文件（可以软连接或者复制到~/.vimrc）
-
-" 使用过的系统
-" used Linux: Kali, Ubuntu, CentOS
-" used Windows: Windows 11, 10
-
-" ===================================================================
-" 配置加载
-" ===================================================================
-
-" 设置 runtimepath 包含 ~/.vim 目录，以确保配置文件和插件能够被正确加载
-set runtimepath^=~/.vim
-
-" 加载基础配置
-if !exists('g:load_config_basic')
-  let config_basic = expand('~/.vim/config/basic.vim')
-  if filereadable(config_basic)
-      source ~/.vim/config/basic.vim
-  endif
-  let g:load_config_basic = 1
+"==============================================================
+" 0. 安全保护：确保脚本只加载一次
+"==============================================================
+if exists('g:loaded_custom_vimrc')
+  finish
 endif
+let g:loaded_custom_vimrc = 1
 
-" 加载字体配置 (要在 GUI 版本下加载)
-if !exists('g:load_config_font')
-  let config_font = expand('~/.vim/config/font.vim')
-  if filereadable(config_font)
-      source ~/.vim/config/font.vim
+"==============================================================
+" 0.1. 早期插件配置（必须在所有插件加载前设置）
+"==============================================================
+" Vista 扩展禁用（必须在 vim-airline 加载前设置）
+" Vista 使用延迟加载，但 vim-airline 启动时会尝试加载扩展
+" 如果 Vista 未加载，扩展的 init 函数不存在，会导致错误
+let g:airline#extensions#vista#enabled = 0
+
+"==============================================================
+" 1. 基础路径与平台探测
+"==============================================================
+let s:this_file_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+let s:candidate_dirs = [
+      \ s:this_file_dir,
+      \ s:this_file_dir . '/.vim',
+      \ expand('~/.vim')
+      \ ]
+let s:vim_home = ''
+for dir in s:candidate_dirs
+  if isdirectory(dir . '/config')
+    let s:vim_home = dir
+    break
   endif
-  let g:load_config_font = 1
+endfor
+if empty(s:vim_home)
+  let s:vim_home = s:this_file_dir
 endif
+let s:config_root = s:vim_home . '/config'
+let s:is_win = has('win32') || has('win64')
 
-" ===================================================================
-" 插件包管理器
-" ===================================================================
-
-" 原生包管理器(瞎jb搓的，已经弃用，目前留着做纪念)`
-" let plug_manager_pack = expand('~/.vim/config/vimPackInstallPlug.vim')
-" if filereadable(plug_manager_pack)
-"   source ~/.vim/config/vimPackInstallPlug.vim
-" endif
-
-" plug 包管理器的插件路径
-let $VIMPLUGHOME = expand('~/.vim/plugged')
-if index(split(&rtp, ','), $VIMPLUGHOME) == -1
-    set rtp^=$VIMPLUGHOME
-endif
-
-" vim-plug
-if !exists('g:load_config_vim_plug')
-  let config_vim_plug = expand('~/.vim/config/vim-plug.vim')
-  if filereadable(config_vim_plug)
-      source ~/.vim/config/vim-plug.vim
+" 提供一个通用的模块加载函数，失败时给出提示但不中断
+function! s:source_if_exists(path) abort
+  if filereadable(a:path)
+    execute 'source' fnameescape(a:path)
+  else
+    echomsg '[vimrc] 未找到模块: ' . a:path
   endif
-  let g:load_config_vim_plug = 1
-endif
-
-if isdirectory($VIMPLUGHOME)
-  " 如果插件目录存在，加载插件
-
-  " nerdtree
-  let plug_config_nerdtree = expand('~/.vim/config/plug/plug-nerdtree.vim')
-  if filereadable(plug_config_nerdtree)
-      source ~/.vim/config/plug/plug-nerdtree.vim
-  endif
-
-"   airline
-  let plug_config_airline = expand('~/.vim/config/plug/plug-airline.vim')
-  if filereadable(plug_config_airline)
-      source ~/.vim/config/plug/plug-airline.vim
-  endif
-
-  " coc.nvim
-  let plug_config_cocnvim = expand('~/.vim/config/plug/plug-coc.vim')
-  if filereadable(plug_config_cocnvim)
-      source ~/.vim/config/plug/plug-coc.vim
-  endif
-
-  " fzf
-  let plug_config_fzf = expand('~/.vim/config/plug/plug-fzf.vim')
-  if filereadable(plug_config_fzf)
-      source ~/.vim/config/plug/plug-fzf.vim
-  endif
-
-  " git
-  let plug_config_git = expand('~/.vim/config/plug/plug-git.vim')
-  if filereadable(plug_config_git)
-      source ~/.vim/config/plug/plug-git.vim
-  endif
-
-  " commentary
-  let plug_config_commentary = expand('~/.vim/config/plug/plug-commentary.vim')
-  if filereadable(plug_config_commentary)
-      source ~/.vim/config/plug/plug-commentary.vim
-  endif
-
-  " vista
-  let plug_config_vista = expand('~/.vim/config/plug/plug-vista.vim')
-  if filereadable(plug_config_vista)
-      source ~/.vim/config/plug/plug-vista.vim
-  endif
-endif
-
-" ===================================================================
-" 配置加载 | 插件后
-" ===================================================================
-
-" 加载主题(要在包管理器后面，不然会报错)
-if !exists('g:load_config_theme')
-  let config_theme = expand('~/.vim/config/theme.vim')
-  if filereadable(config_theme)
-      source ~/.vim/config/theme.vim
-  endif
-  let g:load_config_theme = 1
-endif
-
-" 加载映射 放到最后，防止函数未定义、防止被覆盖
-if !exists('g:load_config_mappings')
-  let config_mapping = expand('~/.vim/config/mappings.vim')
-  if filereadable(config_mapping)
-      source ~/.vim/config/mappings.vim
-  endif
-  let g:load_config_mappings = 1
-endif
-
-" 缩进配置(要在包管理器后面，不然会被插件覆盖)
-if !exists('g:load_config_indent')
-  let config_indent = expand('~/.vim/config/indent.vim')
-  if filereadable(config_indent)
-      source ~/.vim/config/indent.vim
-  endif
-  let g:load_config_indent = 1
-endif
-
-" ===================================================================
-" 显示启动时间
-" ===================================================================
-
-" 在状态栏显示启动时间（需要安装 vim-airline 插件, 不安装不显示）
-function! UpdateAirlineWithStartupTime() abort
-    let l:elapsed = reltimefloat(reltime(g:start_time)) * 1000
-    let g:startup_time_display = '🚀 ' . printf('%.2f ms', l:elapsed)
-    call timer_start(10, { -> execute('redrawstatus!') })
-
-    " 自动清除
-    call timer_start(10000, { -> RemoveStartupTime() })
 endfunction
 
-function! RemoveStartupTime() abort
-    let g:startup_time_display = ''
-    call timer_start(10, { -> execute('redrawstatus!') })
-endfunction
+"==============================================================
+" 2. 启动前环境自检/修复（可选）
+"==============================================================
+call s:source_if_exists(s:config_root . '/bootstrap/env_check.vim')
 
-autocmd VimEnter * call timer_start(100, { -> UpdateAirlineWithStartupTime() })
+"==============================================================
+" 3. 基础配置初始化（不依赖插件）
+"==============================================================
+call s:source_if_exists(s:config_root . '/init/basic.vim')
+
+"==============================================================
+" 3.1. 性能优化配置
+"==============================================================
+call s:source_if_exists(s:config_root . '/init/performance.vim')
+
+"==============================================================
+" 4. 插件管理与加载
+"   - 结构上仍使用 vim-plug，但封装在单独模块，便于未来切换
+"==============================================================
+call s:source_if_exists(s:config_root . '/plugins/plugins.vim')
+
+"==============================================================
+" 5. UI/主题（含双主题及自动切换逻辑）
+"==============================================================
+call s:source_if_exists(s:config_root . '/ui/theme.vim')
+call s:source_if_exists(s:config_root . '/ui/font.vim')
+call s:source_if_exists(s:config_root . '/ui/statusline.vim')
+call s:source_if_exists(s:config_root . '/ui/sidebar.vim')
+
+"==============================================================
+" 6. 快捷键映射（完全独立的目录，方便增删）
+"==============================================================
+call s:source_if_exists(s:config_root . '/mappings/core.vim')
+
+"==============================================================
+" 7. 语言与 LSP 配置（默认 coc.nvim）
+"==============================================================
+call s:source_if_exists(s:config_root . '/plugins/lsp_coc.vim')
+
+"==============================================================
+" 8. 代码大纲配置（Vista）
+"==============================================================
+call s:source_if_exists(s:config_root . '/ui/outline.vim')
+
+"==============================================================
+" 9. 额外定制或本地覆盖
+"==============================================================
+if filereadable(s:vim_home . '/local.vim')
+  execute 'source' fnameescape(s:vim_home . '/local.vim')
+endif
 
