@@ -62,7 +62,35 @@ let g:coc_global_extensions = [
 "   coc-phpls         - PHP LSP
 
 "==============================================================
-" 自动格式化配置
+" 3. Tab 补全配置
+"==============================================================
+" Tab 补全导航函数：检查光标前是否是空格
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+" Tab 键：补全菜单中导航下一个，无菜单则触发补全，光标前是空格则正常插入 Tab
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Shift+Tab：补全菜单中导航上一个
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" 回车键：确认补全项，无补全则正常回车并插入 undo 点
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Ctrl+Space 触发补全
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+"==============================================================
+" 4. 自动格式化配置
 "==============================================================
 " 保存时自动格式化（仅当 LSP 支持格式化时）
 augroup CocFormatOnSave
@@ -81,7 +109,7 @@ augroup CocFormatExpr
 augroup END
 
 "==============================================================
-" 其他优化配置
+" 5. 其他优化配置
 "==============================================================
 " 指定 python 路径（如果需要，取消注释并修改路径）
 " let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'
