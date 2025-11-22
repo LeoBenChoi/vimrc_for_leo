@@ -83,6 +83,8 @@ call s:source_if_exists(s:config_root . '/init/performance.vim')
 " 4. 插件管理与加载
 "   - 结构上仍使用 vim-plug，但封装在单独模块，便于未来切换
 "==============================================================
+" 注意：startify 配置需要在插件加载前设置
+call s:source_if_exists(s:config_root . '/ui/startify.vim')
 call s:source_if_exists(s:config_root . '/plugins/plugins.vim')
 
 "==============================================================
