@@ -109,7 +109,35 @@ augroup CocFormatExpr
 augroup END
 
 "==============================================================
-" 5. 其他优化配置
+" 5. 诊断与错误定位
+"==============================================================
+" 跳转到上一个诊断（错误/警告/提示/建议）
+nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
+
+" 跳转到下一个诊断（错误/警告/提示/建议）
+nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
+
+" 打开诊断列表
+nnoremap <silent><nowait> <space>a :<C-u>CocList diagnostics<cr>
+
+"==============================================================
+" 6. 代码修复与重构
+"==============================================================
+" 快速修复当前问题（光标所在位置的快速修复）
+nmap <leader>aq <Plug>(coc-fix-current)
+
+" 光标处的代码操作（修复/重构）
+nmap <leader>ac <Plug>(coc-codeaction-cursor)
+
+" 选中区域的代码操作（可视化模式）
+xmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+
+" 源代码级别的代码操作（模块管理、批量重构、导入优化）
+nmap <leader>as <Plug>(coc-codeaction-source)
+
+"==============================================================
+" 7. 其他优化配置
 "==============================================================
 " 指定 python 路径（如果需要，取消注释并修改路径）
 " let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'
