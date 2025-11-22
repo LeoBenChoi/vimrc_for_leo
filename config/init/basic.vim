@@ -14,6 +14,7 @@ let g:loaded_basic_config = 1
 set encoding=utf-8                 " 内部编码统一为 UTF-8（影响脚本和寄存器）
 set fileencodings=utf-8,ucs-bom,gbk,latin1
                                    " 读取文件时按优先级尝试以上编码，兼容常见中文编码
+set ambiwidth=double                " 模糊宽度字符（如 emoji、图标）显示为双宽度，解决状态栏和侧边栏图标显示问题
 
 "==============================================================
 " 1.1. 换行符设置（统一使用 LF）
