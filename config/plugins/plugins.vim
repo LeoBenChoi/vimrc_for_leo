@@ -38,8 +38,9 @@ Plug 'junegunn/fzf.vim', { 'on': ['Files', 'GFiles', 'Rg', 'Buffers'] } " FZF �
 " LSP/补全框架（coc.nvim 需要启动时加载，不延迟）
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }   " LSP/补全框架
 
-" Git 集成（延迟加载：只有使用 Git 命令时才加载）
-Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gstatus', 'Gcommit', 'Gwrite'] } " Git 集成
+" Git 集成
+Plug 'tpope/vim-fugitive'              " Git 命令集成
+Plug 'airblade/vim-gitgutter'          " Git 变更标记（在侧边栏显示 Git 状态）
 
 " 快速注释（延迟加载：只有使用注释命令时才加载）
 Plug 'tpope/vim-commentary', { 'on': '<Plug>Commentary' } " 快速注释

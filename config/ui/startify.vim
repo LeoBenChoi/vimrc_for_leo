@@ -9,13 +9,7 @@ endif
 let g:loaded_startify_config = 1
 
 "==============================================================
-" 1. 基础配置
-"==============================================================
-let g:startify_files_number = 9
-let g:startify_session_number = 5
-
-"==============================================================
-" 2. 自定义头部
+" 1. 自定义头部
 "==============================================================
 let g:startify_custom_header = [
       \ '    /$$    /$$  /$$$$$$         /$$$$$$                  /$$            ',
@@ -31,41 +25,3 @@ let g:startify_custom_header = [
       \ '    Powered by Startify',
       \ ''
       \ ]
-
-"==============================================================
-" 3. 列表显示
-"==============================================================
-let g:startify_lists = [
-      \ { 'type': 'files',     'header': ['   最近文件'] },
-      \ { 'type': 'dir',       'header': ['   当前目录: ' . fnamemodify(getcwd(), ":~")] },
-      \ { 'type': 'sessions',  'header': ['   会话'] }
-      \ ]
-
-"==============================================================
-" 4. 文件过滤
-"==============================================================
-let g:startify_skiplist = [
-      \ 'COMMIT_EDITMSG',
-      \ '\.git/',
-      \ '\.vim/plugged/',
-      \ '\.vim/\.backup/',
-      \ '\.vim/\.swap/',
-      \ '\.vim/\.undo/',
-      \ ]
-
-"==============================================================
-" 5. 其他设置
-"==============================================================
-let g:startify_enable_special = 0
-let g:startify_padding_left = 2
-let g:startify_fortune_use_unicode = 1
-let g:startify_disable_at_vimenter = 0
-let g:startify_enable_unsafe = 1
-let g:startify_update_oldfiles = 1
-
-"==============================================================
-" 6. 插件集成
-"==============================================================
-if exists('g:loaded_webdevicons')
-  let g:startify_enable_special = 1
-endif

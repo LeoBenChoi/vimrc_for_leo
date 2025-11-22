@@ -92,6 +92,11 @@ call s:source_if_exists(s:config_root . '/mappings/core.vim')
 call s:source_if_exists(s:config_root . '/plugins/lsp_coc.vim')
 
 "==============================================================
+" 7.1. Git 配置
+"==============================================================
+call s:source_if_exists(s:config_root . '/plugins/git.vim')
+
+"==============================================================
 " 8. 代码大纲配置（Vista）
 "==============================================================
 call s:source_if_exists(s:config_root . '/ui/outline.vim')
