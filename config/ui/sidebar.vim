@@ -1,6 +1,6 @@
 "==============================================================
 " config/ui/sidebar.vim
-" 侧边栏配置：文件浏览器和代码大纲
+" 侧边栏配置：NERDTree 文件浏览器
 "==============================================================
 
 if exists('g:loaded_sidebar_config')
@@ -9,7 +9,7 @@ endif
 let g:loaded_sidebar_config = 1
 
 "==============================================================
-" 1. NERDTree 配置（经典文件浏览器）
+" 1. NERDTree 配置
 "==============================================================
 if exists(':NERDTree')
   " 基础设置
@@ -32,23 +32,12 @@ if exists(':NERDTree')
         \ '\.class$',
         \ '\.jar$',
         \ ]
-  " 忽略规则说明：
-  "   \.pyc$, \.pyo$, \.pyd$     - Python 编译文件
-  "   __pycache__, \.git$, \.svn$ - 版本控制目录
-  "   \.DS_Store$, node_modules$ - 系统文件和依赖
-  "   \.class$, \.jar$           - Java 编译文件
-
-  " 自动打开/关闭行为
-  " 启动时自动打开 NERDTree（可选，默认关闭）
-  " autocmd VimEnter * NERDTree
-  " 最后一个窗口是 NERDTree 时自动关闭
   autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 endif
 
 "==============================================================
-" 1.1. Git 状态符号配置（nerdtree-git-plugin）
+" 2. Git 状态符号配置
 "==============================================================
-" 自定义 Git 状态符号，解决图标显示不完整的问题
 if exists(':NERDTree')
   " 使用 Unicode 字符（需要字体支持）
   " 如果显示有问题，可以切换到下面的 ASCII 版本
@@ -95,4 +84,3 @@ if exists(':NERDTree') && exists('g:loaded_webdevicons')
   let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
   let g:WebDevIconsNerdTreeBeforeGlyphPadding = ' '
 endif
-

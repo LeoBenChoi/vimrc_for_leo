@@ -1,19 +1,7 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 全局入口：最小依赖，可在未安装插件时正常加载
-" 目录结构假设：
-"   ~/.vim/
-"     ├── .vimrc          (当前文件，将被复制到 ~ 使用)
-"     ├── config/
-"     │     ├── init/     (基础设置模块)
-"     │     ├── plugins/  (插件与依赖管理)
-"     │     ├── ui/       (主题/状态栏等外观)
-"     │     ├── mappings/ (快捷键)
-"     │     └── bootstrap/(环境检测与修复脚本)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 "==============================================================
 " 0. 安全保护：确保脚本只加载一次
 "==============================================================
+
 if exists('g:loaded_custom_vimrc')
   finish
 endif
@@ -34,7 +22,7 @@ let g:show_startup_time = 1
 let g:airline#extensions#vista#enabled = 0
 
 "==============================================================
-" 1. 基础路径与平台探测
+" 1. 路径与平台检测
 "==============================================================
 let s:this_file_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let s:candidate_dirs = [
@@ -65,12 +53,12 @@ function! s:source_if_exists(path) abort
 endfunction
 
 "==============================================================
-" 2. 启动前环境自检/修复（可选）
+" 2. 环境检测
 "==============================================================
 call s:source_if_exists(s:config_root . '/bootstrap/env_check.vim')
 
 "==============================================================
-" 3. 基础配置初始化（不依赖插件）
+" 3. 基础配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/init/basic.vim')
 
@@ -80,15 +68,13 @@ call s:source_if_exists(s:config_root . '/init/basic.vim')
 call s:source_if_exists(s:config_root . '/init/performance.vim')
 
 "==============================================================
-" 4. 插件管理与加载
-"   - 结构上仍使用 vim-plug，但封装在单独模块，便于未来切换
+" 4. 插件管理
 "==============================================================
-" 注意：startify 配置需要在插件加载前设置
 call s:source_if_exists(s:config_root . '/ui/startify.vim')
 call s:source_if_exists(s:config_root . '/plugins/plugins.vim')
 
 "==============================================================
-" 5. UI/主题（含双主题及自动切换逻辑）
+" 5. UI 配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/ui/theme.vim')
 call s:source_if_exists(s:config_root . '/ui/font.vim')
@@ -96,12 +82,12 @@ call s:source_if_exists(s:config_root . '/ui/statusline.vim')
 call s:source_if_exists(s:config_root . '/ui/sidebar.vim')
 
 "==============================================================
-" 6. 快捷键映射（完全独立的目录，方便增删）
+" 6. 快捷键映射
 "==============================================================
 call s:source_if_exists(s:config_root . '/mappings/core.vim')
 
 "==============================================================
-" 7. 语言与 LSP 配置（默认 coc.nvim）
+" 7. LSP 配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/plugins/lsp_coc.vim')
 
@@ -111,9 +97,8 @@ call s:source_if_exists(s:config_root . '/plugins/lsp_coc.vim')
 call s:source_if_exists(s:config_root . '/ui/outline.vim')
 
 "==============================================================
-" 9. 额外定制或本地覆盖
+" 9. 本地覆盖
 "==============================================================
 if filereadable(s:vim_home . '/local.vim')
   execute 'source' fnameescape(s:vim_home . '/local.vim')
 endif
-

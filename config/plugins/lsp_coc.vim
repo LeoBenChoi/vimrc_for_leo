@@ -1,6 +1,6 @@
 "==============================================================
 " config/plugins/lsp_coc.vim
-" coc.nvim LSP 配置
+" LSP 配置：coc.nvim 语言服务器协议
 "==============================================================
 
 if exists('g:loaded_lsp_coc_config')
@@ -9,9 +9,8 @@ endif
 let g:loaded_lsp_coc_config = 1
 
 "==============================================================
-" coc.nvim 配置文件位置设置
+" 1. 基础配置
 "==============================================================
-" 设置 :CocConfig 命令打开的文件位置
 let g:coc_config_home = expand('~/.vim')
 
 " 设置 coc-settings.json 文件类型为 jsonc（支持注释）
@@ -91,4 +90,3 @@ augroup END
 if !exists('*coc#rpc#start_server')
   finish
 endif
-

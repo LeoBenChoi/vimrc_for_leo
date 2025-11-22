@@ -1,7 +1,6 @@
 "==============================================================
 " config/init/performance.vim
-" 性能优化配置：充分利用硬件资源，提高 Vim 性能
-" 配置针对：32GB 内存，i9-13900H CPU
+" 性能优化：针对高性能硬件的优化配置
 "==============================================================
 
 if exists('g:loaded_performance_config')
@@ -10,11 +9,8 @@ endif
 let g:loaded_performance_config = 1
 
 "==============================================================
-" 性能优化开关
+" 1. 性能优化开关
 "==============================================================
-" 可以通过设置这些变量来启用/禁用特定的性能优化
-" 在 local.vim 中设置即可覆盖默认值
-
 " 是否启用性能优化（默认启用）
 let g:enable_performance_optimization = get(g:, 'enable_performance_optimization', 1)
 
@@ -35,7 +31,7 @@ if !g:enable_performance_optimization
 endif
 
 "==============================================================
-" 1. 核心性能优化（充分利用 32GB 内存和 i9 CPU）
+" 2. 内存优化
 "==============================================================
 if g:enable_memory_optimization
   " 内存限制提升（充分利用 32GB 内存）
@@ -50,9 +46,8 @@ if g:enable_memory_optimization
 endif
 
 "==============================================================
-" 2. CPU 优化（充分利用 i9-13900H 性能）
+" 3. CPU 优化
 "==============================================================
-" 使用新版正则引擎（i9 能更好处理）
 if has('patch-7.4.1105')
   set regexpengine=2          " 使用新版正则引擎（性能更好）
 endif
@@ -74,7 +69,7 @@ set updatetime=50             " 降低更新时间到 50ms（默认 4000ms，影
 set redrawtime=30000          " 增加重绘超时到 30 秒（充分利用高性能硬件）
 
 "==============================================================
-" 3. 渲染优化（可切换，可能影响视觉效果）
+" 4. 渲染优化
 "==============================================================
 if g:enable_render_optimization
   " 语法高亮优化
@@ -84,15 +79,10 @@ if g:enable_render_optimization
   if has('syntax')
     syntax sync minlines=300  " 语法同步最小行数（默认 100）
   endif
-  
-  " 可选：禁用某些视觉效果以提升性能（默认不禁用，可通过变量控制）
-  " 如果需要极致性能，可以在 local.vim 中设置：
-  " let g:disable_cursor_highlight = 1
   if get(g:, 'disable_cursor_highlight', 0)
     set nocursorline          " 禁用光标行高亮
     set nocursorcolumn        " 禁用光标列高亮
   endif
-  
   if get(g:, 'disable_relative_number', 0)
     set norelativenumber      " 禁用相对行号（提升大文件性能）
   endif
@@ -102,7 +92,6 @@ endif
 " 4. 超大文件优化（预防性配置）
 "==============================================================
 if g:enable_large_file_optimization
-  " 检测超大文件并自动优化
   function! s:OptimizeForLargeFile() abort
     let size = getfsize(expand('%:p'))
     let threshold = g:large_file_threshold * 1024 * 1024  " 转换为字节
@@ -127,10 +116,9 @@ if g:enable_large_file_optimization
 endif
 
 "==============================================================
-" 5. GPU 加速（GUI 版本，Windows）
+" 6. GPU 加速（Windows GUI）
 "==============================================================
 if has('gui_running') && (has('win32') || has('win64'))
-  " Windows GUI 专用 GPU 加速
   if has('directx')
     set renderoptions=type:directx,geom:1,renmode:5 " Windows 专用 GPU 加速
   endif
@@ -165,6 +153,4 @@ function! PerformanceInfo() abort
   echomsg 'updatetime: ' . &updatetime
   echomsg '=================='
 endfunction
-
 command! PerformanceInfo call PerformanceInfo()
-
