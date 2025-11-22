@@ -18,7 +18,7 @@ let mapleader = "\<Space>"
 "==============================================================
 "   a / A : 追加到行尾的原生动作，暂不覆盖，保留编辑肌肉记忆
 "   b / B : Buffer 管理（本文件实现 <leader>fb）
-"   c / C : Comment / Code Action（预留）
+"   c / C : Comment / 注释（本文件实现 <leader>cc, <leader>c）
 "   d / D : 调试/诊断（预留）
 "   e / E : Explorer/编辑器增强（预留）
 "   f / F : FZF 模糊搜索（本文件实现一组高频命令）
@@ -79,6 +79,17 @@ let mapleader = "\<Space>"
 "==============================================================
 " 规范：小写 b 负责常规 buffer 浏览，保留大写 B 供批量操作使用
 nnoremap <leader>fb :Buffers<CR> " 列出所有 buffer，支持模糊选择
+
+"==============================================================
+" c / C - Comment / 注释
+"==============================================================
+" 规范：小写 c 用于注释功能，使用 vim-commentary 插件
+" 注释当前行
+nmap <leader>cc <Plug>CommentaryLine
+" 注释选中区域（可视化模式）
+xmap <leader>c <Plug>Commentary
+" 注释配合 motion（如 <leader>cap 注释段落）
+nmap <leader>c <Plug>Commentary
 
 "==============================================================
 " f / F - FZF 模糊搜索套件
