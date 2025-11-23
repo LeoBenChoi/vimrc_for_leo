@@ -75,86 +75,13 @@ let mapleader = "\<Space>"
 "==============================================================
 
 "==============================================================
-" b / B - Buffer 管理
+" 注意：快捷键已按字母分类到独立文件
 "==============================================================
-" 规范：小写 b 负责常规 buffer 浏览，保留大写 B 供批量操作使用
-nnoremap <leader>fb :Buffers<CR> " 列出所有 buffer，支持模糊选择
-
-"==============================================================
-" c / C - Comment / 注释
-"==============================================================
-" 规范：小写 c 用于注释功能，使用 vim-commentary 插件
-" 注释当前行
-nmap <leader>cc <Plug>CommentaryLine
-" 注释选中区域（可视化模式）
-xmap <leader>c <Plug>Commentary
-" 注释配合 motion（如 <leader>cap 注释段落）
-nmap <leader>c <Plug>Commentary
-
-"==============================================================
-" f / F - FZF 模糊搜索套件
-"==============================================================
-" 规范：所有 FZF 相关快捷键统一归档在 f 段，保持肌肉记忆一致
-nnoremap <leader>ff :Files<CR>   " f -> Files：当前工作区文件模糊搜索
-nnoremap <leader>fg :GFiles<CR>  " g -> GitFiles：仅匹配 Git 跟踪文件
-nnoremap <leader>fr :Rg<CR>      " r -> Ripgrep：内容级搜索（rg 必需）
-
-"==============================================================
-" e / E - Explorer / 侧边栏
-"==============================================================
-" 规范：小写 e 用于文件浏览器，预留大写 E 给其他编辑器增强功能
-
-" NERDTree 快捷键
-" 使用函数包装，避免语法错误
-function! s:NERDTreeToggle()
-  if exists(':NERDTreeToggle')
-    NERDTreeToggle
-  else
-    echomsg 'NERDTree 未安装，请运行 :PlugInstall'
-  endif
-endfunction
-
-function! s:NERDTreeFind()
-  if exists(':NERDTreeFind')
-    NERDTreeFind
-  else
-    echomsg 'NERDTree 未安装'
-  endif
-endfunction
-
-function! s:NERDTreeRefreshRoot()
-  if exists(':NERDTreeRefreshRoot')
-    NERDTreeRefreshRoot
-  else
-    echomsg 'NERDTree 未安装'
-  endif
-endfunction
-
-nnoremap <silent> <leader>ee :call <SID>NERDTreeToggle()<CR>
-nnoremap <silent> <leader>ef :call <SID>NERDTreeFind()<CR>
-nnoremap <silent> <leader>er :call <SID>NERDTreeRefreshRoot()<CR>
-
-"==============================================================
-" o / O - Outline / 代码大纲
-"==============================================================
-" 规范：小写 o 用于代码大纲，预留大写 O 给其他大纲相关功能
-
-" Vista 代码大纲快捷键（切换打开/关闭）
-" 使用函数包装，避免语法错误
-function! s:VistaToggle()
-  if exists(':Vista')
-    Vista!!
-  else
-    echomsg 'Vista 未安装，请运行 :PlugInstall'
-  endif
-endfunction
-
-nnoremap <silent> <leader>oo :call <SID>VistaToggle()<CR>
-
-"==============================================================
-" t / T - Theme / Terminal 相关
-"==============================================================
-" 规范：小写 t 用于视觉样式切换，预留大写 T 给终端/任务面板
-if exists('*ToggleThemeMode')
-  nnoremap <leader>tt :call ToggleThemeMode()<CR> " t -> theme toggle
-endif
+" 所有快捷键映射已迁移到 mappings/ 目录下的独立文件：
+"   - mappings/a.vim : LSP 代码操作（a, ac, aq, as）
+"   - mappings/c.vim : 注释功能（c, cc）
+"   - mappings/e.vim : 文件浏览器（ee, ef, er）
+"   - mappings/f.vim : FZF 搜索（f, ff, fg, fr, fb, f., fp, fh, fc, fs, ft, fG, fB, fS）
+"   - mappings/g.vim : Git 操作（g, gs, gc, gw, gd, gb, gl, gr, gP, gL, gh, gj, gv, gS, gu, gt）
+"   - mappings/o.vim : 代码大纲（oo）
+"   - mappings/t.vim : 主题切换（tt）

@@ -291,8 +291,8 @@ function! ToggleThemeMode()
       " 再应用主题
       execute 'colorscheme ' . g:theme_name
       
-      " 验证主题是否应用成功
-      if &colorscheme !=# g:theme_name
+      " 验证主题是否应用成功（使用 g:colors_name 变量）
+      if exists('g:colors_name') && g:colors_name !=# g:theme_name
         " 如果主题未应用成功，重试
         execute 'colorscheme ' . g:theme_name
       endif

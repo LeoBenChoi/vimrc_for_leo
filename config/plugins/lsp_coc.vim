@@ -123,18 +123,8 @@ nnoremap <silent><nowait> <space>a :<C-u>CocList diagnostics<cr>
 "==============================================================
 " 6. 代码修复与重构
 "==============================================================
-" 快速修复当前问题（光标所在位置的快速修复）
-nmap <leader>aq <Plug>(coc-fix-current)
-
-" 光标处的代码操作（修复/重构）
-nmap <leader>ac <Plug>(coc-codeaction-cursor)
-
-" 选中区域的代码操作（可视化模式）
-xmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
-
-" 源代码级别的代码操作（模块管理、批量重构、导入优化）
-nmap <leader>as <Plug>(coc-codeaction-source)
+" 注意：所有代码操作快捷键已迁移到 mappings/a.vim
+" 这里只保留配置说明
 
 "==============================================================
 " 7. 其他优化配置

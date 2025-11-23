@@ -60,8 +60,13 @@ let g:gitgutter_sign_modified_removed = ':'
 "==============================================================
 " 3. Git 快捷键（vim-fugitive）
 "==============================================================
-" 设置 Git 快捷键的函数
-function! s:SetupGitMappings() abort
+" 注意：所有 Git 相关快捷键已迁移到 mappings/g.vim
+" vim-fugitive 的快捷键（gs, gc, gw, gd, gb, gl, gr, gP, gL）
+" 需要在插件加载后动态设置，这部分逻辑保留在 git.vim 中
+" 但实际映射定义在 mappings/g.vim 中
+
+" 设置 Git 快捷键的函数（供 mappings/g.vim 调用）
+function! SetupGitFugitiveMappings() abort
   " 检查插件是否已加载（检查 :Git 或 :Gstatus 命令）
   if exists(':Git') != 2 && exists(':Gstatus') != 2
     if get(g:, 'vim_debug', 0)
@@ -71,10 +76,10 @@ function! s:SetupGitMappings() abort
   endif
 
   " 防止重复映射
-  if exists('g:git_mappings_setup')
+  if exists('g:git_fugitive_mappings_setup')
     return
   endif
-  let g:git_mappings_setup = 1
+  let g:git_fugitive_mappings_setup = 1
 
   " Git 状态（打开 Git 状态窗口）
   " 优先使用 :Gstatus（如果存在），否则使用 :Git status
@@ -139,16 +144,16 @@ endfunction
 
 " 在 VimEnter 时设置快捷键（确保插件已完全加载）
 augroup GitMappings
-  autocmd! VimEnter * call s:SetupGitMappings()
+  autocmd! VimEnter * call SetupGitFugitiveMappings()
   " 延迟设置，确保所有插件都已加载
   if has('timers')
-    autocmd! VimEnter * call timer_start(500, {-> s:SetupGitMappings()})
+    autocmd! VimEnter * call timer_start(500, {-> SetupGitFugitiveMappings()})
   endif
 augroup END
 
 " 如果插件已经加载，立即设置快捷键
 if exists(':Git') == 2 || exists(':Gstatus') == 2
-  call s:SetupGitMappings()
+  call SetupGitFugitiveMappings()
 endif
 
 " 尝试从 runtimepath 加载插件（如果还没加载）
@@ -169,7 +174,7 @@ if exists(':Git') != 2 && exists(':Gstatus') != 2
     try
       runtime! plugin/fugitive.vim
       if exists(':Git') == 2 || exists(':Gstatus') == 2
-        call s:SetupGitMappings()
+        call SetupGitFugitiveMappings()
       endif
     catch /.*/
       " 静默失败，等待 VimEnter 时再试
@@ -180,23 +185,8 @@ endif
 "==============================================================
 " 4. vim-gitgutter 快捷键
 "==============================================================
-" 跳转到上一个变更
-nmap <leader>gh <Plug>(GitGutterPrevHunk)
-
-" 跳转到下一个变更
-nmap <leader>gj <Plug>(GitGutterNextHunk)
-
-" 预览变更
-nmap <leader>gv <Plug>(GitGutterPreviewHunk)
-
-" 暂存当前变更块
-nmap <leader>gS <Plug>(GitGutterStageHunk)
-
-" 撤销当前变更块
-nmap <leader>gu <Plug>(GitGutterUndoHunk)
-
-" 切换 GitGutter 显示
-nnoremap <leader>gt :GitGutterToggle<CR>
+" 注意：所有 vim-gitgutter 快捷键已迁移到 mappings/g.vim
+" 这里只保留配置说明
 
 "==============================================================
 " 5. 诊断和修复命令
