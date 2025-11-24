@@ -78,6 +78,23 @@
   // ============================================================
   // 使用 gopls 作为 Go 语言服务器
   "go.useLanguageServer": true,
+  // 禁用 gopls 自动更新检查（避免网络问题导致的错误提示）
+  "go.checkForUpdates": "off",
+  // gopls 配置
+  "gopls": {
+    // 启用静态检查
+    "staticcheck": true,
+    // 自动完成未导入的包
+    "completeUnimported": true,
+    // 使用占位符
+    "usePlaceholders": true,
+    // 启用代码分析
+    "analyses": {
+      "unusedparams": true,
+      "unusedwrite": true,
+      "unusedvariable": true
+    }
+  },
   // 如果需要自定义 gopls 配置，可以使用 languageserver 配置
   // "languageserver": {
   //   "go": {
