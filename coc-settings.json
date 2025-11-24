@@ -66,6 +66,32 @@
   ],
 
   // ============================================================
+  // JavaScript / TypeScript 语言服务
+  // ============================================================
+  // 启用并优化 coc-tsserver 的体验
+  "tsserver.enable": true,
+  // 自动识别 Node 模块中的 TypeScript 版本
+  "tsserver.tsdk": "",
+  // 提升大型项目下的 tsserver 内存上限（单位：MB）
+  "tsserver.maxTsServerMemory": 4096,
+  // 输入时启用格式化，获得接近 VS Code 的体验
+  "tsserver.formatOnType": true,
+  // 减少文件监听开销（Windows 下建议使用 useFsEvents）
+  "tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents"
+  },
+  // TypeScript 语言偏好
+  "typescript.suggestionActions.enabled": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  // JavaScript 语言偏好
+  "javascript.suggestionActions.enabled": true,
+  "javascript.preferences.importModuleSpecifier": "auto",
+  "javascript.preferences.quoteStyle": "auto",
+
+  // ============================================================
   // Vue 语言支持（Vetur）
   // ============================================================
   // 关闭 Vetur 的部分验证功能，避免与其他工具冲突
