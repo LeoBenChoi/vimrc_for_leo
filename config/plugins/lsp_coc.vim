@@ -13,6 +13,13 @@ let g:loaded_lsp_coc_config = 1
 "==============================================================
 let g:coc_config_home = expand('~/.vim')
 
+" 设置 Node.js 路径（优先使用 nvm 安装的版本）
+" 如果 nvm 已安装，使用 nvm 的 Node.js；否则使用系统默认的
+let s:nvm_node = expand('~/.nvm/versions/node/v18.20.8/bin/node')
+if filereadable(s:nvm_node)
+  let g:coc_node_path = s:nvm_node
+endif
+
 " 设置 coc-settings.json 文件类型为 jsonc（支持注释）
 autocmd BufRead,BufNewFile coc-settings.json set filetype=jsonc
 
