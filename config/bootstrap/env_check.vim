@@ -11,14 +11,8 @@ let g:loaded_env_check = 1
 "==============================================================
 " 1. 依赖检测
 "==============================================================
-" 检测 ripgrep (rg) - FZF 内容搜索需要
-if executable('rg') == 0
-  echohl WarningMsg
-  echomsg '[环境检测] ripgrep (rg) 未安装，<Space>fr 命令将无法使用'
-  echomsg '[安装方法] Windows: choco install ripgrep 或 scoop install ripgrep'
-  echomsg '[安装方法] 或访问: https://github.com/BurntSushi/ripgrep/releases'
-  echohl None
-endif
+" 注意：ripgrep (rg) 检测已移至 config/plugins/fzf.vim
+" 因为它是 FZF 插件的依赖，只在加载 FZF 时检测
 
 " 检测 node.js - coc.nvim 需要
 if executable('node') == 0

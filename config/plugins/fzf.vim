@@ -69,10 +69,14 @@ if executable('rg')
         \   <bang>0)
 else
   " 如果 ripgrep 不可用，使用 grep 作为后备
-  echohl WarningMsg
-  echomsg '[FZF] ripgrep (rg) 未安装，内容搜索功能将受限'
-  echomsg '请安装: choco install ripgrep 或 scoop install ripgrep'
-  echohl None
+  " 静默记录到消息历史，不显示（可通过 :messages 查看）
+  silent! echohl WarningMsg
+  silent! echomsg '[环境检测] ripgrep (rg) 未安装，<Space>fr 命令将无法使用'
+  silent! echomsg '[安装方法] Windows: choco install ripgrep 或 scoop install ripgrep'
+  silent! echomsg '[安装方法] 或访问: https://github.com/BurntSushi/ripgrep/releases'
+  silent! echomsg '[FZF] ripgrep (rg) 未安装，内容搜索功能将受限'
+  silent! echomsg '请安装: choco install ripgrep 或 scoop install ripgrep'
+  silent! echohl None
 endif
 
 "==============================================================
