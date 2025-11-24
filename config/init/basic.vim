@@ -28,6 +28,8 @@ set fileformats=unix,dos  " 保存文件自动保存为unix,dos格式
 "==============================================================
 set number                         " 显示绝对行号
 set relativenumber                 " 同时显示相对行号，便于跳行
+set numberwidth=4                  " 行号列宽度（为符号预留空间）
+set signcolumn=yes                 " 始终显示符号列（为诊断和 Git 符号预留空间）
 set hidden                         " 允许切换 buffer 时保留未保存内容
 set expandtab                      " 将 Tab 转换为空格
 set tabstop=4                      " Tab 视觉宽度（只影响显示）
