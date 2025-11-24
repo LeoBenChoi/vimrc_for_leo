@@ -31,8 +31,8 @@ if !exists('g:theme_mode')
   let g:theme_mode = s:is_daytime() ? 'light' : 'dark'
 endif
 
-" 日间主题：PaperColor（浅色主题）
-let g:theme_day = get(g:, 'theme_day', 'PaperColor')
+" 日间主题：Solarized8（浅色主题）
+let g:theme_day = get(g:, 'theme_day', 'solarized8')
 " 夜间主题：Gruvbox（深色主题）
 let g:theme_night = get(g:, 'theme_night', 'gruvbox')
 
