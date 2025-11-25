@@ -50,6 +50,7 @@ Plug 'vim-airline/vim-airline'                      " 功能强大的状态栏�
 Plug 'vim-airline/vim-airline-themes'               " Airline 主题包
 
 " 主题（需要启动时加载以应用主题）
+Plug 'lifepillar/vim-solarized8'                    " Solarized8 主题（支持浅色/深色）
 Plug 'NLKNguyen/papercolor-theme'                   " PaperColor 主题（日间主题，浅色）
 Plug 'morhetz/gruvbox'                              " Gruvbox 主题（夜间主题，深色）
 
