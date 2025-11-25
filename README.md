@@ -17,7 +17,7 @@
 
 ## 📁 目录结构
 
-```
+```text
 ~/.vim/
 ├── .vimrc                 # 主配置文件（需复制到 ~/.vimrc）
 ├── .gitignore             # Git 忽略规则
@@ -27,20 +27,31 @@
 │   └── plug.vim           # vim-plug 插件管理器
 ├── config/
 │   ├── bootstrap/         # 环境检测与修复
-│   │   └── env_check.vim
+│   │   └── env_check.vim  # 环境检查脚本
 │   ├── init/              # 基础设置（不依赖插件）
-│   │   └── basic.vim
+│   │   ├── basic.vim      # 基础配置（编码、行号、缩进等）
+│   │   └── performance.vim # 性能优化配置
 │   ├── plugins/           # 插件管理
 │   │   ├── plugins.vim    # 插件列表与 vim-plug 配置
-│   │   └── lsp_coc.vim    # coc.nvim LSP 配置
+│   │   ├── lsp_coc.vim    # coc.nvim LSP 配置
+│   │   ├── fzf.vim        # FZF 搜索配置
+│   │   └── git.vim        # Git 插件配置
 │   ├── ui/                # 用户界面
 │   │   ├── theme.vim      # 主题配置（日/夜切换）
 │   │   ├── font.vim       # 字体配置（gVim）
 │   │   ├── statusline.vim # 状态栏配置（vim-airline）
 │   │   ├── sidebar.vim    # 侧边栏配置（NERDTree）
+│   │   ├── startify.vim   # 启动页配置（vim-startify）
 │   │   └── outline.vim    # 代码大纲配置（Vista）
-│   └── mappings/          # 快捷键映射
-│       └── core.vim       # 核心快捷键定义
+│   └── mappings/          # 快捷键映射（按字母分类）
+│       ├── core.vim       # 核心快捷键定义
+│       ├── a.vim          # LSP 代码操作快捷键
+│       ├── c.vim          # 注释功能快捷键
+│       ├── e.vim          # 文件浏览器快捷键
+│       ├── f.vim          # FZF 搜索快捷键
+│       ├── g.vim          # Git 操作快捷键
+│       ├── o.vim          # 代码大纲快捷键
+│       └── t.vim          # 主题切换快捷键
 ├── plugged/               # 插件安装目录（自动生成）
 ├── .backup/               # 备份文件目录（自动生成）
 ├── .swap/                 # 交换文件目录（自动生成）
@@ -232,17 +243,24 @@ let g:theme_night = 'your-night-theme'
 配置文件：`coc-settings.json`
 
 支持的语言：
-- Python（coc-pyright）
-- JavaScript/TypeScript（coc-tsserver）
-- Go（coc-go）
-- 其他语言（安装对应扩展）
+- **Python**（coc-pyright）- 完整的类型检查和代码补全
+- **JavaScript/TypeScript**（coc-tsserver）- 已优化配置，支持大型项目
+  - 内存上限提升至 4GB
+  - 输入时自动格式化
+  - 智能导入和自动更新
+  - 优化的文件监听性能
+- **Go**（coc-go）- 完整的 Go 语言支持
+- **其他语言**（安装对应扩展）
 
 ### 自动格式化
 
 保存时自动格式化（在 `coc-settings.json` 中配置）：
-- Python：支持 black、autopep8、yapf
-- JavaScript/TypeScript：使用 Prettier
-- Go：使用 goimports
+- **Python**：支持 black、autopep8、yapf
+- **JavaScript/TypeScript**：
+  - 保存时自动格式化（Prettier）
+  - 输入时自动格式化（formatOnType）
+  - 支持 `.prettierrc` 配置文件
+- **Go**：使用 goimports
 
 ## 🛠️ 自定义配置
 
@@ -286,9 +304,18 @@ nnoremap <leader>xx :YourCommand<CR>
 
 ### JavaScript/TypeScript
 
-- **LSP**：coc-tsserver
-- **格式化**：Prettier
+- **LSP**：coc-tsserver（已优化配置）
+- **格式化**：Prettier + TypeScript 内置格式化
 - **安装**：`:CocInstall coc-tsserver`
+
+**已配置的优化选项**：
+- ✅ 启用 TypeScript 语言服务（tsserver）
+- ✅ 提升内存上限至 4GB（适用于大型项目）
+- ✅ 输入时自动格式化（formatOnType）
+- ✅ 优化文件监听性能（使用 FSEvents）
+- ✅ 自动更新导入（文件移动/重命名时）
+- ✅ 智能导入模块路径（自动/非相对路径）
+- ✅ 自动导入 package.json 中的依赖
 
 ### Go
 
