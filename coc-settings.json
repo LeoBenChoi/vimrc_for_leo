@@ -133,7 +133,10 @@
     "**/__pycache__",
     "**/build",
     "**/dist",
-    "**/node_modules"
+    "**/node_modules",
+    "**/.idea",
+    "**/.vscode",
+    "**/modules"
   ],
   // 诊断严重性覆盖
   "python.analysis.diagnosticSeverityOverrides": {
