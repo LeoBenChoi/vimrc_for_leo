@@ -9,9 +9,10 @@ endif
 let g:loaded_g_mappings = 1
 
 "==============================================================
-" g / G - Git 操作快捷键
+" g / G - Git 操作和代码跳转快捷键
 "==============================================================
 " 规范：所有 Git 相关快捷键统一归档在 g 段
+" 同时包含 g 开头的 LSP 代码跳转快捷键（gd, gy, gi, gr）
 
 " 注意：vim-fugitive 的快捷键在 git.vim 中动态设置
 " 这里提供占位符，实际映射由 SetupGitFugitiveMappings() 函数设置
@@ -45,4 +46,24 @@ nmap <silent> <leader>gu <Plug>(GitGutterUndoHunk)
 
 " gt -> GitGutter Toggle：切换 GitGutter 显示
 nnoremap <silent> <leader>gt :GitGutterToggle<CR>
+
+"==============================================================
+" 代码导航与跳转（LSP）- g 开头的快捷键
+"==============================================================
+" 注意：这些是直接使用的快捷键（无 leader），与 Git 的 <leader>g 快捷键不冲突
+
+" 如果 coc 未安装，不执行 LSP 相关快捷键
+if exists('*coc#rpc#start_server')
+  " gd -> Go to Definition：跳转到定义
+  nmap <silent> gd <Plug>(coc-definition)
+
+  " gy -> Go to Type Definition：跳转到类型定义
+  nmap <silent> gy <Plug>(coc-type-definition)
+
+  " gi -> Go to Implementation：跳转到实现
+  nmap <silent> gi <Plug>(coc-implementation)
+
+  " gr -> Go to References：查看引用
+  nmap <silent> gr <Plug>(coc-references)
+endif
 

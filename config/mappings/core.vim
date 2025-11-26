@@ -82,6 +82,7 @@ let mapleader = "\<Space>"
 "   - mappings/c.vim : 注释功能（c, cc）
 "   - mappings/e.vim : 文件浏览器（ee, ef, er）
 "   - mappings/f.vim : FZF 搜索（f, ff, fg, fr, fb, f., fp, fh, fc, fs, ft, fG, fB, fS）
-"   - mappings/g.vim : Git 操作（g, gs, gc, gw, gd, gb, gl, gr, gP, gL, gh, gj, gv, gS, gu, gt）
+"   - mappings/g.vim : Git 操作（<leader>g*）和 LSP 跳转（gd, gy, gi, gr）
 "   - mappings/o.vim : 代码大纲（oo）
 "   - mappings/t.vim : 主题切换（tt）
+" 注意：其他 LSP 跳转快捷键（K, <C-o>, <leader>rn）在 config/plugins/lsp_coc.vim 中

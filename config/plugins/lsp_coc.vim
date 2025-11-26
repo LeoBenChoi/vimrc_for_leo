@@ -134,7 +134,33 @@ nnoremap <silent><nowait> <space>a :<C-u>CocList diagnostics<cr>
 " 这里只保留配置说明
 
 "==============================================================
-" 7. 其他优化配置
+" 7. 代码导航与跳转
+"==============================================================
+" 注意：g 开头的跳转快捷键（gd, gy, gi, gr）已迁移到 mappings/g.vim
+" 以下是非 g 开头的跳转相关快捷键
+
+" K -> Hover/Preview：查看文档（使用原生 K 键）
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" <C-o> -> 返回上一个位置（跳转后返回）
+nmap <silent> <C-o> <Plug>(coc-definition-back)
+
+" <leader>rn -> Rename：重命名符号
+nmap <silent> <leader>rn <Plug>(coc-rename)
+
+" 显示文档的函数
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+"==============================================================
+" 8. 其他优化配置
 "==============================================================
 " 指定 python 路径（如果需要，取消注释并修改路径）
 " let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'
