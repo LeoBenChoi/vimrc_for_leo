@@ -31,13 +31,13 @@ if !exists('g:theme_mode')
   let g:theme_mode = s:is_daytime() ? 'light' : 'dark'
 endif
 
-" 日间主题：Solarized8（浅色主题）
+" 日间主题：Solarized8（终端浅色主题）
 let g:theme_day = get(g:, 'theme_day', 'solarized8')
 " 夜间主题：Gruvbox（深色主题）
 let g:theme_night = get(g:, 'theme_night', 'gruvbox')
 
 " GUI 模式下的主题（可选）
-let g:theme_day_gui = get(g:, 'theme_day_gui', '')
+let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
 let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 
 " 终端模式下的主题（可选）
@@ -234,10 +234,19 @@ function! s:custom_highlights()
   highlight GitGutterChange guifg=#61afef ctermfg=75
   highlight GitGutterDelete guifg=#e06c75 ctermfg=168
   
-  " 诊断信息高亮
-  highlight DiagnosticError guifg=#e06c75 ctermfg=168
-  highlight DiagnosticWarn  guifg=#e5c07b ctermfg=180
-  
+  " 诊断信息高亮（区分浅/深背景，确保可读性）
+  if &background ==# 'light'
+    highlight DiagnosticError guifg=#b00020 ctermfg=160
+    highlight DiagnosticWarn  guifg=#8a6d00 ctermfg=94
+    highlight DiagnosticInfo  guifg=#005f87 ctermfg=24
+    highlight DiagnosticHint  guifg=#2b6300 ctermfg=28
+  else
+    highlight DiagnosticError guifg=#e06c75 ctermfg=168
+    highlight DiagnosticWarn  guifg=#e5c07b ctermfg=180
+    highlight DiagnosticInfo  guifg=#61afef ctermfg=75
+    highlight DiagnosticHint  guifg=#98c379 ctermfg=114
+  endif
+ 
   " 标签栏样式
   highlight TabLine      guifg=#5c6370 guibg=#282c34 gui=NONE
   highlight TabLineSel   guifg=#abb2bf guibg=#3e4452 gui=BOLD

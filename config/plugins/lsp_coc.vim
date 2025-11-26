@@ -46,6 +46,7 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-snippets',
       \ 'coc-pyright',
+      \ '@yaegassy/coc-pylsp',
       \ 'coc-tsserver',
       \ 'coc-go',
       \ 'coc-html',
@@ -58,7 +59,8 @@ let g:coc_global_extensions = [
 " 扩展说明：
 "   coc-json          - JSON 支持
 "   coc-snippets      - 代码片段支持
-"   coc-pyright       - Python LSP
+"   coc-pyright       - Python LSP（基于 Pyright）
+"   @yaegassy/coc-pylsp - Python LSP（基于 Pylsp，Pyright 的替代方案）
 "   coc-tsserver      - JavaScript/TypeScript LSP
 "   coc-go            - Go LSP
 "   coc-html          - HTML 支持
@@ -100,10 +102,29 @@ endif
 " 4. 自动格式化配置
 "==============================================================
 " 保存时自动格式化（仅当 LSP 支持格式化时）
+" 使用安全函数，避免找不到格式化工具时报错
+function! s:CocFormatOnSave() abort
+  if !exists('*coc#rpc#start_server')
+    return
+  endif
+  " 使用 try-catch 避免格式化工具不存在时报错
+  try
+    " 检查是否有可用的格式化工具
+    if exists('*CocHasProvider') && CocHasProvider('format')
+      call CocAction('format')
+    elseif !exists('*CocHasProvider')
+      " 如果 CocHasProvider 不存在，直接尝试格式化（会静默失败）
+      silent! call CocAction('format')
+    endif
+  catch /.*/
+    " 忽略格式化错误，避免中断保存操作
+  endtry
+endfunction
+
 augroup CocFormatOnSave
   autocmd!
   autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.jsx,*.tsx,*.py,*.c,*.cpp,*.h
-        \ call CocAction('format')
+        \ call s:CocFormatOnSave()
 augroup END
 
 " 为特定文件类型设置 formatexpr（支持 gq 命令） | 格式化

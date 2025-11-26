@@ -49,6 +49,10 @@
   // ============================================================
   // 启用代码操作（Code Action），如快速修复、重构等
   "codeAction.enable": true,
+  // 代码操作选择器（显示所有可用的代码操作）
+  "codeAction.showPreferredActions": true,
+  // 代码操作超时时间（毫秒）
+  "codeAction.timeout": 5000,
 
   // ============================================================
   // 格式化配置
@@ -56,7 +60,7 @@
   // 保存时自动格式化（全局）
   "coc.preferences.formatOnSave": true,
   "coc.preferences.formatOnSaveTimeout": 2000,
-  // 按文件类型设置格式化
+  // 按文件类型设置格式化（仅当有格式化工具时）
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
@@ -90,6 +94,72 @@
   "javascript.suggestionActions.enabled": true,
   "javascript.preferences.importModuleSpecifier": "auto",
   "javascript.preferences.quoteStyle": "auto",
+
+  // ============================================================
+  // Python 语言支持（coc-pyright 驱动）
+  // ============================================================
+  // Pyright 核心开关
+  "pyright.enable": true,
+  "pyright.disableLanguageServices": false,
+  "pyright.disableOrganizeImports": false,
+  "pyright.trace.server": "off",
+  // 默认解释器：留空表示让 coc-pyright 自动探测（优先虚拟环境）
+  // 如需固定解释器，可填写绝对路径，例如：
+  // "python.defaultInterpreterPath": "C:/Users/Leo/AppData/Local/Programs/Python/Python311/python.exe"
+  "python.defaultInterpreterPath": "",
+  // 指定常用虚拟环境位置，方便 Pyright 自动解析
+  "python.venvPath": "",
+  "python.venv": ".venv",
+  // Pyright 分析能力
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.organizeImports": true,
+  "python.analysis.suggestActions": true,
+  "python.analysis.indexing": true,
+  // 额外搜索目录（按需追加，保持为空数组即可）
+  "python.analysis.extraPaths": [],
+  // 忽略分析的路径，避免虚拟环境/缓存目录反复扫描
+  "python.analysis.exclude": [
+    "**/.git",
+    "**/.hg",
+    "**/.mypy_cache",
+    "**/.pytest_cache",
+    "**/.ruff_cache",
+    "**/.venv",
+    "**/__pycache__",
+    "**/build",
+    "**/dist",
+    "**/node_modules"
+  ],
+  // 诊断严重性覆盖
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingImports": "warning",
+    "reportMissingTypeStubs": "none"
+  },
+  // Inlay Hints：在 Pyright 中启用更丰富的提示
+  "python.analysis.inlayHints.callArgumentNames": "partial",
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  
+  // ============================================================
+  // Python 替代方案：Pylsp（如果 Pyright 不工作，可以尝试）
+  // ============================================================
+  // 如果 coc-pyright 无法正常工作，可以尝试安装 @yaegassy/coc-pylsp
+  // 安装命令: :CocInstall @yaegassy/coc-pylsp
+  // 注意：扩展名是 @yaegassy/coc-pylsp，不是 coc-pylsp
+  // 然后取消下面的注释并注释掉上面的 pyright 配置
+  // "pylsp.plugins.jedi_completion.enabled": true,
+  // "pylsp.plugins.jedi_completion.include_params": true,
+  // "pylsp.plugins.pylint.enabled": false,
+  // "pylsp.plugins.autopep8.enabled": false,
+  // "pylsp.plugins.yapf.enabled": false,
+  // // Pylsp 自动导入配置
+  // "pylsp.plugins.jedi_completion.fuzzy": true,
+  // "pylsp.plugins.jedi_completion.eager": false,
 
   // ============================================================
   // Vue 语言支持（Vetur）
