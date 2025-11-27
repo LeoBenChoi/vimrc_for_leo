@@ -41,8 +41,9 @@ let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
 let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 
 " 终端模式下的主题（可选）
-" Linux 终端下使用 PaperColor（不会太黄），Windows 终端使用默认
-let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'PaperColor' : '')
+" Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用默认
+" 备选方案：solarized8（如果 one 不可用）
+let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : '')
 let g:theme_night_term = get(g:, 'theme_night_term', '')
 
 " 透明背景设置
@@ -82,9 +83,15 @@ function! s:get_theme_name(mode) abort
     let l:specific_theme = (a:mode ==# 'light' || a:mode ==# 'day') ? g:theme_day_term : g:theme_night_term
   endif
   
-  " 如果指定了特定主题且存在，使用特定主题；否则使用基础主题
+  " 如果指定了特定主题且存在，使用特定主题
   if !empty(l:specific_theme) && s:has_colorscheme(l:specific_theme)
     return l:specific_theme
+  " Linux 终端下，如果 one 不存在，尝试 solarized8
+  elseif !l:is_gui && has('unix') && !has('mac') && (a:mode ==# 'light' || a:mode ==# 'day')
+    if s:has_colorscheme('solarized8')
+      return 'solarized8'
+    endif
+  " 使用基础主题
   elseif s:has_colorscheme(l:base_theme)
     return l:base_theme
   else
@@ -183,6 +190,13 @@ function! s:load_theme()
       if !exists('g:onedark_terminal_italics')
         let g:onedark_terminal_italics = 1
       endif
+    elseif g:theme_name ==# 'one'
+      " One 主题配置（高对比度浅色主题，适合 Linux 终端）
+      if !exists('g:one_allow_italics')
+        let g:one_allow_italics = 1
+      endif
+      " 确保使用浅色模式
+      set background=light
     endif
     
     " 应用主题（在配置设置后）

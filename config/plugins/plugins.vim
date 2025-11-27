@@ -53,6 +53,7 @@ Plug 'vim-airline/vim-airline-themes'               " Airline 主题包
 Plug 'lifepillar/vim-solarized8'                    " Solarized8 主题（支持浅色/深色）
 Plug 'NLKNguyen/papercolor-theme'                   " PaperColor 主题（日间主题，浅色）
 Plug 'morhetz/gruvbox'                              " Gruvbox 主题（夜间主题，深色）
+Plug 'rakr/vim-one'                                 " One 主题（高对比度浅色主题，适合终端）
 
 " 文件浏览器（延迟加载：只有打开 NERDTree 时才加载）
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 经典文件浏览器（侧边栏）
