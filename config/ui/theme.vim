@@ -31,7 +31,7 @@ if !exists('g:theme_mode')
   let g:theme_mode = s:is_daytime() ? 'light' : 'dark'
 endif
 
-" 日间主题：Solarized8（终端浅色主题）
+" 日间主题：Solarized8（默认，但终端下使用 PaperColor）
 let g:theme_day = get(g:, 'theme_day', 'solarized8')
 " 夜间主题：Gruvbox（深色主题）
 let g:theme_night = get(g:, 'theme_night', 'gruvbox')
@@ -41,7 +41,8 @@ let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
 let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 
 " 终端模式下的主题（可选）
-let g:theme_day_term = get(g:, 'theme_day_term', '')
+" Linux 终端下使用 PaperColor（不会太黄），Windows 终端使用默认
+let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'PaperColor' : '')
 let g:theme_night_term = get(g:, 'theme_night_term', '')
 
 " 透明背景设置
@@ -161,7 +162,7 @@ function! s:load_theme()
         let g:gruvbox_italic = 1
       endif
     elseif g:theme_name ==# 'PaperColor'
-      " PaperColor 配置（日间主题）
+      " PaperColor 配置（日间主题，适合 Linux 终端）
       if !exists('g:PaperColor_Theme_Options')
         let g:PaperColor_Theme_Options = {
               \   'theme': {
@@ -172,6 +173,11 @@ function! s:load_theme()
               \     }
               \   }
               \ }
+      endif
+      " PaperColor 在终端下的优化配置
+      if !s:is_gui()
+        " 确保在终端下使用浅色模式
+        let g:PaperColor_Theme_Options.theme.default.transparent_background = g:theme_transparent_bg ? 1 : 0
       endif
     elseif g:theme_name ==# 'onedark'
       if !exists('g:onedark_terminal_italics')
