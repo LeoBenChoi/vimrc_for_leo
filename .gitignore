@@ -27,6 +27,7 @@ local.vim
 .viminfo
 Session.vim
 *.session
+fzf-history/
 
 # ============================================================
 # coc.nvim 相关

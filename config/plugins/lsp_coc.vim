@@ -45,7 +45,6 @@ let g:coc_edits_maximum_count = 0
 let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-snippets',
-      \ 'coc-pyright',
       \ '@yaegassy/coc-pylsp',
       \ 'coc-tsserver',
       \ 'coc-go',
