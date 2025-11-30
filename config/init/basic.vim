@@ -79,3 +79,22 @@ if !isdirectory(s:view_dir)
   call mkdir(s:view_dir, 'p', 0700)
 endif
 execute 'set viewdir=' . fnameescape(s:view_dir)
+
+"==============================================================
+" 4. 光标位置恢复（打开文件时回到上次编辑位置）
+"==============================================================
+" 启用 viminfo 来保存编辑历史（包括光标位置）
+set viminfo='100,<50,s10,h
+" viminfo 文件位置
+let s:viminfo_file = expand('~/.vim/.viminfo')
+execute 'set viminfo+=n' . fnameescape(s:viminfo_file)
+
+" 自动恢复到上次编辑位置
+augroup RestoreCursorPosition
+  autocmd!
+  " 打开文件时，如果存在上次编辑位置，自动跳转
+  autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   execute "normal! g`\"" |
+        \ endif
+augroup END

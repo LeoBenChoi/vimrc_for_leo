@@ -48,3 +48,58 @@ desktop.ini
 *.log
 *.debug
 
+# ============================================================
+# 敏感文件和密钥
+# ============================================================
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+.envrc
+*.env
+
+# 密钥和证书文件
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+id_rsa
+id_rsa.pub
+id_dsa
+id_ecdsa
+id_ed25519
+*.private
+*.secret
+secrets/
+.secrets/
+
+# 密码和凭证文件
+passwords.txt
+credentials.txt
+*.password
+*.credential
+*.token
+*.api_key
+
+# 配置文件中的敏感信息
+config.local.*
+*.local.conf
+*.secret.conf
+*secret*
+*password*
+*credential*
+
+# 数据库配置文件
+database.yml
+db.yml
+*.db
+*.sqlite
+*.sqlite3
+
+# 备份文件（可能包含敏感信息）
+*.backup
+backup/
+backups/
+
