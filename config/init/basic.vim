@@ -36,6 +36,8 @@ set tabstop=4                      " Tab 视觉宽度（只影响显示）
 set shiftwidth=4                   " 自动缩进宽度
 set smartcase                      " 搜索包含大写时自动切换到大小写敏感
 set ignorecase                     " 默认忽略大小写，配合 smartcase 更智能
+set hlsearch                       " 高亮显示所有搜索结果
+set incsearch                      " 输入搜索模式时实时高亮匹配结果
 set mouse=a                        " 全模式启用鼠标（终端支持时生效）
 set scrolloff=5                    " 上下翻页和滚动时保留 5 行缓冲区
 "==============================================================

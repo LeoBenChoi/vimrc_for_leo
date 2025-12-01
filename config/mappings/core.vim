@@ -85,4 +85,11 @@ let mapleader = "\<Space>"
 "   - mappings/g.vim : Git 操作（<leader>g*）和 LSP 跳转（gd, gy, gi, gr）
 "   - mappings/o.vim : 代码大纲（oo）
 "   - mappings/t.vim : 主题切换（tt）
+
+"==============================================================
+" 搜索相关快捷键
+"==============================================================
+" 清除搜索高亮（按 Esc 两次或使用快捷键）
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
+nnoremap <silent> <leader>h :nohlsearch<CR>
 " 注意：其他 LSP 跳转快捷键（K, <C-o>, <leader>rn）在 config/plugins/lsp_coc.vim 中
