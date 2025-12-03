@@ -94,8 +94,8 @@ if !isdirectory(s:viminfo_dir)
   call mkdir(s:viminfo_dir, 'p', 0700)
 endif
 " 设置 viminfo：'100（100个文件标记）,<50（50行删除/复制历史）,s10（10个搜索历史）,h（禁用高亮）,n路径（viminfo文件位置）
-" 注意：单引号在字符串中需要转义，路径使用 fnameescape 转义
-execute 'set viminfo=''' . '100,<50,s10,h,n' . fnameescape(s:viminfo_file)
+" 使用 let 设置 viminfo 选项，路径直接拼接
+let &viminfo = "'100,<50,s10,h,n" . s:viminfo_file
 
 " 自动恢复到上次编辑位置
 augroup RestoreCursorPosition
