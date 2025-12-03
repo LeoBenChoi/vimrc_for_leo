@@ -86,10 +86,15 @@ execute 'set viewdir=' . fnameescape(s:view_dir)
 " 4. 光标位置恢复（打开文件时回到上次编辑位置）
 "==============================================================
 " 启用 viminfo 来保存编辑历史（包括光标位置）
-set viminfo='100,<50,s10,h
-" viminfo 文件位置
+" viminfo 文件位置：~/.vim/.viminfo
 let s:viminfo_file = expand('~/.vim/.viminfo')
-execute 'set viminfo+=n' . fnameescape(s:viminfo_file)
+" 确保目录存在
+let s:viminfo_dir = fnamemodify(s:viminfo_file, ':h')
+if !isdirectory(s:viminfo_dir)
+  call mkdir(s:viminfo_dir, 'p', 0700)
+endif
+" 设置 viminfo：'100（100个文件标记）,<50（50行删除/复制历史）,s10（10个搜索历史）,h（禁用高亮）,n路径（viminfo文件位置）
+execute 'set viminfo=\'100,<50,s10,h,n' . fnameescape(s:viminfo_file)
 
 " 自动恢复到上次编辑位置
 augroup RestoreCursorPosition
