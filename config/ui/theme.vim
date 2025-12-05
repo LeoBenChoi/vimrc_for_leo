@@ -41,11 +41,11 @@ let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
 let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 
 " 终端模式下的主题（可选）
-" Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用默认
+" Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用 PaperColor
 " 备选方案：solarized8（如果 one 不可用）
-let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : '')
-" Windows 终端下使用 dracula（Dracula 主题），现代、流行，支持透明背景
-let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'dracula' : '')
+let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'PaperColor' : ''))
+" Windows 终端下使用 PaperColor（浅色主题，适合 Windows 终端）
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'PaperColor' : '')
 
 " 透明背景设置
 let g:theme_transparent_bg = get(g:, 'theme_transparent_bg', 1)
@@ -87,6 +87,13 @@ function! s:get_theme_name(mode) abort
   " 如果指定了特定主题且存在，使用特定主题
   if !empty(l:specific_theme) && s:has_colorscheme(l:specific_theme)
     return l:specific_theme
+  " Windows 终端下，优先使用 PaperColor（无论日间还是夜间）
+  elseif !l:is_gui && (has('win32') || has('win64') || has('win16'))
+    if s:has_colorscheme('PaperColor')
+      return 'PaperColor'
+    elseif s:has_colorscheme('solarized8')
+      return 'solarized8'
+    endif
   " Linux 终端下，如果 one 不存在，尝试 solarized8
   elseif !l:is_gui && has('unix') && !has('mac') && (a:mode ==# 'light' || a:mode ==# 'day')
     if s:has_colorscheme('solarized8')
@@ -181,7 +188,7 @@ function! s:load_theme()
         let g:gruvbox_transparent_bg = 0
       endif
     elseif g:theme_name ==# 'PaperColor'
-      " PaperColor 配置（日间主题，适合 Linux 终端）
+      " PaperColor 配置（浅色主题，适合 Windows 终端）
       if !exists('g:PaperColor_Theme_Options')
         let g:PaperColor_Theme_Options = {
               \   'theme': {
@@ -196,7 +203,13 @@ function! s:load_theme()
       " PaperColor 在终端下的优化配置
       if !s:is_gui()
         " 确保在终端下使用浅色模式
-        let g:PaperColor_Theme_Options.theme.default.transparent_background = g:theme_transparent_bg ? 1 : 0
+        set background=light
+        " Windows 终端下特别配置
+        if (has('win32') || has('win64') || has('win16'))
+          let g:PaperColor_Theme_Options.theme.default.transparent_background = g:theme_transparent_bg ? 1 : 0
+        else
+          let g:PaperColor_Theme_Options.theme.default.transparent_background = g:theme_transparent_bg ? 1 : 0
+        endif
       endif
     elseif g:theme_name ==# 'onedark'
       if !exists('g:onedark_terminal_italics')
