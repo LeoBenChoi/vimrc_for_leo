@@ -44,8 +44,8 @@ let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 " Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用默认
 " 备选方案：solarized8（如果 one 不可用）
 let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : '')
-" Windows 终端下使用 gruvbox（柔和配色，对比度适中，避免白底过于凸显）
-let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'gruvbox' : '')
+" Windows 终端下使用 dracula（Dracula 主题），现代、流行，支持透明背景
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'dracula' : '')
 
 " 透明背景设置
 let g:theme_transparent_bg = get(g:, 'theme_transparent_bg', 1)
@@ -203,7 +203,7 @@ function! s:load_theme()
         let g:onedark_terminal_italics = 1
       endif
     elseif g:theme_name ==# 'one'
-      " One 主题配置（高对比度主题，适合终端）
+      " One 主题配置（高对比度主题，适合终端，支持透明背景）
       if !exists('g:one_allow_italics')
         let g:one_allow_italics = 1
       endif
@@ -211,10 +211,26 @@ function! s:load_theme()
       if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
         " Windows 终端下使用 One Dark（深色模式）
         set background=dark
+        " 确保 Windows 终端下使用透明背景
+        if g:theme_transparent_bg
+          let g:one_allow_italics = 1
+        endif
       elseif g:theme_mode ==# 'light' || g:theme_mode ==# 'day'
         " Linux 终端下根据主题模式决定
         set background=light
       else
+        set background=dark
+      endif
+    elseif g:theme_name ==# 'dracula'
+      " Dracula 主题配置（现代、流行，适合 Windows 终端，支持透明背景）
+      if !exists('g:dracula_colorterm')
+        let g:dracula_colorterm = 1  " 启用真彩色支持
+      endif
+      if !exists('g:dracula_italic')
+        let g:dracula_italic = 1  " 启用斜体
+      endif
+      " Windows 终端下确保使用深色模式
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
         set background=dark
       endif
     endif
@@ -257,8 +273,17 @@ endfunction
 "==============================================================
 function! s:custom_highlights()
   " 基础背景色（透明背景）
+  " 只设置编辑器主背景为透明，不影响文字背景色
   if !s:is_gui() && g:theme_transparent_bg
-    highlight Normal       guibg=NONE ctermbg=NONE  " 透明背景
+    " 只设置 Normal（编辑器主背景）为透明，让文字背景由主题自己控制
+    highlight Normal       guibg=NONE ctermbg=NONE
+    " 设置文件末尾标记为透明
+    highlight EndOfBuffer  ctermbg=NONE guibg=NONE
+    " 设置非文本区域（如行号列）背景为透明，但不影响行号文字本身
+    highlight NonText      ctermbg=NONE guibg=NONE
+    " 设置垂直分割线背景为透明
+    highlight VertSplit    ctermbg=NONE guibg=NONE
+    " 注意：不设置 LineNr、CursorLine 等，让主题自己控制文字背景
   endif
   
   " 行号高亮

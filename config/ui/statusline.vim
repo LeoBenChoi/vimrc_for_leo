@@ -53,26 +53,31 @@ endfunction
 
 " 检查 airline 主题是否存在
 function! s:airline_theme_exists(theme_name) abort
-  if !exists(':AirlineRefresh')
-    return 0
+  " 方法1：使用 airline 提供的函数（如果可用）
+  if exists('*airline#util#themes')
+    let l:themes = airline#util#themes('')
+    return index(l:themes, a:theme_name) != -1
   endif
-  " 检查主题文件是否存在
+  " 方法2：检查主题文件是否存在
   let l:theme_file = globpath(&runtimepath, 'autoload/airline/themes/' . a:theme_name . '.vim')
-  return !empty(l:theme_file)
+  if !empty(l:theme_file)
+    return 1
+  endif
+  " 方法3：尝试加载主题文件（最可靠的方法）
+  try
+    execute 'runtime autoload/airline/themes/' . a:theme_name . '.vim'
+    return exists('g:airline#themes#' . a:theme_name . '#palette')
+  catch
+    return 0
+  endtry
 endfunction
 
 if !exists('g:airline_theme')
-  " Windows 终端下使用 selenized 主题
+  " Windows 终端下使用 alduin 主题
   if s:is_windows_terminal() && !has('gui_running')
-    " 尝试使用 selenized 主题，如果不存在则使用 base16_selenized 或 luna
-    if s:airline_theme_exists('selenized')
-      let g:airline_theme = 'selenized'
-    elseif s:airline_theme_exists('base16_selenized')
-      let g:airline_theme = 'base16_selenized'
-    else
-      " 如果 selenized 主题不存在，使用 luna 作为回退
-      let g:airline_theme = 'luna'
-    endif
+    " 直接设置 alduin 主题
+    " 如果主题不存在，airline 会自动回退到 dark，但我们可以手动验证
+    let g:airline_theme = 'alduin'
   elseif exists('g:theme_mode')
     if g:theme_mode ==# 'day' || (g:theme_mode ==# 'auto' && str2nr(strftime('%H')) >= 7 && str2nr(strftime('%H')) < 19)
       let g:airline_theme = 'luna'        " 白天主题（或使用 light, ayu_light, base16_papercolor_light 等）
@@ -205,3 +210,28 @@ endif
 if exists('*coc#status')
   autocmd User CocStatusChange,CocDiagnosticChange if exists(':AirlineRefresh') | execute 'AirlineRefresh' | endif
 endif
+
+"==============================================================
+" 验证 alduin 主题是否成功加载
+"==============================================================
+function! s:verify_alduin_theme() abort
+  " 等待 airline 完全加载
+  if !exists(':AirlineRefresh')
+    return
+  endif
+  " 检查 alduin 主题是否真的存在
+  if !s:airline_theme_exists('alduin')
+    " 如果 alduin 不存在，回退到其他主题
+    if s:airline_theme_exists('minimalist')
+      let g:airline_theme = 'minimalist'
+    elseif s:airline_theme_exists('serene')
+      let g:airline_theme = 'serene'
+    else
+      let g:airline_theme = 'dark'
+    endif
+    " 应用新主题
+    if exists(':AirlineTheme')
+      execute 'AirlineTheme ' . g:airline_theme
+    endif
+  endif
+endfunction
