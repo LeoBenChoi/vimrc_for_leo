@@ -122,7 +122,7 @@ endfunction
 
 augroup CocFormatOnSave
   autocmd!
-  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.jsx,*.tsx,*.py,*.c,*.cpp,*.h
+  autocmd BufWritePre *.go,*.vue,*.php,*.js,*.ts,*.jsx,*.tsx,*.py,*.c,*.cpp,*.h,*.pl,*.pm
         \ call s:CocFormatOnSave()
 augroup END
 
@@ -131,7 +131,7 @@ augroup CocFormatExpr
   autocmd!
   autocmd FileType typescript,typescriptreact,javascript,javascriptreact,json
         \ setl formatexpr=CocAction('formatSelected')
-  autocmd FileType python,go,rust
+  autocmd FileType python,go,rust,perl
         \ setl formatexpr=CocAction('formatSelected')
 augroup END
 
