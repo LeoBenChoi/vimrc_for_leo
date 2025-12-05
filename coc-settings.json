@@ -66,7 +66,8 @@
     "typescript",
     "json",
     "go",
-    "python"
+    "python",
+    "vue"
   ],
 
   // ============================================================
@@ -167,10 +168,31 @@
   // ============================================================
   // Vue 语言支持（Vetur）
   // ============================================================
-  // 关闭 Vetur 的部分验证功能，避免与其他工具冲突
-  // 防止编写 JavaScript 和模板时出现不必要的错误提示
-  "vetur.validation.script": false,
-  "vetur.validation.template": false,
+  // Vetur 是 Vue.js 的官方 LSP 扩展，支持 Vue 2 和 Vue 3
+  // 使用工作区的依赖项（优先使用项目本地的 Vue 版本）
+  "vetur.useWorkspaceDependencies": true,
+  // 自动导入模块的补全
+  "vetur.completion.autoImport": true,
+  // 启用 Vetur 内置的脚手架代码片段
+  "vetur.completion.useScaffoldSnippets": true,
+  // 标签补全的大小写风格（kebab-case: my-component）
+  "vetur.completion.tagCasing": "kebab",
+  // 验证配置（可根据需要调整）
+  "vetur.validation.script": true,      // 验证 <script> 中的 JavaScript/TypeScript
+  "vetur.validation.template": true,     // 验证 <template> 中的 Vue HTML
+  "vetur.validation.style": true,        // 验证 <style> 中的 CSS/SCSS/LESS/PostCSS
+  // 格式化配置
+  "vetur.format.enable": true,
+  "vetur.format.defaultFormatter.html": "prettier",
+  "vetur.format.defaultFormatter.css": "prettier",
+  "vetur.format.defaultFormatter.postcss": "prettier",
+  "vetur.format.defaultFormatter.scss": "prettier",
+  "vetur.format.defaultFormatter.less": "prettier",
+  "vetur.format.defaultFormatter.stylus": "stylus-supremacy",
+  "vetur.format.defaultFormatter.js": "prettier",
+  "vetur.format.defaultFormatter.ts": "prettier",
+  // 实验性功能（Vue 3 支持）
+  "vetur.experimental.templateInterpolationService": true,
 
   // ============================================================
   // Go 语言支持

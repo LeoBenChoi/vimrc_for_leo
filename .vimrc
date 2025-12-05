@@ -63,7 +63,12 @@ call s:source_if_exists(s:config_root . '/bootstrap/env_check.vim')
 call s:source_if_exists(s:config_root . '/init/basic.vim')
 
 "==============================================================
-" 3.1. 性能优化配置
+" 3.1. 文件类型缩进配置
+"==============================================================
+call s:source_if_exists(s:config_root . '/init/indent.vim')
+
+"==============================================================
+" 3.2. 性能优化配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/init/performance.vim')
 

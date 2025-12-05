@@ -54,6 +54,7 @@ let g:coc_global_extensions = [
       \ 'coc-prettier',
       \ 'coc-clangd',
       \ 'coc-phpls',
+      \ 'coc-vetur',
       \ ]
 " 扩展说明：
 "   coc-json          - JSON 支持
@@ -68,6 +69,7 @@ let g:coc_global_extensions = [
 "   coc-prettier      - 代码格式化
 "   coc-clangd        - C/C++ LSP
 "   coc-phpls         - PHP LSP
+"   coc-vetur         - Vue.js LSP（支持 Vue 2 和 Vue 3）
 
 "==============================================================
 " 3. Tab 补全配置
@@ -131,7 +133,7 @@ augroup CocFormatExpr
   autocmd!
   autocmd FileType typescript,typescriptreact,javascript,javascriptreact,json
         \ setl formatexpr=CocAction('formatSelected')
-  autocmd FileType python,go,rust
+  autocmd FileType python,go,rust,vue
         \ setl formatexpr=CocAction('formatSelected')
 augroup END
 

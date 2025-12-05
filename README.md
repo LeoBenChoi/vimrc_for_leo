@@ -249,6 +249,11 @@ let g:theme_night = 'your-night-theme'
   - 输入时自动格式化
   - 智能导入和自动更新
   - 优化的文件监听性能
+- **Vue.js**（coc-vetur）- 完整的 Vue 2 和 Vue 3 支持
+  - 语法高亮和自动补全
+  - 模板、脚本和样式验证
+  - 自动导入和代码片段
+  - Prettier 格式化支持
 - **Go**（coc-go）- 完整的 Go 语言支持
 - **其他语言**（安装对应扩展）
 
@@ -259,6 +264,10 @@ let g:theme_night = 'your-night-theme'
 - **JavaScript/TypeScript**：
   - 保存时自动格式化（Prettier）
   - 输入时自动格式化（formatOnType）
+  - 支持 `.prettierrc` 配置文件
+- **Vue.js**：
+  - 保存时自动格式化（Prettier）
+  - 支持 HTML、CSS、JavaScript/TypeScript 格式化
   - 支持 `.prettierrc` 配置文件
 - **Go**：使用 goimports
 
@@ -316,6 +325,20 @@ nnoremap <leader>xx :YourCommand<CR>
 - ✅ 自动更新导入（文件移动/重命名时）
 - ✅ 智能导入模块路径（自动/非相对路径）
 - ✅ 自动导入 package.json 中的依赖
+
+### Vue.js
+
+- **LSP**：coc-vetur（支持 Vue 2 和 Vue 3）
+- **格式化**：Prettier（HTML、CSS、JavaScript/TypeScript）
+- **安装**：`:CocInstall coc-vetur`
+
+**已配置的功能**：
+- ✅ 语法高亮和自动补全
+- ✅ 模板、脚本和样式验证
+- ✅ 自动导入模块
+- ✅ 代码片段支持
+- ✅ 保存时自动格式化
+- ✅ 使用工作区依赖项
 
 ### Go
 
