@@ -46,8 +46,34 @@ endif
 "==============================================================
 " 3. 主题配置
 "==============================================================
+" 判断是否为 Windows 终端
+function! s:is_windows_terminal() abort
+  return has('win32') || has('win64') || has('win16')
+endfunction
+
+" 检查 airline 主题是否存在
+function! s:airline_theme_exists(theme_name) abort
+  if !exists(':AirlineRefresh')
+    return 0
+  endif
+  " 检查主题文件是否存在
+  let l:theme_file = globpath(&runtimepath, 'autoload/airline/themes/' . a:theme_name . '.vim')
+  return !empty(l:theme_file)
+endfunction
+
 if !exists('g:airline_theme')
-  if exists('g:theme_mode')
+  " Windows 终端下使用 selenized 主题
+  if s:is_windows_terminal() && !has('gui_running')
+    " 尝试使用 selenized 主题，如果不存在则使用 base16_selenized 或 luna
+    if s:airline_theme_exists('selenized')
+      let g:airline_theme = 'selenized'
+    elseif s:airline_theme_exists('base16_selenized')
+      let g:airline_theme = 'base16_selenized'
+    else
+      " 如果 selenized 主题不存在，使用 luna 作为回退
+      let g:airline_theme = 'luna'
+    endif
+  elseif exists('g:theme_mode')
     if g:theme_mode ==# 'day' || (g:theme_mode ==# 'auto' && str2nr(strftime('%H')) >= 7 && str2nr(strftime('%H')) < 19)
       let g:airline_theme = 'luna'        " 白天主题（或使用 light, ayu_light, base16_papercolor_light 等）
     else

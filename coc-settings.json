@@ -66,8 +66,7 @@
     "typescript",
     "json",
     "go",
-    "python",
-    "perl"
+    "python"
   ],
 
   // ============================================================
@@ -215,41 +214,6 @@
   //     }
   //   }
   // },
-
-  // ============================================================
-  // Perl 语言支持
-  // ============================================================
-  // 使用 Perl::LanguageServer 作为 Perl 语言服务器
-  // 安装方法：cpanm Perl::LanguageServer
-  // 或者使用：cpan Perl::LanguageServer
-  "languageserver": {
-    "perl": {
-      "command": "perl",
-      "args": [
-        "-MPerl::LanguageServer",
-        "-e",
-        "Perl::LanguageServer::run"
-      ],
-      "filetypes": ["perl", "pl", "pm", "pod"],
-      "initializationOptions": {
-        "enable": true,
-        "perl": {
-          "perlInc": [],
-          "perlcritic": {
-            "enabled": false
-          }
-        }
-      },
-      "settings": {
-        "perl": {
-          "perlInc": [],
-          "perlcritic": {
-            "enabled": false
-          }
-        }
-      }
-    }
-  },
 
   // ============================================================
   // 其他配置

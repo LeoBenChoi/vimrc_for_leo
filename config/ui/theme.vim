@@ -44,7 +44,8 @@ let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 " Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用默认
 " 备选方案：solarized8（如果 one 不可用）
 let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : '')
-let g:theme_night_term = get(g:, 'theme_night_term', '')
+" Windows 终端下使用 gruvbox（柔和配色，对比度适中，避免白底过于凸显）
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'gruvbox' : '')
 
 " 透明背景设置
 let g:theme_transparent_bg = get(g:, 'theme_transparent_bg', 1)
@@ -162,11 +163,22 @@ function! s:load_theme()
     
     " 特殊主题配置（必须在应用主题前设置）
     if g:theme_name ==# 'gruvbox'
-      if !exists('g:gruvbox_contrast_dark')
-        let g:gruvbox_contrast_dark = 'medium'
+      " Windows 终端下使用 soft 对比度，避免白底过于凸显
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        if !exists('g:gruvbox_contrast_dark')
+          let g:gruvbox_contrast_dark = 'soft'  " soft 对比度，更柔和
+        endif
+      else
+        if !exists('g:gruvbox_contrast_dark')
+          let g:gruvbox_contrast_dark = 'medium'
+        endif
       endif
       if !exists('g:gruvbox_italic')
         let g:gruvbox_italic = 1
+      endif
+      " 禁用透明背景，确保在 Windows 终端中显示正常
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        let g:gruvbox_transparent_bg = 0
       endif
     elseif g:theme_name ==# 'PaperColor'
       " PaperColor 配置（日间主题，适合 Linux 终端）
@@ -191,12 +203,20 @@ function! s:load_theme()
         let g:onedark_terminal_italics = 1
       endif
     elseif g:theme_name ==# 'one'
-      " One 主题配置（高对比度浅色主题，适合 Linux 终端）
+      " One 主题配置（高对比度主题，适合终端）
       if !exists('g:one_allow_italics')
         let g:one_allow_italics = 1
       endif
-      " 确保使用浅色模式
-      set background=light
+      " Windows 终端下使用深色模式，Linux 终端下根据主题模式决定
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        " Windows 终端下使用 One Dark（深色模式）
+        set background=dark
+      elseif g:theme_mode ==# 'light' || g:theme_mode ==# 'day'
+        " Linux 终端下根据主题模式决定
+        set background=light
+      else
+        set background=dark
+      endif
     endif
     
     " 应用主题（在配置设置后）

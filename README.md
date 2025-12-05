@@ -134,7 +134,6 @@ let g:my_custom_setting = 1
 - **[vim-fugitive](https://github.com/tpope/vim-fugitive)** - Git 集成
 - **[vim-gitgutter](https://github.com/airblade/vim-gitgutter)** - Git 差异显示
 - **[vim-commentary](https://github.com/tpope/vim-commentary)** - 注释工具
-- **[vim-perl](https://github.com/vim-perl/vim-perl)** - Perl 语法高亮和缩进支持
 
 ### 主题
 
@@ -251,7 +250,6 @@ let g:theme_night = 'your-night-theme'
   - 智能导入和自动更新
   - 优化的文件监听性能
 - **Go**（coc-go）- 完整的 Go 语言支持
-- **Perl**（Perl::LanguageServer）- 需要手动安装 Perl::LanguageServer 模块
 - **其他语言**（安装对应扩展）
 
 ### 自动格式化
@@ -324,22 +322,6 @@ nnoremap <leader>xx :YourCommand<CR>
 - **LSP**：coc-go
 - **格式化**：goimports
 - **安装**：`:CocInstall coc-go`
-
-### Perl
-
-- **语法高亮**：vim-perl（已安装）
-- **LSP**：Perl::LanguageServer（需要手动安装）
-- **格式化**：perltidy（可选）
-- **安装 LSP**：
-  ```bash
-  # 使用 cpanm（推荐）
-  cpanm Perl::LanguageServer
-  
-  # 或使用 cpan
-  cpan Perl::LanguageServer
-  ```
-- **文件类型**：`.pl`, `.pm`, `.pod`
-- **注意**：Perl LSP 需要系统已安装 Perl 和 Perl::LanguageServer 模块
 
 ### 其他语言
 

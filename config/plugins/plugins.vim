@@ -63,9 +63,6 @@ Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' } " 文件图标（需�
 " 代码大纲（延迟加载：只有打开 Vista 时才加载）
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }      " 代码大纲视图（支持 LSP/ctags）
 
-" Perl 语言支持
-Plug 'vim-perl/vim-perl'                            " Perl 语法高亮和缩进支持
-
 " 启动页（需要启动时加载以显示启动界面）
 Plug 'mhinz/vim-startify'                           " 美观的启动页（显示最近文件、会话等）
 
