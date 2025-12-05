@@ -21,6 +21,26 @@ let g:show_startup_time = 1
 " 如果 Vista 未加载，扩展的 init 函数不存在，会导致错误
 let g:airline#extensions#vista#enabled = 0
 
+" vim-devicons Vue 图标自定义配置（必须在插件加载前设置）
+" 默认 Vue 图标 '﵂' 在 Windows 终端下可能显示为乱码
+" 使用更兼容的图标替代
+if !exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
+  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+endif
+" 设置 Vue 图标（选择一个不会乱码的图标）
+" 当前使用：'⚡'（闪电符号，Vue 官方 logo 类似）
+" 如果还是乱码，可以尝试以下选项：
+"   'V' - 大写字母 V（最兼容）
+"   '◆' - 实心菱形 (U+25C6)
+"   '▽' - 倒三角 (U+25BD)
+"   '◈' - 空心菱形 (U+25C8)
+"   '●' - 实心圆 (U+25CF)
+"   '★' - 实心星 (U+2605)
+"   '☆' - 空心星 (U+2606)
+"   '♦' - 菱形 (U+2666)
+"   '▶' - 右三角 (U+25B6)
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'
+
 "==============================================================
 " 1. 路径与平台检测
 "==============================================================

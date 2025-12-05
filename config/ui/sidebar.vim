@@ -45,7 +45,7 @@ if exists(':NERDTree')
   " Renamed: 已重命名, Unmerged: 未合并, Deleted: 已删除
   " Dirty: 脏目录, Ignored: 已忽略, Clean: 干净, Unknown: 未知状态
   let g:NERDTreeGitStatusIndicatorMapCustom = {
-        \ 'Modified'  : '✹',
+        \ 'Modified'  : '*',
         \ 'Staged'    : '✚',
         \ 'Untracked' : '✭',
         \ 'Renamed'   : '➜',
@@ -83,4 +83,31 @@ if exists(':NERDTree') && exists('g:loaded_webdevicons')
   " 图标间距
   let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
   let g:WebDevIconsNerdTreeBeforeGlyphPadding = ' '
+  
+  "==============================================================
+  " Vue 图标自定义配置（修复乱码问题）
+  "==============================================================
+  " 默认 Vue 图标 '﵂' 在 Windows 终端下可能显示为乱码
+  " 使用更兼容的图标替代
+  if !exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
+    let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+  endif
+  " 设置 Vue 图标（选择一个不会乱码的图标）
+  " 当前使用：'⚡'（闪电符号，Vue 官方 logo 类似）
+  " 如果还是乱码，可以尝试以下选项：
+  "   'V' - 大写字母 V（最兼容，不会乱码）
+  "   '◆' - 实心菱形 (U+25C6)
+  "   '▽' - 倒三角 (U+25BD)
+  "   '◈' - 空心菱形 (U+25C8)
+  "   '●' - 实心圆 (U+25CF)
+  "   '★' - 实心星 (U+2605)
+  "   '☆' - 空心星 (U+2606)
+  "   '♦' - 菱形 (U+2666)
+  "   '▶' - 右三角 (U+25B6)
+  " 图标资源网站：
+  "   - https://www.nerdfonts.com/cheat-sheet (Nerd Fonts 图标表)
+  "   - https://unicode-table.com/ (Unicode 字符表)
+  "   - https://emojipedia.org/ (Emoji 图标)
+  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '⚡'
+
 endif
