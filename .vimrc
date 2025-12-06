@@ -116,6 +116,7 @@ call s:source_if_exists(s:config_root . '/mappings/c.vim')  " 注释功能
 call s:source_if_exists(s:config_root . '/mappings/e.vim')  " 文件浏览器
 call s:source_if_exists(s:config_root . '/mappings/f.vim')  " FZF 搜索
 call s:source_if_exists(s:config_root . '/mappings/g.vim')  " Git 操作和 LSP 跳转（g 开头）
+call s:source_if_exists(s:config_root . '/mappings/h.vim')  " 高亮相关功能
 call s:source_if_exists(s:config_root . '/mappings/o.vim')  " 代码大纲
 call s:source_if_exists(s:config_root . '/mappings/t.vim')  " 主题切换
 
@@ -133,6 +134,11 @@ call s:source_if_exists(s:config_root . '/plugins/git.vim')
 " 7.2. FZF 搜索配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/plugins/fzf.vim')
+
+"==============================================================
+" 7.3. 自动高亮当前单词配置（vim-illuminate）
+"==============================================================
+call s:source_if_exists(s:config_root . '/plugins/illuminate.vim')
 
 "==============================================================
 " 8. 代码大纲配置（Vista）
