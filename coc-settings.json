@@ -211,9 +211,32 @@
     "usePlaceholders": true,
     // 启用代码分析
     "analyses": {
+      // 检测未使用的参数
       "unusedparams": true,
+      // 检测未使用的写入
       "unusedwrite": true,
-      "unusedvariable": true
+      // 检测未使用的变量
+      "unusedvariable": true,
+      // 检测未声明的名称（包括缺失的方法） - 重要：启用方法缺失检测
+      "undeclaredname": true,
+      // 检测未使用的导入
+      "unusedimports": true,
+      // 检测字段对齐问题
+      "fieldalignment": false,
+      // 检测 nil 函数调用
+      "nilness": true,
+      // 检测不必要的错误检查
+      "unusedresult": true
+    },
+    // 代码操作配置
+    "codeActions": {
+      // 启用代码操作（包括创建缺失方法的建议）
+      "useCodeActions": true
+    },
+    // 诊断配置
+    "diagnostics": {
+      // 启用所有诊断
+      "staticcheck": true
     }
   },
   // 如果需要自定义 gopls 配置，可以使用 languageserver 配置

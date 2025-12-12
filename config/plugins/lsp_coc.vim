@@ -170,6 +170,22 @@ nmap <silent> <C-o> <Plug>(coc-definition-back)
 " <leader>rn -> Rename：重命名符号
 nmap <silent> <leader>rn <Plug>(coc-rename)
 
+"==============================================================
+" 8. 智能选择范围（扩展选择）
+"==============================================================
+" 功能：逐步扩展选择范围（从单词 -> 表达式 -> 语句 -> 函数 -> 类等）
+" 支持的语言：Go, Python, JavaScript/TypeScript, Vue 等（需要 LSP 支持）
+
+" <leader>v -> 扩展选择（Expand Selection）：向前扩展选择范围
+" 在普通模式下：从光标位置开始选择并扩展
+" 在可视化模式下：继续扩展当前选择
+nnoremap <silent> <leader>v <Plug>(coc-range-select)
+xmap <silent> <leader>v <Plug>(coc-range-select)
+
+" <leader>V -> 收缩选择（Shrink Selection）：向后收缩选择范围
+" 在可视化模式下：收缩当前选择到上一个范围
+xmap <silent> <leader>V <Plug>(coc-range-select-backward)
+
 " 显示文档的函数
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -182,7 +198,7 @@ function! s:show_documentation()
 endfunction
 
 "==============================================================
-" 8. 其他优化配置
+" 9. 其他优化配置
 "==============================================================
 " 指定 python 路径（如果需要，取消注释并修改路径）
 " let g:python3_host_prog = 'D:\Program Files\Python313\python.exe'

@@ -37,7 +37,7 @@ let mapleader = "\<Space>"
 "   s / S : Session/保存（预留）
 "   t / T : Theme/Terminal（主题切换已实现）
 "   u / U : Undo/Redo（保留）
-"   v / V : Visual/多光标（预留）
+"   v / V : Visual/智能选择（已实现 <leader>v, <leader>V）
 "   w / W : Window/写入（预留）
 "   x / X : 关闭/剪切（保留）
 "   y / Y : Yank（保留）
