@@ -88,7 +88,12 @@ call s:source_if_exists(s:config_root . '/init/basic.vim')
 call s:source_if_exists(s:config_root . '/init/indent.vim')
 
 "==============================================================
-" 3.2. 性能优化配置
+" 3.2. 文件类型折叠配置
+"==============================================================
+call s:source_if_exists(s:config_root . '/init/fold.vim')
+
+"==============================================================
+" 3.3. 性能优化配置
 "==============================================================
 call s:source_if_exists(s:config_root . '/init/performance.vim')
 

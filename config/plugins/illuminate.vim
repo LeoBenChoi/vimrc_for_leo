@@ -7,8 +7,14 @@ if !exists('g:loaded_illuminate')
   finish
 endif
 
+" 设置折叠方式为标记折叠（当打开此配置文件时自动启用）
+augroup IlluminateConfigFold
+  autocmd!
+  autocmd BufRead,BufNewFile */config/plugins/illuminate.vim setlocal foldmethod=marker foldmarker={{{,}}} foldlevel=0
+augroup END
+
 "==============================================================
-" 1. 基本配置
+" 1. 基本配置 {{{1
 "==============================================================
 
 " 高亮延迟（毫秒），避免光标快速移动时频繁更新
@@ -24,9 +30,10 @@ let g:Illuminate_highlightUnderCursor = 1
 " 注意：vim-illuminate 默认在插入模式下会清除高亮
 " 如果仍然出现高亮卡住，可以尝试禁用此选项（设置为 0）
 " let g:Illuminate_onInsertEnter = 0
+" }}}1
 
 "==============================================================
-" 2. 文件类型配置
+" 2. 文件类型配置 {{{1
 "==============================================================
 
 " 禁用高亮的文件类型（某些文件类型可能不需要高亮）
@@ -34,9 +41,10 @@ let g:Illuminate_ftblacklist = ['nerdtree', 'vista', 'fzf', 'startify']
 
 " 启用高亮的文件类型（如果设置了，只有这些文件类型会高亮）
 " let g:Illuminate_ftwhitelist = ['python', 'javascript', 'typescript', 'vue', 'go']
+" }}}1
 
 "==============================================================
-" 3. 单词匹配配置
+" 3. 单词匹配配置 {{{1
 "==============================================================
 
 " 最小单词长度（少于这个长度的单词不会被高亮）
@@ -45,17 +53,19 @@ let g:Illuminate_minimumWordLength = 2
 " 是否只高亮完整单词（不匹配部分单词，如 'word' 不会匹配 'words'）
 " 默认启用，推荐保持启用
 let g:Illuminate_useWordBoundary = 1
+" }}}1
 
 "==============================================================
-" 4. 性能优化
+" 4. 性能优化 {{{1
 "==============================================================
 
 " 是否在插入模式下禁用高亮（减少干扰）
 " 默认启用，如果觉得插入模式下高亮干扰，可以设置为 0
 " let g:Illuminate_highlightUnderCursor = 0
+" }}}1
 
 "==============================================================
-" 5. 自定义高亮组（重要：确保高亮可见）
+" 5. 自定义高亮组（重要：确保高亮可见） {{{1
 "==============================================================
 " vim-illuminate 使用以下高亮组：
 "   - IlluminatedWordText  : 普通文本高亮
@@ -85,9 +95,10 @@ endif
 " highlight IlluminatedWordText ctermbg=52 ctermfg=255 cterm=bold guibg=#5f0000 guifg=#ffffff gui=bold
 " highlight IlluminatedWordRead ctermbg=52 ctermfg=255 cterm=bold guibg=#5f0000 guifg=#ffffff gui=bold
 " highlight IlluminatedWordWrite ctermbg=52 ctermfg=255 cterm=bold guibg=#5f0000 guifg=#ffffff gui=bold
+" }}}1
 
 "==============================================================
-" 6. 快捷键映射（可选）
+" 6. 快捷键映射（可选） {{{1
 "==============================================================
 " vim-illuminate 默认没有快捷键，如果需要可以添加
 
@@ -109,9 +120,10 @@ endfunction
 " 如果使用 vim-illuminate 插件，建议使用此快捷键
 " 如果高亮卡住，可以按 <leader>hc 尝试清除
 nnoremap <silent> <leader>hc :call <SID>ClearIlluminateHighlight()<CR>
+" }}}1
 
 "==============================================================
-" 7. 自动清除机制（修复高亮卡住问题）
+" 7. 自动清除机制（修复高亮卡住问题） {{{1
 "==============================================================
 " 注意：vim-illuminate 插件本身会在光标移动到非单词字符时自动清除高亮
 " 但如果延迟设置导致高亮更新不及时，可能会出现"卡住"的情况
@@ -123,9 +135,10 @@ nnoremap <silent> <leader>hc :call <SID>ClearIlluminateHighlight()<CR>
 "
 " 由于 vim-illuminate 使用内部机制管理高亮，我们不需要手动清除
 " 只需要确保延迟设置合理即可
+" }}}1
 
 "==============================================================
-" 8. 帮助信息
+" 8. 帮助信息 {{{1
 "==============================================================
 " vim-illuminate 插件说明：
 "   - 自动高亮光标下的单词在当前文件中的所有出现位置
@@ -146,4 +159,5 @@ nnoremap <silent> <leader>hc :call <SID>ClearIlluminateHighlight()<CR>
 " 插件 GitHub: https://github.com/RRethy/vim-illuminate
 "
 " 如果不想使用插件，可以禁用此文件，使用自定义实现（config/mappings/h.vim）
+" }}}1
 

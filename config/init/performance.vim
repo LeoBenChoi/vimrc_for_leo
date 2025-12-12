@@ -132,8 +132,10 @@ endif
 set noshowcmd                 " 禁用命令显示（提升性能）
 set noshowmode                " 禁用模式显示（vim-airline 会显示）
 
-" 折叠优化（手动折叠性能更好）
-set foldmethod=manual         " 手动折叠（语法折叠消耗大）
+" 折叠优化（已移至 config/init/fold.vim 进行文件类型特定配置）
+" 注意：不再全局设置 foldmethod=manual，允许不同文件类型使用不同的折叠方式
+" 如需全局禁用折叠，可以取消下面的注释：
+" set foldmethod=manual         " 手动折叠（语法折叠消耗大）
 
 "==============================================================
 " 7. 性能监控命令（可选）
