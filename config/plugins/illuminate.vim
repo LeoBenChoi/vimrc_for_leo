@@ -19,9 +19,9 @@ augroup END
 
 " 高亮延迟（毫秒），避免光标快速移动时频繁更新
 " 设置为 0 可以立即更新，但可能影响性能
-" 推荐值：50-100 毫秒（减少延迟可以避免高亮"卡住"的问题）
-" 如果仍然出现高亮卡住，可以进一步减少到 0（立即更新）
-let g:Illuminate_delay = 50
+" 推荐值：0-50 毫秒（减少延迟可以避免高亮"卡住"的问题）
+" 如果仍然出现高亮卡住，设置为 0（立即更新，无延迟）
+let g:Illuminate_delay = 0
 
 " 是否高亮光标下的单词（默认启用）
 let g:Illuminate_highlightUnderCursor = 1
@@ -103,13 +103,40 @@ endif
 " vim-illuminate 默认没有快捷键，如果需要可以添加
 
 " 手动清除高亮（如果高亮卡住，可以使用此命令清除）
-" 方法：通过触发一个不会匹配任何内容的搜索来清除高亮
-function! s:ClearIlluminateHighlight() abort
-  " 方法1：使用 nohlsearch（清除搜索高亮，可能对 illuminate 无效）
+" 方法：强制清除所有 illuminate 高亮
+" 参数：silent - 如果为 1，则不显示消息（用于自动恢复）
+function! s:ClearIlluminateHighlight(...) abort
+  " 静默模式标志（用于自动恢复，不显示消息）
+  let l:silent = get(a:000, 0, 0)
+  
+  " 方法1：使用 nohlsearch（清除搜索高亮）
   nohlsearch
-  " 方法2：触发插件重新评估（通过移动光标到当前位置）
-  " 这会让插件重新检查并更新高亮
-  " 注意：vim-illuminate 会自动处理，这里只是提供一个清除的尝试
+  
+  " 方法2：如果插件提供了清除函数，调用它
+  if exists('*Illuminate#pause')
+    silent! call Illuminate#pause()
+    silent! call Illuminate#resume()
+  endif
+  
+  " 方法3：强制重新触发高亮更新（通过微小的光标移动）
+  " 这会触发插件的更新机制
+  let l:save_cursor = getpos('.')
+  try
+    call cursor(line('.'), col('.') + 1)
+    call cursor(l:save_cursor[1], l:save_cursor[2])
+  catch
+    " 忽略错误
+  endtry
+  
+  " 只在手动调用时显示消息
+  if !l:silent
+    echo '已清除高亮'
+  endif
+endfunction
+
+" 静默清除高亮的包装函数（用于自动恢复）
+function! s:ClearIlluminateHighlightSilent() abort
+  call s:ClearIlluminateHighlight(1)
 endfunction
 
 " 切换高亮功能（如果插件支持）
@@ -123,18 +150,93 @@ nnoremap <silent> <leader>hc :call <SID>ClearIlluminateHighlight()<CR>
 " }}}1
 
 "==============================================================
-" 7. 自动清除机制（修复高亮卡住问题） {{{1
+" 7. 自动恢复机制（修复高亮卡住问题） {{{1
 "==============================================================
-" 注意：vim-illuminate 插件本身会在光标移动到非单词字符时自动清除高亮
-" 但如果延迟设置导致高亮更新不及时，可能会出现"卡住"的情况
-" 
-" 解决方案：
-"   1. 减少延迟时间（已设置为 50ms，如果还有问题可以进一步减少到 0）
-"   2. 在插入模式下，插件会自动清除高亮
-"   3. 如果高亮仍然卡住，可以使用 <leader>hc 手动清除
-"
-" 由于 vim-illuminate 使用内部机制管理高亮，我们不需要手动清除
-" 只需要确保延迟设置合理即可
+" 添加自动恢复机制，防止高亮卡住
+
+" 记录上次光标位置和单词，用于检测高亮是否卡住
+let s:last_cursor_pos = [0, 0, 0, 0]
+let s:last_cursor_word = ''
+let s:stuck_check_count = 0
+
+" 自动恢复函数：检测并修复卡住的高亮
+function! s:AutoRecoverIlluminate() abort
+  " 获取当前光标位置和单词
+  let l:current_pos = getpos('.')
+  let l:current_word = expand('<cword>')
+  
+  " 如果光标位置变化了，重置计数器
+  if l:current_pos != s:last_cursor_pos
+    let s:stuck_check_count = 0
+    let s:last_cursor_pos = l:current_pos
+    let s:last_cursor_word = l:current_word
+    return
+  endif
+  
+  " 如果光标位置没变，但单词变了（可能是文件内容变化），重置计数器
+  if l:current_word != s:last_cursor_word
+    let s:stuck_check_count = 0
+    let s:last_cursor_word = l:current_word
+    return
+  endif
+  
+  " 如果光标位置和单词都没变，但已经停留了一段时间，可能是卡住了
+  " 这种情况下，如果检测到多次，尝试清除高亮
+  let s:stuck_check_count += 1
+  if s:stuck_check_count >= 5
+    " 静默清除，不显示消息
+    call s:ClearIlluminateHighlightSilent()
+    let s:stuck_check_count = 0
+  endif
+endfunction
+
+" 定期检查高亮状态（每 500ms 检查一次）
+augroup IlluminateAutoRecover
+  autocmd!
+  " 光标移动后延迟检查（给插件时间更新）
+  autocmd CursorMoved,CursorMovedI * call timer_start(500, { -> s:AutoRecoverIlluminate() })
+  " 离开缓冲区时重置状态
+  autocmd BufLeave * let s:stuck_check_count = 0 | let s:last_cursor_pos = [0, 0, 0, 0] | let s:last_cursor_word = ''
+  " 进入插入模式时强制清除高亮（避免卡住，静默模式）
+  autocmd InsertEnter * call timer_start(100, { -> s:ClearIlluminateHighlightSilent() })
+  " 切换到其他窗口时清除高亮（静默模式）
+  autocmd WinLeave * call timer_start(100, { -> s:ClearIlluminateHighlightSilent() })
+  " 进入窗口时恢复高亮（修复侧边栏打开时的高亮异常）
+  " 当从 NERDTree 或其他窗口切换回编辑窗口时，强制刷新高亮
+  autocmd WinEnter * if &filetype !=# 'nerdtree' && &filetype !=# 'vista' && &filetype !=# 'fzf' && &filetype !=# 'startify'
+        \ | call timer_start(200, { -> s:RefreshIlluminateHighlight() })
+        \ | endif
+  " NERDTree 打开/关闭时刷新高亮
+  autocmd FileType nerdtree call timer_start(100, { -> s:ClearIlluminateHighlightSilent() })
+  " 从 NERDTree 窗口切换回编辑窗口时刷新高亮
+  autocmd BufEnter * if &filetype !=# 'nerdtree' && &filetype !=# 'vista' && &filetype !=# 'fzf' && &filetype !=# 'startify'
+        \ | call timer_start(300, { -> s:RefreshIlluminateHighlight() })
+        \ | endif
+augroup END
+
+" 刷新高亮函数（用于窗口切换后恢复）
+function! s:RefreshIlluminateHighlight() abort
+  " 如果当前文件类型在黑名单中，不处理
+  if index(g:Illuminate_ftblacklist, &filetype) >= 0
+    return
+  endif
+  " 如果插件提供了刷新函数，使用它
+  if exists('*Illuminate#refresh')
+    silent! call Illuminate#refresh()
+    return
+  endif
+  " 否则，强制触发高亮更新（通过微小的光标移动）
+  let l:save_cursor = getpos('.')
+  try
+    " 先清除可能卡住的高亮
+    call s:ClearIlluminateHighlightSilent()
+    " 然后触发插件重新高亮（通过光标移动）
+    call cursor(line('.'), col('.') + 1)
+    call cursor(l:save_cursor[1], l:save_cursor[2])
+  catch
+    " 忽略错误
+  endtry
+endfunction
 " }}}1
 
 "==============================================================
@@ -147,14 +249,17 @@ nnoremap <silent> <leader>hc :call <SID>ClearIlluminateHighlight()<CR>
 "   - 可配置高亮组、文件类型、单词长度等
 "
 " 已优化的配置：
-"   - 延迟时间减少到 50ms（减少高亮卡住的问题）
-"   - 插入模式下禁用高亮（减少干扰）
-"   - 添加自动清除机制（光标移动到非单词字符时清除高亮）
+"   - 延迟时间设置为 0（立即更新，无延迟，避免卡住）
+"   - 插入模式下自动清除高亮（减少干扰）
+"   - 添加自动恢复机制（检测并修复卡住的高亮）
+"   - 窗口切换时自动清除高亮
+"   - 提供手动清除快捷键 <leader>hc
 "
 " 如果仍然出现高亮卡住的问题：
-"   1. 将 g:Illuminate_delay 进一步减少到 0（立即更新）
-"   2. 使用 <leader>hc 手动清除高亮（如果已映射）
-"   3. 考虑禁用插件，使用自定义实现（config/mappings/h.vim）
+"   1. 使用 <leader>hc 手动清除高亮（快速修复）
+"   2. 进入插入模式会自动清除高亮
+"   3. 自动恢复机制会在检测到卡住时自动修复
+"   4. 如果问题持续，考虑禁用插件，使用自定义实现（config/mappings/h.vim）
 "
 " 插件 GitHub: https://github.com/RRethy/vim-illuminate
 "
