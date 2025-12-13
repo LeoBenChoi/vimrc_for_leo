@@ -227,16 +227,6 @@
       "nilness": true,
       // 检测不必要的错误检查
       "unusedresult": true
-    },
-    // 代码操作配置
-    "codeActions": {
-      // 启用代码操作（包括创建缺失方法的建议）
-      "useCodeActions": true
-    },
-    // 诊断配置
-    "diagnostics": {
-      // 启用所有诊断
-      "staticcheck": true
     }
   },
   // 如果需要自定义 gopls 配置，可以使用 languageserver 配置
