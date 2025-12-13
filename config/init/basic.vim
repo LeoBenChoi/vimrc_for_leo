@@ -42,6 +42,10 @@ set hlsearch                       " 高亮显示所有搜索结果
 set incsearch                      " 输入搜索模式时实时高亮匹配结果
 set mouse=a                        " 全模式启用鼠标（终端支持时生效）
 set scrolloff=5                    " 上下翻页和滚动时保留 5 行缓冲区
+
+" 文件自动重新加载配置
+set autoread                       " 当文件在外部被修改时自动重新读取（不显示 W11 警告）
+set updatetime=2000                " 更新间隔（毫秒），用于检查文件变更和触发 CursorHold 事件
 "==============================================================
 " 2.1. 文本排版
 "==============================================================
@@ -107,4 +111,75 @@ augroup RestoreCursorPosition
         \ if line("'\"") > 1 && line("'\"") <= line("$") |
         \   execute "normal! g`\"" |
         \ endif
+augroup END
+
+"==============================================================
+" 5. 文件自动重新加载配置
+"==============================================================
+" 当文件在外部被修改时，自动重新加载文件内容
+" 避免显示 W11 警告："编辑开始后，文件已变动"
+" 
+" 策略：
+" 1. 如果文件在外部被修改且当前 buffer 没有未保存修改，自动重新加载
+" 2. 如果文件在外部被修改但当前 buffer 有未保存修改，不自动重新加载（避免冲突）
+" 3. 定期检查文件变更，确保及时更新
+
+augroup AutoReload
+  autocmd!
+
+  " 自定义文件变更处理，完全避免 W11 警告
+  " 当文件在外部被修改时，如果当前 buffer 没有未保存修改，自动重新加载
+  " 如果当前 buffer 有未保存修改，不自动重新加载（避免冲突）
+  " 注意：FileChangedShell 事件在文件变更时触发，我们可以通过执行 edit 来自动重新加载
+  function! s:HandleFileChanged() abort
+    if expand('<afile>') ==# '' || &buftype !=# ''
+      return
+    endif
+    if !&modified
+      " 没有未保存修改，自动重新加载（不显示警告）
+      " 使用 :edit! 命令强制重新加载文件（忽略警告）
+      silent! edit!
+      echohl WarningMsg
+      echo "文件已自动重新加载: " . expand('<afile>:t')
+      echohl None
+    else
+      " 有未保存修改，显示警告但不自动重新加载
+      echohl WarningMsg
+      echo "警告: 文件 " . expand('<afile>:t') . " 在外部被修改，但当前有未保存的修改"
+      echo "请使用 :checktime 手动重新加载，或先保存当前修改"
+      echohl None
+    endif
+  endfunction
+  autocmd FileChangedShell * call s:HandleFileChanged()
+
+  " 当窗口获得焦点时，检查并重新加载已更改的文件
+  " 适用于：切换窗口、切换标签页、从其他应用返回 Vim
+  autocmd FocusGained,BufEnter * 
+        \ if mode() !=# 'c' && expand('<afile>') !=# '' && &buftype ==# '' | 
+        \   silent! checktime | 
+        \ endif
+
+  " 当离开插入模式时，检查文件是否已更改
+  " 如果文件已更改且当前 buffer 没有未保存修改，自动重新加载
+  autocmd InsertLeave * 
+        \ if expand('<afile>') !=# '' && &buftype ==# '' && !&modified | 
+        \   silent! checktime | 
+        \ endif
+
+  " 定期检查文件变更（在光标静止时触发，由 updatetime 控制间隔）
+  " 使用 CursorHold 事件，默认每 2 秒检查一次（updatetime=2000）
+  autocmd CursorHold * 
+        \ if expand('<afile>') !=# '' && &buftype ==# '' && !&modified | 
+        \   silent! checktime | 
+        \ endif
+
+  " 当文件在外部被删除时，标记为已删除但保留 buffer
+  " 使用 FileChangedRO 事件处理文件变为只读的情况
+  autocmd FileChangedRO *
+        \ if expand('<afile>') !=# '' && &buftype ==# '' |
+        \   echohl WarningMsg |
+        \   echo "警告: 文件 " . expand('<afile>:t') . " 在外部被删除或变为只读" |
+        \   echohl None |
+        \ endif
+
 augroup END
