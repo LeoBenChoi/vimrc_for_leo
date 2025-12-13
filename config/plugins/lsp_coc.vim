@@ -149,6 +149,16 @@ nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 " 打开诊断列表
 nnoremap <silent><nowait> <space>a :<C-u>CocList diagnostics<cr>
 
+" 禁用 JSON 文件的 ESLint 诊断
+" 当打开 JSON 文件时，自动清除 ESLint 相关的诊断信息
+augroup CocDisableEslintForJson
+  autocmd!
+  autocmd FileType json,jsonc 
+        \ if exists('*CocAction') |
+        \   call timer_start(100, {-> execute('silent! call CocAction("diagnostic.clear", "eslint")')}) |
+        \ endif
+augroup END
+
 "==============================================================
 " 6. 代码修复与重构
 "==============================================================

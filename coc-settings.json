@@ -23,6 +23,11 @@
   "diagnostic.hintSign": "H",
   // 虚拟文本显示诊断信息（可能错位，影响阅读）
   "diagnostic.virtualText": false,
+  // 禁用特定文件类型的诊断源
+  "diagnostic.disableSources": {
+    "json": ["eslint"],
+    "jsonc": ["eslint"]
+  },
 
   // ============================================================
   // 自动补全配置
@@ -95,6 +100,34 @@
   "javascript.suggestionActions.enabled": true,
   "javascript.preferences.importModuleSpecifier": "auto",
   "javascript.preferences.quoteStyle": "auto",
+
+  // ============================================================
+  // ESLint 配置
+  // ============================================================
+  // 启用 ESLint
+  "eslint.enable": true,
+  // 禁用 JSON 文件的 ESLint 检查（JSON 文件应该使用 JSON 语言服务器，而不是 ESLint）
+  // 只验证以下文件类型，不包含 json 和 jsonc
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  // 忽略 JSON 和 JSONC 文件的 ESLint 检查（使用 glob 模式）
+  "eslint.ignorePatterns": [
+    "**/*.json",
+    "**/*.jsonc"
+  ],
+  // 明确禁用对 JSON 文件类型的支持
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
 
   // ============================================================
   // Python 语言支持（coc-pyright 驱动）
@@ -258,4 +291,5 @@
   // 如果需要指定 clangd 路径（Windows 示例）
   // "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
 }
+
 

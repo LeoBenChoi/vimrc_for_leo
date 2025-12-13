@@ -87,3 +87,164 @@ augroup EnvCheckGit
   autocmd!
   autocmd VimEnter * call s:check_git()
 augroup END
+
+"==============================================================
+" 3. ESLint 检测和自动安装
+"==============================================================
+" 检测 ESLint 是否已安装（全局或本地）
+function! s:check_eslint() abort
+  " 只在插件配置加载后才检测（避免基础配置模式下提示）
+  if !exists('g:loaded_plugin_bootstrap')
+    return
+  endif
+  
+  " 检查 Node.js 是否可用
+  if executable('node') == 0
+    return
+  endif
+  
+  " 检查 npm 是否可用
+  if executable('npm') == 0
+    silent! echohl WarningMsg
+    silent! echomsg '[环境检测] npm 未安装，无法自动安装 ESLint'
+    silent! echomsg '[安装方法] npm 通常随 Node.js 一起安装，请检查 Node.js 安装'
+    silent! echohl None
+    return
+  endif
+  
+  " 检测全局 ESLint
+  let l:eslint_installed = 0
+  let l:eslint_version = ''
+  let l:eslint_path = ''
+  
+  " 方法1: 检查 eslint 命令是否可用
+  if executable('eslint')
+    let l:eslint_path = system('which eslint 2>/dev/null')
+    let l:eslint_path = substitute(l:eslint_path, '\n$', '', '')
+    let l:version_output = system('eslint --version 2>&1')
+    if l:version_output =~# 'v\?\d\+\.\d\+\.\d\+'
+      let l:eslint_installed = 1
+      let l:eslint_version = substitute(l:version_output, '\n$', '', '')
+      let l:eslint_version = substitute(l:eslint_version, '^v', '', '')
+    endif
+  endif
+  
+  " 方法2: 检查 npm 全局包列表
+  if !l:eslint_installed
+    let l:npm_list_output = system('npm list -g eslint 2>&1')
+    if l:npm_list_output =~# 'eslint@'
+      let l:eslint_installed = 1
+      " 提取版本号
+      let l:version_match = matchstr(l:npm_list_output, 'eslint@\zs[0-9.]\+')
+      if !empty(l:version_match)
+        let l:eslint_version = l:version_match
+      endif
+    endif
+  endif
+  
+  " 如果未安装，提示并询问是否自动安装
+  if !l:eslint_installed
+    silent! echohl WarningMsg
+    silent! echomsg '[环境检测] ESLint 未安装，coc-eslint 需要 ESLint 才能正常工作'
+    silent! echomsg '[提示] 运行 :InstallESLint 可以自动安装 ESLint（全局安装）'
+    silent! echohl None
+  else
+    " 检查版本是否过旧（建议使用 8.0+）
+    if !empty(l:eslint_version)
+      let l:version_parts = split(l:eslint_version, '\.')
+      if len(l:version_parts) >= 1
+        let l:major_version = str2nr(l:version_parts[0])
+        if l:major_version < 8
+          silent! echohl WarningMsg
+          silent! echomsg '[环境检测] ESLint 版本较旧（当前: ' . l:eslint_version . '），建议升级到 8.0+'
+          silent! echomsg '[提示] 运行 :UpgradeESLint 可以升级 ESLint'
+          silent! echohl None
+        endif
+      endif
+    endif
+  endif
+endfunction
+
+" 自动安装 ESLint（全局安装）
+function! s:install_eslint() abort
+  if executable('npm') == 0
+    echohl ErrorMsg
+    echomsg '[错误] npm 未安装，无法安装 ESLint'
+    echohl None
+    return
+  endif
+  
+  echohl Question
+  echo '[ESLint 安装] 正在全局安装 ESLint（最新版本）...'
+  echohl None
+  
+  " 执行安装命令
+  let l:install_cmd = 'npm install -g eslint@latest'
+  let l:output = system(l:install_cmd)
+  let l:exit_code = v:shell_error
+  
+  if l:exit_code == 0
+    echohl MoreMsg
+    echomsg '[ESLint 安装] ✓ 安装成功！'
+    echohl None
+    " 显示版本信息
+    let l:version = system('eslint --version 2>&1')
+    if !empty(l:version)
+      echo '版本: ' . substitute(l:version, '\n$', '', '')
+    endif
+    echohl Question
+    echo '[提示] 请运行 :CocRestart 重启 coc.nvim 以使 ESLint 生效'
+    echohl None
+  else
+    echohl ErrorMsg
+    echomsg '[ESLint 安装] ✗ 安装失败，请检查错误信息：'
+    echomsg l:output
+    echohl None
+  endif
+endfunction
+
+" 升级 ESLint
+function! s:upgrade_eslint() abort
+  if executable('npm') == 0
+    echohl ErrorMsg
+    echomsg '[错误] npm 未安装，无法升级 ESLint'
+    echohl None
+    return
+  endif
+  
+  echohl Question
+  echo '[ESLint 升级] 正在升级 ESLint 到最新版本...'
+  echohl None
+  
+  let l:upgrade_cmd = 'npm install -g eslint@latest'
+  let l:output = system(l:upgrade_cmd)
+  let l:exit_code = v:shell_error
+  
+  if l:exit_code == 0
+    echohl MoreMsg
+    echomsg '[ESLint 升级] ✓ 升级成功！'
+    echohl None
+    let l:version = system('eslint --version 2>&1')
+    if !empty(l:version)
+      echo '当前版本: ' . substitute(l:version, '\n$', '', '')
+    endif
+    echohl Question
+    echo '[提示] 请运行 :CocRestart 重启 coc.nvim 以使新版本生效'
+    echohl None
+  else
+    echohl ErrorMsg
+    echomsg '[ESLint 升级] ✗ 升级失败，请检查错误信息：'
+    echomsg l:output
+    echohl None
+  endif
+endfunction
+
+" 定义命令
+command! InstallESLint call s:install_eslint()
+command! UpgradeESLint call s:upgrade_eslint()
+
+" 延迟执行检测（在 VimEnter 事件后，确保插件已加载）
+augroup EnvCheckESLint
+  autocmd!
+  autocmd VimEnter * call s:check_eslint()
+augroup END
