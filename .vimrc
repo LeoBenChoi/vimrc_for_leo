@@ -146,9 +146,8 @@ call s:source_if_exists(s:config_root . '/plugins/git.vim')
 call s:source_if_exists(s:config_root . '/plugins/fzf.vim')
 
 "==============================================================
-" 7.3. 自动高亮当前单词配置（vim-illuminate）
+" 7.3. 自动高亮当前单词（vim-cursorword，无需配置）
 "==============================================================
-call s:source_if_exists(s:config_root . '/plugins/illuminate.vim')
 
 "==============================================================
 " 8. 代码大纲配置（Vista）
