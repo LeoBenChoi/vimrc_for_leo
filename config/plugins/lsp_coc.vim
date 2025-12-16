@@ -65,7 +65,6 @@ let g:coc_global_extensions = [
 " updatetime 时间过长（默认 4000ms = 4s）会导致明显延迟和糟糕的用户体验
 set updatetime=300
 
-" 总是显示 signcolumn，否则每次诊断出现/消失时，文本会移位
 set signcolumn=yes
 
 " 使用 Tab 键触发补全并导航

@@ -22,7 +22,7 @@ let mapleader = "\<Space>"
 "   d / D : 调试/诊断（预留）
 "   e / E : Explorer/编辑器增强（预留）
 "   f / F : 预留
-"   g / G : 代码跳转（LSP 跳转快捷键，避免与原生 g 前缀冲突）
+"   g / G : Git 操作（已实现 <leader>gs, <leader>gc, <leader>gp 等）
 "   h / H : 高亮相关功能（已实现 <leader>hh, <leader>hc, <leader>hH）
 "   i / I : Insert 模式相关（预留）
 "   j / J : Cursor/Jump（预留）
@@ -80,6 +80,7 @@ let mapleader = "\<Space>"
 " 所有快捷键映射已迁移到 mappings/ 目录下的独立文件：
 "   - mappings/c.vim : 注释功能（c, cc）
 "   - mappings/e.vim : 文件浏览器（ee, ef, er）
+"   - mappings/g.vim : Git 操作（gs, gc, gp, gl, gd, gL, gb, go, gn, gN 等）
 "   - mappings/o.vim : 代码大纲（oo）
 "   - mappings/t.vim : 主题切换（tt）
 

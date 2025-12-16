@@ -55,6 +55,11 @@ Plug 'dracula/vim', { 'as': 'dracula' }             " Dracula 主题（现代、
 " 文件浏览器（延迟加载：只有打开 NERDTree 时才加载）
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 经典文件浏览器（侧边栏）
 Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' } " 文件图标（需要 Nerd Fonts）
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERDTree Git 状态显示
+
+" Git 集成（需要启动时加载以显示 Git 状态）
+Plug 'tpope/vim-fugitive'                      " Git 集成（强大的 Git 操作）
+Plug 'airblade/vim-gitgutter'                  " Git 差异显示（行号旁显示修改标记）
 
 " 代码大纲（延迟加载：只有打开 Vista 时才加载）
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }      " 代码大纲视图（支持 LSP/ctags）

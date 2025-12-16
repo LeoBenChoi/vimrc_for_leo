@@ -36,11 +36,13 @@ if exists(':NERDTree')
 endif
 
 "==============================================================
-" 2. NERDTree 其他配置
+" 2. NERDTree Git 状态显示（nerdtree-git-plugin）
 "==============================================================
-" 注意：Git 状态显示功能已移除（nerdtree-git-plugin 已删除）
+" 注意：nerdtree-git-plugin 的配置在 config/plugins/git.vim 中
+" 这里只需要确保 NERDTree 已加载即可，插件会自动集成
 if exists(':NERDTree')
-  " 其他 NERDTree 配置可以在此添加
+  " Git 状态显示由 nerdtree-git-plugin 自动处理
+  " 相关配置请查看 config/plugins/git.vim
 endif
 
 "==============================================================
