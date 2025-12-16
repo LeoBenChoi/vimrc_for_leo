@@ -11,8 +11,6 @@ let g:loaded_env_check = 1
 "==============================================================
 " 1. 依赖检测
 "==============================================================
-" 注意：ripgrep (rg) 检测已移至 config/plugins/fzf.vim
-" 因为它是 FZF 插件的依赖，只在加载 FZF 时检测
 
 " 处理 node --version 异步执行结果
 function! s:handle_node_version_result(temp_file, job, status) abort

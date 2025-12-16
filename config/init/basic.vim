@@ -14,7 +14,11 @@ let g:loaded_basic_config = 1
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,gbk,latin1
 
-set ambiwidth=double                " 模糊宽度字符（如 emoji、图标）显示为双宽度，解决状态栏和侧边栏图标显示问题
+" 模糊宽度字符（如 emoji、图标）显示各有各的bug……酌情修改
+" 单宽度：一个字符占一个宽度,解决状态栏和侧边栏图标显示问题
+" 双宽度：一个字符占两个宽度,解决ansi代码对齐错位问题
+set ambiwidth=single                
+" set ambiwidth=double
 
 "==============================================================
 " 1.1. 换行符设置（统一使用 LF）

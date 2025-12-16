@@ -55,15 +55,21 @@ nnoremap <silent> <leader>gt :GitGutterToggle<CR>
 " 如果 coc 未安装，不执行 LSP 相关快捷键
 if exists('*coc#rpc#start_server')
   " gd -> Go to Definition：跳转到定义
-  nmap <silent> gd <Plug>(coc-definition)
+  nnoremap <silent> gd <Plug>(coc-definition)
 
   " gy -> Go to Type Definition：跳转到类型定义
-  nmap <silent> gy <Plug>(coc-type-definition)
+  nnoremap <silent> gy <Plug>(coc-type-definition)
 
   " gi -> Go to Implementation：跳转到实现
-  nmap <silent> gi <Plug>(coc-implementation)
+  " 注意：gi 在 Vim 中是原生快捷键（进入插入模式并移动到上次编辑位置）
+  " 这里覆盖原生行为，使用 LSP 跳转到实现
+  " 如果需要原生 gi 功能，可以使用 <leader>gi 或其他快捷键
+  nnoremap <silent> gi <Plug>(coc-implementation)
+  
+  " 备用快捷键：<leader>gi 也可以跳转到实现（如果 gi 不工作）
+  nnoremap <silent> <leader>gi <Plug>(coc-implementation)
 
   " gr -> Go to References：查看引用
-  nmap <silent> gr <Plug>(coc-references)
+  nnoremap <silent> gr <Plug>(coc-references)
 endif
 

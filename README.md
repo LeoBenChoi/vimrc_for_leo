@@ -34,7 +34,6 @@
 │   ├── plugins/           # 插件管理
 │   │   ├── plugins.vim    # 插件列表与 vim-plug 配置
 │   │   ├── lsp_coc.vim    # coc.nvim LSP 配置
-│   │   ├── fzf.vim        # FZF 搜索配置
 │   │   └── git.vim        # Git 插件配置
 │   ├── ui/                # 用户界面
 │   │   ├── theme.vim      # 主题配置（日/夜切换）
@@ -48,7 +47,6 @@
 │       ├── a.vim          # LSP 代码操作快捷键
 │       ├── c.vim          # 注释功能快捷键
 │       ├── e.vim          # 文件浏览器快捷键
-│       ├── f.vim          # FZF 搜索快捷键
 │       ├── g.vim          # Git 操作快捷键
 │       ├── o.vim          # 代码大纲快捷键
 │       └── t.vim          # 主题切换快捷自动键
@@ -118,7 +116,6 @@ let g:my_custom_setting = 1
 
 - **[vim-plug](https://github.com/junegunn/vim-plug)** - 插件管理器
 - **[coc.nvim](https://github.com/neoclide/coc.nvim)** - LSP 客户端
-- **[fzf.vim](https://github.com/junegunn/fzf.vim)** - 模糊搜索
 - **[vim-airline](https://github.com/vim-airline/vim-airline)** - 状态栏
 - **[vim-airline-themes](https://github.com/vim-airline/vim-airline-themes)** - 状态栏主题
 
@@ -148,15 +145,6 @@ let g:my_custom_setting = 1
 所有自定义快捷键使用 `<Space>`（空格键）作为 `<leader>`。
 
 ### 快捷键列表
-
-#### 文件搜索（FZF）
-
-| 快捷键 | 功能 |
-|--------|------|
-| `<Space>ff` | 搜索文件（Files） |
-| `<Space>fg` | 搜索 Git 文件（GFiles） |
-| `<Space>fr` | 搜索内容（Rg，需要 ripgrep） |
-| `<Space>fb` | 搜索 Buffer |
 
 #### 侧边栏（Explorer）
 
@@ -441,7 +429,6 @@ git pull
 - [Vim 官方文档](https://www.vim.org/docs.php)
 - [vim-plug 文档](https://github.com/junegunn/vim-plug)
 - [coc.nvim 文档](https://github.com/neoclide/coc.nvim)
-- [fzf.vim 文档](https://github.com/junegunn/fzf.vim)
 
 
 

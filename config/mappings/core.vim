@@ -21,7 +21,7 @@ let mapleader = "\<Space>"
 "   c / C : Comment / 注释（本文件实现 <leader>cc, <leader>c）
 "   d / D : 调试/诊断（预留）
 "   e / E : Explorer/编辑器增强（预留）
-"   f / F : FZF 模糊搜索（本文件实现一组高频命令）
+"   f / F : 预留
 "   g / G : Git / 跳转（预留，避免与原生 g 前缀冲突）
 "   h / H : 高亮相关功能（已实现 <leader>hh, <leader>hc, <leader>hH）
 "   i / I : Insert 模式相关（预留）
@@ -81,9 +81,7 @@ let mapleader = "\<Space>"
 "   - mappings/a.vim : LSP 代码操作（a, ac, aq, as）
 "   - mappings/c.vim : 注释功能（c, cc）
 "   - mappings/e.vim : 文件浏览器（ee, ef, er）
-"   - mappings/f.vim : FZF 搜索（f, ff, fg, fr, fb, f., fp, fh, fc, fs, ft, fG, fB, fS）
 "   - mappings/g.vim : Git 操作（<leader>g*）和 LSP 跳转（gd, gy, gi, gr）
-"   - mappings/h.vim : 高亮相关功能（<leader>hh, <leader>hc, <leader>hH）
 "   - mappings/o.vim : 代码大纲（oo）
 "   - mappings/t.vim : 主题切换（tt）
 

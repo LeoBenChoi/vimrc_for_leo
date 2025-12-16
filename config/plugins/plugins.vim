@@ -32,8 +32,8 @@ endif
 call plug#begin(s:plugged_dir)
 
 " FZF 模糊搜索（延迟加载：只有使用 FZF 命令时才加载）
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " FZF 核心（含二进制）
-Plug 'junegunn/fzf.vim', { 'on': ['Files', 'GFiles', 'Rg', 'Buffers'] } " FZF 与 Vim 的桥接层
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } 
+Plug 'junegunn/fzf.vim'   
 
 " LSP/补全框架（coc.nvim 需要启动时加载，不延迟）
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }   " LSP/补全框架
