@@ -41,13 +41,20 @@ let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
 let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 
 " 终端模式下的主题（可选）
-" Linux 终端下使用 one（高对比度，清晰易读），Windows 终端使用 PaperColor
-" 备选方案：solarized8（如果 one 不可用）
-let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'PaperColor' : ''))
-" Windows 终端下使用 PaperColor（浅色主题，适合 Windows 终端）
-let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'PaperColor' : '')
+" Linux 终端下使用 one（高对比度，清晰易读）
+" Windows 终端推荐使用支持透明背景的主题：
+"   - one (One Dark/Light) - 经典、高对比度，完美支持透明背景 ⭐ 推荐
+"   - dracula - 现代、柔和，完美支持透明背景 ⭐ 推荐
+"   - PaperColor - 浅色主题，支持透明背景
+"   - gruvbox - 深色主题，支持透明背景
+"   - darkblue - Vim 内置深色主题，支持透明背景
+let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'darkblue' : ''))
+" Windows 终端下使用 darkblue（内置深色主题，完美支持透明背景）
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'darkblue' : '')
 
-" 透明背景设置
+" 透明背景设置（Windows Terminal 推荐启用）
+" 启用后，Vim 背景将透明，显示 Windows Terminal 的背景
+" Windows Terminal 透明配置：在设置中添加 "useAcrylic": true, "acrylicOpacity": 0.75
 let g:theme_transparent_bg = get(g:, 'theme_transparent_bg', 1)
 
 "==============================================================
@@ -69,6 +76,10 @@ function! s:has_colorscheme(name) abort
   if empty(a:name)
     return 0
   endif
+  " darkblue 是 Vim 内置主题，总是存在
+  if a:name ==# 'darkblue' || a:name ==# 'default' || a:name ==# 'desert' || a:name ==# 'evening'
+    return 1
+  endif
   return !empty(globpath(&runtimepath, 'colors/' . a:name . '.vim'))
 endfunction
 
@@ -84,16 +95,18 @@ function! s:get_theme_name(mode) abort
     let l:specific_theme = (a:mode ==# 'light' || a:mode ==# 'day') ? g:theme_day_term : g:theme_night_term
   endif
   
-  " 如果指定了特定主题且存在，使用特定主题
-  if !empty(l:specific_theme) && s:has_colorscheme(l:specific_theme)
-    return l:specific_theme
-  " Windows 终端下，优先使用 PaperColor（无论日间还是夜间）
-  elseif !l:is_gui && (has('win32') || has('win64') || has('win16'))
-    if s:has_colorscheme('PaperColor')
-      return 'PaperColor'
-    elseif s:has_colorscheme('solarized8')
-      return 'solarized8'
+  " Windows 终端下，优先使用 darkblue（内置主题，完美支持透明背景）
+  if !l:is_gui && (has('win32') || has('win64') || has('win16'))
+    " 如果指定了特定主题且存在，使用特定主题
+    if !empty(l:specific_theme) && s:has_colorscheme(l:specific_theme)
+      return l:specific_theme
+    " 否则优先使用 darkblue（日间和夜间都使用）
+    else
+      return 'darkblue'
     endif
+  " 非 Windows 终端，使用指定主题或基础主题
+  elseif !empty(l:specific_theme) && s:has_colorscheme(l:specific_theme)
+    return l:specific_theme
   " Linux 终端下，如果 one 不存在，尝试 solarized8
   elseif !l:is_gui && has('unix') && !has('mac') && (a:mode ==# 'light' || a:mode ==# 'day')
     if s:has_colorscheme('solarized8')
@@ -234,6 +247,12 @@ function! s:load_theme()
       else
         set background=dark
       endif
+    elseif g:theme_name ==# 'darkblue'
+      " Darkblue 主题配置（Vim 内置深色主题，适合 Windows 终端，支持透明背景）
+      " Windows 终端下确保使用深色模式
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        set background=dark
+      endif
     elseif g:theme_name ==# 'dracula'
       " Dracula 主题配置（现代、流行，适合 Windows 终端，支持透明背景）
       if !exists('g:dracula_colorterm')
@@ -241,6 +260,30 @@ function! s:load_theme()
       endif
       if !exists('g:dracula_italic')
         let g:dracula_italic = 1  " 启用斜体
+      endif
+      " Windows 终端下确保使用深色模式
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        set background=dark
+      endif
+    elseif g:theme_name ==# 'tokyonight'
+      " Tokyo Night 主题配置（现代、优雅，适合 Windows 终端，支持透明背景）
+      if !exists('g:tokyonight_style')
+        let g:tokyonight_style = 'night'  " 可选: night, storm, day, moon
+      endif
+      if !exists('g:tokyonight_transparent')
+        let g:tokyonight_transparent = g:theme_transparent_bg ? 1 : 0
+      endif
+      if !exists('g:tokyonight_italic_functions')
+        let g:tokyonight_italic_functions = 1
+      endif
+      " Windows 终端下确保使用深色模式
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        set background=dark
+      endif
+    elseif g:theme_name ==# 'catppuccin'
+      " Catppuccin 主题配置（柔和、护眼，适合 Windows 终端，支持透明背景）
+      if !exists('g:catppuccin_flavour')
+        let g:catppuccin_flavour = 'mocha'  " 可选: latte, frappe, macchiato, mocha
       endif
       " Windows 终端下确保使用深色模式
       if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
@@ -260,23 +303,51 @@ function! s:load_theme()
     
   catch /^Vim\%((\a\+)\)\=:E185/
     " 未安装以上主题则使用默认主题
-    try
-      colorscheme default
-      colorscheme retrobox
-    catch
-      " 如果 retrobox 也不存在，至少设置背景色
+    " Windows 终端下优先使用 darkblue
+    if !s:is_gui() && (has('win32') || has('win64') || has('win16'))
+      try
+        colorscheme darkblue
+        set background=dark
+      catch
+        " 如果 darkblue 也不存在，尝试 default
+        try
+          colorscheme default
+          set background=dark
+        catch
+          " 如果 default 也不存在，至少设置背景色
+          set background=dark
+        endtry
+      endtry
+    else
+      " 非 Windows 终端，使用默认主题
+      try
+        colorscheme default
+        colorscheme retrobox
+      catch
+        " 如果 retrobox 也不存在，至少设置背景色
+        if exists('g:theme_mode')
+          execute 'set background=' . g:theme_mode
+        else
+          set background=dark
+        endif
+      endtry
+    endif
+  catch
+    " 其他错误，至少设置背景色
+    " Windows 终端下尝试使用 darkblue
+    if !s:is_gui() && (has('win32') || has('win64') || has('win16'))
+      try
+        colorscheme darkblue
+        set background=dark
+      catch
+        set background=dark
+      endtry
+    else
       if exists('g:theme_mode')
         execute 'set background=' . g:theme_mode
       else
         set background=dark
       endif
-    endtry
-  catch
-    " 其他错误，至少设置背景色
-    if exists('g:theme_mode')
-      execute 'set background=' . g:theme_mode
-    else
-      set background=dark
     endif
   endtry
 endfunction

@@ -138,6 +138,8 @@ let g:my_custom_setting = 1
 ### 主题
 
 - **[gruvbox](https://github.com/morhetz/gruvbox)** - 配色方案（日/夜模式）
+- **[vim-one](https://github.com/rakr/vim-one)** - One Dark/Light（Windows Terminal 推荐，完美支持透明背景）
+- **[dracula](https://github.com/dracula/vim)** - Dracula 主题（现代、流行，完美支持透明背景）
 
 ## ⌨️ 快捷键
 
@@ -204,16 +206,44 @@ let g:my_custom_setting = 1
 配置文件：`config/ui/theme.vim`
 
 默认主题：
-- **日间**：`PaperColor`（如果不存在则使用 `retrobox`）
-- **夜间**：`gruvbox`（如果不存在则使用 `retrobox`）
+- **日间**：`PaperColor`（Windows 终端）或 `solarized8`（其他平台）
+- **夜间**：`one`（Windows 终端，推荐，完美支持透明背景）或 `gruvbox`（其他平台）
+
+### Windows Terminal 透明背景配置
+
+本配置已针对 Windows Terminal 透明背景优化，推荐使用以下主题：
+
+**推荐主题（完美支持透明背景）**：
+- **One Dark** (`one`) - 经典、高对比度 ⭐ 默认夜间主题
+- **Dracula** (`dracula`) - 现代、柔和
+- **PaperColor** (`PaperColor`) - 浅色主题，适合日间
+- **Gruvbox** (`gruvbox`) - 经典深色主题
+
+**Windows Terminal 设置**：
+1. 打开 Windows Terminal 设置（`Ctrl + ,`）
+2. 在 `profiles.defaults` 中添加：
+   ```json
+   {
+     "acrylicOpacity": 0.75,
+     "useAcrylic": true,
+     "opacity": 90
+   }
+   ```
+3. 选择与 Vim 主题匹配的配色方案（推荐：One Half Dark、Dracula 等）
 
 ### 修改主题
 
 编辑 `config/ui/theme.vim`：
 
 ```vim
-let g:theme_day = 'your-day-theme'
-let g:theme_night = 'your-night-theme'
+" Windows 终端夜间主题（推荐：one, dracula, gruvbox）
+let g:theme_night_term = 'one'
+
+" Windows 终端日间主题（推荐：PaperColor, one）
+let g:theme_day_term = 'PaperColor'
+
+" 启用透明背景（Windows Terminal 推荐启用）
+let g:theme_transparent_bg = 1
 ```
 
 ### 自动切换
