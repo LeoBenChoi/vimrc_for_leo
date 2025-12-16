@@ -99,9 +99,13 @@ nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
 nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 
 " 跳转到代码位置
+" 跳转到定义
 nmap <silent><nowait> gd <Plug>(coc-definition)
+" 跳转到类型定义
 nmap <silent><nowait> gy <Plug>(coc-type-definition)
+" 跳转到实现
 nmap <silent><nowait> gi <Plug>(coc-implementation)
+" 跳转到引用
 nmap <silent><nowait> gr <Plug>(coc-references)
 
 " 使用 K 键在预览窗口显示文档
