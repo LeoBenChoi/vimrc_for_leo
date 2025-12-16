@@ -36,41 +36,11 @@ if exists(':NERDTree')
 endif
 
 "==============================================================
-" 2. Git 状态符号配置
+" 2. NERDTree 其他配置
 "==============================================================
+" 注意：Git 状态显示功能已移除（nerdtree-git-plugin 已删除）
 if exists(':NERDTree')
-  " 使用 Unicode 字符（需要字体支持）
-  " 如果显示有问题，可以切换到下面的 ASCII 版本
-  " Modified: 已修改, Staged: 已暂存, Untracked: 未跟踪
-  " Renamed: 已重命名, Unmerged: 未合并, Deleted: 已删除
-  " Dirty: 脏目录, Ignored: 已忽略, Clean: 干净, Unknown: 未知状态
-  let g:NERDTreeGitStatusIndicatorMapCustom = {
-        \ 'Modified'  : '*',
-        \ 'Staged'    : '✚',
-        \ 'Untracked' : '✭',
-        \ 'Renamed'   : '➜',
-        \ 'Unmerged'  : '═',
-        \ 'Deleted'   : '✖',
-        \ 'Dirty'     : '✗',
-        \ 'Ignored'   : '☒',
-        \ 'Clean'     : '✔',
-        \ 'Unknown'   : '?'
-        \ }
-  
-  " 备选方案：如果 Unicode 字符显示有问题，使用下面的 ASCII 版本
-  " 注释掉上面的配置，取消下面的注释
-  " let g:NERDTreeGitStatusIndicatorMapCustom = {
-  "       \ 'Modified'  : '*',
-  "       \ 'Staged'    : '+',
-  "       \ 'Untracked' : '?',
-  "       \ 'Renamed'   : 'R',
-  "       \ 'Unmerged'  : '=',
-  "       \ 'Deleted'   : 'D',
-  "       \ 'Dirty'     : 'X',
-  "       \ 'Ignored'   : '!',
-  "       \ 'Clean'     : 'C',
-  "       \ 'Unknown'   : '?'
-  "       \ }
+  " 其他 NERDTree 配置可以在此添加
 endif
 
 "==============================================================

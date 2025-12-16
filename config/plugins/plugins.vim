@@ -38,15 +38,11 @@ Plug 'junegunn/fzf.vim'
 " LSP/补全框架（coc.nvim 需要启动时加载，不延迟）
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }   " LSP/补全框架
 
-" Git 集成
-Plug 'tpope/vim-fugitive'              " Git 命令集成
-Plug 'airblade/vim-gitgutter'          " Git 变更标记（在侧边栏显示 Git 状态）
-
 " 快速注释（延迟加载：只有使用注释命令时才加载）
 Plug 'tpope/vim-commentary', { 'on': '<Plug>Commentary' } " 快速注释
 
 " 状态栏（需要启动时加载以显示状态）
-Plug 'vim-airline/vim-airline'                      " 功能强大的状态栏（支持 coc/fugitive 集成）
+Plug 'vim-airline/vim-airline'                      " 功能强大的状态栏（支持 coc 集成）
 Plug 'vim-airline/vim-airline-themes'               " Airline 主题包
 
 " 主题（需要启动时加载以应用主题）
@@ -58,7 +54,6 @@ Plug 'dracula/vim', { 'as': 'dracula' }             " Dracula 主题（现代、
 
 " 文件浏览器（延迟加载：只有打开 NERDTree 时才加载）
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 经典文件浏览器（侧边栏）
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERDTree Git 状态显示
 Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' } " 文件图标（需要 Nerd Fonts）
 
 " 代码大纲（延迟加载：只有打开 Vista 时才加载）

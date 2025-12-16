@@ -35,10 +35,6 @@ if exists(':AirlineRefresh')
   let g:airline#extensions#coc#warning_symbol = 'W:'
   let g:airline#extensions#coc#show_line_numbers = 0
 
-  " vim-fugitive 集成（显示 Git 分支和状态）
-  let g:airline#extensions#branch#enabled = 1
-  let g:airline#extensions#branch#vcs_priority = ['git', 'mercurial']
-
   " fzf 集成（在 fzf 窗口中禁用 airline）
   let g:airline#extensions#fzf#enabled = 0
 endif

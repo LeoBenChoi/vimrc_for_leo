@@ -11,7 +11,7 @@ let g:loaded_basic_config = 1
 "==============================================================
 " 1. 编码设置
 "==============================================================
-set encoding=utf-8
+set encoding=utf-8 " 设置编码为utf-8，防止coc.nvim报错
 set fileencodings=utf-8,ucs-bom,gbk,latin1
 
 " 模糊宽度字符（如 emoji、图标）显示各有各的bug……酌情修改
@@ -103,7 +103,7 @@ let s:viminfo_dir = fnamemodify(s:viminfo_file, ':h')
 if !isdirectory(s:viminfo_dir)
   call mkdir(s:viminfo_dir, 'p', 0700)
 endif
-" 设置 viminfo：'100（100个文件标记）,<50（50行删除/复制历史）,s10（10个搜索历史）,h（禁用高亮）,n路径（viminfo文件位置）
+" 设置 viminfo：'100（100个文件标记）,>50（50行删除/复制历史）,s10（10个搜索历史）,h（禁用高亮）,n路径（viminfo文件位置）
 " 使用 let 设置 viminfo 选项，路径直接拼接
 let &viminfo = "'100,<50,s10,h,n" . s:viminfo_file
 
