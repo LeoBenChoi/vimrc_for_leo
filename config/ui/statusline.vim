@@ -12,17 +12,66 @@ let g:loaded_statusline_config = 1
 " 0. Vista 扩展配置（必须在 vim-airline 加载前设置）
 "==============================================================
 " 确保 Vista 扩展被禁用（已在 .vimrc 中设置，这里再次确认）
-let g:airline#extensions#vista#enabled = 0
+" let g:airline#extensions#vista#enabled = 1
+
+"==============================================================
+" 0.1. Airline 符号配置（必须在 vim-airline 加载前设置）
+"==============================================================
+" 这些配置必须在 airline 初始化之前设置才能生效
+let g:airline_powerline_fonts = 1                             " 使用 Powerline 字体（如果已安装）
+let g:airline_symbols_ascii = 0                               " 禁用 ASCII 模式，启用特殊符号（> 和 <）
+
+" 初始化符号字典（如果需要自定义符号）
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" 修复显示不全的符号：将 maxlinenr 符号改为更兼容的格式
+" 使用简单的 '/' 分隔符替代可能显示不全的 ☰ 符号
+let g:airline_symbols.maxlinenr = '/'
+
+"==============================================================
+" 0.2. 获取当前字符的16进制值
+"==============================================================
+" 函数：获取光标下字符的16进制值（全局函数，可在 statusline 中使用）
+function! GetCharHex() abort
+  let l:col = col('.') - 1
+  let l:line = getline('.')
+  if l:col >= 0 && l:col < len(l:line)
+    let l:char = l:line[l:col]
+    let l:hex = printf('%02X', char2nr(l:char))
+    return '0x' . l:hex
+  endif
+  return ''
+endfunction
+
+"==============================================================
+" 0.3. 直接配置 section_z（简单样式，不使用特殊符号）
+"==============================================================
+" 直接设置 section_z，会覆盖函数中的动态配置
+" 格式说明：
+"   %3p%%  - 百分比（3位数字 + %）
+"   %l     - 当前行号
+"   %L     - 总行数
+"   %c     - 当前列号
+"   %{GetCharHex()} - 当前字符的16进制值（全局函数）
+"   使用 | 和 / 作为分隔符，不使用特殊符号
+let g:airline_section_z = '%3p%% | %l/%L | %c | %{GetCharHex()}'
+
+" 设置状态栏分隔符为 > 和 <（必须在 airline 加载前设置）
+" let g:airline_left_sep = '>'                                  " 左侧分隔符
+" let g:airline_right_sep = '<'                                 " 右侧分隔符
+" let g:airline_left_alt_sep = '>'                              " 左侧备用分隔符
+" let g:airline_right_alt_sep = '<'                             " 右侧备用分隔符
 
 "==============================================================
 " 1. Airline 基础配置
 "==============================================================
 " 仅在 vim-airline 已加载时配置基础设置
 if exists(':AirlineRefresh')
-  let g:airline#extensions#tabline#enabled = 1          " 启用标签栏（显示所有 buffer）
-  let g:airline#extensions#tabline#formatter = 'unique_tail' " 标签栏显示文件名（不含路径）
-  let g:airline#extensions#tabline#buffer_nr_show = 0   " 不显示 buffer 编号
-  let g:airline_powerline_fonts = 1                     " 使用 Powerline 字体（如果已安装）
+  let g:airline#extensions#tabline#enabled = 1                " 启用标签栏（显示所有 buffer）
+  let g:airline#extensions#tabline#formatter = 'unique_tail'  " 标签栏显示文件名（不含路径）
+  let g:airline#extensions#tabline#buffer_nr_show = 1         " 是否显示 buffer 编号
 endif
 
 "==============================================================
@@ -123,34 +172,20 @@ function! s:AirlineStartupTimeInit() abort
     return
   endif
   
-  " 保存原始的 section_z 配置（如果还没有保存）
-  if !exists('s:original_section_z_saved')
-    if exists('g:airline_section_z')
-      let s:original_section_z = g:airline_section_z
-    else
-      let s:original_section_z = ''
-    endif
-    let s:original_section_z_saved = 1
+  " 如果用户已经在文件开头直接设置了 g:airline_section_z，则不再修改
+  " 检查是否包含启动时间，如果没有则添加
+  if exists('g:airline_section_z') && g:airline_section_z !~# 'startup_time_display'
+    " 在现有配置后添加启动时间
+    let g:airline_section_z = g:airline_section_z . ' %{get(g:, "startup_time_display", "")}'
+  elseif !exists('g:airline_section_z')
+    " 如果没有设置，使用简单格式
+    let g:airline_section_z = '%3p%% | %l/%L | %c %{get(g:, "startup_time_display", "")}'
   endif
   
   " 计算启动时间
   call s:UpdateStartupTime()
   
-  " 如果用户没有自定义 section_z，使用默认配置并添加启动时间
-  if empty(s:original_section_z)
-    let g:airline_section_z = '%3p%% ☰ %l:%c %{get(g:, "startup_time_display", " ")}'
-  else
-    " 如果用户已自定义，在现有配置中添加启动时间
-    " 检查是否已经包含 startup_time_display，避免重复添加
-    if s:original_section_z !~# 'startup_time_display'
-      let g:airline_section_z = s:original_section_z . ' %{get(g:, "startup_time_display", " ")}'
-    else
-      let g:airline_section_z = s:original_section_z
-    endif
-  endif
-  
-  " 刷新状态栏以显示启动时间
-  " 使用命令方式刷新，更安全
+  " 刷新状态栏
   if exists(':AirlineRefresh')
     execute 'AirlineRefresh'
   endif
@@ -181,14 +216,11 @@ function! s:ClearStartupTime() abort
     return
   endif
   let g:startup_time_display = ''
-  " 恢复原始的 section_z 配置
-  if exists('s:original_section_z') && !empty(s:original_section_z)
-    let g:airline_section_z = s:original_section_z
-  else
-    " 如果没有原始配置，使用默认配置（不包含启动时间）
-    let g:airline_section_z = '%3p%% ☰ %l:%c'
+  " 如果用户已经设置了 g:airline_section_z，移除启动时间部分
+  if exists('g:airline_section_z')
+    let g:airline_section_z = substitute(g:airline_section_z, ' %{get(g:, "startup_time_display", "")}', '', '')
   endif
-  " 使用命令方式刷新，更安全
+  " 刷新状态栏
   if exists(':AirlineRefresh')
     execute 'AirlineRefresh'
   endif

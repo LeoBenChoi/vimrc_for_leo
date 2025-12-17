@@ -23,8 +23,7 @@ let g:vista_coc_executive_delay = 200
 "==============================================================
 " 在 Windows 终端下，完全禁用图标，使用纯文本模式，避免乱码
 if has('win32') || has('win64') || has('win16')
-  " 完全禁用图标渲染器，使用纯文本类型显示
-  let g:vista#renderer#enable_icon = 0
+  let g:vista#renderer#enable_icon = 1  " 启用图标渲染器
   let g:vista#renderer#enable_kind = 1  " 启用文本类型显示（如 Function, Variable 等）
   
   " 清空所有图标字典，确保不使用任何 Unicode 图标
