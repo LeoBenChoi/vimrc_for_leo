@@ -8,15 +8,8 @@ if exists('g:loaded_indent_config')
 endif
 let g:loaded_indent_config = 1
 
-"==============================================================
-" 文件类型特定缩进配置
-"==============================================================
-" 注意：全局默认缩进为 4 个空格（在 basic.vim 中设置）
-" 这里只配置需要特殊缩进的文件类型
-
 augroup FileTypeIndent
   autocmd!
-
   "==============================================================
   " 2 空格缩进（Web 开发常用）
   "==============================================================
@@ -51,15 +44,12 @@ augroup FileTypeIndent
   "==============================================================
   " 其他缩进配置（按需添加）
   "==============================================================
-  " Python：保持 4 个空格（PEP 8 标准）
-  " 已在全局设置中配置，无需重复
+  " Python：4 空格缩进（PEP 8 标准）
+  autocmd FileType python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
-  " Go：使用 Tab（Go 官方标准）
-  " 如果需要，可以取消下面的注释
-  " autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+  " Go：使用 Tab，4 宽度（Go 官方标准）
+  autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 
   " Makefile：必须使用 Tab
   autocmd FileType make setlocal noexpandtab tabstop=4 shiftwidth=4
-
 augroup END
-
