@@ -72,12 +72,12 @@ set list
 function! s:set_list_colors() abort
   if &background ==# 'dark'
     " 深色主题：使用浅灰色，在深色背景上可见
-    hi NonText    ctermfg=250 guifg=#aaaaaa  " 浅灰色（终端：250，GUI：#aaaaaa）
-    hi SpecialKey ctermfg=250 guifg=#aaaaaa  " 浅灰色（终端：250，GUI：#aaaaaa）
+    hi NonText    ctermfg=250 guifg=#666666  " 浅灰色（终端：250，GUI：#aaaaaa）
+    hi SpecialKey ctermfg=250 guifg=#666666  " 浅灰色（终端：250，GUI：#aaaaaa）
   else
     " 浅色主题：使用灰色，在浅色背景上可见
-    hi NonText    ctermfg=240 guifg=#BCBCBC  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
-    hi SpecialKey ctermfg=240 guifg=#BCBCBC  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
+    hi NonText    ctermfg=240 guifg=#dddddd  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
+    hi SpecialKey ctermfg=240 guifg=#dddddd  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
   endif
 endfunction
 
