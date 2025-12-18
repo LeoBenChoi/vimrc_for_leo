@@ -42,8 +42,7 @@ endif
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = '󰡄'
 
 " Rainbow 括号彩色显示配置（必须在插件加载前设置）
-" 使用默认配置，只启用插件
-let g:rainbow_active = 1
+" 注意：不再全局启用，改为在 rainbow.vim 中按文件类型按需加载
 
 "==============================================================
 " 1. 路径与平台检测
