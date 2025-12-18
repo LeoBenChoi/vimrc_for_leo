@@ -67,6 +67,9 @@ Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }      " 代码大纲视图（支�
 " 自动高亮当前单词（轻量级插件，无需配置）
 Plug 'itchyny/vim-cursorword'                       " 自动高亮光标下的单词（轻量、简单）
 
+" 括号彩色显示（需要启动时加载以启用括号高亮）
+Plug 'luochen1990/rainbow'                         " 括号彩色显示（不同层级使用不同颜色）
+
 " 启动页（需要启动时加载以显示启动界面）
 Plug 'mhinz/vim-startify'                           " 美观的启动页（显示最近文件、会话等）
 
