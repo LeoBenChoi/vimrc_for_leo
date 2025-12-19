@@ -15,10 +15,10 @@ let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 " 浅色主题：使用冷色调（蓝色、绿色、青色），在浅色背景下更清晰可见
 function! s:set_rainbow_colors() abort
   if &background ==# 'dark'
-    " 深色主题：暖色调（红色、橙色、黄色、粉色）
+    " 深色主题：浅色调（浅蓝色、浅绿色、浅青色、浅紫色）
     let g:rainbow_conf = {
-    \	'guifgs': ['firebrick', 'darkorange3', 'gold', 'hotpink'],
-    \	'ctermfgs': ['red', 'yellow', 'magenta', 'lightred'],
+    \	'guifgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta'],
+    \	'ctermfgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta'],
     \	'operators': '_,_',
     \	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
     \	'separately': {
@@ -27,7 +27,7 @@ function! s:set_rainbow_colors() abort
     \			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
     \		},
     \		'lisp': {
-    \			'guifgs': ['firebrick', 'darkorange3', 'gold', 'hotpink', 'indianred'],
+    \			'guifgs': ['lightblue', 'lightcyan', 'lightgreen', 'lightmagenta', 'lightsteelblue'],
     \		},
     \		'vim': {
     \			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
