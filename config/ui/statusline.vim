@@ -31,6 +31,22 @@ endif
 let g:airline_symbols.maxlinenr = '/'
 
 "==============================================================
+" 0.1.1. 标签栏配置（必须在 vim-airline 加载前设置）
+"==============================================================
+" 启用标签栏（显示所有 buffer）
+let g:airline#extensions#tabline#enabled = 1
+" 标签栏显示文件名（不含路径）
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+" 显示 buffer 编号
+let g:airline#extensions#tabline#buffer_nr_show = 1
+" 显示所有 buffer（包括未命名的）
+let g:airline#extensions#tabline#show_buffers = 1
+" 显示所有 tab 页
+let g:airline#extensions#tabline#show_tabs = 1
+" 显示 tab 页编号
+let g:airline#extensions#tabline#show_tab_nr = 1
+
+"==============================================================
 " 0.2. 获取当前字符的16进制值
 "==============================================================
 " 函数：获取光标下字符的16进制值（全局函数，可在 statusline 中使用）
@@ -67,12 +83,8 @@ let g:airline_section_z = '%3p%% | %l/%L | %c | %{GetCharHex()}'
 "==============================================================
 " 1. Airline 基础配置
 "==============================================================
-" 仅在 vim-airline 已加载时配置基础设置
-if exists(':AirlineRefresh')
-  let g:airline#extensions#tabline#enabled = 1                " 启用标签栏（显示所有 buffer）
-  let g:airline#extensions#tabline#formatter = 'unique_tail'  " 标签栏显示文件名（不含路径）
-  let g:airline#extensions#tabline#buffer_nr_show = 1         " 是否显示 buffer 编号
-endif
+" 注意：标签栏配置已在 0.1.1 节中设置（必须在 airline 加载前）
+" 这里只配置需要在 airline 加载后设置的选项
 
 "==============================================================
 " 2. 插件集成
