@@ -35,16 +35,63 @@ let g:airline_symbols.maxlinenr = '/'
 "==============================================================
 " 启用标签栏（显示所有 buffer）
 let g:airline#extensions#tabline#enabled = 1
-" 标签栏显示文件名（不含路径）
+
+" 标签栏显示模式
+" 可选值：
+"   - 'default'      : 默认模式（显示 buffers）
+"   - 'unique_tail'   : 显示文件名（不含路径，去重）
+"   - 'unique_tail_improved' : 改进的去重模式
+"   - 'jsformatter'   : JavaScript 格式化器
+"   - 'short_path'    : 短路径模式
+"   - 'formatter'     : 自定义格式化器
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-" 显示 buffer 编号
+
+" 显示 buffer 编号（在标签栏中显示 buffer 编号）
 let g:airline#extensions#tabline#buffer_nr_show = 1
+" buffer 编号格式（%n 表示编号，%s 表示分隔符）
+let g:airline#extensions#tabline#buffer_nr_format = '%s:%n'
+
 " 显示所有 buffer（包括未命名的）
 let g:airline#extensions#tabline#show_buffers = 1
 " 显示所有 tab 页
 let g:airline#extensions#tabline#show_tabs = 1
 " 显示 tab 页编号
 let g:airline#extensions#tabline#show_tab_nr = 1
+" tab 编号格式
+let g:airline#extensions#tabline#tab_nr_format = '%s:%n |'
+
+" 标签栏左侧显示内容（默认显示所有 buffers）
+" 可选值：
+"   - 0 : 不显示
+"   - 1 : 显示所有 buffers
+"   - 2 : 只显示当前 tab 的 buffers
+let g:airline#extensions#tabline#show_splits = 1
+
+" 标签栏右侧显示内容（默认显示 tab 页）
+" 可选值：
+"   - 0 : 不显示
+"   - 1 : 显示所有 tab 页
+let g:airline#extensions#tabline#show_tab_type = 1
+
+" 关闭未保存 buffer 时显示警告
+let g:airline#extensions#tabline#show_close_button = 0
+
+" 标签栏分隔符
+" let g:airline#extensions#tabline#left_sep = ' ' " 左侧分隔符
+" let g:airline#extensions#tabline#left_alt_sep = '|' " 左侧备用分隔符
+let g:airline#extensions#tabline#right_sep = ' ' " 右侧分隔符
+let g:airline#extensions#tabline#right_alt_sep = '|' " 右侧备用分隔符
+
+" Buffer 索引模式（用于快速切换 buffer）
+" 可选值：
+"   - 0 : 禁用
+"   - 1 : 模式 1（1-9, 0 表示第 10 个）
+"   - 2 : 模式 2（11-99）
+"   - 3 : 模式 3（01-99，与 :buffers 命令编号一致）
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+" 忽略某些文件类型的 buffer（不在标签栏显示）
+let g:airline#extensions#tabline#excludes = ['vimfiler', 'nerdtree', 'tagbar', 'vista']
 
 "==============================================================
 " 0.2. 获取当前字符的16进制值

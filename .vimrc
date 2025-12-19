@@ -129,6 +129,7 @@ call s:source_if_exists(s:config_root . '/mappings/e.vim')  " 文件浏览器
 call s:source_if_exists(s:config_root . '/mappings/g.vim')  " Git 操作
 call s:source_if_exists(s:config_root . '/mappings/o.vim')  " 代码大纲
 call s:source_if_exists(s:config_root . '/mappings/t.vim')  " 主题切换
+call s:source_if_exists(s:config_root . '/mappings/tab.vim')  " Tab 栏功能
 
 "==============================================================
 " 7. LSP 配置

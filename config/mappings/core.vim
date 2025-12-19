@@ -35,7 +35,7 @@ let mapleader = "\<Space>"
 "   q / Q : Quit/宏（保留 Vim 原生行为）
 "   r / R : Rename/Replace（预留给 LSP）
 "   s / S : Session/保存（预留）
-"   t / T : Theme/Terminal（主题切换已实现）
+"   t / T : Tab/Theme（Tab 栏功能已实现，主题切换已实现）
 "   u / U : Undo/Redo（保留）
 "   v / V : Visual/智能选择（已实现 <leader>v, <leader>V）
 "   w / W : Window/写入（预留）
