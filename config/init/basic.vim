@@ -21,6 +21,24 @@ set ambiwidth=single
 " set ambiwidth=double
 
 "==============================================================
+" 1.2. Shell 设置（Windows 下使用 PowerShell）
+"==============================================================
+if has('win32') || has('win64') || has('win16')
+  " Windows 下默认使用 PowerShell（pwsh 或 powershell）
+  " 优先使用 pwsh（PowerShell Core），如果不存在则使用 powershell（Windows PowerShell）
+  if executable('pwsh')
+    set shell=pwsh
+    let &shellcmdflag = '-NoProfile -Command'
+    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s'
+  elseif executable('powershell')
+    set shell=powershell
+    let &shellcmdflag = '-NoProfile -Command'
+    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s'
+  endif
+  " 如果 PowerShell 不可用，保持默认的 cmd.exe
+endif
+
+"==============================================================
 " 1.1. 换行符设置（统一使用 LF）
 "==============================================================
 " 新文件默认使用 Unix 格式（LF）
