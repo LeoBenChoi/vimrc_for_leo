@@ -141,6 +141,13 @@ command! -bar -bang -nargs=? -complete=buffer Buffers call fzf#vim#buffers(<q-ar
 " 修改为：不使用 with_preview，直接调用 fzf#vim#gitfiles
 command! -bang -nargs=? GFiles call fzf#vim#gitfiles(<q-args>, <bang>0)
 
+" 重写 Windows 命令，不使用预览以避免 Windows 上的 winpath 错误
+" 默认定义：call fzf#vim#windows(fzf#vim#with_preview({ "placeholder": "{2}" }), <bang>0)
+" 修改为：不使用 with_preview，直接调用 fzf#vim#windows
+command! -bar -bang Windows call fzf#vim#windows(<bang>0)
+" 同时定义 :W 作为 :Windows 的简写
+command! -bar -bang W call fzf#vim#windows(<bang>0)
+
 " 补全功能
 " 使用自定义源命令完成路径
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
