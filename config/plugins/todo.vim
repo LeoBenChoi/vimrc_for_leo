@@ -1,418 +1,84 @@
 "==============================================================
 " config/plugins/todo.vim
-" TODO 搜索功能（Vim 原生）
+" TODO 搜索功能：使用 FZF 搜索代码中的 TODO 注释
 "==============================================================
 
 if exists('g:loaded_todo_config')
-  finish
+    finish
 endif
 let g:loaded_todo_config = 1
 
-"==============================================================
-" 1. TODO 高亮显示配置
-"==============================================================
-" hi Todo term=bold ctermfg=0 ctermbg=15 gui=NONE guifg=NONE
+" 检查 fzf 是否已加载
+if !exists('g:loaded_fzf_config')
+    echohl WarningMsg
+    echomsg '[todo.vim] 警告: fzf.vim 未加载，TODO 功能需要 fzf 支持'
+    echohl None
+    finish
+endif
 
 "==============================================================
-" 2. TODO 窗口管理（参考 Vista 实现）
+" TODO 搜索函数
 "==============================================================
-
-" 初始化 TODO 全局变量
-function! s:InitTodo() abort
-  if !exists('g:todo')
-    let g:todo = {}
-  endif
-endfunction
-
-" 查找 __todo__ 窗口编号
-function! s:TodoWinnr() abort
-  return bufwinnr('__todo__')
-endfunction
-
-" 查找 __todo__ 窗口 ID
-function! s:TodoWinid() abort
-  if exists('*bufwinid')
-    return bufwinid('__todo__')
-  endif
-  return -1
-endfunction
-
-" 创建新的 TODO 窗口（参考 Vista 的 s:NewWindow）
-function! s:NewTodoWindow() abort
-  " 默认在下方打开，高度 5 行
-  let l:position = get(g:, 'todo_sidebar_position', 'belowright')
-  let l:height = get(g:, 'todo_sidebar_height', 5)
-  
-  if exists('g:todo_sidebar_open_cmd')
-    let l:open = g:todo_sidebar_open_cmd
-  else
-    " 使用 split 命令从下方打开，高度为指定行数
-    let l:open = l:position . ' ' . l:height . 'split'
-  endif
-  
-  if get(g:, 'todo_sidebar_keepalt', 0)
-    silent execute 'keepalt ' . l:open . ' __todo__'
-  else
-    silent execute l:open . ' __todo__'
-  endif
-  
-  " 设置文件类型，触发 ftplugin
-  execute 'setlocal filetype=todo'
-endfunction
-
-" 设置 TODO 窗口的缓冲区选项（参考 Vista 的 ftplugin）
-function! s:SetupTodoBuffer() abort
-  setlocal
-    \ nonumber
-    \ norelativenumber
-    \ nopaste
-    \ nomodeline
-    \ noswapfile
-    \ nocursorline
-    \ nocursorcolumn
-    \ colorcolumn=
-    \ nobuflisted
-    \ buftype=nofile
-    \ bufhidden=hide
-    \ nomodifiable
-    \ signcolumn=no
-    \ textwidth=0
-    \ nolist
-    \ winfixwidth
-    \ winfixheight
-    \ nospell
-    \ nofoldenable
-    \ foldcolumn=0
-    \ nowrap
-  
-  " 设置缓冲区映射
-  if !get(g:, 'todo_no_mappings', 0)
-    nnoremap <buffer> <silent> q    :call <SID>CloseTodoWindow()<CR>
-    nnoremap <buffer> <silent> <CR> :call <SID>JumpToTodo()<CR>
-    nnoremap <buffer> <silent> <2-LeftMouse>
-                                  \ :call <SID>JumpToTodo()<CR>
-  endif
-endfunction
-
-" 打开或更新 TODO 窗口（参考 Vista 的 vista#sidebar#OpenOrUpdate）
-function! s:OpenOrUpdateTodoWindow(rows) abort
-  call s:InitTodo()
-  
-  " 如果缓冲区不存在，创建新窗口
-  if !exists('g:todo.bufnr')
-    call s:NewTodoWindow()
-    let g:todo.bufnr = bufnr('%')
-    let g:todo.winid = win_getid()
-  else
-    " 检查窗口是否存在
-    let l:winnr = s:TodoWinnr()
-    if l:winnr == -1
-      " 窗口不存在，重新创建
-      call s:NewTodoWindow()
-      let g:todo.bufnr = bufnr('%')
-      let g:todo.winid = win_getid()
-    elseif winnr() != l:winnr
-      " 窗口存在但不在当前，切换到该窗口
-      noautocmd execute l:winnr . 'wincmd w'
-    endif
-  endif
-  
-  " 设置缓冲区内容
-  call s:SetTodoBufferLines(a:rows)
-  
-  " 如果设置了不保持在 TODO 窗口，返回上一个窗口
-  if !get(g:, 'todo_stay_on_open', 0)
-    wincmd p
-  endif
-endfunction
-
-" 设置 TODO 缓冲区内容
-function! s:SetTodoBufferLines(lines) abort
-  if !exists('g:todo.bufnr')
-    return
-  endif
-  
-  " 保存当前窗口
-  let l:save_winnr = winnr()
-  let l:winnr = s:TodoWinnr()
-  
-  if l:winnr != -1
-    " 切换到 TODO 窗口
-    execute l:winnr . 'wincmd w'
+function! s:todo_search() abort
+    " 检测可用的搜索工具（优先使用 ripgrep，其次 ag）
+    let l:grep_cmd = ''
     
-    " 设置为可修改，以便写入内容
-    setlocal modifiable
-    
-    " 清空并写入新内容
-    silent %delete _
-    call setline(1, a:lines)
-    
-    " 恢复为不可修改
-    setlocal nomodifiable
-    
-    " 返回原窗口
-    execute l:save_winnr . 'wincmd w'
-  endif
-endfunction
-
-" 关闭 TODO 窗口（参考 Vista 的 vista#sidebar#Close）
-function! s:CloseTodoWindow() abort
-  if !exists('g:todo.bufnr')
-    return
-  endif
-  
-  let l:winnr = s:TodoWinnr()
-  
-  " 如果当前在 TODO 窗口，先返回上一个窗口
-  if l:winnr == winnr()
-    wincmd p
-  endif
-  
-  " 关闭窗口
-  if l:winnr != -1
-    noautocmd execute l:winnr . 'wincmd c'
-  endif
-  
-  " 删除缓冲区
-  if bufnr('__todo__') != -1
-    silent execute 'bwipe! __todo__'
-  endif
-  
-  " 清理全局变量
-  if exists('g:todo.bufnr')
-    unlet g:todo.bufnr
-  endif
-  if exists('g:todo.winid')
-    unlet g:todo.winid
-  endif
-endfunction
-
-" 检查 TODO 窗口是否打开
-function! s:IsTodoWindowOpen() abort
-  return s:TodoWinnr() != -1
-endfunction
-
-" 跳转到 TODO 项（从 TODO 窗口跳转到源文件）
-function! s:JumpToTodo() abort
-  if !exists('g:todo.qflist')
-    return
-  endif
-  
-  let l:current_line = line('.')
-  let l:qf_list = g:todo.qflist
-  
-  if l:current_line < 1 || l:current_line > len(l:qf_list)
-    return
-  endif
-  
-  let l:qf_item = l:qf_list[l:current_line - 1]
-  
-  if !has_key(l:qf_item, 'bufnr') || l:qf_item.bufnr == 0
-    return
-  endif
-  
-  try
-    " 切换到目标窗口
-    if exists('*bufwinid')
-      let l:winid = bufwinid(l:qf_item.bufnr)
-      if l:winid != -1
-        call win_gotoid(l:winid)
-      else
-        execute 'buffer ' . l:qf_item.bufnr
-      endif
+    if executable('rg')
+        " 使用 ripgrep 搜索 TODO、FIXME、NOTE、XXX、HACK 等注释
+        " --column: 显示列号
+        " --color=always: 保持颜色（fzf 需要）
+        " -i: 忽略大小写
+        " --no-messages: 不显示错误信息
+        " --no-heading: 不显示文件头（避免重复）
+        " --sort path: 按路径排序
+        " 注意：在 Windows 上不使用管道命令，避免兼容性问题
+        " ripgrep 本身不会产生重复结果，除非同一行有多个匹配
+        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading --sort path -i "TODO|FIXME|NOTE|XXX|HACK|BUG|WARNING"'
+    elseif executable('ag')
+        " 使用 ag 搜索
+        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i "TODO|FIXME|NOTE|XXX|HACK|BUG|WARNING"'
     else
-      for l:winnr in range(1, winnr('$'))
-        if winbufnr(l:winnr) == l:qf_item.bufnr
-          execute l:winnr . 'wincmd w'
-          break
-        endif
-      endfor
+        echohl ErrorMsg
+        echomsg '[todo.vim] 错误: 未找到搜索工具 (rg/ag)，请安装 ripgrep 或 ag'
+        echohl None
+        return
     endif
+
+    " 检测当前主题是否为浅色主题
+    let l:is_light = &background ==# 'light'
     
-    " 跳转到对应行
-    if has_key(l:qf_item, 'lnum') && l:qf_item.lnum > 0
-      execute l:qf_item.lnum
-      if has_key(l:qf_item, 'col') && l:qf_item.col > 0
-        execute 'normal! ' . l:qf_item.col . '|'
-      endif
-      normal! zz
+    " 配置 fzf 选项
+    " - 窗口在底部显示（使用 down 布局）
+    " - 高度为 30%
+    let l:spec = {
+        \ 'down': '30%',
+        \ 'options': ['--prompt', 'TODO> ']
+    \ }
+    
+    " 为浅色主题添加自定义配色，确保足够的对比度
+    if l:is_light
+        " 浅色主题配色：参考 seoul256 light 主题，确保高对比度
+        " bg+: 选中行背景色（浅灰色 #D9D9D9，与深色前景形成对比）
+        " fg+: 选中行前景色（深灰色 #616161，确保在浅色背景上可读）
+        " bg: 普通行背景色（白色 #FFFFFF）
+        " fg: 普通行前景色（深灰色 #616161，确保在浅色背景上可读）
+        " hl: 高亮颜色（深绿色 #719872，用于匹配文本）
+        " hl+: 选中行高亮颜色（深绿色 #719899，用于匹配文本）
+        call extend(l:spec.options, [
+            \ '--color', 'fg:#616161,fg+:#616161,bg:#FFFFFF,bg+:#D9D9D9',
+            \ '--color', 'hl:#719872,hl+:#719899,border:#E1E1E1',
+            \ '--color', 'prompt:#0099BD,pointer:#E12672,marker:#E17899',
+            \ '--color', 'info:#727100,spinner:#719899,header:#719872'
+        \ ])
     endif
-    
-    " 如果设置了关闭窗口选项，关闭 TODO 窗口
-    if get(g:, 'todo_close_on_jump', 0)
-      call s:CloseTodoWindow()
-    endif
-  catch /^Vim\%((\a\+)\)\=:/
-    " 忽略错误
-  endtry
+
+    " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
+    " 参数: grep_command, [spec], [fullscreen]
+    " spec 字典中的 'down' 键会设置窗口在底部显示
+    call fzf#vim#grep(l:grep_cmd, l:spec, 0)
 endfunction
 
 "==============================================================
-" 3. TODO 搜索和显示
+" 注册 TODO 命令
 "==============================================================
-
-" 格式化 TODO 项显示（从 quickfix 项格式化为显示行）
-function! s:FormatTodoItem(qf_item, index) abort
-  let l:filename = bufname(a:qf_item.bufnr)
-  let l:lnum = get(a:qf_item, 'lnum', 0)
-  let l:text = get(a:qf_item, 'text', '')
-  
-  " 提取文件名（只显示文件名，不显示完整路径）
-  let l:basename = fnamemodify(l:filename, ':t')
-  
-  " 格式化显示：文件名:行号 文本
-  return printf('%s:%d %s', l:basename, l:lnum, l:text)
-endfunction
-
-" 搜索 TODO 并显示在 __todo__ 窗口中
-function! s:SearchTodos() abort
-  " 执行搜索
-  try
-    execute 'vimgrep /\/\/\ \<\(TODO\|FIXME\|XXX\)\>/gj **'
-  catch /^Vim\%((\a\+)\)\=:E480/
-    " 没有找到匹配项
-    call s:OpenOrUpdateTodoWindow(['未找到 TODO 项'])
-    return
-  endtry
-  
-  " 获取 quickfix 列表
-  let l:qf_list = getqflist()
-  if empty(l:qf_list)
-    call s:OpenOrUpdateTodoWindow(['未找到 TODO 项'])
-    return
-  endif
-  
-  " 保存 quickfix 列表供跳转使用
-  call s:InitTodo()
-  let g:todo.qflist = l:qf_list
-  
-  " 格式化显示行
-  let l:display_lines = []
-  for l:index in range(len(l:qf_list))
-    call add(l:display_lines, s:FormatTodoItem(l:qf_list[l:index], l:index))
-  endfor
-  
-  " 在 TODO 窗口中显示
-  call s:OpenOrUpdateTodoWindow(l:display_lines)
-endfunction
-
-"==============================================================
-" 4. TODO 窗口自动跟随（参考 Vista 实现）
-"==============================================================
-
-let s:todo_follow_timer = -1
-
-function! s:StopTodoFollowTimer() abort
-  if s:todo_follow_timer != -1
-    call timer_stop(s:todo_follow_timer)
-    let s:todo_follow_timer = -1
-  endif
-endfunction
-
-function! s:TodoAutoFollow(_timer) abort
-  " 检查是否仍在 TODO 窗口中
-  if &ft != 'todo' || !exists('g:todo.qflist')
-    return
-  endif
-  
-  let l:current_line = line('.')
-  let l:qf_list = g:todo.qflist
-  
-  if l:current_line < 1 || l:current_line > len(l:qf_list)
-    return
-  endif
-  
-  let l:qf_item = l:qf_list[l:current_line - 1]
-  
-  if !has_key(l:qf_item, 'bufnr') || l:qf_item.bufnr == 0
-    return
-  endif
-  
-  try
-    let l:todo_winid = win_getid()
-    
-    " 切换到目标窗口
-    if exists('*bufwinid')
-      let l:winid = bufwinid(l:qf_item.bufnr)
-      if l:winid != -1
-        call win_gotoid(l:winid)
-      else
-        execute 'buffer ' . l:qf_item.bufnr
-      endif
-    else
-      for l:winnr in range(1, winnr('$'))
-        if winbufnr(l:winnr) == l:qf_item.bufnr && l:winnr != winnr()
-          execute l:winnr . 'wincmd w'
-          break
-        endif
-      endfor
-    endif
-    
-    " 跳转到对应行
-    if has_key(l:qf_item, 'lnum') && l:qf_item.lnum > 0
-      execute l:qf_item.lnum
-      if has_key(l:qf_item, 'col') && l:qf_item.col > 0
-        execute 'normal! ' . l:qf_item.col . '|'
-      endif
-      normal! zz
-    endif
-    
-    " 返回 TODO 窗口
-    call win_gotoid(l:todo_winid)
-  catch /^Vim\%((\a\+)\)\=:/
-    try
-      call win_gotoid(l:todo_winid)
-    catch
-    endtry
-  endtry
-endfunction
-
-function! s:TodoAutoFollowWithDelay() abort
-  if &ft != 'todo'
-    return
-  endif
-  
-  call s:StopTodoFollowTimer()
-  
-  let s:todo_follow_timer = timer_start(
-        \ 100,
-        \ function('s:TodoAutoFollow'),
-        \ )
-endfunction
-
-"==============================================================
-" 5. 命令定义
-"==============================================================
-
-command! -bar Todo call s:SearchTodos()
-command! -bar TodoClose call s:CloseTodoWindow()
-command! -bar TodoToggle if s:IsTodoWindowOpen() | call s:CloseTodoWindow() | else | call s:SearchTodos() | endif
-
-"==============================================================
-" 6. 文件类型和自动命令设置
-"==============================================================
-
-" 当打开 TODO 窗口时，设置缓冲区选项和自动跟随
-augroup TodoFileType
-  autocmd!
-  autocmd FileType todo call s:SetupTodoBuffer()
-  autocmd FileType todo call s:SetupTodoAutoFollow()
-augroup END
-
-function! s:SetupTodoAutoFollow() abort
-  if &ft != 'todo'
-    return
-  endif
-  
-  if getbufvar(bufnr('%'), 'todo_autofollow_set', 0)
-    return
-  endif
-  
-  call setbufvar(bufnr('%'), 'todo_autofollow_set', 1)
-  
-  augroup TodoAutoFollowBuffer
-    autocmd! * <buffer>
-    autocmd CursorMoved <buffer> call s:TodoAutoFollowWithDelay()
-    autocmd BufLeave <buffer> call s:StopTodoFollowTimer()
-  augroup END
-endfunction
+command! -bang TODO call s:todo_search()
