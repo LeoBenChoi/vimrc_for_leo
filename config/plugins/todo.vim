@@ -31,12 +31,12 @@ function! s:todo_search() abort
         " --no-messages: 不显示错误信息
         " --no-heading: 不显示文件头（避免重复）
         " --sort path: 按路径排序
-        " 注意：在 Windows 上不使用管道命令，避免兼容性问题
-        " ripgrep 本身不会产生重复结果，除非同一行有多个匹配
-        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading --sort path -i "TODO|FIXME|NOTE|XXX|HACK|BUG|WARNING"'
+        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
+        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading --sort path -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING"'
     elseif executable('ag')
         " 使用 ag 搜索
-        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i "TODO|FIXME|NOTE|XXX|HACK|BUG|WARNING"'
+        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
+        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING"'
     else
         echohl ErrorMsg
         echomsg '[todo.vim] 错误: 未找到搜索工具 (rg/ag)，请安装 ripgrep 或 ag'
@@ -79,6 +79,73 @@ function! s:todo_search() abort
 endfunction
 
 "==============================================================
+" TODO 文件搜索函数（仅搜索当前文件）
+"==============================================================
+function! s:todo_file_search() abort
+    " 检查是否有当前文件
+    if empty(expand('%'))
+        echohl ErrorMsg
+        echomsg '[todo.vim] 错误: 当前没有打开的文件'
+        echohl None
+        return
+    endif
+
+    " 获取当前文件的绝对路径并转义
+    let l:file_path = expand('%:p')
+    " 在 Windows 上，手动用双引号包裹路径，并转义路径中的双引号
+    " 这样可以确保在 PowerShell 中正确解析
+    if has('win32') || has('win64')
+        " 转义路径中的双引号（将 " 替换为 ""）
+        let l:file_path_escaped = '"' . substitute(l:file_path, '"', '""', 'g') . '"'
+    else
+        " Unix 系统使用 shellescape
+        let l:file_path_escaped = shellescape(l:file_path)
+    endif
+    
+    " 检测可用的搜索工具（优先使用 ripgrep，其次 ag）
+    let l:grep_cmd = ''
+    
+    if executable('rg')
+        " 直接复用 todo_search 的逻辑，只需在命令后添加文件路径
+        " 注意：移除 --sort path，因为只有一个文件，不需要排序
+        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
+        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING" ' . l:file_path_escaped
+    elseif executable('ag')
+        " 直接复用 todo_search 的逻辑，只需在命令后添加文件路径
+        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
+        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING" ' . l:file_path_escaped
+    else
+        echohl ErrorMsg
+        echomsg '[todo.vim] 错误: 未找到搜索工具 (rg/ag)，请安装 ripgrep 或 ag'
+        echohl None
+        return
+    endif
+
+    " 检测当前主题是否为浅色主题
+    let l:is_light = &background ==# 'light'
+    
+    " 配置 fzf 选项（与 todo_search 相同，只是 prompt 不同）
+    let l:spec = {
+        \ 'down': '30%',
+        \ 'options': ['--prompt', 'TODOFile> ']
+    \ }
+    
+    " 为浅色主题添加自定义配色（与 todo_search 相同）
+    if l:is_light
+        call extend(l:spec.options, [
+            \ '--color', 'fg:#616161,fg+:#616161,bg:#FFFFFF,bg+:#D9D9D9',
+            \ '--color', 'hl:#719872,hl+:#719899,border:#E1E1E1',
+            \ '--color', 'prompt:#0099BD,pointer:#E12672,marker:#E17899',
+            \ '--color', 'info:#727100,spinner:#719899,header:#719872'
+        \ ])
+    endif
+
+    " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
+    call fzf#vim#grep(l:grep_cmd, l:spec, 0)
+endfunction
+
+"==============================================================
 " 注册 TODO 命令
 "==============================================================
 command! -bang TODO call s:todo_search()
+command! -bang TODOFile call s:todo_file_search()
