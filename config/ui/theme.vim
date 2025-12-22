@@ -50,7 +50,7 @@ let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 "   - darkblue - Vim 内置深色主题，支持透明背景
 let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'gruvbox' : ''))
 " Windows 终端下使用 gruvbox（深色主题）
-let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'gruvbox' : '')
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'unokai' : '')
 
 " 透明背景设置（Windows Terminal 推荐启用）
 " 启用后，Vim 背景将透明，显示 Windows Terminal 的背景
@@ -600,6 +600,7 @@ if exists('g:loaded_plugin_bootstrap')
     call s:load_theme()
   endif
 endif
+
 
 
 

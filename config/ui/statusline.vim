@@ -189,7 +189,7 @@ if !exists('g:airline_theme')
     if g:theme_mode ==# 'day' || (g:theme_mode ==# 'auto' && str2nr(strftime('%H')) >= 7 && str2nr(strftime('%H')) < 19)
       let g:airline_theme = 'luna'        " 白天主题（或使用 light, ayu_light, base16_papercolor_light 等）
     else
-      let g:airline_theme = 'onedark'  " 夜间主题使用与 gruvbox 匹配的 onedark
+      let g:airline_theme = 'luna'  " 夜间主题使用与 gruvbox 匹配的 onedark
     endif
   else
     let g:airline_theme = 'onedark'          " 默认使用与 gruvbox 匹配的 onedark 主题
