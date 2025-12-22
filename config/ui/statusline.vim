@@ -177,19 +177,22 @@ function! s:airline_theme_exists(theme_name) abort
 endfunction
 
 if !exists('g:airline_theme')
-  " Windows 终端下使用 alduin 主题
+  " Windows 终端下使用 onedark 主题（与 dark gruvbox 配色匹配）
   if s:is_windows_terminal() && !has('gui_running')
-    " 直接设置 alduin 主题
-    " 如果主题不存在，airline 会自动回退到 dark，但我们可以手动验证
-    let g:airline_theme = 'alduin'
+    " 当前使用的主题：onedark（现代暗色，对比度适中）
+    let g:airline_theme = 'onedark'
+    " 备选主题：base16_spacemacs（与 dark gruvbox 风格最匹配）
+    " let g:airline_theme = 'base16_spacemacs'
+    " 备选主题：zenburn（柔和暗色，与 gruvbox 风格相近）
+    " let g:airline_theme = 'zenburn'
   elseif exists('g:theme_mode')
     if g:theme_mode ==# 'day' || (g:theme_mode ==# 'auto' && str2nr(strftime('%H')) >= 7 && str2nr(strftime('%H')) < 19)
       let g:airline_theme = 'luna'        " 白天主题（或使用 light, ayu_light, base16_papercolor_light 等）
     else
-      let g:airline_theme = 'luna'  " 夜间主题（或使用 dark, onedark, base16_onedark 等）
+      let g:airline_theme = 'onedark'  " 夜间主题使用与 gruvbox 匹配的 onedark
     endif
   else
-    let g:airline_theme = 'luna'          " 默认暗色主题
+    let g:airline_theme = 'onedark'          " 默认使用与 gruvbox 匹配的 onedark 主题
   endif
 endif
 
@@ -322,3 +325,5 @@ function! s:verify_alduin_theme() abort
     endif
   endif
 endfunction
+
+
