@@ -51,6 +51,7 @@ Plug 'NLKNguyen/papercolor-theme'                   " PaperColor 主题（日间
 Plug 'morhetz/gruvbox'                              " Gruvbox 主题（夜间主题，深色）
 Plug 'rakr/vim-one'                                 " One 主题（高对比度浅色主题，适合终端）
 Plug 'dracula/vim', { 'as': 'dracula' }             " Dracula 主题（现代、流行，适合 Windows 终端）
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }       " Catppuccin 主题（柔和、护眼，完美支持 Windows Terminal）
 
 " 文件浏览器（延迟加载：只有打开 NERDTree 时才加载）
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " 经典文件浏览器（侧边栏）

@@ -32,9 +32,9 @@ if !exists('g:theme_mode')
 endif
 
 " 日间主题：Solarized8（默认，但终端下使用 PaperColor）
-let g:theme_day = get(g:, 'theme_day', 'solarized8')
+let g:theme_day = get(g:, 'theme_day', 'solarized8')  " 日间模式
 " 夜间主题：Gruvbox（深色主题）
-let g:theme_night = get(g:, 'theme_night', 'gruvbox')
+let g:theme_night = get(g:, 'theme_night', 'gruvbox')  " 夜间模式
 
 " GUI 模式下的主题（可选）
 let g:theme_day_gui = get(g:, 'theme_day_gui', 'PaperColor')
@@ -43,14 +43,14 @@ let g:theme_night_gui = get(g:, 'theme_night_gui', '')
 " 终端模式下的主题（可选）
 " Linux 终端下使用 one（高对比度，清晰易读）
 " Windows 终端推荐使用支持透明背景的主题：
-"   - one (One Dark/Light) - 经典、高对比度，完美支持透明背景 ⭐ 推荐
-"   - dracula - 现代、柔和，完美支持透明背景 ⭐ 推荐
+"   - one (One Dark/Light) - 经典、高对比度，完美支持透明背景 ⭐ 强力推荐
+"   - dracula - 现代、柔和，完美支持透明背景
 "   - PaperColor - 浅色主题，支持透明背景
 "   - gruvbox - 深色主题，支持透明背景
 "   - darkblue - Vim 内置深色主题，支持透明背景
-let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'darkblue' : ''))
-" Windows 终端下使用 darkblue（内置深色主题，完美支持透明背景）
-let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'darkblue' : '')
+let g:theme_day_term = get(g:, 'theme_day_term', has('unix') && !has('mac') ? 'one' : (has('win32') || has('win64') || has('win16') ? 'gruvbox' : ''))
+" Windows 终端下使用 gruvbox（深色主题）
+let g:theme_night_term = get(g:, 'theme_night_term', has('win32') || has('win64') || has('win16') ? 'gruvbox' : '')
 
 " 透明背景设置（Windows Terminal 推荐启用）
 " 启用后，Vim 背景将透明，显示 Windows Terminal 的背景
@@ -165,6 +165,11 @@ function! s:load_theme()
       let g:theme_mode = s:is_daytime() ? 'light' : 'dark'
     endif
     
+    " Windows Terminal 环境下启用真彩色支持
+    if !s:is_gui() && (has('win32') || has('win64') || has('win16'))
+      set termguicolors
+    endif
+    
     " 根据背景模式确定主题名称（确保主题和背景同步）
     if g:theme_mode ==# 'light' || g:theme_mode ==# 'day'
       " 日间模式：使用 PaperColor 主题
@@ -199,6 +204,10 @@ function! s:load_theme()
       " 禁用透明背景，确保在 Windows 终端中显示正常
       if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
         let g:gruvbox_transparent_bg = 0
+      endif
+      " Windows Terminal 下强制使用深色背景
+      if (has('win32') || has('win64') || has('win16')) && !s:is_gui()
+        set background=dark
       endif
     elseif g:theme_name ==# 'PaperColor'
       " PaperColor 配置（浅色主题，适合 Windows 终端）
@@ -591,3 +600,10 @@ if exists('g:loaded_plugin_bootstrap')
     call s:load_theme()
   endif
 endif
+
+
+
+
+
+
+
