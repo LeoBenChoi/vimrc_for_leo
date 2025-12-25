@@ -76,20 +76,20 @@ Plug 'mhinz/vim-startify'                           " 美观的启动页（显�
 
 " 十六进制编辑器（需要 Deno 2.3.0+ 和 denops.vim v8.0+）
 " 注意：需要 Vim 9.1.1646+ 或 Neovim 0.11.0+
-Plug 'Shougo/ddx.vim'                               " 十六进制编辑器（dark deno-powered heXadecimal）
-Plug 'Shougo/ddx-ui-hex'                            " ddx 提供十六进制编辑的用户界面（必需）
-Plug 'Shougo/ddx-analyzer-zip'                      " ddx 分析 ZIP 文件结构（必需）
-Plug 'Shougo/ddx-commands.vim'                      " ddx 为 ddx.vim 提供命令行命令（必需）
+" Plug 'Shougo/ddx.vim'                               " 十六进制编辑器（dark deno-powered heXadecimal）
+" Plug 'Shougo/ddx-ui-hex'                            " ddx 提供十六进制编辑的用户界面（必需）
+" Plug 'Shougo/ddx-analyzer-zip'                      " ddx 分析 ZIP 文件结构（必需）
+" Plug 'Shougo/ddx-commands.vim'                      " ddx 为 ddx.vim 提供命令行命令（必需）
 
 " denops.vim 插件依赖
-Plug 'vim-denops/denops.vim'                        " Deno 运行时（ddx 的依赖）
-Plug 'vim-denops/denops-helloworld.vim'           " Deno 运行时（denops-helloworld 的依赖）这只是个测试插件，:DenopsHello
+" Plug 'vim-denops/denops.vim'                        " Deno 运行时（ddx 的依赖）
+" Plug 'vim-denops/denops-helloworld.vim'           " Deno 运行时（denops-helloworld 的依赖）这只是个测试插件，:DenopsHello
 " Plug 'vim-denops/denops-shared-server.vim'         " Deno 运行时（denops-shared-server 的依赖）这是一个共享服务器，可以用于多个插件之间共享数据
 
 " Plug 'Shougo/ddx-analyzer-tar'                      " ddx 的 TAR 分析器（必需）
 " Plug 'Shougo/ddx-analyzer-7z'                       " ddx 的 7z 分析器（必需）
 " Plug 'Shougo/ddx-analyzer-rar'                      " ddx 的 RAR 分析器（必需）
 
-Plug 'rootkiter/vim-hexedit'                       " 十六进制编辑器（必需）
+" Plug 'rootkiter/vim-hexedit'                       " 十六进制编辑器（已禁用）
 
 call plug#end()

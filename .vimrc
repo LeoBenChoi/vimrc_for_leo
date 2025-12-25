@@ -167,9 +167,9 @@ call s:source_if_exists(s:config_root . '/plugins/indent.vim')
 call s:source_if_exists(s:config_root . '/plugins/todo.vim')
 
 "==============================================================
-" 7.7. ddx.vim 十六进制编辑器配置
+" 7.7. ddx.vim 十六进制编辑器配置（已禁用）
 "==============================================================
-call s:source_if_exists(s:config_root . '/plugins/ddx.vim')
+" call s:source_if_exists(s:config_root . '/plugins/ddx.vim')
 
 "==============================================================
 " 8. 代码大纲配置（Vista）
