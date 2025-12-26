@@ -1,12 +1,47 @@
 "==============================================================
 " config/plugins/todo.vim
-" TODO 搜索功能：使用 FZF 搜索代码中的 TODO 注释
+"  搜索TODO功能：使用 FZF 搜索代码中的 TODO 注释
+"  高亮TODO功能：使用 vim-todo-highlight 高亮显示 TODO 注释
 "==============================================================
 
 if exists('g:loaded_todo_config')
     finish
 endif
 let g:loaded_todo_config = 1
+
+"==============================================================
+"  高亮TODO配置（vim-todo-highlight 插件）
+"==============================================================
+
+" 禁用默认的 TODO 和 FIXME 高亮（使用自定义配置）
+" let g:todo_highlight_disable_default = ['TODO', 'FIXME']
+
+" 自定义 TODO 高亮配置
+let g:todo_highlight_config = {
+    \   'REVIEW': {},
+    \   'NOTE': {
+    \     'gui_fg_color': '#ffffff',
+    \     'gui_bg_color': '#ffbd2a',
+    \     'cterm_fg_color': 'white',
+    \     'cterm_bg_color': '214'
+    \   },
+    \   'TODO': {
+    \     'gui_fg_color': '#ffffff',
+    \     'gui_bg_color': '#ffbd2a',
+    \     'cterm_fg_color': 'white',
+    \     'cterm_bg_color': '214'
+    \   },
+    \   'FIXME': {
+    \     'gui_fg_color': '#ffffff',
+    \     'gui_bg_color': '#f06292',
+    \     'cterm_fg_color': 'white',
+    \     'cterm_bg_color': '204'
+    \   }
+    \ }
+
+"==============================================================
+"  搜索TODO功能（FZF）
+"==============================================================
 
 " 检查 fzf 是否已加载
 if !exists('g:loaded_fzf_config')

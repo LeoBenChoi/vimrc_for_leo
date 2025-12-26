@@ -74,4 +74,7 @@ Plug 'luochen1990/rainbow'                         " 括号彩色显示（不同
 " 启动页（需要启动时加载以显示启动界面）
 Plug 'mhinz/vim-startify'                           " 美观的启动页（显示最近文件、会话等）
 
+" 高亮 TODO（需要启动时加载以高亮显示 TODO 注释）
+Plug 'sakshamgupta05/vim-todo-highlight'            " 注释高亮显示 TODO/FIXME/NOTE 等
+
 call plug#end()
