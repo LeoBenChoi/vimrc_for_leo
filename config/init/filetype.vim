@@ -59,6 +59,14 @@ augroup FileTypeDetection
         \   setfiletype json |
         \ endif
 
+  "==============================================================
+  " 十六进制文件类型检测 {{{1
+  "==============================================================
+  " .vimhex 文件：xxd 格式的十六进制文件（Vim 专用）
+  " 自动识别为 xxd 文件类型，并在 xxd.vim 中自动转换
+  " 注意：使用 .vimhex 后缀避免与其他十六进制工具（如 Intel HEX）混淆
+  autocmd BufNewFile,BufRead *.vimhex setfiletype xxd
+
 augroup END
 
 " }}}1
