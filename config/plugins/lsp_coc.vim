@@ -167,6 +167,7 @@ xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
 " 重映射 <C-f> 和 <C-b> 用于浮动窗口/弹窗滚动
+" 当文档显示在浮动窗口中时，使用 <C-f> 向下滚动，<C-b> 向上滚动
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
@@ -175,6 +176,66 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
+
+" 使用 <C-Up> 和 <C-Down> 滚动预览窗口/浮动窗口
+" 优先检查浮动窗口，如果没有则检查预览窗口
+function! s:ScrollDocumentation(direction) abort
+  " 优先检查浮动窗口
+  if has('nvim-0.4.0') || has('patch-8.2.0750')
+    if coc#float#has_scroll()
+      " 向下滚动（direction=1）或向上滚动（direction=0）
+      " 使用较小的滚动量（3行）以便精确控制
+      call coc#float#scroll(a:direction ==# 'down' ? 1 : 0, 3)
+      return mode() =~ '^i' ? "" : "\<Ignore>"
+    endif
+  endif
+  
+  " 检查预览窗口
+  let l:preview_win = -1
+  for l:winid in range(1, winnr('$'))
+    if getwinvar(l:winid, '&previewwindow', 0)
+      let l:preview_win = l:winid
+      break
+    endif
+  endfor
+  
+  if l:preview_win != -1
+    " 切换到预览窗口并滚动
+    let l:cur_win = winnr()
+    execute l:preview_win . 'wincmd w'
+    if a:direction ==# 'down'
+      execute "normal! 3\<C-e>"
+    else
+      execute "normal! 3\<C-y>"
+    endif
+    execute l:cur_win . 'wincmd w'
+    return mode() =~ '^i' ? "" : "\<Ignore>"
+  endif
+  
+  " 如果没有预览窗口或浮动窗口，执行默认行为
+  return a:direction ==# 'down' ? "\<C-Down>" : "\<C-Up>"
+endfunction
+
+" 映射 <C-Up> 和 <C-Down> 用于滚动文档
+" 正常模式和可视模式
+nnoremap <silent><expr> <C-Up> <SID>ScrollDocumentation('up')
+nnoremap <silent><expr> <C-Down> <SID>ScrollDocumentation('down')
+vnoremap <silent><expr> <C-Up> <SID>ScrollDocumentation('up')
+vnoremap <silent><expr> <C-Down> <SID>ScrollDocumentation('down')
+
+" 插入模式：需要特殊处理
+inoremap <silent><expr> <C-Up> <SID>ScrollDocumentation('up')
+inoremap <silent><expr> <C-Down> <SID>ScrollDocumentation('down')
+
+" 预览窗口滚动支持（其他方式）
+" 如果文档显示在预览窗口中，还可以使用以下方式：
+" 1. 切换到预览窗口：<C-w>p（按 Ctrl+w 然后按 p）
+" 2. 在预览窗口中使用标准滚动命令：
+"    - j/k: 逐行向下/向上滚动
+"    - <C-d>/<C-u>: 半页向下/向上滚动
+"    - <C-f>/<C-b>: 整页向下/向上滚动
+"    - gg/G: 跳转到顶部/底部
+" 3. 滚动完成后，按 <C-w>p 返回原窗口，或按 <C-w>w 在窗口间切换
 
 " 使用 Ctrl-S 进行选择范围扩展
 " 要求语言服务器支持 'textDocument/selectionRange'

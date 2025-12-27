@@ -108,9 +108,10 @@ function! s:todo_search() abort
     endif
 
     " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
+    " fzf#vim#with_preview 添加预览功能，支持查看代码上下文
+    " 选择结果后按 Enter 会自动跳转到对应文件的对应行
     " 参数: grep_command, [spec], [fullscreen]
-    " spec 字典中的 'down' 键会设置窗口在底部显示
-    call fzf#vim#grep(l:grep_cmd, l:spec, 0)
+    call fzf#vim#grep(l:grep_cmd, fzf#vim#with_preview(l:spec), 0)
 endfunction
 
 "==============================================================
@@ -176,7 +177,9 @@ function! s:todo_file_search() abort
     endif
 
     " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
-    call fzf#vim#grep(l:grep_cmd, l:spec, 0)
+    " fzf#vim#with_preview 添加预览功能，支持查看代码上下文
+    " 选择结果后按 Enter 会自动跳转到对应文件的对应行
+    call fzf#vim#grep(l:grep_cmd, fzf#vim#with_preview(l:spec), 0)
 endfunction
 
 "==============================================================
