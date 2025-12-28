@@ -233,7 +233,7 @@
   // 使用 gopls 作为 Go 语言服务器
   "go.useLanguageServer": true,
   // 禁用 gopls 自动更新检查（避免网络问题导致的错误提示）
-  "go.checkForUpdates": "off",
+  "go.enableAutoUpdate": false,
   // gopls 配置
   "gopls": {
     // 启用静态检查
