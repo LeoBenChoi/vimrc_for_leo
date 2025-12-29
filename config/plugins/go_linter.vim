@@ -114,15 +114,58 @@ function! s:FindProjectRoot() abort
     return ''
 endfunction
 
+" 检查 govulncheck 是否可用
+function! s:CheckGovulncheck() abort
+    " govulncheck 从 Go 1.18 开始作为标准工具
+    " 检查方式：尝试运行 govulncheck --version
+    let l:output = system('govulncheck --version 2>&1')
+    if v:shell_error == 0 || l:output =~# 'govulncheck'
+        return 1
+    endif
+    echohl WarningMsg
+    echomsg '[go_linter] govulncheck 不可用，请确保 Go 版本 >= 1.18'
+    echomsg '[go_linter] 安装命令: go install golang.org/x/vuln/cmd/govulncheck@latest'
+    echohl None
+    return 0
+endfunction
+
+" 运行 govulncheck 漏洞检查
+function! s:RunGovulncheck() abort
+    " 检查 govulncheck 是否可用
+    if !s:CheckGovulncheck()
+        return
+    endif
+
+    " 获取当前文件所在的项目根目录
+    let l:project_root = s:FindProjectRoot()
+    if empty(l:project_root)
+        echohl WarningMsg
+        echomsg '[go_linter] 未找到项目根目录（go.mod 或 .git）'
+        echohl None
+        return
+    endif
+
+    " 构建命令
+    " govulncheck 默认检查当前目录，可以指定路径
+    let l:cmd = 'govulncheck ' . shellescape(l:project_root)
+
+    " 执行命令
+    echomsg '[go_linter] 运行 govulncheck 漏洞检查...'
+    execute '!' . l:cmd
+endfunction
+
 "==============================================================
 " 4. 命令映射
 "==============================================================
 " 定义 Vim 命令
 command! -nargs=0 GolangciLintPersonal call s:RunGolangciLintWithPersonalConfig()
+command! -nargs=0 Govulncheck call s:RunGovulncheck()
 
-" 快捷键映射（可选）
+" 快捷键映射
 " 使用 <leader>gl 运行个人配置的 golangci-lint
 nnoremap <silent> <leader>gl :GolangciLintPersonal<CR>
+" 使用 <leader>gv 运行 govulncheck 漏洞检查
+nnoremap <silent> <leader>gv :Govulncheck<CR>
 
 "==============================================================
 " 5. 自动检查配置（可选）
@@ -148,7 +191,10 @@ augroup END
 "
 " 使用方法：
 "   1. 安装 golangci-lint: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-"   2. 在 Go 文件中使用 :GolangciLintPersonal 或 <leader>gl 运行检查
+"   2. 安装 govulncheck: go install golang.org/x/vuln/cmd/govulncheck@latest
+"   3. 在 Go 文件中使用：
+"      - :GolangciLintPersonal 或 <leader>gl - 运行 golangci-lint 检查
+"      - :Govulncheck 或 <leader>gv - 运行 govulncheck 漏洞检查
 "
 " 配置优先级：
 "   - 如果项目中有 .golangci.yml，使用项目配置（优先级最高）
@@ -157,5 +203,6 @@ augroup END
 " 注意：
 "   - staticcheck 已通过 gopls 在编辑器中实时显示
 "   - revive 通过 golangci-lint 使用，需要手动运行命令
+"   - govulncheck 用于检查已知漏洞，需要手动运行命令
 "   - 自动检测项目配置，无需手动切换
 
