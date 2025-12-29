@@ -116,10 +116,7 @@
     "vue"
   ],
   // 忽略 JSON 和 JSONC 文件的 ESLint 检查（使用 glob 模式）
-  "eslint.ignorePatterns": [
-    "**/*.json",
-    "**/*.jsonc"
-  ],
+  "eslint.ignorePatterns": ["**/*.json", "**/*.jsonc"],
   // 明确禁用对 JSON 文件类型的支持
   "eslint.probe": [
     "javascript",
@@ -181,7 +178,7 @@
   "python.analysis.inlayHints.callArgumentNames": "partial",
   "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.inlayHints.variableTypes": true,
-  
+
   // ============================================================
   // Python 替代方案：Pylsp（如果 Pyright 不工作，可以尝试）
   // ============================================================
@@ -211,9 +208,9 @@
   // 标签补全的大小写风格（kebab-case: my-component）
   "vetur.completion.tagCasing": "kebab",
   // 验证配置（可根据需要调整）
-  "vetur.validation.script": true,      // 验证 <script> 中的 JavaScript/TypeScript
-  "vetur.validation.template": true,     // 验证 <template> 中的 Vue HTML
-  "vetur.validation.style": true,        // 验证 <style> 中的 CSS/SCSS/LESS/PostCSS
+  "vetur.validation.script": true, // 验证 <script> 中的 JavaScript/TypeScript
+  "vetur.validation.template": true, // 验证 <template> 中的 Vue HTML
+  "vetur.validation.style": true, // 验证 <style> 中的 CSS/SCSS/LESS/PostCSS
   // 格式化配置
   "vetur.format.enable": true,
   "vetur.format.defaultFormatter.html": "prettier",
@@ -242,6 +239,10 @@
     "completeUnimported": true,
     // 使用占位符
     "usePlaceholders": true,
+    // 工作区模式：允许在单个工作区中处理多个模块
+    "build.buildFlags": [],
+    // 目录配置：帮助 gopls 找到 Go 模块
+    "build.directoryFilters": ["-**/node_modules", "-**/.git"],
     // 启用代码分析
     "analyses": {
       // 检测未使用的参数
@@ -291,5 +292,3 @@
   // 如果需要指定 clangd 路径（Windows 示例）
   // "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
 }
-
-
