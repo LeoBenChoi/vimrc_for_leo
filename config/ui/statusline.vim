@@ -48,8 +48,11 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " 显示 buffer 编号（在标签栏中显示 buffer 编号）
 let g:airline#extensions#tabline#buffer_nr_show = 1
-" buffer 编号格式（%n 表示编号，%s 表示分隔符）
-let g:airline#extensions#tabline#buffer_nr_format = '%s:%n'
+" buffer 编号格式
+" 注意：printf 只传递一个参数（编号），所以格式字符串中只能有一个 %s 占位符
+" %s 会被替换为编号，后面可以跟固定文本作为分隔符
+" 格式：'%s | ' 会显示为 "1 | main.go"
+let g:airline#extensions#tabline#buffer_nr_format = '%s:%n | '
 
 " 显示所有 buffer（包括未命名的）
 let g:airline#extensions#tabline#show_buffers = 1
@@ -58,7 +61,10 @@ let g:airline#extensions#tabline#show_tabs = 1
 " 显示 tab 页编号
 let g:airline#extensions#tabline#show_tab_nr = 1
 " tab 编号格式
-let g:airline#extensions#tabline#tab_nr_format = '%s:%n |'
+" 注意：printf 只传递一个参数（编号），所以格式字符串中只能有一个 %s 占位符
+" %s 会被替换为编号，后面可以跟固定文本作为分隔符
+" 格式：'%s | ' 会显示为 "1 | main.go"
+let g:airline#extensions#tabline#tab_nr_format = '%s:%n | '
 
 " 标签栏左侧显示内容（默认显示所有 buffers）
 " 可选值：
