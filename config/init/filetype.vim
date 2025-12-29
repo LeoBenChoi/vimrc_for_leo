@@ -67,6 +67,14 @@ augroup FileTypeDetection
   " 注意：使用 .vimhex 后缀避免与其他十六进制工具（如 Intel HEX）混淆
   autocmd BufNewFile,BufRead *.vimhex setfiletype xxd
 
+  "==============================================================
+  " Go 语言文件类型配置 {{{1
+  "==============================================================
+  " 设置 Go 语言文件的行长度限制为 120 字符
+  autocmd FileType go setlocal textwidth=120
+  " 显示第 120 列的视觉标记（颜色列）
+  autocmd FileType go setlocal colorcolumn=120
+
 augroup END
 
 " }}}1
