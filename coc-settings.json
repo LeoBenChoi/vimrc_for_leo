@@ -233,7 +233,7 @@
   "go.enableAutoUpdate": false,
   // gopls 配置
   "gopls": {
-    // 启用静态检查
+    // 启用静态检查（staticcheck）
     "staticcheck": true,
     // 自动完成未导入的包
     "completeUnimported": true,

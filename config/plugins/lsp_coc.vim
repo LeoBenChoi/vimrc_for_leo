@@ -274,3 +274,16 @@ nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <leader>ck  :<C-u>CocPrev<CR>
 " 恢复最近一次的 coc 列表
 nnoremap <silent><nowait> <leader>cp  :<C-u>CocListResume<CR>
+
+"==============================================================
+" Go Linter 配置（个人配置隔离）
+"==============================================================
+" 辅助函数：安全加载配置文件
+function! s:source_if_exists(path) abort
+  if filereadable(a:path)
+    execute 'source' fnameescape(a:path)
+  endif
+endfunction
+
+" 加载 Go linter 个人配置
+call s:source_if_exists(expand('~/.vim/config/plugins/go_linter.vim'))

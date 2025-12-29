@@ -1,0 +1,26 @@
+# ============================================================
+# 个人 golangci-lint 配置文件
+# 位置：~/.vim/config/linters/.golangci.yml
+# 说明：此配置文件仅用于个人开发环境，不会影响项目配置
+# ============================================================
+
+linters:
+  # 启用需要的 linter
+  enable:
+    - revive # 代码风格检查（golint 的现代替代品）
+    - staticcheck # 静态分析（已在 gopls 中启用，这里作为补充）
+    - lll # 行长度检查器
+
+linters-settings:
+  lll:
+      # 建议设置为 120，这也是目前大多数企业的标准
+    line-length: 120
+    # 建议设置为 1，这是 Go 语言的默认缩进宽度  
+    tab-width: 1
+
+issues:
+  # 注意：golangci-lint 默认会隐藏一些“过于严格”的注释警告
+  # 如果配置了规则但没生效，需关闭默认排除项
+  # 以下为已发现的过滤项
+  # 1. 包级注释
+  # exclude-use-default: false

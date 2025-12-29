@@ -1,0 +1,56 @@
+# ============================================================
+# 个人 revive 配置文件
+# 位置：~/.vim/config/linters/revive.toml
+# 说明：此配置文件仅用于个人开发环境，不会影响项目配置
+# 注意：如果使用 golangci-lint，此文件可能不会被直接使用
+#       golangci-lint 会使用 .golangci.yml 中的 revive 配置
+# ============================================================
+
+# 忽略的规则（可以根据需要调整）
+ignoreGeneratedHeader = false
+severity = "warning"
+confidence = 0.8
+errorCode = 0
+warningCode = 0
+
+# 规则配置
+[rule.var-naming]
+[rule.package-comments]
+[rule.exported]
+[rule.error-return]
+[rule.error-naming]
+[rule.error-strings]
+[rule.receiver-naming]
+[rule.range]
+[rule.increment-decrement]
+[rule.var-declaration]
+[rule.range-val-in-closure]
+[rule.range-val-address]
+[rule.waitgroup-by-value]
+[rule.atomic]
+[rule.empty-lines]
+[rule.line-length-limit]
+  arguments = [120]  # 最大行长度
+
+[rule.naming]
+[rule.unexported-return]
+[rule.time-equal]
+[rule.banned-characters]
+[rule.context-keys-type]
+[rule.if-return]
+[rule.early-return]
+[rule.unhandled-error]
+[rule.cognitive-complexity]
+  arguments = [15]  # 最大认知复杂度
+
+[rule.function-result-limit]
+  arguments = [3]  # 函数返回值数量限制
+
+[rule.max-public-structs]
+[rule.max-open-files]
+[rule.add-constant]
+[rule.flag-parameter]
+[rule.unnecessary-stmt]
+[rule.unreachable-code]
+[rule.redefines-builtin-id]
+
