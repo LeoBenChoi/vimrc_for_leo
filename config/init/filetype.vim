@@ -71,18 +71,33 @@ augroup FileTypeDetection
   " Go 语言文件类型配置 {{{1
   "==============================================================
   " 设置 Go 语言文件的行长度限制为 120 字符
+  " 使用 BufEnter 确保在进入 buffer 时也设置（覆盖可能的文件类型插件设置）
   autocmd FileType go setlocal textwidth=120
+  autocmd BufEnter *.go setlocal textwidth=120
   " 显示第 120 列的视觉标记（颜色列）
   autocmd FileType go setlocal colorcolumn=120
-  " 禁用视觉换行（wrap），直接插入换行符
-  autocmd FileType go setlocal nowrap
+  autocmd BufEnter *.go setlocal colorcolumn=120
+  " 启用视觉换行（wrap）：当页面宽度不够时，长行会视觉换行显示
+  autocmd FileType go setlocal wrap
+  autocmd FileType go setlocal linebreak
   " formatoptions: 格式化选项
-  "   注意：使用 = 而不是 += 来确保设置正确的值
-  "   t: 使用 textwidth 自动换行（输入时自动插入换行符）
-  "   c: 在注释中自动换行
+  "   注意：使用 = 而不是 += 来确保设置正确的值，完全覆盖基础配置
+  "   t: 使用 textwidth 自动换行（对所有文本都有效，包括代码行和注释）
+  "   c: 在注释中自动换行（注释专用）
   "   移除 q 选项，避免 gq 格式化时乱码
   "   移除其他可能干扰的选项（如 a, w 等）
+  "   重要：t 选项对所有文本都有效，但只在输入空格或标点符号后才会触发自动换行
+  "   如果输入连续字符（无空格），不会自动换行
+  "   注意：确保没有其他选项（如 a, w）干扰自动换行
+  "   使用 BufEnter 确保在进入 buffer 时也设置（覆盖可能的文件类型插件设置）
   autocmd FileType go setlocal formatoptions=tc
+  autocmd BufEnter *.go setlocal formatoptions=tc textwidth=120
+  " 确保没有禁用自动换行的选项
+  autocmd FileType go setlocal formatprg=
+  " 调试：显示当前配置（打开 Go 文件时会显示）
+  autocmd FileType go echo 'Go 文件配置: textwidth=' . &textwidth . ' formatoptions=' . &formatoptions . ' wrap=' . &wrap
+  " 在 BufEnter 时也显示配置（用于调试）
+  autocmd BufEnter *.go echo 'Go 文件配置（BufEnter）: textwidth=' . &textwidth . ' formatoptions=' . &formatoptions
 
 augroup END
 
