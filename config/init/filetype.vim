@@ -74,6 +74,15 @@ augroup FileTypeDetection
   autocmd FileType go setlocal textwidth=120
   " 显示第 120 列的视觉标记（颜色列）
   autocmd FileType go setlocal colorcolumn=120
+  " 禁用视觉换行（wrap），直接插入换行符
+  autocmd FileType go setlocal nowrap
+  " formatoptions: 格式化选项
+  "   注意：使用 = 而不是 += 来确保设置正确的值
+  "   t: 使用 textwidth 自动换行（输入时自动插入换行符）
+  "   c: 在注释中自动换行
+  "   移除 q 选项，避免 gq 格式化时乱码
+  "   移除其他可能干扰的选项（如 a, w 等）
+  autocmd FileType go setlocal formatoptions=tc
 
 augroup END
 
