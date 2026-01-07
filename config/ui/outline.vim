@@ -12,8 +12,8 @@ let g:loaded_outline_config = 1
 " 1. Vista 基础配置
 "==============================================================
 " 默认使用 coc 作为后端
-" let g:vista_default_executive = 'coc'
-let g:vista_default_executive = 'ctags'
+let g:vista_default_executive = 'coc'
+" let g:vista_default_executive = 'ctags'
 
 " 设置 vista.vim 在使用 coc 作为执行器时等待的毫秒数
 " 建议值：100-300 毫秒，您可以根据实际情况调整

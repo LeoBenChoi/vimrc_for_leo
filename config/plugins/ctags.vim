@@ -36,8 +36,8 @@ set cpo&vim
 let s:tags_dir = expand('~/.vim/.tags')
 
 " 用户可配置选项（使用 get() 提供默认值，避免覆盖用户设置）
-let g:tags_auto_update = get(g:, 'tags_auto_update', 1)              " 是否启用自动更新（默认启用）
-let g:tags_update_on_save = get(g:, 'tags_update_on_save', 1)         " 保存时更新（默认启用）
+let g:tags_auto_update = get(g:, 'tags_auto_update', 0)              " 是否启用自动更新（默认禁用，避免卡顿）
+let g:tags_update_on_save = get(g:, 'tags_update_on_save', 0)         " 保存时更新（默认禁用）
 let g:tags_update_interval = get(g:, 'tags_update_interval', 900)    " 定期更新间隔（秒，默认15分钟）
 let g:tags_update_delay = get(g:, 'tags_update_delay', 10)            " 防抖延迟（秒，避免频繁更新，默认10秒）
 let g:tags_update_min_size = get(g:, 'tags_update_min_size', 100)    " 最小文件大小（字节），小于此大小的文件不触发更新
@@ -185,21 +185,7 @@ augroup END
 "   cd /path/to/myproject && ctags -R --output=~/.vim/.tags/myproject.tags .
 
 "==============================================================
-" 2. Tags 文件自动更新配置
-"==============================================================
-" 配置选项
-let g:tags_auto_update = get(g:, 'tags_auto_update', 1)           " 是否启用自动更新（默认启用）
-let g:tags_update_on_save = get(g:, 'tags_update_on_save', 1)      " 保存时更新（默认启用）
-let g:tags_update_interval = get(g:, 'tags_update_interval', 900) " 定期更新间隔（秒，默认15分钟）
-let g:tags_update_delay = get(g:, 'tags_update_delay', 10)        " 防抖延迟（秒，避免频繁更新，默认10秒）
-let g:tags_update_min_size = get(g:, 'tags_update_min_size', 100) " 最小文件大小（字节），小于此大小的文件不触发更新
-let g:tags_update_filetypes = get(g:, 'tags_update_filetypes', []) " 指定文件类型列表，空列表表示所有类型
-
-" 跟踪每个项目的最后更新时间，避免频繁更新
-let s:tags_last_update = {}
-
-"==============================================================
-" 3. 项目根目录检测和 tags 文件命名
+" 2. Tags 文件路径管理和集中存储
 "==============================================================
 
 " 检测项目根目录（通过查找标记文件）
@@ -291,16 +277,16 @@ function! s:FindCtagsExecutable() abort
     if has('win32') || has('win64') || has('win16')
         " Windows 下的检测顺序
         let l:candidates = [
-            \ 'uctags.exe',      " Universal Ctags（推荐）
-            \ 'uctags',          " Universal Ctags（无扩展名）
-            \ 'ctags.exe',       " Exuberant Ctags
-            \ 'ctags',           " Exuberant Ctags（无扩展名）
+            \ 'uctags.exe',
+            \ 'uctags',
+            \ 'ctags.exe',
+            \ 'ctags',
             \]
     else
         " Unix/Linux/macOS 下的检测顺序
         let l:candidates = [
-            \ 'uctags',          " Universal Ctags（推荐）
-            \ 'ctags',           " Exuberant Ctags
+            \ 'uctags',
+            \ 'ctags',
             \]
     endif
 
@@ -887,6 +873,7 @@ function! s:ShowTagsInfo() abort
     echohl None
 endfunction
 
+
 " 设置自动更新 autocmd
 " 最佳实践：只在需要时触发，避免不必要的更新
 if g:tags_auto_update
@@ -915,6 +902,47 @@ if g:tags_auto_update
     augroup END
 endif
 
+" 监听 tag 查找失败，显示提示
+augroup TagsHint
+    autocmd!
+    " 当进入文件时检查是否需要 tags 文件（延迟检查，避免干扰）
+    autocmd BufEnter *
+                \ if expand('<afile>') !=# '' && &buftype ==# '' |
+                \   if has('timers') |
+                \     call timer_start(2000, { -> s:CheckAndShowTagsHint() }) |
+                \   else |
+                \     call s:CheckAndShowTagsHint() |
+                \   endif |
+                \ endif
+augroup END
+
+" 检查并显示 tags 提示（仅在需要时显示一次）
+let s:tags_hint_shown = {}
+function! s:CheckAndShowTagsHint() abort
+    let l:current_file = expand('%:p')
+    if empty(l:current_file) || &buftype !=# ''
+        return
+    endif
+
+    " 检查是否已经显示过提示（每个文件只显示一次）
+    if has_key(s:tags_hint_shown, l:current_file)
+        return
+    endif
+
+    " 检查是否有 tags 文件
+    let l:tagfiles = tagfiles()
+    if empty(l:tagfiles)
+        let l:project_root = s:FindProjectRoot(l:current_file)
+        if !empty(l:project_root)
+            " 在状态栏显示提示（使用 echomsg 不会阻塞）
+            echohl WarningMsg
+            echomsg '[Tags] 未找到 tags 文件，使用 :UpdateTags 命令生成'
+            echohl None
+            let s:tags_hint_shown[l:current_file] = 1
+        endif
+    endif
+endfunction
+
 "==============================================================
 " 8. 清理和说明
 "==============================================================
@@ -925,18 +953,18 @@ unlet s:save_cpo
 
 " 使用说明：
 " 
-" 1. 生成 tags 文件：
-"    - 自动：保存文件时自动更新（如果启用）
-"    - 手动：使用 :UpdateTags 命令
+" 1. 生成 tags 文件（手动更新，避免卡顿）：
+"    - 手动：使用 :UpdateTags 命令生成/更新 tags 文件
 "    - 强制：使用 :UpdateTagsForce 命令（忽略时间间隔限制）
+"    - 提示：当打开文件且未找到 tags 文件时，会在状态栏提示使用 :UpdateTags
 "
 " 2. 检查 tags 文件：
 "    - 使用 :CheckTagsFiles 命令查看详细信息
 "    - 使用 :TagsInfo 命令查看配置信息
 "
-" 3. 配置选项（在 vimrc 中设置）：
-"    let g:tags_auto_update = 1              " 启用自动更新
-"    let g:tags_update_on_save = 1           " 保存时更新
+" 3. 配置选项（在 vimrc 中设置，默认已禁用自动更新）：
+"    let g:tags_auto_update = 0              " 自动更新（默认禁用，避免卡顿）
+"    let g:tags_update_on_save = 0           " 保存时更新（默认禁用）
 "    let g:tags_update_interval = 900        " 定期更新间隔（秒）
 "    let g:tags_update_delay = 10            " 防抖延迟（秒）
 "    let g:tags_update_min_size = 100        " 最小文件大小（字节）
