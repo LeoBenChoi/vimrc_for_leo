@@ -9,6 +9,43 @@ endif
 let g:loaded_lsp_coc_config = 1
 
 "==============================================================
+" 0. 辅助函数：检查 Coc 插件是否已加载
+"==============================================================
+" 检查 Coc 是否已加载（通过检查关键函数是否存在）
+" 使用全局函数以便在 <expr> 映射中使用
+function! CocLoaded() abort
+  return exists('*coc#refresh') && exists('*CocAction')
+endfunction
+
+" 脚本局部版本（用于脚本内部调用）
+function! s:CocLoaded() abort
+  return CocLoaded()
+endfunction
+
+" 安全调用 CocAction（如果 Coc 未加载则返回空）
+function! s:CocActionSafe(...) abort
+  if s:CocLoaded()
+    return call('CocAction', a:000)
+  endif
+  return ''
+endfunction
+
+" 安全调用 CocActionAsync（如果 Coc 未加载则不执行）
+function! s:CocActionAsyncSafe(...) abort
+  if s:CocLoaded()
+    call call('CocActionAsync', a:000)
+  endif
+endfunction
+
+" 安全获取 Coc 状态（用于 statusline）
+function! CocStatusSafe() abort
+  if exists('*coc#status')
+    return coc#status()
+  endif
+  return ''
+endfunction
+
+"==============================================================
 " 1. 基础配置
 "==============================================================
 let g:coc_config_home = expand('~/.vim')
@@ -71,15 +108,15 @@ set signcolumn=yes
 " 注意：默认总会有选中的补全项，你可以在配置文件里设置 `"suggest.noselect": true` 来不自动选中
 " 注意：可以通过 `:verbose imap <tab>` 检查 Tab 是否被其它插件映射，确保此设置生效
 inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CocLoaded() && coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+      \ CocLoaded() ? coc#refresh() : "\<Tab>"
+inoremap <expr><S-TAB> CocLoaded() && coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " 让 <CR> 接受当前选中的补全项或通知 coc.nvim 格式化
 " <C-g>u 会中断当前撤销，根据需要选择是否保留
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> CocLoaded() && coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=CocLoaded() ? coc#on_enter() : ''\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -88,9 +125,9 @@ endfunction
 
 " 使用 <c-space> 触发补全
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+  inoremap <silent><expr> <c-space> CocLoaded() ? coc#refresh() : "\<Nop>"
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+  inoremap <silent><expr> <c-@> CocLoaded() ? coc#refresh() : "\<Nop>"
 endif
 
 " 使用 `[g` 和 `]g` 导航诊断
@@ -112,7 +149,7 @@ nmap <silent><nowait> gr <Plug>(coc-references)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
+  if s:CocLoaded() && CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
     call feedkeys('K', 'in')
@@ -120,7 +157,7 @@ function! ShowDocumentation()
 endfunction
 
 " 光标悬停时，高亮当前符号及其引用
-autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent call s:CocActionAsyncSafe('highlight')
 
 " 符号重命名
 nmap <leader>rn <Plug>(coc-rename)
@@ -130,9 +167,9 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
+  autocmd! 
   " 针对指定 filetype 设置 formatexpr
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  autocmd FileType typescript,json if s:CocLoaded() | setl formatexpr=CocAction('formatSelected') | endif
 augroup end
 
 " 对选中代码块应用 Code Action
@@ -169,12 +206,12 @@ omap ac <Plug>(coc-classobj-a)
 " 重映射 <C-f> 和 <C-b> 用于浮动窗口/弹窗滚动
 " 当文档显示在浮动窗口中时，使用 <C-f> 向下滚动，<C-b> 向上滚动
 if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  nnoremap <silent><nowait><expr> <C-f> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
 " 使用 <C-Up> 和 <C-Down> 滚动预览窗口/浮动窗口
@@ -182,7 +219,7 @@ endif
 function! s:ScrollDocumentation(direction) abort
   " 优先检查浮动窗口
   if has('nvim-0.4.0') || has('patch-8.2.0750')
-    if coc#float#has_scroll()
+    if s:CocLoaded() && exists('*coc#float#has_scroll') && coc#float#has_scroll()
       " 向下滚动（direction=1）或向上滚动（direction=0）
       " 使用较小的滚动量（3行）以便精确控制
       call coc#float#scroll(a:direction ==# 'down' ? 1 : 0, 3)
@@ -243,37 +280,37 @@ nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " 增加 :Format 命令格式化当前缓冲区
-command! -nargs=0 Format :call CocActionAsync('format')
+command! -nargs=0 Format :call s:CocActionAsyncSafe('format')
 
 " 增加 :Fold 命令折叠当前缓冲区
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call s:CocActionSafe('fold', <f-args>)
 
 " 增加 :OR 命令用于组织当前文件的 import
-command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR   :call s:CocActionAsyncSafe('runCommand', 'editor.action.organizeImport')
 
 " 增加 (Neo)Vim 原生 statusline 支持
 " 注意：参见 `:h coc-status`，集成外部美化插件（如 lightline.vim, vim-airline）
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{CocStatusSafe()}%{get(b:,'coc_current_function','')}
 
 " CoCList 快捷键映射
 " 使用 <leader>c 前缀（c 代表 Coc/Code），避免与 NERDTree 的 <leader>e 冲突
 " 注意：<leader>cc 已被注释功能使用，改用 <leader>cl 表示 Commands List
 " 显示所有诊断
-nnoremap <silent><nowait> <leader>cd  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <leader>cd  :<C-u>if CocLoaded()<Bar>execute 'CocList diagnostics'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<cr>
 " 管理扩展
-nnoremap <silent><nowait> <leader>ce  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <leader>ce  :<C-u>if CocLoaded()<Bar>execute 'CocList extensions'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<cr>
 " 显示命令列表（使用 cl 避免与注释功能的 cc 冲突）
-nnoremap <silent><nowait> <leader>cl  :<C-u>CocList commands<cr>
+nnoremap <silent><nowait> <leader>cl  :<C-u>if CocLoaded()<Bar>execute 'CocList commands'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<cr>
 " 查找当前文档符号
-nnoremap <silent><nowait> <leader>co  :<C-u>CocList outline<cr>
+nnoremap <silent><nowait> <leader>co  :<C-u>if CocLoaded()<Bar>execute 'CocList outline'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<cr>
 " 全局查找工作区符号
-nnoremap <silent><nowait> <leader>cs  :<C-u>CocList -I symbols<cr>
+nnoremap <silent><nowait> <leader>cs  :<C-u>if CocLoaded()<Bar>execute 'CocList -I symbols'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<cr>
 " 下一个项目默认操作
-nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <leader>cj  :<C-u>if CocLoaded()<Bar>execute 'CocNext'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<CR>
 " 上一个项目默认操作
-nnoremap <silent><nowait> <leader>ck  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <leader>ck  :<C-u>if CocLoaded()<Bar>execute 'CocPrev'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<CR>
 " 恢复最近一次的 coc 列表
-nnoremap <silent><nowait> <leader>cp  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <leader>cp  :<C-u>if CocLoaded()<Bar>execute 'CocListResume'<Bar>else<Bar>echohl WarningMsg<Bar>echomsg 'Coc 插件未安装'<Bar>echohl None<Bar>endif<CR>
 
 "==============================================================
 " Go Linter 配置（个人配置隔离）
