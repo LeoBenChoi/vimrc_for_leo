@@ -153,9 +153,9 @@ call s:source_if_exists(s:config_root . '/plugins/fzf.vim')
 call s:source_if_exists(s:config_root . '/plugins/git.vim')
 
 "==============================================================
-" 7.3. Ctags 配置
+" 7.3. Ctags 配置（已禁用）
 "==============================================================
-call s:source_if_exists(s:config_root . '/plugins/ctags.vim')
+" call s:source_if_exists(s:config_root . '/plugins/ctags.vim')
 
 "==============================================================
 " 7.4. Rainbow 括号彩色显示（使用默认配置）
