@@ -19,7 +19,7 @@ linters-settings:
     tab-width: 1
 
 issues:
-  # 注意：golangci-lint 默认会隐藏一些“过于严格”的注释警告
+  # 注意：golangci-lint 默认会隐藏一些"过于严格"的注释警告
   # 如果配置了规则但没生效，需关闭默认排除项
   # 以下为已发现的过滤项
   # 1. 包级注释

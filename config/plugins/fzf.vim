@@ -155,4 +155,3 @@ inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
 " 使用自定义 spec 完成单词补全
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
-

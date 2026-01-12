@@ -1,6 +1,6 @@
 "==============================================================
 " config/plugins/git.vim
-" Git 插件配置：vim-fugitive, vim-gitgutter, nerdtree-git-plugin
+" Git 插件配置：vim-fugitive, vim-gitgutter, gv.vim
 " 确保与 coc.nvim 兼容
 "==============================================================
 
@@ -12,6 +12,9 @@ let g:loaded_git_config = 1
 "==============================================================
 " 1. vim-gitgutter 配置（Git 差异显示）
 "==============================================================
+" 开启符号列（用于显示 GitGutter 标记和 coc.nvim 诊断信息）
+set signcolumn=yes
+
 if exists(':GitGutterEnable')
   " 基础设置
   let g:gitgutter_enabled = 1                    " 启用 GitGutter
@@ -34,7 +37,6 @@ if exists(':GitGutterEnable')
   
   " 与 coc.nvim 兼容性设置
   " 注意：coc.nvim 和 gitgutter 都需要使用 signcolumn
-  " 由于 signcolumn=yes 已在 lsp_coc.vim 中设置，这里不需要额外配置
   " 两个插件可以共享同一个 signcolumn
   
   " 更新频率（与 coc.nvim 的 updatetime=300 兼容）
@@ -53,22 +55,10 @@ if exists(':Git')
 endif
 
 "==============================================================
-" 3. nerdtree-git-plugin 配置（NERDTree Git 状态）
+" 3. gv.vim 配置（提交历史浏览器）
 "==============================================================
-" 注意：这些配置必须在插件加载前设置，所以直接设置变量
-" 
-" 禁用 Git 状态显示（解决对齐问题）
-" 由于 nerdtree-git-plugin 会显示多个 Git 状态符号（如 + #, + !），
-" 导致字符数量不一致（1个字符 vs 2个字符），造成文件名缩进不对齐。
-" 如果以后需要 Git 状态显示，可以启用下面的配置。
-let g:NERDTreeGitStatusEnable = 0              " 禁用 Git 状态显示（解决对齐问题）
-
-" 如果需要启用 Git 状态显示，取消下面的注释并注释掉上面的禁用选项
-" let g:NERDTreeGitStatusEnable = 1              " 启用 Git 状态显示
-" let g:NERDTreeGitStatusShowIgnored = 1         " 显示被忽略的文件状态
-" let g:NERDTreeGitStatusUseNerdFonts = 0        " 不使用 Nerd Fonts（使用 ASCII 字符，兼容性更好）
-" let g:NERDTreeGitStatusUpdateOnWrite = 1       " 写入文件时更新状态
-" let g:NERDTreeGitStatusUpdateOnCursorHold = 1   " 光标停留时更新状态
+" gv.vim 依赖 vim-fugitive，通常不需要额外配置
+" 使用 :GV 命令查看提交历史
 
 "==============================================================
 " 4. 自动命令（确保 Git 状态正确更新）

@@ -44,47 +44,47 @@ let g:airline#extensions#tabline#enabled = 1
 "   - 'jsformatter'   : JavaScript 格式化器
 "   - 'short_path'    : 短路径模式
 "   - 'formatter'     : 自定义格式化器
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#formatter = 'default'
 
 " 显示 buffer 编号（在标签栏中显示 buffer 编号）
-let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline#extensions#tabline#buffer_nr_show = 1
 " buffer 编号格式
 " 注意：printf 只传递一个参数（编号），所以格式字符串中只能有一个 %s 占位符
 " %s 会被替换为编号，后面可以跟固定文本作为分隔符
 " 格式：'%s | ' 会显示为 "1 | main.go"
-let g:airline#extensions#tabline#buffer_nr_format = '%s:%n | '
+"let g:airline#extensions#tabline#buffer_nr_format = '%s:%n | '
 
 " 显示所有 buffer（包括未命名的）
-let g:airline#extensions#tabline#show_buffers = 1
+"let g:airline#extensions#tabline#show_buffers = 1
 " 显示所有 tab 页
-let g:airline#extensions#tabline#show_tabs = 1
+"let g:airline#extensions#tabline#show_tabs = 1
 " 显示 tab 页编号
-let g:airline#extensions#tabline#show_tab_nr = 1
+"let g:airline#extensions#tabline#show_tab_nr = 1
 " tab 编号格式
 " 注意：printf 只传递一个参数（编号），所以格式字符串中只能有一个 %s 占位符
 " %s 会被替换为编号，后面可以跟固定文本作为分隔符
 " 格式：'%s | ' 会显示为 "1 | main.go"
-let g:airline#extensions#tabline#tab_nr_format = '%s:%n | '
+"let g:airline#extensions#tabline#tab_nr_format = '%n : '
 
 " 标签栏左侧显示内容（默认显示所有 buffers）
 " 可选值：
 "   - 0 : 不显示
 "   - 1 : 显示所有 buffers
 "   - 2 : 只显示当前 tab 的 buffers
-let g:airline#extensions#tabline#show_splits = 1
+"let g:airline#extensions#tabline#show_splits = 0
 
 " 标签栏右侧显示内容（默认显示 tab 页）
 " 可选值：
 "   - 0 : 不显示
 "   - 1 : 显示所有 tab 页
-let g:airline#extensions#tabline#show_tab_type = 1
+"let g:airline#extensions#tabline#show_tab_type = 1
 
 " 关闭未保存 buffer 时显示警告
 let g:airline#extensions#tabline#show_close_button = 0
 
 " 标签栏分隔符
-" let g:airline#extensions#tabline#left_sep = ' ' " 左侧分隔符
-" let g:airline#extensions#tabline#left_alt_sep = '|' " 左侧备用分隔符
+let g:airline#extensions#tabline#left_sep = ' ' " 左侧分隔符
+"let g:airline#extensions#tabline#left_alt_sep = '|' " 左侧备用分隔符
 let g:airline#extensions#tabline#right_sep = ' ' " 右侧分隔符
 let g:airline#extensions#tabline#right_alt_sep = '|' " 右侧备用分隔符
 
@@ -94,7 +94,7 @@ let g:airline#extensions#tabline#right_alt_sep = '|' " 右侧备用分隔符
 "   - 1 : 模式 1（1-9, 0 表示第 10 个）
 "   - 2 : 模式 2（11-99）
 "   - 3 : 模式 3（01-99，与 :buffers 命令编号一致）
-let g:airline#extensions#tabline#buffer_idx_mode = 1
+"let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 " 忽略某些文件类型的 buffer（不在标签栏显示）
 let g:airline#extensions#tabline#excludes = ['vimfiler', 'nerdtree', 'tagbar', 'vista']
@@ -154,11 +154,27 @@ if exists(':AirlineRefresh')
 endif
 
 "==============================================================
-" 3. 主题配置
+" 3. 主题配置（Windows gvim 优化）
 "==============================================================
-" 判断是否为 Windows 终端
-function! s:is_windows_terminal() abort
+" Windows gvim 推荐主题（按推荐程度排序）：
+"   1. codedark    - VS Code Dark+ 风格，现代清晰，对比度好，适合长时间使用
+"   2. gruvbox     - 如果主主题是 gruvbox，这是最匹配的选择
+"   3. onedark     - 现代深色主题，对比度适中，通用性好
+"   4. moonfly     - 深色炭色主题，现代感强，视觉舒适
+"   5. base16_spacemacs - 与深色主题匹配，风格统一
+"   6. dark        - 内置主题，兼容性最好
+"
+" 切换主题命令：:AirlineTheme <theme_name>
+" 查看所有可用主题：:AirlineTheme <Tab>
+"==============================================================
+" 判断是否为 Windows 系统
+function! s:is_windows() abort
   return has('win32') || has('win64') || has('win16')
+endfunction
+
+" 判断是否为 GUI Vim（gvim）
+function! s:is_gvim() abort
+  return has('gui_running')
 endfunction
 
 " 检查 airline 主题是否存在
@@ -182,24 +198,78 @@ function! s:airline_theme_exists(theme_name) abort
   endtry
 endfunction
 
-if !exists('g:airline_theme')
-  " Windows 终端下使用 onedark 主题（与 dark gruvbox 配色匹配）
-  if s:is_windows_terminal() && !has('gui_running')
-    " 当前使用的主题：onedark（现代暗色，对比度适中）
-    let g:airline_theme = 'onedark'
-    " 备选主题：base16_spacemacs（与 dark gruvbox 风格最匹配）
-    " let g:airline_theme = 'base16_spacemacs'
-    " 备选主题：zenburn（柔和暗色，与 gruvbox 风格相近）
-    " let g:airline_theme = 'zenburn'
-  elseif exists('g:theme_mode')
-    if g:theme_mode ==# 'day' || (g:theme_mode ==# 'auto' && str2nr(strftime('%H')) >= 7 && str2nr(strftime('%H')) < 19)
-      let g:airline_theme = 'luna'        " 白天主题（或使用 light, ayu_light, base16_papercolor_light 等）
-    else
-      let g:airline_theme = 'luna'  " 夜间主题使用与 gruvbox 匹配的 onedark
-    endif
+" 根据主主题自动选择匹配的 airline 主题
+function! s:get_matching_airline_theme() abort
+  " 检查当前使用的颜色主题
+  if exists('g:colors_name')
+    let l:colors_name = g:colors_name
   else
-    let g:airline_theme = 'onedark'          " 默认使用与 gruvbox 匹配的 onedark 主题
+    " 如果主题还未加载，检查默认主题
+    let l:colors_name = get(g:, 'default_theme', 'retrobox')
   endif
+  
+  " 根据主主题匹配 airline 主题
+  if l:colors_name ==# 'gruvbox'
+    " gruvbox 主题：使用 gruvbox airline 主题（最匹配）
+    return 'gruvbox'
+  elseif l:colors_name ==# 'codedark' || l:colors_name ==# 'code_dark'
+    " codedark 主题：使用 codedark airline 主题
+    return 'codedark'
+  elseif l:colors_name ==# 'moonfly'
+    " moonfly 主题：使用 moonfly airline 主题
+    return 'moonfly'
+  elseif l:colors_name =~# 'onedark'
+    " onedark 系列主题：使用 onedark airline 主题
+    return 'onedark'
+  else
+    " 其他主题：根据是否为 GUI 和 Windows 选择
+    if s:is_windows() && s:is_gvim()
+      " Windows gvim 推荐主题（按优先级）
+      " 1. codedark - VS Code 风格，现代且清晰
+      " 2. onedark - 现代深色，对比度好
+      " 3. moonfly - 深色炭色，现代感
+      " 4. base16_spacemacs - 与深色主题匹配
+      if s:airline_theme_exists('codedark')
+        return 'codedark'
+      elseif s:airline_theme_exists('onedark')
+        return 'onedark'
+      elseif s:airline_theme_exists('moonfly')
+        return 'moonfly'
+      elseif s:airline_theme_exists('base16_spacemacs')
+        return 'base16_spacemacs'
+      else
+        return 'dark'
+      endif
+    else
+      " 非 Windows gvim 或终端：使用 onedark
+      return 'onedark'
+    endif
+  endif
+endfunction
+
+" 设置 airline 主题
+if !exists('g:airline_theme')
+  let l:selected_theme = s:get_matching_airline_theme()
+  
+  " 验证主题是否存在，如果不存在则使用备选
+  if !s:airline_theme_exists(l:selected_theme)
+    " 备选主题列表（按优先级）
+    let l:fallback_themes = ['onedark', 'codedark', 'moonfly', 'base16_spacemacs', 'dark', 'minimalist']
+    for l:theme in l:fallback_themes
+      if s:airline_theme_exists(l:theme)
+        let l:selected_theme = l:theme
+        break
+      endif
+    endfor
+  endif
+  
+  let g:airline_theme = l:selected_theme
+endif
+
+" Windows gvim 字体渲染优化（如果支持）
+if s:is_windows() && s:is_gvim() && has('directx')
+  " 启用 DirectX 渲染，改善字体显示效果
+  set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
 endif
 
 "==============================================================
@@ -308,16 +378,16 @@ if exists('*coc#status')
 endif
 
 "==============================================================
-" 验证 alduin 主题是否成功加载
+" 验证主题是否成功加载
 "==============================================================
-function! s:verify_alduin_theme() abort
+function! s:verify_airline_theme() abort
   " 等待 airline 完全加载
   if !exists(':AirlineRefresh')
     return
   endif
-  " 检查 alduin 主题是否真的存在
-  if !s:airline_theme_exists('alduin')
-    " 如果 alduin 不存在，回退到其他主题
+  " 检查主题是否真的存在
+  if !s:airline_theme_exists(g:airline_theme)
+    " 如果主题不存在，回退到其他主题
     if s:airline_theme_exists('minimalist')
       let g:airline_theme = 'minimalist'
     elseif s:airline_theme_exists('serene')
@@ -331,5 +401,3 @@ function! s:verify_alduin_theme() abort
     endif
   endif
 endfunction
-
-

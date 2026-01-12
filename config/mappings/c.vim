@@ -1,24 +1,23 @@
-"==============================================================
-" config/mappings/c.vim
-" 注释相关快捷键：所有 c 开头的快捷键统一管理
-"==============================================================
+" ============================================================================
+" 映射配置 - C (Coc List)
+" ============================================================================
 
-if exists('g:loaded_c_mappings')
-  finish
-endif
-let g:loaded_c_mappings = 1
-
-"==============================================================
-" c / C - Comment / 注释
-"==============================================================
-" 规范：小写 c 用于注释功能，使用 vim-commentary 插件
-
-" cc -> CommentaryLine：注释当前行
-nmap <silent> <leader>cc <Plug>CommentaryLine
-
-" c -> Commentary：注释选中区域（可视化模式）或配合 motion
-" 注释选中区域（可视化模式）
-xmap <silent> <leader>c <Plug>Commentary
-" 注释配合 motion（如 <leader>cap 注释段落）
-nmap <silent> <leader>c <Plug>Commentary
-
+" CoCList 快捷键映射
+" 显示所有诊断
+nnoremap <silent><nowait> <leader>cd  :<C-u>CocList diagnostics<cr>
+" 管理扩展
+nnoremap <silent><nowait> <leader>ce  :<C-u>CocList extensions<cr>
+" 显示命令列表
+nnoremap <silent><nowait> <leader>cc  :<C-u>CocList commands<cr>
+" 查找当前文档符号
+nnoremap <silent><nowait> <leader>co  :<C-u>CocList outline<cr>
+" 全局查找工作区符号
+nnoremap <silent><nowait> <leader>cs  :<C-u>CocList -I symbols<cr>
+" 下一个项目
+nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
+" 上一个项目
+nnoremap <silent><nowait> <leader>ck  :<C-u>CocPrev<CR>
+" 恢复最近一次的 coc 列表
+nnoremap <silent><nowait> <leader>cp  :<C-u>CocListResume<CR>
+" 运行当前行的 Code Lens
+nmap <leader>cl  <Plug>(coc-codelens-action)

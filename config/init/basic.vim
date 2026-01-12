@@ -1,142 +1,23 @@
-"==============================================================
-" config/init/basic.vim
-" 基础配置：跨平台基础设置，无插件依赖
-"==============================================================
+" ============================================================================
+" 基础配置
+" ============================================================================
 
-if exists('g:loaded_basic_config')
-  finish
-endif
-let g:loaded_basic_config = 1
+" 编码设置
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8,gbk,gb2312,big5
 
-"==============================================================
-" 1. 编码设置
-"==============================================================
-set encoding=utf-8 " 设置编码为utf-8，防止coc.nvim报错
-set fileencodings=utf-8,ucs-bom,gbk,latin1
-
-" 模糊宽度字符（如 emoji、图标）显示各有各的bug……酌情修改
-" 单宽度：一个字符占一个宽度,解决状态栏和侧边栏图标显示问题
-" 双宽度：一个字符占两个宽度,解决ansi代码对齐错位问题
-set ambiwidth=single                
-" set ambiwidth=double
-
-"==============================================================
-" 1.2. Shell 设置（Windows 下使用 PowerShell）
-"==============================================================
-if has('win32') || has('win64') || has('win16')
-  " Windows 下默认使用 PowerShell（pwsh 或 powershell）
-  " 优先使用 pwsh（PowerShell Core），如果不存在则使用 powershell（Windows PowerShell）
-  if executable('pwsh')
-    set shell=pwsh
-    let &shellcmdflag = '-NoProfile -Command'
-    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s'
-  elseif executable('powershell')
-    set shell=powershell
-    let &shellcmdflag = '-NoProfile -Command'
-    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s'
-  endif
-  " 如果 PowerShell 不可用，保持默认的 cmd.exe
-endif
-
-"==============================================================
-" 1.1. 换行符设置（统一使用 LF）
-"==============================================================
-" 新文件默认使用 Unix 格式（LF）
+" 文件格式
 set fileformat=unix
-set fileformats=unix,dos  " 保存文件自动保存为unix,dos格式
+set fileformats=unix,dos,mac
 
-"==============================================================
-" 2. 编辑体验（不依赖任何插件）
-"==============================================================
-set number                         " 显示绝对行号
-set relativenumber                 " 同时显示相对行号，便于跳行
-set numberwidth=4                  " 行号列宽度（为符号预留空间）
-set signcolumn=yes                 " 始终显示符号列（为诊断和 Git 符号预留空间）
-set hidden                         " 允许切换 buffer 时保留未保存内容
-set expandtab                      " 将 Tab 转换为空格
-set tabstop=4                      " Tab 视觉宽度（只影响显示）
-set shiftwidth=4                   " 自动缩进宽度（默认 4 个空格）
-" 注意：文件类型特定的缩进配置在 config/init/indent.vim 中
+" 历史记录
+set history=1000
+set undolevels=1000
 
-set smartcase                      " 搜索包含大写时自动切换到大小写敏感
-set ignorecase                     " 默认忽略大小写，配合 smartcase 更智能
-set hlsearch                       " 高亮显示所有搜索结果
-set incsearch                      " 输入搜索模式时实时高亮匹配结果
-set mouse=a                        " 全模式启用鼠标（终端支持时生效）
-set scrolloff=5                    " 上下翻页和滚动时保留 5 行缓冲区
-
-"==============================================================
-" 2.1.5. 命令行补全设置（末行模式 Tab 补全）
-"==============================================================
-set wildmenu                        " 启用命令行补全菜单
-set wildmode=full                   " 让菜单垂直显示，补全项可用上下键垂直选择
-if exists('+pumheight')
-  set pumheight=5                   " 补全菜单最大高度限制为 5 行
-endif
-" 使用弹出菜单（popup menu）样式，让补全菜单垂直显示
-if has('patch-8.2.3382') || has('nvim-0.5')
-  set wildoptions=pum               " 使用弹出菜单样式（垂直显示）
-endif
-set wildignorecase                 " 命令行补全时忽略大小写
-
-"==============================================================
-" 2.2. 缩进可视化（纯 Vim list 模式）
-"==============================================================
-" 使用 Vim 内置的 list 功能显示不可见字符
-" 设置 listchars 显示多种不可见字符：
-"   tab:      - 制表符显示为空格（由于已设置 expandtab，tab 会被转换为空格）
-"   trail:-   - 尾随空格显示为 -
-"   eol:⏎     - 行尾显示为 ⏎（回车键符号，推荐）
-"               其他可选：↵ (U+21B5) 或 ↲ (U+21B2) 或 $ (传统)
-"   nbsp:␣    - 非断行空格显示为 ␣
-"   extends:> - 行尾延伸字符显示为 >
-"   precedes:< - 行首前置字符显示为 <
-" 注意：multispace（缩进符号）配置在 config/init/indent.vim 中
-" tab 显示为 | 加空格
-set listchars=tab:\|\ ,trail:-,eol:↵,nbsp:␣,extends:>,precedes:<
-" 默认启用 list 模式（显示不可见字符）
-set list
-
-" 设置 list 模式显示字符的高亮颜色（根据深色/浅色主题自动调整）
-" NonText: 控制行尾字符（eol）和延伸字符（extends/precedes）的颜色
-" SpecialKey: 控制制表符、尾随空格、前导空格等字符的颜色
-" 根据背景色自动设置合适的颜色
-function! s:set_list_colors() abort
-  if &background ==# 'dark'
-    " 深色主题：使用浅灰色，在深色背景上可见
-    hi NonText    ctermfg=250 guifg=#666666  " 浅灰色（终端：250，GUI：#aaaaaa）
-    hi SpecialKey ctermfg=250 guifg=#666666  " 浅灰色（终端：250，GUI：#aaaaaa）
-  else
-    " 浅色主题：使用灰色，在浅色背景上可见
-    hi NonText    ctermfg=240 guifg=#dddddd  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
-    hi SpecialKey ctermfg=240 guifg=#dddddd  " 灰色（终端：240深灰，GUI：#BCBCBC浅灰）
-  endif
-endfunction
-
-" 初始设置（根据当前背景色）
-call s:set_list_colors()
-
-" 在主题切换和背景色变化时重新设置颜色
-augroup ListModeColors
-  autocmd!
-  autocmd ColorScheme * call s:set_list_colors()
-  autocmd OptionSet background call s:set_list_colors()
-augroup END
-" 注意：如果觉得显示太多字符太乱，可以只保留 tab, trail, eol
-
-" 文件自动重新加载配置
-set autoread                       " 当文件在外部被修改时自动重新读取（不显示 W11 警告）
-set updatetime=2000                " 更新间隔（毫秒），用于检查文件变更和触发 CursorHold 事件
-"==============================================================
-" 2.1. 文本排版
-"==============================================================
-set textwidth=79                   " 超过 79 列自动换行
-set formatoptions+=t               " 输入时根据 textwidth 自动换行
-set colorcolumn=80                 " 可视化提示 79 列限制（第 80 列高亮）
-
-"==============================================================
-" 3. 自动备份配置（集中管理）
-"==============================================================
+" ============================================================================
+" 自动备份配置（集中管理）
+" ============================================================================
 " 备份文件目录：~/.vim/.backup/
 set backup
 let s:backup_dir = expand('~/.vim/.backup')
@@ -169,99 +50,117 @@ if !isdirectory(s:view_dir)
 endif
 execute 'set viewdir=' . fnameescape(s:view_dir)
 
-"==============================================================
-" 4. 光标位置恢复（打开文件时回到上次编辑位置）
-"==============================================================
-" 启用 viminfo 来保存编辑历史（包括光标位置）
-" viminfo 文件位置：~/.vim/.viminfo
+" viminfo 文件：~/.vim/.viminfo
+" 保存标记、寄存器、历史记录等信息，用于恢复上次编辑位置
 let s:viminfo_file = expand('~/.vim/.viminfo')
-" 确保目录存在
-let s:viminfo_dir = fnamemodify(s:viminfo_file, ':h')
-if !isdirectory(s:viminfo_dir)
-  call mkdir(s:viminfo_dir, 'p', 0700)
+" viminfo 配置说明：
+"   '100  : 保存 100 个文件的标记
+"   <50   : 保存小于 50 行的寄存器
+"   s10   : 保存小于 10KB 的寄存器
+"   h     : 禁用 hlsearch（高亮搜索）恢复
+"   "100  : 保存 100 个文件的标记
+"   :100  : 保存 100 条命令历史
+"   /100  : 保存 100 条搜索历史
+"   @100  : 保存 100 条输入行历史
+"   %     : 保存和恢复缓冲区列表
+"   n     : 使用指定的文件名（而不是默认的 ~/.viminfo）
+if has('nvim')
+  " Neovim 使用 shada
+  " 使用双引号字符串，双引号需要转义为 \"
+  let s:shada_opts = "!,'100,<50,s10,h,\"100,:100,/100,@100,%"
+  execute 'set shada=' . s:shada_opts . ',n' . fnameescape(s:viminfo_file)
+else
+  " Vim 使用 viminfo
+  " 使用双引号字符串，双引号需要转义为 \"
+  let s:viminfo_opts = "'100,<50,s10,h,\"100,:100,/100,@100,%"
+  execute 'set viminfo=' . s:viminfo_opts . ',n' . fnameescape(s:viminfo_file)
 endif
-" 设置 viminfo：'100（100个文件标记）,>50（50行删除/复制历史）,s10（10个搜索历史）,h（禁用高亮）,n路径（viminfo文件位置）
-" 使用 let 设置 viminfo 选项，路径直接拼接
-let &viminfo = "'100,<50,s10,h,n" . s:viminfo_file
 
-" 自动恢复到上次编辑位置
-augroup RestoreCursorPosition
-  autocmd!
-  " 打开文件时，如果存在上次编辑位置，自动跳转
-  autocmd BufReadPost *
-        \ if line("'\"") > 1 && line("'\"") <= line("$") |
-        \   execute "normal! g`\"" |
-        \ endif
-augroup END
+" 显示设置
+set number                      " 显示行号
+set relativenumber              " 显示相对行号
+set cursorline                  " 高亮当前行
+set showcmd                     " 显示命令
+set showmode                    " 显示模式
+set showmatch                   " 显示匹配的括号
+set matchtime=1                 " 匹配括号高亮时间
 
-"==============================================================
-" 5. 文件自动重新加载配置
-"==============================================================
-" 当文件在外部被修改时，自动重新加载文件内容
-" 避免显示 W11 警告："编辑开始后，文件已变动"
-" 
-" 策略：
-" 1. 如果文件在外部被修改且当前 buffer 没有未保存修改，自动重新加载
-" 2. 如果文件在外部被修改但当前 buffer 有未保存修改，不自动重新加载（避免冲突）
-" 3. 定期检查文件变更，确保及时更新
+" 不可见字符显示设置
+" tab: 使用 |+空格 显示制表符
+" trail: 使用 - 显示行尾空格
+" eol: 使用 ↵ 显示行尾
+" nbsp: 使用 ␣ 显示不间断空格
+" extends: 使用 > 显示屏幕右侧延伸
+" precedes: 使用 < 显示屏幕左侧延伸
+" leadmultispace: 使用 |+空格 显示前导多个空格（Vim 8.2+）
+set listchars=tab:\|\ ,trail:-,eol:↵,nbsp:␣,extends:>,precedes:<
+if has('patch-8.2.3389')
+    " Vim 8.2+ 支持 leadmultispace，显示前导多个空格
+    set listchars+=leadmultispace:\|\ 
+endif
+" 默认启用 list 模式（显示不可见字符）
+set list
 
-augroup AutoReload
-  autocmd!
+" 搜索设置
+set hlsearch                    " 高亮搜索结果
+set incsearch                   " 增量搜索
+set ignorecase                  " 忽略大小写
+set smartcase                   " 智能大小写
 
-  " 自定义文件变更处理，完全避免 W11 警告
-  " 当文件在外部被修改时，如果当前 buffer 没有未保存修改，自动重新加载
-  " 如果当前 buffer 有未保存修改，不自动重新加载（避免冲突）
-  " 注意：FileChangedShell 事件在文件变更时触发，我们可以通过执行 edit 来自动重新加载
-  function! s:HandleFileChanged() abort
-    if expand('<afile>') ==# '' || &buftype !=# ''
-      return
-    endif
-    if !&modified
-      " 没有未保存修改，自动重新加载（不显示警告）
-      " 使用 :edit! 命令强制重新加载文件（忽略警告）
-      silent! edit!
-      echohl WarningMsg
-      echo "文件已自动重新加载: " . expand('<afile>:t')
-      echohl None
-    else
-      " 有未保存修改，显示警告但不自动重新加载
-      echohl WarningMsg
-      echo "警告: 文件 " . expand('<afile>:t') . " 在外部被修改，但当前有未保存的修改"
-      echo "请使用 :checktime 手动重新加载，或先保存当前修改"
-      echohl None
-    endif
-  endfunction
-  autocmd FileChangedShell * call s:HandleFileChanged()
+" 编辑设置
+set autoindent                  " 自动缩进
+set smartindent                 " 智能缩进
+set expandtab                   " 使用空格代替制表符
+set tabstop=4                   " 制表符宽度
+set shiftwidth=4                " 自动缩进宽度
+set softtabstop=4               " 退格键删除的宽度
+set backspace=indent,eol,start  " 退格键行为
 
-  " 当窗口获得焦点时，检查并重新加载已更改的文件
-  " 适用于：切换窗口、切换标签页、从其他应用返回 Vim
-  autocmd FocusGained,BufEnter * 
-        \ if mode() !=# 'c' && expand('<afile>') !=# '' && &buftype ==# '' | 
-        \   silent! checktime | 
-        \ endif
+" 界面设置
+set laststatus=2                " 总是显示状态行
+set ruler                       " 显示光标位置
+set wildmenu                    " 命令补全菜单
+set wildmode=longest:full,full  " 补全模式
+set scrolloff=5                 " 光标上下保留行数
+set sidescrolloff=5             " 光标左右保留列数
 
-  " 当离开插入模式时，检查文件是否已更改
-  " 如果文件已更改且当前 buffer 没有未保存修改，自动重新加载
-  autocmd InsertLeave * 
-        \ if expand('<afile>') !=# '' && &buftype ==# '' && !&modified | 
-        \   silent! checktime | 
-        \ endif
+" 折叠设置
+set foldmethod=indent           " 折叠方法
+set foldlevel=99                " 默认不折叠
 
-  " 定期检查文件变更（在光标静止时触发，由 updatetime 控制间隔）
-  " 使用 CursorHold 事件，默认每 2 秒检查一次（updatetime=2000）
-  autocmd CursorHold * 
-        \ if expand('<afile>') !=# '' && &buftype ==# '' && !&modified | 
-        \   silent! checktime | 
-        \ endif
+" 其他设置
+set autoread                    " 文件被外部修改时自动重新读取
+set autowrite                   " 自动保存
+set hidden                      " 允许隐藏未保存的缓冲区
+set mouse=a                     " 启用鼠标
+set clipboard=unnamedplus       " 使用系统剪贴板（Linux/Windows）
+set ttyfast                     " 快速终端连接
+set lazyredraw                  " 延迟重绘
 
-  " 当文件在外部被删除时，标记为已删除但保留 buffer
-  " 使用 FileChangedRO 事件处理文件变为只读的情况
-  autocmd FileChangedRO *
-        \ if expand('<afile>') !=# '' && &buftype ==# '' |
-        \   echohl WarningMsg |
-        \   echo "警告: 文件 " . expand('<afile>:t') . " 在外部被删除或变为只读" |
-        \   echohl None |
-        \ endif
+" 补全菜单设置（配合 coc.nvim 的 suggest.noselect 使用）
+" 不自动选中第一项，需要手动按 Tab 选择
+" noinsert: 不自动插入选中的补全项
+" noselect: 不自动选中第一项
+" menu: 显示补全菜单
+" menuone: 即使只有一个补全项也显示菜单
+set completeopt=menu,menuone,noinsert,noselect
 
-augroup END
+" 颜色方案（基础设置，具体主题在 theme.vim 中配置）
+syntax enable                   " 启用语法高亮
+if has('termguicolors')
+    set termguicolors           " 24位真彩色
+endif
 
+" 文件类型检测
+filetype on
+filetype plugin on
+filetype indent on
+
+" ============================================================================
+" 恢复上次编辑位置
+" ============================================================================
+" 打开文件时自动跳转到上次编辑的位置
+" 使用 viminfo 中保存的标记（'\" 表示上次编辑位置）
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif

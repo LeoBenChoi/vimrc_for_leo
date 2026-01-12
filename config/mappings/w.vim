@@ -1,6 +1,7 @@
 " ============================================================================
-" 映射配置 - E (Explorer)
+" 映射配置 - W (Write)
 " ============================================================================
 
-" NERDTree 文件树
-nnoremap <leader>ee :NERDTreeToggle<CR>
+" 快速保存
+nnoremap <leader>w :w<CR>
+nnoremap <leader>wq :wq<CR>

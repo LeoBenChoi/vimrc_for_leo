@@ -1,7 +1,6 @@
 "==============================================================
 " config/plugins/todo.vim
-"  搜索TODO功能：使用 FZF 搜索代码中的 TODO 注释
-"  高亮TODO功能：使用 vim-todo-highlight 高亮显示 TODO 注释
+" TODO 高亮配置：使用 Vim 原生 match 机制
 "==============================================================
 
 if exists('g:loaded_todo_config')
@@ -10,180 +9,51 @@ endif
 let g:loaded_todo_config = 1
 
 "==============================================================
-"  高亮TODO配置（vim-todo-highlight 插件）
+" TODO 高亮配置（Vim 原生 match 机制）
 "==============================================================
 
-" 禁用默认的 TODO 和 FIXME 高亮（使用自定义配置）
-" let g:todo_highlight_disable_default = ['TODO', 'FIXME']
+" 存储匹配 ID（用于清除旧匹配）
+let s:todo_match_id = -1
 
-" 自定义 TODO 高亮配置
-let g:todo_highlight_config = {
-    \   'REVIEW': {},
-    \   'NOTE': {
-    \     'gui_fg_color': '#ffffff',
-    \     'gui_bg_color': '#ffbd2a',
-    \     'cterm_fg_color': 'white',
-    \     'cterm_bg_color': '214'
-    \   },
-    \   'TODO': {
-    \     'gui_fg_color': '#ffffff',
-    \     'gui_bg_color': '#ffbd2a',
-    \     'cterm_fg_color': 'white',
-    \     'cterm_bg_color': '214'
-    \   },
-    \   'FIXME': {
-    \     'gui_fg_color': '#ffffff',
-    \     'gui_bg_color': '#f06292',
-    \     'cterm_fg_color': 'white',
-    \     'cterm_bg_color': '204'
-    \   }
-    \ }
+" 应用 TODO 高亮的函数
+function! s:ApplyTodoHighlight() abort
+    " 清除旧的匹配
+    if s:todo_match_id >= 0
+        try
+            call matchdelete(s:todo_match_id)
+        catch
+        endtry
+        let s:todo_match_id = -1
+    endif
+    
+    " 强制重新设置 Todo 高亮组颜色（使用 ! 强制覆盖主题设置）
+    " 推荐颜色方案：橙色系（醒目但不会太刺眼，适合 TODO）
+    " 可选方案：
+    "   1. 橙色（推荐）：ctermbg=208 guibg=#FF8C00 - 醒目且柔和
+    "   2. 琥珀色：ctermbg=214 guibg=#FFB000 - 温暖明亮
+    "   3. 深橙色：ctermbg=166 guibg=#E67E22 - 更沉稳
+    "   4. 红色（原方案）：ctermbg=196 guibg=#FF0000 - 最醒目但可能刺眼
+    highlight! Todo ctermfg=white ctermbg=208 guifg=#FFFFFF guibg=#FF8C00 cterm=bold gui=bold
+    
+    " 添加 TODO 匹配
+    try
+        let s:todo_match_id = matchadd('Todo', '\v\C<TODO', 10)
+    catch
+        " 如果失败，忽略错误
+    endtry
+endfunction
 
-"==============================================================
-"  搜索TODO功能（FZF）
-"==============================================================
+" 原生 TODO 高亮
+" 定义一个自动命令组
+augroup HighlightTodo
+    autocmd!
+    " 打开任何窗口或文件时，自动匹配 TODO 关键词
+    autocmd WinEnter,VimEnter * call s:ApplyTodoHighlight()
+    " 在颜色方案改变时重新应用（确保在主题加载后生效）
+    autocmd ColorScheme * call s:ApplyTodoHighlight()
+augroup END
 
-" 检查 fzf 是否已加载
-if !exists('g:loaded_fzf_config')
-    echohl WarningMsg
-    echomsg '[todo.vim] 警告: fzf.vim 未加载，TODO 功能需要 fzf 支持'
-    echohl None
-    finish
+" 立即应用一次（如果已有文件打开）
+if expand('%') != ''
+    call s:ApplyTodoHighlight()
 endif
-
-"==============================================================
-" TODO 搜索函数
-"==============================================================
-function! s:todo_search() abort
-    " 检测可用的搜索工具（优先使用 ripgrep，其次 ag）
-    let l:grep_cmd = ''
-    
-    if executable('rg')
-        " 使用 ripgrep 搜索 TODO、FIXME、NOTE、XXX、HACK 等注释
-        " --column: 显示列号
-        " --color=always: 保持颜色（fzf 需要）
-        " -i: 忽略大小写
-        " --no-messages: 不显示错误信息
-        " --no-heading: 不显示文件头（避免重复）
-        " --sort path: 按路径排序
-        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
-        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading --sort path -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING"'
-    elseif executable('ag')
-        " 使用 ag 搜索
-        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
-        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING"'
-    else
-        echohl ErrorMsg
-        echomsg '[todo.vim] 错误: 未找到搜索工具 (rg/ag)，请安装 ripgrep 或 ag'
-        echohl None
-        return
-    endif
-
-    " 检测当前主题是否为浅色主题
-    let l:is_light = &background ==# 'light'
-    
-    " 配置 fzf 选项
-    " - 窗口在底部显示（使用 down 布局）
-    " - 高度为 30%
-    let l:spec = {
-        \ 'down': '30%',
-        \ 'options': ['--prompt', 'TODO> ']
-    \ }
-    
-    " 为浅色主题添加自定义配色，确保足够的对比度
-    if l:is_light
-        " 浅色主题配色：参考 seoul256 light 主题，确保高对比度
-        " bg+: 选中行背景色（浅灰色 #D9D9D9，与深色前景形成对比）
-        " fg+: 选中行前景色（深灰色 #616161，确保在浅色背景上可读）
-        " bg: 普通行背景色（白色 #FFFFFF）
-        " fg: 普通行前景色（深灰色 #616161，确保在浅色背景上可读）
-        " hl: 高亮颜色（深绿色 #719872，用于匹配文本）
-        " hl+: 选中行高亮颜色（深绿色 #719899，用于匹配文本）
-        call extend(l:spec.options, [
-            \ '--color', 'fg:#616161,fg+:#616161,bg:#FFFFFF,bg+:#D9D9D9',
-            \ '--color', 'hl:#719872,hl+:#719899,border:#E1E1E1',
-            \ '--color', 'prompt:#0099BD,pointer:#E12672,marker:#E17899',
-            \ '--color', 'info:#727100,spinner:#719899,header:#719872'
-        \ ])
-    endif
-
-    " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
-    " fzf#vim#with_preview 添加预览功能，支持查看代码上下文
-    " 选择结果后按 Enter 会自动跳转到对应文件的对应行
-    " 参数: grep_command, [spec], [fullscreen]
-    call fzf#vim#grep(l:grep_cmd, fzf#vim#with_preview(l:spec), 0)
-endfunction
-
-"==============================================================
-" TODO 文件搜索函数（仅搜索当前文件）
-"==============================================================
-function! s:todo_file_search() abort
-    " 检查是否有当前文件
-    if empty(expand('%'))
-        echohl ErrorMsg
-        echomsg '[todo.vim] 错误: 当前没有打开的文件'
-        echohl None
-        return
-    endif
-
-    " 获取当前文件的绝对路径并转义
-    let l:file_path = expand('%:p')
-    " 在 Windows 上，手动用双引号包裹路径，并转义路径中的双引号
-    " 这样可以确保在 PowerShell 中正确解析
-    if has('win32') || has('win64')
-        " 转义路径中的双引号（将 " 替换为 ""）
-        let l:file_path_escaped = '"' . substitute(l:file_path, '"', '""', 'g') . '"'
-    else
-        " Unix 系统使用 shellescape
-        let l:file_path_escaped = shellescape(l:file_path)
-    endif
-    
-    " 检测可用的搜索工具（优先使用 ripgrep，其次 ag）
-    let l:grep_cmd = ''
-    
-    if executable('rg')
-        " 直接复用 todo_search 的逻辑，只需在命令后添加文件路径
-        " 注意：移除 --sort path，因为只有一个文件，不需要排序
-        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
-        let l:grep_cmd = 'rg --column --color=always --no-messages --no-heading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING" ' . l:file_path_escaped
-    elseif executable('ag')
-        " 直接复用 todo_search 的逻辑，只需在命令后添加文件路径
-        " -e: 使用多个 -e 参数指定模式，避免 Windows PowerShell 解析管道符的问题
-        let l:grep_cmd = 'ag --column --color --no-messages --noheading -i -e "TODO" -e "FIXME" -e "NOTE" -e "XXX" -e "HACK" -e "BUG" -e "WARNING" ' . l:file_path_escaped
-    else
-        echohl ErrorMsg
-        echomsg '[todo.vim] 错误: 未找到搜索工具 (rg/ag)，请安装 ripgrep 或 ag'
-        echohl None
-        return
-    endif
-
-    " 检测当前主题是否为浅色主题
-    let l:is_light = &background ==# 'light'
-    
-    " 配置 fzf 选项（与 todo_search 相同，只是 prompt 不同）
-    let l:spec = {
-        \ 'down': '30%',
-        \ 'options': ['--prompt', 'TODOFile> ']
-    \ }
-    
-    " 为浅色主题添加自定义配色（与 todo_search 相同）
-    if l:is_light
-        call extend(l:spec.options, [
-            \ '--color', 'fg:#616161,fg+:#616161,bg:#FFFFFF,bg+:#D9D9D9',
-            \ '--color', 'hl:#719872,hl+:#719899,border:#E1E1E1',
-            \ '--color', 'prompt:#0099BD,pointer:#E12672,marker:#E17899',
-            \ '--color', 'info:#727100,spinner:#719899,header:#719872'
-        \ ])
-    endif
-
-    " 使用 fzf#vim#grep 函数，它会自动处理结果格式和跳转
-    " fzf#vim#with_preview 添加预览功能，支持查看代码上下文
-    " 选择结果后按 Enter 会自动跳转到对应文件的对应行
-    call fzf#vim#grep(l:grep_cmd, fzf#vim#with_preview(l:spec), 0)
-endfunction
-
-"==============================================================
-" 注册 TODO 命令
-"==============================================================
-command! -bang TODO call s:todo_search()
-command! -bang TODOFile call s:todo_file_search()

@@ -1,190 +1,63 @@
-# Go 语言 Linter 个人配置说明
+# Go Linter 配置文件
 
-## 📋 概述
+此目录包含 Go 语言的 linter 配置文件，用于个人开发环境。
 
-此目录包含个人 Go 语言 Linter 配置文件，用于隔离个人配置和项目配置。
+## 配置文件
 
-### 配置文件位置
+- `.golangci.yml` - golangci-lint 配置文件
+- `revive.toml` - revive linter 配置文件
 
-- **golangci-lint 配置**：`~/.vim/config/linters/.golangci.yml`
-- **revive 配置**：`~/.vim/config/linters/revive.toml`
+## 安装工具
 
-### 配置隔离机制
-
-1. **staticcheck**：已通过 gopls 在 `coc-settings.json` 中配置，仅影响编辑器
-2. **revive**：通过 golangci-lint 使用个人配置文件，不影响项目的 `.golangci.yml`
-
-## 🚀 安装与配置
-
-### 1. 安装 golangci-lint
-
-**推荐方式：通过 `go install` 全局安装**
+### 1. golangci-lint
 
 ```bash
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 ```
 
-**为什么推荐 go install 而不是 vim 集成？**
-
-- ✅ **灵活性更高**：可以在命令行、CI/CD、其他编辑器中使用
-- ✅ **版本管理简单**：通过 Go 工具链统一管理
-- ✅ **性能更好**：无需通过 vim 插件层调用
-- ✅ **配置隔离**：通过命令行参数指定配置文件，不影响项目配置
-
-### 2. 验证安装
+### 2. govulncheck
 
 ```bash
-golangci-lint version
+go install golang.org/x/vuln/cmd/govulncheck@latest
 ```
 
-### 3. 配置已就绪
+### 3. gopls (Go 语言服务器)
 
-配置文件已创建在 `~/.vim/config/linters/` 目录下，无需额外配置。
-
-## 📖 使用方法
-
-### 在 Vim 中使用
-
-1. **打开 Go 文件**
-2. **运行个人配置的 linter**：
-   - 命令：`:GolangciLintPersonal`
-   - 快捷键：`<leader>gl`（默认 leader 是 `\`）
-
-### 在命令行中使用
+gopls 会通过 coc-go 扩展自动安装，或手动安装：
 
 ```bash
-# 方式 1：让 golangci-lint 自动查找（推荐）
-# 如果项目中有 .golangci.yml，会自动使用；否则使用个人配置
-cd /path/to/project
-golangci-lint run
-
-# 方式 2：明确指定个人配置（当项目中没有配置时）
-golangci-lint run --config ~/.vim/config/linters/.golangci.yml
-
-# 方式 3：强制使用项目配置（如果存在）
-# 不指定 --config 参数，golangci-lint 会自动查找项目配置
-golangci-lint run
+go install golang.org/x/tools/gopls@latest
 ```
 
-## 🔧 配置说明
+## 使用方法
 
-### staticcheck
+### 快捷键
 
-- **状态**：✅ 已通过 gopls 配置启用
-- **位置**：`coc-settings.json` 中的 `gopls.staticcheck: true`
-- **特点**：在编辑器中实时显示诊断信息
-- **隔离**：仅影响编辑器，不影响项目配置
+- `<leader>gl` - 运行 golangci-lint 检查
+- `<leader>gv` - 运行 govulncheck 漏洞检查
+- `<leader>gr` - 运行当前 Go 文件
+- `<leader>gb` - 构建当前项目
+- `<leader>gt` - 运行测试
+- `<leader>gf` - 格式化代码
+- `<leader>go` - 组织导入
 
-### revive
+### 命令
 
-- **状态**：✅ 已通过 golangci-lint 配置
-- **位置**：`~/.vim/config/linters/.golangci.yml`
-- **特点**：需要手动运行命令（`:GolangciLintPersonal` 或 `<leader>gl`）
-- **隔离**：使用个人配置文件，项目中的 `.golangci.yml` 优先级更高（如果存在）
+- `:GolangciLintPersonal` - 运行 golangci-lint
+- `:Govulncheck` - 运行 govulncheck
+- `:Format` - 格式化代码
+- `:OR` - 组织导入
 
-## 🎯 配置优先级
+## 配置优先级
 
-**智能配置选择**：系统会自动检测并使用合适的配置文件
+1. 项目配置（`.golangci.yml` 在项目根目录）- 优先级最高
+2. 个人配置（`~/.vim/config/linters/.golangci.yml`）- 当项目中没有配置时使用
 
-1. **项目根目录的 `.golangci.yml`**（优先级最高）
-   - 如果项目中有 `.golangci.yml`，自动使用项目配置
-   - 不指定 `--config` 参数，让 golangci-lint 自动查找
+## LSP 支持
 
-2. **个人配置文件**（`~/.vim/config/linters/.golangci.yml`）
-   - 如果项目中没有 `.golangci.yml`，自动使用个人配置
-   - 通过 `--config` 参数指定个人配置文件
-
-**工作流程**：
-
-1. 运行 `:GolangciLintPersonal` 或 `<leader>gl`
-2. 系统自动检测项目根目录
-3. 检查项目中是否有 `.golangci.yml`
-4. 如果有，使用项目配置；如果没有，使用个人配置
-5. 显示使用的配置文件路径（便于确认）
-
-**优势**：
-
-- ✅ 项目配置优先，尊重团队规范
-- ✅ 个人配置作为后备，确保始终有配置可用
-- ✅ 自动切换，无需手动干预
-- ✅ 配置隔离，互不干扰
-
-## 📝 自定义配置
-
-### 修改 golangci-lint 配置
-
-编辑 `~/.vim/config/linters/.golangci.yml`：
-
-```yaml
-linters:
-  enable:
-    - revive
-    - staticcheck
-    # 添加其他需要的 linter
-    - errcheck
-    - gosimple
-    # ...
-
-linters-settings:
-  revive:
-    rules:
-      # 自定义 revive 规则
-      - name: line-length-limit
-        arguments:
-          - 120  # 修改行长度限制
-```
-
-### 修改 revive 配置
-
-编辑 `~/.vim/config/linters/revive.toml`（如果单独使用 revive）：
-
-```toml
-[rule.line-length-limit]
-  arguments = [120]  # 修改行长度限制
-```
-
-## 🔍 验证配置
-
-### 验证 staticcheck
-
-1. 打开一个 Go 文件
-2. 编写有问题的代码（如未使用的变量）
-3. 应该能看到 gopls 的诊断信息（行号旁显示 `E` 或 `W`）
-
-### 验证 revive
-
-1. 在 Go 文件中运行：`:GolangciLintPersonal` 或按 `<leader>gl`
-2. 应该能看到 revive 的检查结果
-
-## ❓ 常见问题
-
-### Q: 为什么 revive 不在编辑器中实时显示？
-
-A: revive 需要通过 golangci-lint 运行，目前没有直接的编辑器集成。可以通过以下方式使用：
-
-- 使用 `:GolangciLintPersonal` 命令或 `<leader>gl` 快捷键
-- 在保存文件时自动运行（需要额外配置）
-
-### Q: 项目中有 `.golangci.yml` 会冲突吗？
-
-A: 不会。系统会自动检测：
-
-- 如果项目中有 `.golangci.yml`，优先使用项目配置（不指定 `--config` 参数）
-- 如果项目中没有 `.golangci.yml`，使用个人配置（指定 `--config` 参数）
-- 运行时会显示使用的配置文件路径，便于确认
-
-### Q: 如何强制使用个人配置而不是项目配置？
-
-A: 如果需要强制使用个人配置，可以手动运行：
-
-```bash
-golangci-lint run --config ~/.vim/config/linters/.golangci.yml
-```
-
-但建议遵循项目配置，以保持团队代码风格一致。
-
-## 📚 相关文件
-
-- `~/.vim/config/plugins/go_linter.vim` - Go linter Vim 配置
-- `~/.vim/config/plugins/lsp_coc.vim` - LSP 配置（包含 staticcheck）
-- `~/.vim/coc-settings.json` - coc.nvim 配置（包含 gopls 配置）
+通过 coc.nvim 和 coc-go 扩展提供：
+- 代码补全
+- 跳转到定义
+- 查找引用
+- 代码格式化
+- 实时诊断

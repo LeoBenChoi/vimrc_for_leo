@@ -1,93 +1,134 @@
-"==============================================================
-" config/mappings/core.vim
-" 快捷键映射：核心快捷键配置
-"==============================================================
+" ============================================================================
+" 核心映射配置 - 索引文件
+" ============================================================================
 
-if exists('g:loaded_core_mappings')
-  finish
-endif
-let g:loaded_core_mappings = 1
+" 设置leader键
+let mapleader = " "
+let maplocalleader = "\\"
 
-"==============================================================
-" 1. Leader 键设置
-"==============================================================
-let mapleader = "\<Space>"
+" ============================================================================
+" 功能键映射 (F1-F12)
+" ============================================================================
+" F1: 保留（通常用于帮助）
+" F2: NERDTree 文件树
+nnoremap <F2> :NERDTreeToggle<CR>
+" F3: Vista 代码大纲
+nnoremap <silent> <F3> :Vista!!<CR>
+" F4-F12: 预留
 
-"==============================================================
-" 1. 快捷键索引（a-z / A-Z）
-"==============================================================
-"   a / A : 追加到行尾的原生动作，暂不覆盖，保留编辑肌肉记忆
-"   b / B : Buffer 管理（本文件实现 <leader>fb）
-"   c / C : Comment / 注释（本文件实现 <leader>cc, <leader>c）
-"   d / D : 调试/诊断（预留）
-"   e / E : Explorer/编辑器增强（预留）
-"   f / F : 预留
-"   g / G : Git 操作（已实现 <leader>gs, <leader>gc, <leader>gp 等）
-"   h / H : 高亮相关功能（已实现 <leader>hh, <leader>hc, <leader>hH）
-"   i / I : Insert 模式相关（预留）
-"   j / J : Cursor/Jump（预留）
-"   k / K : 文档/帮助（原生 K，暂不改）
-"   l / L : Location/Quickfix（预留）
-"   m / M : Mark/Session（预留）
-"   n / N : 搜索下一项（沿用原生 n/N）
-"   o / O : Outline/折叠（预留）
-"   p / P : Paste/寄存器（保留）
-"   q / Q : Quit/宏（保留 Vim 原生行为）
-"   r / R : Rename/Replace（预留给 LSP）
-"   s / S : Session/保存（预留）
-"   t / T : Tab/Theme（Tab 栏功能已实现，主题切换已实现）
-"   u / U : Undo/Redo（保留）
-"   v / V : Visual/智能选择（已实现 <leader>v, <leader>V）
-"   w / W : Window/写入（预留）
-"   x / X : 关闭/剪切（保留）
-"   y / Y : Yank（保留）
-"   z / Z : 折叠/临时视图（保留）
+" ============================================================================
+" 窗口导航（Ctrl + 方向键）
+" ============================================================================
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" ============================================================================
+" 搜索增强
+" ============================================================================
+nnoremap n nzz                     " 搜索后居中
+nnoremap N Nzz
+
+" ============================================================================
+" 快捷键索引（按字母顺序）
+" ============================================================================
+" A - Code Actions
+"   <leader>a   - 代码操作（选中）
+"   <leader>ac  - 代码操作（光标位置）
+"   <leader>as  - 代码操作（整个缓冲区）
 "
-"==============================================================
-" z / Z - Fold 工具速查（保持原生行为）
-"==============================================================
-"   zc / zo  : 关闭 / 打开当前折叠
-"   zC / zO  : 递归关闭 / 打开（包含所有嵌套）
-"   za / zA  : 切换当前折叠 / 递归切换
-"   zm / zr  : 调整折叠级别（折叠更多 / 更少）
-"   zM / zR  : 关闭全部折叠 / 展开全部折叠
-"   [z / ]z  : 跳到上一个 / 下一个折叠起点
-"   zj / zk  : 在折叠块间快速跳转
-"   zf{motion}: 按 motion 创建折叠（如 zfap, zf%）
-"   zd / zD  : 删除当前折叠 / 递归删除
-"   zi       : 启用或禁用折叠功能
+" C - Coc List
+"   <leader>cd  - 显示诊断
+"   <leader>ce  - 管理扩展
+"   <leader>cc  - 命令列表
+"   <leader>co  - 文档符号
+"   <leader>cs  - 工作区符号
+"   <leader>cj  - 下一个项目
+"   <leader>ck  - 上一个项目
+"   <leader>cp  - 恢复列表
+"   <leader>cl  - Code Lens
 "
-"==============================================================
-" 2. 功能键索引（F1 - F12）
-"==============================================================
-"   F1  : 帮助（遵循默认行为）
-"   F2  : 预留
-"   F3  : 预留
-"   F4  : 预留
-"   F5  : 预留
-"   F6  : 预留
-"   F7  : 预留
-"   F8  : 预留
-"   F9  : 预留
-"   F10 : 预留
-"   F11 : 预留
-"   F12 : 预留
-"==============================================================
-
-"==============================================================
-" 注意：快捷键已按字母分类到独立文件
-"==============================================================
-" 所有快捷键映射已迁移到 mappings/ 目录下的独立文件：
-"   - mappings/c.vim : 注释功能（c, cc）
-"   - mappings/e.vim : 文件浏览器（ee, ef, er）
-"   - mappings/g.vim : Git 操作（gs, gc, gp, gl, gd, gL, gb, go, gn, gN 等）
-"   - mappings/o.vim : 代码大纲（oo）
-"   - mappings/t.vim : 主题切换（tt）
-
-"==============================================================
-" 搜索相关快捷键
-"==============================================================
-" 清除搜索高亮（按 Esc 两次或使用快捷键）
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
-nnoremap <silent> <leader>h :nohlsearch<CR>
-" 注意：其他 LSP 跳转快捷键（K, <C-o>, <leader>rn）在 config/plugins/lsp_coc.vim 中
+" E - Explorer
+"   <leader>ee  - NERDTree 切换
+"
+" F - Format
+"   <leader>f   - 格式化选中代码
+"
+" G - Go
+"   <leader>gR  - 运行 Go 代码（注意：gr 已被 coc-references 使用）
+"   <leader>gb  - 构建项目
+"   <leader>gt  - 运行测试
+"   <leader>gf  - 格式化代码
+"   <leader>go  - 组织导入
+"   <leader>gl  - golangci-lint
+"   <leader>gv  - govulncheck
+"   <leader>gc  - 检查 Go LSP
+"   <leader>gi  - 安装 Go LSP
+"
+" H - Horizontal/Window
+"   <leader>h   - 窗口宽度减小
+"
+" J - Jump/Window
+"   <leader>j   - 窗口高度减小
+"
+" K - Key/Window
+"   <leader>k   - 窗口高度增加
+"   K           - 显示文档（coc.nvim）
+"
+" L - Left/Window
+"   <leader>l   - 窗口宽度增加
+"
+" N - Rename
+"   <leader>rn  - 重命名符号
+"
+" P - Plugin
+"   <leader>pi  - 安装插件
+"   <leader>pu  - 更新插件
+"   <leader>pc  - 清理插件
+"   <leader>ps  - 插件状态
+"
+" Q - Quickfix/Quit
+"   <leader>q   - 退出
+"   <leader>qf  - 快速修复
+"
+" R - Refactor/Run
+"   <leader>r   - 重构（选中）
+"   <leader>re  - 重构（光标位置）
+"
+" S - Search/Source
+"   <leader>/   - 清除搜索高亮
+"
+" T - Tab/TODO/Test/Theme
+"   <leader>tn  - 新建标签页
+"   <leader>te  - 编辑标签页
+"   <leader>tc  - 关闭标签页
+"   <leader>th  - 上一个标签页
+"   <leader>tl  - 下一个标签页
+"   <leader>tmh - 标签页左移
+"   <leader>tml - 标签页右移
+"   <leader>tt  - 切换主题
+"   <leader>td  - 搜索 TODO
+"   <leader>tf  - 搜索当前文件 TODO
+"
+" V - Vista
+"   <leader>v   - Vista 切换
+"   <leader>vo  - Vista 打开
+"   <leader>vc  - Vista 关闭
+"   <leader>vf  - Vista 查找
+"   <leader>vs  - Vista 侧边栏
+"
+" W - Write
+"   <leader>w   - 保存
+"   <leader>wq  - 保存并退出
+"
+" ============================================================================
+" LSP 导航（无 leader 键）
+" ============================================================================
+" [g  - 上一个诊断
+" ]g  - 下一个诊断
+" gd  - 跳转到定义
+" gy  - 跳转到类型定义
+" gi  - 跳转到实现
+" gr  - 跳转到引用（注意：与 go run 冲突，已改为 gR）
+" K   - 显示文档

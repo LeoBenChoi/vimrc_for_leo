@@ -1,6 +1,7 @@
 " ============================================================================
-" 映射配置 - E (Explorer)
+" 映射配置 - F (Format)
 " ============================================================================
 
-" NERDTree 文件树
-nnoremap <leader>ee :NERDTreeToggle<CR>
+" 格式化选中代码
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)

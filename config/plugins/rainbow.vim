@@ -1,19 +1,21 @@
 "==============================================================
 " config/plugins/rainbow.vim
-" 括号彩色显示配置：rainbow 插件配置
+" Rainbow 彩虹括号配置：仅保留颜色配置和启用配置
+" 注意：真正的启动调用在 config/ui/theme.vim 中
 "==============================================================
 
 if exists('g:loaded_rainbow_config')
-  finish
+    finish
 endif
 let g:loaded_rainbow_config = 1
 
-let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+" 启用 Rainbow
+let g:rainbow_active = 1
 
-" 根据背景色（深色/浅色）设置不同的括号颜色
+" 根据背景色（深色/浅色）设置不同的括号颜色（全局函数）
 " 深色主题：使用暖色调（红色、橙色、黄色、粉色），在深色背景下更清晰可见
 " 浅色主题：使用冷色调（蓝色、绿色、青色），在浅色背景下更清晰可见
-function! s:set_rainbow_colors() abort
+function! SetRainbowColors() abort
   if &background ==# 'dark'
     " 深色主题：浅色调（浅蓝色、浅绿色、浅青色、浅紫色）
     let g:rainbow_conf = {
@@ -68,11 +70,11 @@ function! s:set_rainbow_colors() abort
 endfunction
 
 " 初始设置（根据当前背景色）
-call s:set_rainbow_colors()
+call SetRainbowColors()
 
 " 在主题切换和背景色变化时重新设置颜色
 augroup RainbowColors
-  autocmd!
-  autocmd ColorScheme * call s:set_rainbow_colors()
-  autocmd OptionSet background call s:set_rainbow_colors()
+    autocmd!
+    autocmd ColorScheme * call SetRainbowColors()
+    autocmd OptionSet background call SetRainbowColors()
 augroup END

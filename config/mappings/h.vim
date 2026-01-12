@@ -1,6 +1,6 @@
 " ============================================================================
-" 映射配置 - E (Explorer)
+" 映射配置 - H (Horizontal/Window)
 " ============================================================================
 
-" NERDTree 文件树
-nnoremap <leader>ee :NERDTreeToggle<CR>
+" 调整窗口大小（水平）
+nnoremap <leader>h :vertical resize -5<CR>

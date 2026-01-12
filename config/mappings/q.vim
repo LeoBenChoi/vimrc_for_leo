@@ -1,6 +1,9 @@
 " ============================================================================
-" 映射配置 - E (Explorer)
+" 映射配置 - Q (Quickfix/Quit)
 " ============================================================================
 
-" NERDTree 文件树
-nnoremap <leader>ee :NERDTreeToggle<CR>
+" 快速退出
+nnoremap <leader>q :q<CR>
+
+" 对当前行诊断应用最优修复
+nmap <leader>qf  <Plug>(coc-fix-current)
