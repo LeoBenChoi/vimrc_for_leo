@@ -1,0 +1,131 @@
+*plugins.txt*  插件配置说明
+
+==============================================================================
+插件列表
+==============================================================================
+
+基础与配置 ~
+  - vim-sensible          - 开箱即用的 Vim 配置
+  - vim-commentary        - 快速注释插件（gcc 注释行，gc+选区 注释块）
+
+界面美化 ~
+  - seoul256.vim          - 256 色终端主题
+  - vim-airline           - 状态栏插件
+  - vim-airline-themes    - 状态栏主题
+  - rainbow               - 彩虹括号
+  - vim-cursorword        - 光标单词高亮
+
+开发工具 ~
+  - vim-easy-align        - 对齐工具
+  - vim-go                - Go 开发环境（包含 LSP 支持）
+  - coc.nvim              - 智能补全和 LSP 支持
+
+导航与搜索 ~
+  - fzf                   - 模糊查找工具
+  - fzf.vim               - FZF 的 Vim 集成
+  - vista.vim             - 代码结构大纲查看器
+  - nerdtree              - 文件树浏览器
+
+Git 集成 ~
+  - vim-fugitive          - Git 核心命令封装
+  - vim-gitgutter         - 左侧栏实时显示 Git 变动
+  - gv.vim                - Git 提交历史浏览器
+
+启动界面 ~
+  - vim-startify          - 启动界面（支持会话管理）
+
+图标支持 ~
+  - vim-devicons          - 文件图标支持（需要 Nerd Fonts）
+
+==============================================================================
+插件快捷键
+==============================================================================
+
+NERDTREE ~
+  <F2>                    - 打开/关闭文件树
+  <Leader>n               - 打开/关闭文件树（备用）
+  <Leader>f               - 在当前文件所在目录打开文件树
+
+FZF ~
+  <Leader>f               - 搜索文件（如果未映射到 NERDTREE）
+  :Files                  - 搜索文件
+  :Buffers                - 搜索缓冲区
+  :Rg                     - 搜索文本内容
+
+COC.NVIM ~
+  <Tab>                   - 触发补全并导航
+  <S-Tab>                 - 上一个补全项
+  <CR>                    - 确认补全
+  K                       - 显示文档
+  gd                      - 跳转到定义
+  gy                      - 跳转到类型定义
+  gi                      - 跳转到实现
+  gr                      - 查看引用
+  <Leader>rn              - 重命名符号
+  <Leader>f               - 格式化代码
+  <Leader>a               - 代码操作
+  [g                      - 上一个诊断
+  ]g                      - 下一个诊断
+  <Space>a                - 显示所有诊断
+  <Space>e                - 管理扩展
+  <Space>o                - 显示大纲
+
+VIM-COMMENTARY ~
+  gcc                     - 注释/取消注释当前行
+  gc                      - 注释选中的代码块
+  gcip                    - 注释当前段落
+
+VIM-GO ~
+  :GoRun                  - 运行当前文件
+  :GoTest                 - 运行测试
+  :GoBuild                - 编译
+  :GoInstall              - 安装包
+  :GoDoc                  - 查看文档
+
+VIM-FUGITIVE ~
+  :Git                    - Git 命令
+  :Gstatus                - 查看状态
+  :Gcommit                - 提交
+  :Gpush                  - 推送
+  :Gpull                  - 拉取
+
+==============================================================================
+插件配置位置
+==============================================================================
+
+插件配置位于 `after/plugin/` 目录：
+  - airline.vim           - vim-airline 配置
+  - coc.vim               - coc.nvim 配置
+  - nerdtree.vim          - NERDTree 配置
+  - startify.vim          - vim-startify 配置
+  - vim_go.vim            - vim-go 配置
+  - git.vim               - Git 相关插件配置
+
+==============================================================================
+LSP 扩展安装
+==============================================================================
+
+coc.nvim 会自动安装以下推荐的 LSP 扩展：
+  - coc-go                - Go 语言支持
+  - coc-json              - JSON 文件支持
+  - coc-vimlsp            - Vim 脚本支持
+  - coc-sh                - Shell 脚本支持
+  - coc-yaml              - YAML 文件支持
+  - @yaegassy/coc-pylsp   - Python LSP
+  - coc-tsserver          - TypeScript/JavaScript 支持
+  - coc-html              - HTML 文件支持
+  - coc-css               - CSS 文件支持
+  - coc-eslint            - ESLint 集成
+  - coc-prettier          - 代码格式化
+  - coc-clangd            - C/C++ 支持
+  - coc-phpls             - PHP 支持
+  - coc-vetur             - Vue.js 支持
+
+手动安装扩展：~
+  :CocInstall <扩展名>
+
+查看已安装扩展：~
+  :CocList extensions
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

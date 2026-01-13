@@ -1,153 +1,100 @@
-# Vim 配置文件
+# Vim 配置文件目录结构说明
 
-这是一个模块化的 Vim 配置文件，采用目录结构组织不同的配置模块。
+本目录结构严格按照 Vim 官方推荐的标准目录结构创建。
 
-## 目录结构
+## 目录说明
 
-```
-.vim/
-├── .vimrc                   # 简单入口文件（只需复制一次到home目录）
-├── config/
-│   ├── vimrc.vim            # 真正的入口文件（包含所有配置加载逻辑）
-│   ├── init/               # 初始化配置
-│   ├── init/               # 初始化配置
-│   │   ├── basic.vim       # 基础配置
-│   │   ├── filetype.vim    # 文件类型配置
-│   │   ├── indent.vim      # 缩进配置
-│   │   ├── fold.vim        # 折叠配置
-│   │   └── performance.vim # 性能优化
-│   ├── mappings/           # 快捷键映射
-│   │   ├── core.vim        # 核心映射
-│   │   └── tab.vim         # 标签页映射
-│   ├── plugins/            # 插件配置
-│   │   ├── plugins.vim     # 插件管理（vim-plug）
-│   │   ├── fzf.vim         # FZF 模糊搜索配置
-│   │   ├── fzf_todo.vim    # FZF TODO 搜索配置
-│   │   ├── lsp_coc.vim     # Coc.nvim LSP 配置
-│   │   ├── vista.vim       # Vista 代码大纲配置
-│   │   ├── todo.vim        # TODO 高亮配置（Vim 原生 match）
-│   │   └── go_linter.vim   # Go 语言 Linter 配置
-│   └── ui/                 # 界面配置
-└── README.md
-```
+### `autoload/`
+**作用**：存放自动加载脚本  
+**说明**：此目录中的脚本只有在被调用时才会加载，可以延迟加载以提高 Vim 启动速度。通常用于存放插件的自动加载函数。
 
-## 使用方法
+### `colors/`
+**作用**：存放颜色方案文件  
+**说明**：存放 `.vim` 格式的颜色主题文件。使用 `:colorscheme <name>` 命令可以切换颜色方案。
 
-1. 将整个 `.vim` 目录复制到你的用户目录
-2. 将 `.vimrc` 复制到 home 目录（只需要复制一次）
+### `compiler/`
+**作用**：存放编译器定义文件  
+**说明**：定义不同编译器的错误格式，使 Vim 能够正确解析编译错误信息，便于快速定位错误位置。
 
-### Linux/Mac
-```bash
-cp ~/.vim/.vimrc ~/.vimrc
-```
+### `doc/`
+**作用**：存放文档文件  
+**说明**：存放插件的帮助文档（`.txt` 格式）。使用 `:help` 命令可以查看这些文档。
 
-### Windows
-```cmd
-copy %USERPROFILE%\.vim\.vimrc %USERPROFILE%\_vimrc
-```
+### `ftplugin/`
+**作用**：存放文件类型特定插件  
+**说明**：针对特定文件类型的配置和插件。例如 `python.vim` 只对 Python 文件生效。每个文件类型可以有独立的配置文件。
 
-**重要提示**：
-- `.vimrc` 文件只需要复制一次到 home 目录
-- 之后所有配置修改都在 `~/.vim/` 目录下进行
-- 修改配置时无需再次复制 `.vimrc` 文件
+### `indent/`
+**作用**：存放缩进脚本  
+**说明**：定义不同文件类型的缩进规则。例如 `python.vim` 定义 Python 文件的缩进方式。
 
-## 主要特性
+### `keymap/`
+**作用**：存放键盘映射文件  
+**说明**：定义不同键盘布局的映射关系，支持多语言键盘布局。
 
-- **模块化设计**：配置按功能分类，易于维护
-- **插件管理**：使用 vim-plug 管理插件，支持自动安装
-- **基础配置**：包含常用的编辑、显示、搜索等设置
-- **文件类型支持**：自动识别多种文件类型并应用相应设置
-- **快捷键映射**：使用空格键作为leader键，提供便捷的快捷键
-- **性能优化**：针对大文件和性能进行了优化
-- **代码补全**：使用 coc.nvim 提供 LSP 支持
-- **代码大纲**：使用 Vista 显示代码结构（支持 coc 后端）
-- **TODO 高亮**：使用 Vim 原生 match 机制高亮显示 TODO 注释
-- **TODO 搜索**：使用 FZF 快速搜索代码中的 TODO 注释（需要 ripgrep 或 ag）
+### `plugin/`
+**作用**：存放插件脚本  
+**说明**：存放全局插件脚本，这些脚本在 Vim 启动时自动加载。适合存放通用的插件和配置。
 
-## 自定义
+### `syntax/`
+**作用**：存放语法高亮文件  
+**说明**：定义不同文件类型的语法高亮规则。例如 `python.vim` 定义 Python 代码的语法高亮。
 
-你可以根据需要修改各个配置文件：
-- `config/vimrc.vim` - 修改配置加载逻辑（添加/移除配置文件）
-- `config/init/basic.vim` - 修改基础设置
-- `config/mappings/core.vim` - 添加或修改快捷键
-- `config/init/filetype.vim` - 添加新的文件类型支持
+### `after/`
+**作用**：存放后加载脚本  
+**说明**：此目录结构与主目录结构相同（如 `after/ftplugin/`、`after/syntax/` 等），用于覆盖系统默认设置或插件设置。脚本在此目录中会在系统默认配置之后加载。
 
-**注意**：所有配置修改都在 `~/.vim/` 目录下进行，无需修改 home 目录下的 `.vimrc` 文件。
+### `pack/`
+**作用**：存放包管理目录（Vim 8+）  
+**说明**：Vim 8.0+ 引入的包管理系统目录。可以按照 `pack/<name>/start/<plugin>` 或 `pack/<name>/opt/<plugin>` 的结构组织插件，支持自动加载和按需加载。
 
-## 快捷键说明
+## 配置文件位置说明
 
-### Leader 键
-默认使用空格键 `<Space>` 作为 leader 键
+### 主配置文件：`vimrc.vim`
+**作用**：Vim 的主配置文件，存放所有通用配置  
+**说明**：这是 Vim 配置的核心文件，应该包含：
+- 基本设置（如 `set number`、`set tabstop=4` 等）
+- **字体配置**（GUI 模式下的字体设置）
+- 键位映射
+- 插件配置
+- 其他通用设置
 
-### 常用快捷键
-- `<leader>w` - 保存文件
-- `<leader>q` - 退出
-- `<leader>wq` - 保存并退出
-- `<leader>ev` - 编辑vimrc
-- `<leader>sv` - 重新加载vimrc
-- `<leader>/` - 清除搜索高亮
-- `jk` 或 `kj` - 退出插入模式
-
-### 窗口操作
-- `Ctrl+h/j/k/l` - 在窗口间移动
-- `<leader>h/l` - 调整窗口宽度
-- `<leader>j/k` - 调整窗口高度
-
-### 标签页操作
-- `<leader>tn` - 新建标签页
-- `<leader>tc` - 关闭标签页
-- `<leader>th/l` - 切换标签页
-
-### 插件管理（vim-plug）
-- `<leader>pi` - 安装插件（PlugInstall）
-- `<leader>pu` - 更新插件（PlugUpdate）
-- `<leader>pc` - 清理未使用的插件（PlugClean）
-- `<leader>ps` - 查看插件状态（PlugStatus）
-
-### Vista 代码大纲
-- `<F3>` - 切换 Vista 侧边栏（推荐）
-- `<leader>v` - 切换 Vista 侧边栏
-- `<leader>vo` - 打开 Vista 侧边栏
-- `<leader>vc` - 关闭 Vista 侧边栏
-- `<leader>vf` - 查找当前符号
-- `<leader>vs` - 显示当前文件的符号
-
-### TODO 高亮和搜索
-- **自动高亮**：代码中的 `TODO:` 会自动高亮显示（红色背景）
-- `<leader>td` - 搜索所有文件中的 TODO 注释（使用 FZF）
-- `<leader>tf` - 搜索当前文件中的 TODO 注释（使用 FZF）
-- `:TODO` - 搜索所有文件中的 TODO 注释
-- `:TODOFile` - 搜索当前文件中的 TODO 注释
-
-## 插件管理
-
-本配置使用 **vim-plug** 作为插件管理器。
-
-### 添加插件
-
-编辑 `config/plugins/plugins.vim` 文件，在 `call plug#begin()` 和 `call plug#end()` 之间添加插件：
-
+**字体配置示例**：
 ```vim
-call plug#begin('~/.vim/plugged')
-
-" 添加插件
-Plug '插件作者/插件名'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " 带安装脚本的插件
-
-call plug#end()
+" GUI 字体配置（仅 GUI 模式生效）
+if has('gui_running')
+    " Windows 字体配置
+    if has('win32') || has('win64')
+        set guifont=Consolas:h12
+    " Linux 字体配置
+    elseif has('unix')
+        set guifont=DejaVu\ Sans\ Mono\ 12
+    " macOS 字体配置
+    elseif has('mac')
+        set guifont=Menlo:h14
+    endif
+endif
 ```
 
-### 安装插件
+**注意**：
+- 字体配置使用 `guifont` 选项，仅对 GUI 版本的 Vim（如 gvim）生效
+- 终端版本的 Vim 字体由终端模拟器控制，无法通过 Vim 配置
+- 字体名称中的空格需要用反斜杠转义或使用下划线
+- 使用 `has('gui_running')` 条件判断确保只在 GUI 模式下设置
 
-1. 在配置文件中添加插件后，重新加载配置：`:source ~/.vimrc`
-2. 运行 `:PlugInstall` 或使用快捷键 `<leader>pi`
-3. vim-plug 会自动下载并安装插件
+### 替代方案：`after/plugin/gui_settings.vim`
+**作用**：GUI 特定设置的独立配置文件  
+**说明**：如果希望将 GUI 相关配置独立管理，可以创建 `after/plugin/gui_settings.vim` 文件，这样可以在所有插件加载后再应用 GUI 设置。
 
-### 更新插件
+## 使用建议
 
-运行 `:PlugUpdate` 或使用快捷键 `<leader>pu` 更新所有插件。
+1. **插件管理**：推荐使用 `pack/` 目录或插件管理器（如 vim-plug、Vundle）来管理插件
+2. **文件类型配置**：将特定文件类型的配置放在 `ftplugin/` 目录
+3. **覆盖系统设置**：需要覆盖系统默认设置时，使用 `after/` 目录
+4. **性能优化**：将可以延迟加载的脚本放在 `autoload/` 目录
+5. **字体配置**：**推荐放在主配置文件 `vimrc.vim` 中**，使用 `has('gui_running')` 条件判断
 
-### 删除插件
+## 参考
 
-1. 从 `config/plugins/plugins.vim` 中删除插件行
-2. 运行 `:PlugClean` 或使用快捷键 `<leader>pc` 清理未使用的插件
+- Vim 官方文档：`:help runtimepath`
+- Vim 官方文档：`:help packages`

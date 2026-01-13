@@ -1,294 +1,137 @@
 {
-  // coc.nvim 全局配置文件
-  // 位置：~/.vim/coc-settings.json
-  // 文档：:h coc-config
-  // 打开此文件：:CocConfig 或 :C
+  // ============================================================================
+  // coc.nvim 配置文件
+  // 文件位置: ~/.vim/coc-settings.json (或 ~/.config/coc/coc-settings.json)
+  // 说明: 此文件用于配置 coc.nvim 及其扩展的行为
+  // 注意: JSON 文件支持注释（coc.nvim 扩展支持）
+  // ============================================================================
 
-  // ============================================================
-  // 片段补全配置
-  // ============================================================
-  // 当使用 UltiSnips 片段补全时，在某些 Python 环境下可能会显示一个额外的提示或确认对话框
-  // 设置为 false：禁用这种特定的提示行为，让片段补全更加流畅，减少中断
-  "snippets.ultisnips.pythonPrompt": false,
+  // ============================================================================
+  // 基础配置
+  // ============================================================================
 
-  // ============================================================
-  // 诊断功能
-  // ============================================================
-  // 启用诊断功能（错误、警告等）
-  "diagnostic.enable": true,
-  // 配置诊断信息在行号旁显示的符号
-  "diagnostic.errorSign": "E",
-  "diagnostic.warningSign": "W",
-  "diagnostic.infoSign": "I",
-  "diagnostic.hintSign": "H",
-  // 虚拟文本显示诊断信息（可能错位，影响阅读）
-  "diagnostic.virtualText": false,
-  // 禁用特定文件类型的诊断源
-  "diagnostic.disableSources": {
-    "json": ["eslint"],
-    "jsonc": ["eslint"]
-  },
-
-  // ============================================================
-  // 自动补全配置
-  // ============================================================
-  // 自动补全建议的触发方式
-  "suggest.autoTrigger": "always",
-  // 自动补全的超时时间（毫秒）
-  "suggest.timeout": 500,
-  // 禁止自动选中第一个补全项
+  // 补全相关配置
   "suggest.noselect": true,
-  // 启用补全项的预览窗口
   "suggest.enablePreview": true,
-  // 禁止自动预选补全项
-  "suggest.enablePreselect": false,
-  // 最大补全项数量
-  "coc.preferences.maxCompleteItemCount": 20,
-  // 使用代码片段文本编辑
-  "coc.preferences.snippetTextEdit": true,
-  // 使用 quickfix 位置列表
-  "coc.preferences.useQuickfixForLocations": false,
+  "suggest.enablePreselect": true,
+  "suggest.disableKind": false,
+  "suggest.timeout": 500,
 
-  // ============================================================
-  // 代码操作功能
-  // ============================================================
-  // 启用代码操作（Code Action），如快速修复、重构等
-  "codeAction.enable": true,
-  // 代码操作选择器（显示所有可用的代码操作）
-  "codeAction.showPreferredActions": true,
-  // 代码操作超时时间（毫秒）
-  "codeAction.timeout": 5000,
+  // 诊断相关配置
+  "diagnostic.enable": true,
+  "diagnostic.errorSign": "✗",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
+  "diagnostic.virtualText": true,
+  "diagnostic.messageTarget": "echo",
 
-  // ============================================================
-  // 格式化配置
-  // ============================================================
-  // 保存时自动格式化（全局）
-  "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveTimeout": 2000,
-  // 按文件类型设置格式化（仅当有格式化工具时）
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "json",
-    "go",
-    "python",
-    "vue"
-  ],
+  // 代码片段相关配置
+  "snippets.ultisnips.enable": false,
+  "snippets.ultisnips.directories": [],
 
-  // ============================================================
-  // JavaScript / TypeScript 语言服务
-  // ============================================================
-  // 启用并优化 coc-tsserver 的体验
-  "tsserver.enable": true,
-  // 自动识别 Node 模块中的 TypeScript 版本
-  "tsserver.tsdk": "",
-  // 提升大型项目下的 tsserver 内存上限（单位：MB）
-  "tsserver.maxTsServerMemory": 4096,
-  // 输入时启用格式化，获得接近 VS Code 的体验
-  "tsserver.formatOnType": true,
-  // 减少文件监听开销（Windows 下建议使用 useFsEvents）
-  "tsserver.watchOptions": {
-    "watchFile": "useFsEvents",
-    "watchDirectory": "useFsEvents"
-  },
-  // TypeScript 语言偏好
-  "typescript.suggestionActions.enabled": true,
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "typescript.preferences.includePackageJsonAutoImports": "auto",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  // JavaScript 语言偏好
-  "javascript.suggestionActions.enabled": true,
-  "javascript.preferences.importModuleSpecifier": "auto",
-  "javascript.preferences.quoteStyle": "auto",
+  // 语言服务器相关配置
+  "languageserver": {},
 
-  // ============================================================
-  // ESLint 配置
-  // ============================================================
-  // 启用 ESLint
-  "eslint.enable": true,
-  // 禁用 JSON 文件的 ESLint 检查（JSON 文件应该使用 JSON 语言服务器，而不是 ESLint）
-  // 只验证以下文件类型，不包含 json 和 jsonc
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
-  // 忽略 JSON 和 JSONC 文件的 ESLint 检查（使用 glob 模式）
-  "eslint.ignorePatterns": ["**/*.json", "**/*.jsonc"],
-  // 明确禁用对 JSON 文件类型的支持
-  "eslint.probe": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
+  // ============================================================================
+  // 扩展配置示例（根据需要取消注释并配置）
+  // ============================================================================
 
-  // ============================================================
-  // Python 语言支持（coc-pyright 驱动）
-  // ============================================================
-  // Pyright 核心开关
-  "pyright.enable": true,
-  "pyright.disableLanguageServices": false,
-  "pyright.disableOrganizeImports": false,
-  "pyright.trace.server": "off",
-  // 默认解释器：留空表示让 coc-pyright 自动探测（优先虚拟环境）
-  // 如需固定解释器，可填写绝对路径，例如：
-  // "python.defaultInterpreterPath": "C:/Users/Leo/AppData/Local/Programs/Python/Python311/python.exe"
-  "python.defaultInterpreterPath": "",
-  // 指定常用虚拟环境位置，方便 Pyright 自动解析
-  "python.venvPath": "",
-  "python.venv": ".venv",
-  // Pyright 分析能力
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.autoSearchPaths": true,
-  "python.analysis.useLibraryCodeForTypes": true,
-  "python.analysis.completeFunctionParens": true,
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.organizeImports": true,
-  "python.analysis.suggestActions": true,
-  "python.analysis.indexing": true,
-  // 额外搜索目录（按需追加，保持为空数组即可）
-  "python.analysis.extraPaths": [],
-  // 忽略分析的路径，避免虚拟环境/缓存目录反复扫描
-  "python.analysis.exclude": [
-    "**/.git",
-    "**/.hg",
-    "**/.mypy_cache",
-    "**/.pytest_cache",
-    "**/.ruff_cache",
-    "**/.venv",
-    "**/__pycache__",
-    "**/build",
-    "**/dist",
-    "**/node_modules",
-    "**/.idea",
-    "**/.vscode",
-    "**/modules"
-  ],
-  // 诊断严重性覆盖
-  "python.analysis.diagnosticSeverityOverrides": {
-    "reportMissingImports": "warning",
-    "reportMissingTypeStubs": "none"
-  },
-  // Inlay Hints：在 Pyright 中启用更丰富的提示
-  "python.analysis.inlayHints.callArgumentNames": "partial",
-  "python.analysis.inlayHints.functionReturnTypes": true,
-  "python.analysis.inlayHints.variableTypes": true,
+  // Go 语言支持（需要安装 coc-go）
+  // "go.gopath": "",
+  // "go.goroot": "",
+  // "go.useLanguageServer": true,
+  // 禁用 gopls 更新检查
+  "go.checkForUpdates": "disable",
 
-  // ============================================================
-  // Python 替代方案：Pylsp（如果 Pyright 不工作，可以尝试）
-  // ============================================================
-  // 如果 coc-pyright 无法正常工作，可以尝试安装 @yaegassy/coc-pylsp
-  // 安装命令: :CocInstall @yaegassy/coc-pylsp
-  // 注意：扩展名是 @yaegassy/coc-pylsp，不是 coc-pylsp
-  // 然后取消下面的注释并注释掉上面的 pyright 配置
-  // "pylsp.plugins.jedi_completion.enabled": true,
-  // "pylsp.plugins.jedi_completion.include_params": true,
-  // "pylsp.plugins.pylint.enabled": false,
-  // "pylsp.plugins.autopep8.enabled": false,
-  // "pylsp.plugins.yapf.enabled": false,
-  // // Pylsp 自动导入配置
-  // "pylsp.plugins.jedi_completion.fuzzy": true,
-  // "pylsp.plugins.jedi_completion.eager": false,
+  // Python 语言支持（需要安装 coc-python）
+  // "python.linting.enabled": true,
+  // "python.linting.pylintEnabled": false,
+  // "python.linting.flake8Enabled": true,
 
-  // ============================================================
-  // Vue 语言支持（Vetur）
-  // ============================================================
-  // Vetur 是 Vue.js 的官方 LSP 扩展，支持 Vue 2 和 Vue 3
-  // 使用工作区的依赖项（优先使用项目本地的 Vue 版本）
-  "vetur.useWorkspaceDependencies": true,
-  // 自动导入模块的补全
-  "vetur.completion.autoImport": true,
-  // 启用 Vetur 内置的脚手架代码片段
-  "vetur.completion.useScaffoldSnippets": true,
-  // 标签补全的大小写风格（kebab-case: my-component）
-  "vetur.completion.tagCasing": "kebab",
-  // 验证配置（可根据需要调整）
-  "vetur.validation.script": true, // 验证 <script> 中的 JavaScript/TypeScript
-  "vetur.validation.template": true, // 验证 <template> 中的 Vue HTML
-  "vetur.validation.style": true, // 验证 <style> 中的 CSS/SCSS/LESS/PostCSS
-  // 格式化配置
-  "vetur.format.enable": true,
-  "vetur.format.defaultFormatter.html": "prettier",
-  "vetur.format.defaultFormatter.css": "prettier",
-  "vetur.format.defaultFormatter.postcss": "prettier",
-  "vetur.format.defaultFormatter.scss": "prettier",
-  "vetur.format.defaultFormatter.less": "prettier",
-  "vetur.format.defaultFormatter.stylus": "stylus-supremacy",
-  "vetur.format.defaultFormatter.js": "prettier",
-  "vetur.format.defaultFormatter.ts": "prettier",
-  // 实验性功能（Vue 3 支持）
-  "vetur.experimental.templateInterpolationService": true,
+  // TypeScript/JavaScript 支持（需要安装 coc-tsserver）
+  // "typescript.preferences.importModuleSpecifier": "relative",
+  // "javascript.preferences.importModuleSpecifier": "relative",
 
-  // ============================================================
-  // Go 语言支持
-  // ============================================================
-  // 使用 gopls 作为 Go 语言服务器
-  "go.useLanguageServer": true,
-  // 禁用 gopls 自动更新检查（避免网络问题导致的错误提示）
-  "go.enableAutoUpdate": false,
-  // gopls 配置
-  "gopls": {
-    // 启用静态检查（staticcheck）
-    "staticcheck": true,
-    // 自动完成未导入的包
-    "completeUnimported": true,
-    // 使用占位符
-    "usePlaceholders": true,
-    // 工作区模式：允许在单个工作区中处理多个模块
-    "build.buildFlags": [],
-    // 目录配置：帮助 gopls 找到 Go 模块
-    "build.directoryFilters": ["-**/node_modules", "-**/.git"],
-    // 启用代码分析
-    "analyses": {
-      // 检测未使用的参数
-      "unusedparams": true,
-      // 检测未使用的写入
-      "unusedwrite": true,
-      // 检测未使用的变量
-      "unusedvariable": true,
-      // 检测未声明的名称（包括缺失的方法） - 重要：启用方法缺失检测
-      "undeclaredname": true,
-      // 检测未使用的导入
-      "unusedimports": true,
-      // 检测字段对齐问题
-      "fieldalignment": false,
-      // 检测 nil 函数调用
-      "nilness": true,
-      // 检测不必要的错误检查
-      "unusedresult": true
-    }
-  },
-  // 如果需要自定义 gopls 配置，可以使用 languageserver 配置
-  // "languageserver": {
-  //   "go": {
-  //     "command": "gopls",
-  //     "args": [],
-  //     "filetypes": ["go"],
-  //     "initializationOptions": {
-  //       "usePlaceholders": true,
-  //       "completeUnimported": true,
-  //       "staticcheck": true
-  //     },
-  //     "settings": {
-  //       "gopls": {
-  //         "usePlaceholders": true,
-  //         "completeUnimported": true,
-  //         "staticcheck": true
-  //       }
-  //     }
-  //   }
-  // },
+  // JSON 支持（需要安装 coc-json）
+  // "json.schemas": [],
+  // "json.enable": true,
 
-  // ============================================================
+  // ============================================================================
   // 其他配置
-  // ============================================================
-  // 禁用内联提示（可选）
-  "inlayHint.enable": false
-  // 如果需要指定 clangd 路径（Windows 示例）
-  // "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.0\\clangd_21.1.0\\bin\\clangd.exe"
+  // ============================================================================
+
+  // 工作区配置
+  "workspace.ignoredFolders": [
+    "**/.git",
+    "**/node_modules",
+    "**/.vim"
+  ],
+
+  // 文件监听配置
+  "coc.preferences.rootPatterns": [
+    ".git",
+    ".vim",
+    ".hg"
+  ],
+
+  // 代码格式化配置
+  "coc.preferences.formatOnSave": false,
+  "coc.preferences.formatOnType": false,
+
+  // 代码操作配置
+  "coc.preferences.codeLens.enable": true,
+
+  // 补全触发字符
+  "coc.preferences.triggerCharacters": [
+    ".",
+    ":",
+    "$",
+    "#",
+    "@"
+  ],
+
+  // ============================================================================
+  // 扩展更新检查配置
+  // ============================================================================
+
+  // 禁用扩展自动更新检查（包括 gopls）
+  // 可选值: "never" (从不检查), "daily" (每天检查), "weekly" (每周检查)
+  "extensions.updateCheck": "never",
+
+  // 兼容旧版本配置（已弃用，但保留以确保兼容性）
+  "coc.preferences.extensionUpdateCheck": "never",
+
+  // ============================================================================
+  // 扩展自动更新配置
+  // ============================================================================
+  
+  // extensionAutoUpdate: 控制已安装的扩展是否自动更新
+  // - true: 已安装的扩展会自动更新到最新版本（无需手动执行 :CocUpdate）
+  // - false: 需要手动执行 :CocUpdate 来更新扩展（默认值）
+  // 注意：此选项只影响已安装扩展的更新，不影响扩展的初始安装
+  "coc.preferences.extensionAutoUpdate": false,
+
+  // ============================================================================
+  // 关于 coc.nvim 原生推荐安装功能
+  // ============================================================================
+  //
+  // coc.nvim 确实有原生功能来自动安装推荐的扩展！
+  // 需要在 Vim 配置文件中定义 g:coc_global_extensions 变量
+  //
+  // 示例（在 ~/.vim/after/plugin/coc.vim 中添加）：
+  // let g:coc_global_extensions = [
+  //       \ 'coc-go',
+  //       \ 'coc-json',
+  //       \ 'coc-vimlsp',
+  //       \ 'coc-sh',
+  //       \ 'coc-yaml'
+  //       \ ]
+  //
+  // 当定义了这个变量后，coc.nvim 会在启动时自动检查并安装这些扩展
+  // （如果它们还没有安装的话）
+  //
+  // 注意：extensionAutoUpdate 和 g:coc_global_extensions 是两个不同的功能：
+  // - g:coc_global_extensions: 控制哪些扩展应该被自动安装（首次安装）
+  // - extensionAutoUpdate: 控制已安装扩展是否自动更新
 }
