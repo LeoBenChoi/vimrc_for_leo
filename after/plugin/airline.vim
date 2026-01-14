@@ -51,7 +51,7 @@ let g:airline#extensions#branch#enabled = 1
 " ============================================================================
 
 " 不显示 'utf-8[unix]' 这种显而易见的信息，除非它不是 utf-8
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+"let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
 " 简化符号 (可选)
 if !exists('g:airline_symbols')
@@ -61,3 +61,30 @@ endif
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = '🔒'
 let g:airline_symbols.dirty='⚡'
+
+" ============================================================================
+" 5. 右侧状态栏显示优化 (Section Z)
+" ============================================================================
+
+" 获取当前光标下字符的十六进制值（简化逻辑）
+function! GetHexChar()
+    let l:line = getline('.')
+    let l:col = col('.') - 1
+    " 检查列号是否在行内，如果不在则字符不存在，返回 NULL
+    if l:col >= len(l:line) || l:col < 0
+        return 'NULL'
+    endif
+    let l:char = l:line[l:col]
+    let l:code = char2nr(l:char)
+    return printf("0x%02X", l:code)
+endfunction
+
+" 优化右侧状态栏显示格式：百分比 + 行号/总行数:列号 + 当前字符十六进制
+" 格式说明：
+"   %p%%   : 文件位置百分比
+"   %l     : 当前行号
+"   %L     : 文件总行数
+"   %v     : 当前列号
+"   %{GetHexChar()} : 当前字符的十六进制值（小写，无前缀）
+" 显示效果：50% 123/456:45 41
+let g:airline_section_z = '%3p%% %l/%L:%02v|%{GetHexChar()}'
