@@ -43,6 +43,8 @@
   // "go.useLanguageServer": true,
   // 禁用 gopls 更新检查
   "go.checkForUpdates": "disable",
+  // 注意：formatOnType 和 formatOnSave 应通过 coc.preferences 配置，而不是 go.goplsOptions
+  // 已在下方通过 "coc.preferences.formatOnType": false 和 "coc.preferences.formatOnSave": false 禁用
 
   // Python 语言支持（需要安装 coc-python）
   // "python.linting.enabled": true,
