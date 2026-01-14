@@ -19,10 +19,10 @@
 
   // 诊断相关配置
   "diagnostic.enable": true,
-  "diagnostic.errorSign": "✗",
-  "diagnostic.warningSign": "⚠",
-  "diagnostic.infoSign": "ℹ",
-  "diagnostic.hintSign": "➤",
+  "diagnostic.errorSign": "x",
+  "diagnostic.warningSign": "!",
+  "diagnostic.infoSign": "i",
+  "diagnostic.hintSign": ">",
   "diagnostic.virtualText": true,
   "diagnostic.messageTarget": "echo",
 
