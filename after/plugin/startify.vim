@@ -60,6 +60,8 @@ let g:startify_enable_unsafe = 1
 "   - 在线生成ASCII艺术字 https://www.lddgo.net/string/text-to-ascii-art
 " ============================================================================
 
+" 启动时间函数已移至 autoload/startup_time.vim
+
 function! s:load_random_header()
     " 1. 定义存放 txt 文件的目录
     let l:header_dir = g:vim_home_path . '/header_files'
@@ -68,26 +70,38 @@ function! s:load_random_header()
     " glob() 的第二个参数 0 表示不忽略大小写，第三个参数 1 表示返回列表
     let l:files = glob(l:header_dir . '/*.txt', 0, 1)
 
-    " 3. 安全检查：如果目录为空，使用默认文本
+    " 3. 初始化 header 列表
+    let l:header = []
+
+    " 4. 安全检查：如果目录为空，使用默认文本
     if empty(l:files)
-        return [
+        let l:header = [
             \ '   No header files found in ~/.vim/header_files   ',
             \ '   Please add some .txt files to that directory.  ',
             \ ]
+    else
+        " 5. 随机选择一个文件
+        " localtime() 返回当前秒数，用它作为随机种子
+        let l:random_index = localtime() % len(l:files)
+        let l:selected_file = l:files[l:random_index]
+
+        " 6. 读取文件内容
+        " readfile() 会直接把文件内容读成一个 List，正好符合 startify 的要求
+        let l:header = readfile(l:selected_file)
     endif
 
-    " 4. 随机选择一个文件
-    " localtime() 返回当前秒数，用它作为随机种子
-    let l:random_index = localtime() % len(l:files)
-    let l:selected_file = l:files[l:random_index]
+    " 7. 在 header 底部添加启动时间
+    " 先添加一个空行作为分隔，然后添加启动时间
+    call add(l:header, '')
+    call add(l:header, startup_time#get_formatted_string())
 
-    " 5. 读取文件内容并返回
-    " readfile() 会直接把文件内容读成一个 List，正好符合 startify 的要求
-    return readfile(l:selected_file)
+    " 8. 返回完整的 header（包含启动时间）
+    return l:header
 endfunction
 
-" 应用配置：每次启动时随机选择一个 Logo
+" 应用配置：每次启动时随机选择一个 Logo，并在底部显示启动时间
 let g:startify_custom_header = s:load_random_header()
+
 
 
 

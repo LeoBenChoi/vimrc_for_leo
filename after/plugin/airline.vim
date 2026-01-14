@@ -88,3 +88,82 @@ endfunction
 "   %{GetHexChar()} : 当前字符的十六进制值（小写，无前缀）
 " 显示效果：50% 123/456:45 41
 let g:airline_section_z = '%3p%% %l/%L:%02v|%{GetHexChar()}'
+
+" ============================================================================
+" 6. 启动时间显示（10秒后自动关闭）
+" ============================================================================
+
+" 计算并更新启动时间显示
+function! s:UpdateStartupTime() abort
+    if !exists('g:start_time')
+        return
+    endif
+    
+    " 使用 autoload 函数获取格式化的启动时间
+    let g:startup_time_display = startup_time#get_airline_string()
+endfunction
+
+" 初始化启动时间显示
+function! s:AirlineStartupTimeInit() abort
+    if !exists(':AirlineRefresh')
+        return
+    endif
+    
+    " 如果用户已经在文件开头直接设置了 g:airline_section_z，则不再修改
+    " 检查是否包含启动时间，如果没有则添加
+    if exists('g:airline_section_z') && g:airline_section_z !~# 'startup_time_display'
+        " 在现有配置后添加启动时间
+        let g:airline_section_z = g:airline_section_z . ' %{get(g:, "startup_time_display", "")}'
+    elseif !exists('g:airline_section_z')
+        " 如果没有设置，使用简单格式
+        let g:airline_section_z = '%3p%% %l/%L:%02v|%{GetHexChar()} %{get(g:, "startup_time_display", "")}'
+    endif
+    
+    " 计算启动时间
+    call s:UpdateStartupTime()
+    
+    " 刷新状态栏
+    if exists(':AirlineRefresh')
+        execute 'AirlineRefresh'
+    endif
+endfunction
+
+" 在 airline 初始化后设置启动时间显示
+autocmd User AirlineAfterInit call s:AirlineStartupTimeInit()
+
+" 如果 airline 已经初始化，立即设置启动时间显示
+" 这处理了 airline.vim 在 airline 初始化之后加载的情况
+if exists(':AirlineRefresh')
+    call s:AirlineStartupTimeInit()
+endif
+
+" 在 Vim 完全启动后更新启动时间（此时所有插件都已加载）
+autocmd VimEnter * call s:UpdateStartupTime() | if exists(':AirlineRefresh') | call s:AirlineStartupTimeInit() | endif
+
+" 延迟初始化：确保在插件完全加载后设置启动时间显示
+" 使用延迟执行，确保 airline 已经完全初始化
+if has('timers')
+    " 延迟 100ms 后初始化，确保 airline 已完全加载
+    call timer_start(100, {-> s:AirlineStartupTimeInit()}, {'repeat': 1})
+endif
+
+" 10 秒后清除启动时间显示
+function! s:ClearStartupTime() abort
+    if !exists(':AirlineRefresh')
+        return
+    endif
+    let g:startup_time_display = ''
+    " 如果用户已经设置了 g:airline_section_z，移除启动时间部分
+    if exists('g:airline_section_z')
+        let g:airline_section_z = substitute(g:airline_section_z, ' %{get(g:, "startup_time_display", "")}', '', '')
+    endif
+    " 刷新状态栏
+    if exists(':AirlineRefresh')
+        execute 'AirlineRefresh'
+    endif
+endfunction
+
+" 使用定时器在 10 秒后清除显示
+if has('timers')
+    let s:startup_timer = timer_start(10000, {-> s:ClearStartupTime()}, {'repeat': 1})
+endif
