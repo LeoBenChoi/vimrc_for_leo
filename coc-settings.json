@@ -22,10 +22,10 @@
   // 启用诊断功能（错误、警告等）
   "diagnostic.enable": true,
   // 配置诊断信息在行号旁显示的符号
-  "diagnostic.errorSign": "E",
-  "diagnostic.warningSign": "W",
-  "diagnostic.infoSign": "I",
-  "diagnostic.hintSign": "H",
+  // "diagnostic.errorSign": "✗",
+  // "diagnostic.warningSign": "⚠",
+  // "diagnostic.infoSign": "ℹ",
+  // "diagnostic.hintSign": ">>",
   // 虚拟文本显示诊断信息（可能错位，影响阅读）
   "diagnostic.virtualText": false,
   // 禁用特定文件类型的诊断源
