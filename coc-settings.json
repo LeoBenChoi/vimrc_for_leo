@@ -62,5 +62,21 @@
   // 代码操作选择器（显示所有可用的代码操作）
   "codeAction.showPreferredActions": true,
   // 代码操作超时时间（毫秒）
-  "codeAction.timeout": 5000
+  "codeAction.timeout": 5000,
+
+   // ============================================================
+  // 格式化配置
+  // ============================================================
+  // 保存时自动格式化（全局）
+  "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnSaveTimeout": 2000, // 保存时自动格式化超时时间（毫秒）
+  // 按文件类型设置格式化（仅当有格式化工具时）
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "json",
+    "go",
+    "python",
+    "vue"
+  ]
 }
