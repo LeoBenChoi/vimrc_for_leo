@@ -14,9 +14,39 @@
 let g:airline_powerline_fonts = 1
 
 " 设置主题
-" 如果你之前安装了 seoul256，这里可以用 'seoul256'
-" 其他好看的推荐: 'gruvbox', 'desert', 'molokai', 'dracula'
-let g:airline_theme = 'seoul256'
+" 根据运行模式选择不同的主题：
+" - GUI 模式（gvim）：使用 luna 主题
+" - 终端模式：使用 seoul256（适合终端）
+if has('gui_running')
+    " GUI 模式使用 luna 主题
+    let g:airline_theme = 'luna'
+else
+    " 终端模式使用 seoul256
+    let g:airline_theme = 'seoul256'
+endif
+
+" 安全加载主题：如果主题不存在，回退到默认主题
+function! s:SafeLoadAirlineTheme() abort
+    if !exists('g:airline_theme')
+        return
+    endif
+    
+    " 检查主题是否存在
+    let l:theme_name = g:airline_theme
+    let l:theme_var = 'g:airline#themes#' . l:theme_name . '#palette'
+    
+    " 如果主题不存在，回退到 'luna'（GUI）或 'seoul256'（终端）
+    if !exists(l:theme_var)
+        if has('gui_running')
+            let g:airline_theme = 'luna'
+        else
+            let g:airline_theme = 'seoul256'
+        endif
+    endif
+endfunction
+
+" 在 Airline 初始化前检查主题
+autocmd User AirlineBeforeInit call s:SafeLoadAirlineTheme()
 
 " ============================================================================
 " 2. Tabline 设置 (顶部的 Buffer 标签栏)
