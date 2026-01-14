@@ -79,10 +79,6 @@ call plug#begin(g:vim_home_path . '/plugged')
     " 按需加载，不影响启动速度
     Plug 'sheerun/vim-polyglot'
     
-    " --- Go 开发环境 ---
-    " 锁定 Tag 版本以求稳定，同时更新二进制工具
-    "Plug 'fatih/vim-go', { 'tag': '*', 'do': ':GoUpdateBinaries' }
-    
     " --- 智能补全 (LSP) ---
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'npm ci'}
 
