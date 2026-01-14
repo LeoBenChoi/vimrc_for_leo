@@ -83,6 +83,8 @@ nnoremap <C-i> <C-i>zz
 
 " 在插入模式下使用 jk 退出插入模式
 inoremap jk <ESC>
+inoremap kj <ESC>
 
 " 在命令行模式下使用 jk 退出
 cnoremap jk <C-c>
+cnoremap kj <C-c>

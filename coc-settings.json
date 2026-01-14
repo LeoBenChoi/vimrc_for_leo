@@ -67,24 +67,11 @@
    // ============================================================
   // 格式化配置
   // ============================================================
-  // 保存时自动格式化（全局）
-  "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveTimeout": 2000, // 保存时自动格式化超时时间（毫秒）
-  // 按文件类型设置格式化（仅当有格式化工具时）
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "json",
-    "go",
-    "python",
-    "vue"
-  ],
+  // 注意：已禁用 formatOnSave，改为在保存前通过 autocmd 调用 :Format 命令
+  "coc.preferences.formatOnSave": false
 
   // ============================================================
   // gopls 配置
   // ============================================================
-  // 禁用 gopls 的更新检查
-  "gopls": {
-    "checkForUpdates": false
-  }
+  // 注意：checkForUpdates 选项在当前版本的 coc.nvim 中已不再支持，已移除
 }

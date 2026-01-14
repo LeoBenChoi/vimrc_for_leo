@@ -169,6 +169,64 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
 
+" ============================================================================
+" 保存前自动格式化配置
+" ============================================================================
+" 在保存文件前先调用 :Format 命令进行格式化
+" 支持的文件类型：javascript, typescript, json, go, python, vue
+" 设置 g:coc_format_on_save_debug = 1 可以启用调试信息
+function! s:FormatOnSave()
+  " 检查 coc.nvim 是否已加载并可用
+  if !exists('*CocAction')
+    if get(g:, 'coc_format_on_save_debug', 0)
+      echo "FormatOnSave: CocAction 函数不存在"
+    endif
+    return
+  endif
+  
+  " 检查 coc.nvim 是否已连接
+  if !coc#rpc#ready()
+    if get(g:, 'coc_format_on_save_debug', 0)
+      echo "FormatOnSave: coc.nvim RPC 未就绪"
+    endif
+    return
+  endif
+  
+  " 检查当前文件类型是否支持格式化
+  let l:filetypes = ['javascript', 'typescript', 'json', 'go', 'python', 'vue', 'javascriptreact', 'typescriptreact']
+  if index(l:filetypes, &filetype) == -1
+    if get(g:, 'coc_format_on_save_debug', 0)
+      echo "FormatOnSave: 文件类型 " . &filetype . " 不支持格式化"
+    endif
+    return
+  endif
+  
+  " 检查是否有格式化提供者（可选，某些情况下可能检查失败但格式化仍可用）
+  " 如果检查失败，仍然尝试格式化
+  let l:has_provider = CocHasProvider('formatting')
+  if !l:has_provider && get(g:, 'coc_format_on_save_debug', 0)
+    echo "FormatOnSave: 警告 - 未检测到格式化提供者，但仍将尝试格式化"
+  endif
+  
+  " 调用格式化命令（同步执行，确保在保存前完成）
+  " 使用 silent! 避免错误信息打断保存流程
+  try
+    call CocAction('format')
+    if get(g:, 'coc_format_on_save_debug', 0)
+      echo "FormatOnSave: 格式化成功"
+    endif
+  catch /.*/
+    if get(g:, 'coc_format_on_save_debug', 0)
+      echo "FormatOnSave: 格式化失败 - " . v:exception
+    endif
+  endtry
+endfunction
+
+augroup coc_format_on_save
+  autocmd!
+  autocmd BufWritePre * call s:FormatOnSave()
+augroup end
+
 " Add `:Fold` command to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
@@ -240,7 +298,7 @@ if exists('g:loaded_go')
   
   " 格式化工具（gofmt）
   let g:go_fmt_command = 'goimports'  " 使用 goimports 自动管理导入
-  let g:go_fmt_autosave = 1           " 保存时自动格式化
+  let g:go_fmt_autosave = 0           " 保存时自动格式化
   let g:go_fmt_fail_silently = 0      " 格式化失败时显示错误
   
   " 测试相关
