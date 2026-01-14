@@ -5,74 +5,95 @@
 " ============================================================================
 
 " https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.vim
-" 注意：g:coc_config_home 已在 vimrc.vim 中设置
 
-" Vim（非 Neovim）可能需要，因为 coc.nvim 通过计算 utf-8 字节序列来计算字节偏移
+" 设置 coc.nvim 配置文件路径
+" 指定 coc-settings.json 文件所在目录
+let g:coc_config_home = expand('~/.vim')
+
+let g:coc_global_extensions = [
+      \ 'coc-json',
+      \ 'coc-snippets',
+      \ '@yaegassy/coc-pylsp',
+      \ 'coc-tsserver',
+      \ 'coc-go',
+      \ 'coc-html',
+      \ 'coc-css',
+      \ 'coc-eslint',
+      \ 'coc-prettier',
+      \ 'coc-clangd',
+      \ 'coc-phpls',
+      \ 'coc-vetur',
+      \ ]
+" 扩展说明：
+"   coc-json          - JSON 支持
+"   coc-snippets      - 代码片段支持
+"   coc-pyright       - Python LSP（基于 Pyright）
+"   @yaegassy/coc-pylsp - Python LSP（基于 Pylsp，Pyright 的替代方案）
+"   coc-tsserver      - JavaScript/TypeScript LSP
+"   coc-go            - Go LSP
+"   coc-html          - HTML 支持
+"   coc-css           - CSS 支持
+"   coc-eslint        - ESLint 集成
+"   coc-prettier      - 代码格式化
+"   coc-clangd        - C/C++ LSP
+"   coc-phpls         - PHP LSP
+"   coc-vetur         - Vue.js LSP（支持 Vue 2 和 Vue 3）
+
+" May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
+" utf-8 byte sequence
 set encoding=utf-8
-" 某些服务器对备份文件有问题，参见 #649
+" Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
 
-" 更长的更新间隔（默认是 4000 毫秒 = 4 秒）会导致明显的延迟和糟糕的用户体验
+" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+" delays and poor user experience
 set updatetime=300
 
-" 始终显示标记列，否则每次诊断出现/解决时都会移动文本
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
 set signcolumn=yes
 
-" 使用 Tab 键触发补全并导航
-" 注意：默认情况下总是有补全项被选中，你可能想要通过配置文件中设置
-" `"suggest.noselect": true` 来启用不自动选择
-" 注意：在将此配置放入你的配置文件之前，使用命令 ':verbose imap <tab>' 
-" 来确保 Tab 键没有被其他插件映射
-"
-" CheckBackspace 函数必须在 Tab 映射之前定义
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" 使 <CR> 接受选中的补全项或执行正常换行
-" 修复：移除 coc#on_enter() 调用，避免在某些位置阻塞 Enter 键
-" coc#on_enter() 主要用于触发代码操作，不是必需的，移除后 Enter 键会更可靠
-function! s:SmartCR() abort
-  " 如果补全菜单可见，确认补全
-  if exists('*coc#pum#visible') && coc#pum#visible()
-    return coc#pum#confirm()
-  endif
-  
-  " 否则执行正常的回车
-  " <C-g>u 会中断当前的撤销操作，允许在插入模式下撤销
-  " 移除 coc#on_enter() 调用，避免在某些位置（如 { 后、} 后）阻塞
-  return "\<C-g>u\<CR>"
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent><expr> <CR> <SID>SmartCR()
-
-" 使用 <c-space> 触发补全
+" Use <c-space> to trigger completion
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" 使用 `[g` 和 `]g` 导航诊断信息
-" 使用 `:CocDiagnostics` 在位置列表中获取当前缓冲区的所有诊断信息
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
 nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 
-" 代码导航
+" GoTo code navigation
 nmap <silent><nowait> gd <Plug>(coc-definition)
 nmap <silent><nowait> gy <Plug>(coc-type-definition)
 nmap <silent><nowait> gi <Plug>(coc-implementation)
 nmap <silent><nowait> gr <Plug>(coc-references)
 
-" 使用 K 在预览窗口显示文档
+" Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
@@ -83,47 +104,44 @@ function! ShowDocumentation()
   endif
 endfunction
 
-" 当光标停留时高亮符号及其引用
+" Highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" 符号重命名
+" Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
 
-" 格式化选中的代码
+" Formatting selected code
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
-  " 为指定的文件类型设置 formatexpr
+  " Setup formatexpr specified filetype(s)
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  
-  " 注意：Go 文件的配置已移至 ~/.vim/ftplugin/go.vim
-  " 这样可以更好地组织文件类型特定的配置
 augroup end
 
-" 对选中的代码块应用代码操作
-" 示例：`<leader>aap` 用于当前段落
+" Applying code actions to the selected code block
+" Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" 重新映射键位以在光标位置应用代码操作
+" Remap keys for applying code actions at the cursor position
 nmap <leader>ac  <Plug>(coc-codeaction-cursor)
-" 重新映射键位以应用影响整个缓冲区的代码操作
+" Remap keys for apply code actions affect whole buffer
 nmap <leader>as  <Plug>(coc-codeaction-source)
-" 应用最优先的 quickfix 操作来修复当前行的诊断问题
+" Apply the most preferred quickfix action to fix diagnostic on the current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" 重新映射键位以应用重构代码操作
+" Remap keys for applying refactor code actions
 nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
 xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
-" 在当前行运行 Code Lens 操作
+" Run the Code Lens action on the current line
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" 映射函数和类的文本对象
-" 注意：需要语言服务器支持 'textDocument.documentSymbol'
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -133,7 +151,7 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" 重新映射 <C-f> 和 <C-b> 来滚动浮动窗口/弹出窗口
+" Remap <C-f> and <C-b> to scroll float windows/popups
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
@@ -143,91 +161,115 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" 使用 CTRL-S 进行选择范围
-" 需要语言服务器支持 'textDocument/selectionRange'
+" Use CTRL-S for selections ranges
+" Requires 'textDocument/selectionRange' support of language server
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" 添加 `:Format` 命令来格式化当前缓冲区
+" Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
 
-" 添加 `:Fold` 命令来折叠当前缓冲区
+" Add `:Fold` command to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" 添加 `:OR` 命令来整理当前缓冲区的导入
+" Add `:OR` command for organize imports of the current buffer
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-" 添加 (Neo)Vim 原生的状态行支持
-" 注意：请参阅 `:h coc-status` 了解与提供自定义状态行的外部插件的集成：
-" lightline.vim, vim-airline
+" Add (Neo)Vim's native statusline support
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" CoCList 的键位映射
-" 显示所有诊断信息
+" Mappings for CoCList
+" Show all diagnostics
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" 管理扩展
+" Manage extensions
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" 显示命令
+" Show commands
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" 查找当前文档的符号
+" Find symbol of current document
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" 搜索工作区符号
+" Search workspace symbols
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" 对下一项执行默认操作
+" Do default action for next item
 nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" 对上一项执行默认操作
+" Do default action for previous item
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" 恢复最新的 coc 列表
+" Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 " ============================================================================
-" coc.nvim 原生推荐安装功能（可选）
+" vim-go 配置（与 coc-go 兼容）
 " ============================================================================
-"
-" coc.nvim 提供了原生功能来自动安装推荐的扩展
-" 通过定义 g:coc_global_extensions 变量，coc.nvim 会在启动时自动检查并安装这些扩展
-"
-" 如果需要启用此功能，取消下面的注释并修改扩展列表：
-"
-let g:coc_global_extensions = [
-      \ 'coc-json',
-      \ 'coc-snippets',
-      \ 'coc-vimlsp',
-      \ 'coc-sh',
-      \ 'coc-yaml',
-      \ '@yaegassy/coc-pylsp',
-      \ 'coc-tsserver',
-      \ 'coc-html',
-      \ 'coc-css',
-      \ 'coc-eslint',
-      \ 'coc-prettier',
-      \ 'coc-clangd',
-      \ 'coc-phpls',
-      \ 'coc-vetur',
-      \ 'coc-go'
-      \ ]
+" 注意：vim-go 和 coc-go 可以同时使用，但需要合理分工：
+"   - coc-go 负责：LSP 功能（补全、跳转、诊断、重构等）
+"   - vim-go 负责：测试、运行、调试、代码生成等非 LSP 功能
 
-" 扩展说明：
-"   coc-json            - JSON 文件支持
-"   coc-snippets        - 代码片段支持
-"   coc-vimlsp          - Vim 脚本语言支持
-"   coc-sh              - Shell 脚本支持
-"   coc-yaml            - YAML 文件支持
-"   @yaegassy/coc-pylsp - Python LSP（基于 Pylsp）
-"   coc-tsserver        - JavaScript/TypeScript 语言支持
-"   coc-html            - HTML 文件支持
-"   coc-css             - CSS 文件支持
-"   coc-eslint          - ESLint 代码检查集成
-"   coc-prettier        - 代码格式化工具
-"   coc-clangd          - C/C++ 语言支持（基于 clangd）
-"   coc-phpls           - PHP 语言支持
-"   coc-vetur           - Vue.js 框架支持（支持 Vue 2 和 Vue 3）
-"   coc-go              - Go 语言支持（LSP）
-"
-" 注意：
-" - 此功能会在 coc.nvim 启动时自动安装未安装的扩展
-" - 如果不想自动安装，可以保持注释状态，手动执行 :CocInstall <扩展名>
-" - 与 coc-settings.json 中的 extensionAutoUpdate 不同：
-"   * g:coc_global_extensions: 控制首次安装哪些扩展
-"   * extensionAutoUpdate: 控制已安装扩展是否自动更新
+if exists('g:loaded_go')
+  " 禁用 vim-go 的 gopls（由 coc-go 使用）
+  let g:go_gopls_enabled = 0
+  
+  " 禁用 vim-go 的自动补全（由 coc-go 提供）
+  let g:go_code_completion_enabled = 0
+  
+  " 禁用 vim-go 的自动类型信息（由 coc-go 提供）
+  let g:go_auto_type_info = 0
+  
+  " 禁用 vim-go 的自动诊断（由 coc-go 提供）
+  let g:go_diagnostics_enabled = 0
+  let g:go_metalinter_enabled = 0
+  
+  " 保留 vim-go 的其他有用功能
+  " 启用代码高亮增强
+  let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
+  let g:go_highlight_interfaces = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_types = 1
+  let g:go_highlight_function_parameters = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_variable_declarations = 1
+  let g:go_highlight_variable_assignments = 1
+  
+  " 启用代码折叠（基于语法）
+  let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
+  
+  " 格式化工具（gofmt）
+  let g:go_fmt_command = 'goimports'  " 使用 goimports 自动管理导入
+  let g:go_fmt_autosave = 1           " 保存时自动格式化
+  let g:go_fmt_fail_silently = 0      " 格式化失败时显示错误
+  
+  " 测试相关
+  let g:go_test_timeout = '10s'       " 测试超时时间
+  let g:go_test_show_name = 1          " 显示测试名称
+  
+  " 标签导航（禁用，由 coc-go 提供）
+  " 注意：当 gopls 被禁用时，vim-go 会回退到 godef/guru
+  " 但我们希望完全由 coc-go 处理，所以不设置这些选项
+  
+  " 代码生成和模板
+  let g:go_addtags_transform = 'snakecase'  " 结构体标签转换格式
+  let g:go_addtags_flags = '-json'          " 添加 JSON 标签
+  
+  " 构建和运行
+  let g:go_build_tags = ''            " 构建标签
+  let g:go_play_browser_command = ''   " Play 命令的浏览器
+  
+  " 文档查看
+  let g:go_doc_keywordprg_enabled = 0 " 禁用默认的 K 键映射（由 coc-go 提供）
+  
+  " 文件类型检测
+  let g:go_auto_sameids = 0           " 禁用自动高亮相同标识符（由 coc-go 提供）
+  
+  " 错误和警告符号（使用 coc-go 的符号）
+  " 不设置 g:go_diagnostics_* 相关变量，让 coc-go 处理
+  
+  " 快捷键映射（保留 vim-go 的实用命令）
+  " 注意：LSP 相关功能（gd, gr, K 等）已由 coc-go 提供
+  " vim-go 的命令如 :GoTest, :GoRun, :GoBuild 等仍然可用
+endif
 
