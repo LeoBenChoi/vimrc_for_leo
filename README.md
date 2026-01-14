@@ -86,6 +86,24 @@ endif
 **作用**：GUI 特定设置的独立配置文件  
 **说明**：如果希望将 GUI 相关配置独立管理，可以创建 `after/plugin/gui_settings.vim` 文件，这样可以在所有插件加载后再应用 GUI 设置。
 
+## 插件配置文件
+
+### WakaTime 配置：`.wakatime.cfg`
+**作用**：WakaTime 编码时间统计插件的配置文件  
+**位置**：`~/.vim/.wakatime.cfg`  
+**说明**：
+- 首次使用需要从模板文件 `.wakatime.cfg.example` 复制并配置 API Key
+- 获取 API Key：https://wakatime.com/settings/api-key
+- 配置文件包含隐私保护选项，可以混淆文件名、项目名和路径
+- 详细配置说明请参考 `.wakatime.cfg.example` 文件中的注释
+
+**隐私保护选项**：
+- `hide_file_names = true` - 混淆文件名（显示为 HIDDEN.ext）
+- `hide_project_names = true` - 混淆项目名称（使用随机字符串）
+- `hide_project_folder = true` - 隐藏项目文件夹路径（只发送相对路径）
+
+**注意**：`.wakatime.cfg` 文件已加入 `.gitignore`，不会提交到 Git 仓库。
+
 ## 使用建议
 
 1. **插件管理**：推荐使用 `pack/` 目录或插件管理器（如 vim-plug、Vundle）来管理插件
@@ -93,6 +111,7 @@ endif
 3. **覆盖系统设置**：需要覆盖系统默认设置时，使用 `after/` 目录
 4. **性能优化**：将可以延迟加载的脚本放在 `autoload/` 目录
 5. **字体配置**：**推荐放在主配置文件 `vimrc.vim` 中**，使用 `has('gui_running')` 条件判断
+6. **WakaTime 配置**：复制 `.wakatime.cfg.example` 为 `.wakatime.cfg` 并填入 API Key
 
 ## 参考
 

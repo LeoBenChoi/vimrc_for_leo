@@ -19,9 +19,40 @@ let g:vim_home_path = expand('<sfile>:p:h')
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
-" 设置 coc.nvim 配置文件位置（必须在插件加载前设置）
-" 使用 ~/.vim/coc-settings.json 作为配置文件
-let g:coc_config_home = g:vim_home_path
+" ============================================================================
+" WakaTime 项目化配置
+" ============================================================================
+" 强制 WakaTime 将配置文件、日志和数据库都存放在 ~/.vim/ 目录下
+" 这样所有配置都闭环在 ~/.vim 目录中，方便统一管理和迁移
+let $WAKATIME_HOME = g:vim_home_path
+"
+" WakaTime 元数据说明：
+" WakaTime 会收集并上传以下元数据到其服务器：
+" 1. 编程活动数据：
+"    - 文件路径（相对路径或项目路径，不包含完整绝对路径）
+"    - 编程语言类型（根据文件扩展名自动识别）
+"    - 编辑时间（开始和结束时间戳）
+"    - 编码时长（实际编码时间，排除空闲时间）
+" 2. 项目信息：
+"    - 项目名称（从 Git 仓库、项目根目录或配置中提取）
+"    - 分支名称（如果使用 Git）
+"    - 提交哈希（如果使用 Git）
+" 3. 编辑器信息：
+"    - 编辑器类型（Vim）
+"    - 插件版本
+"    - 操作系统类型（不包含具体版本号）
+" 4. 统计数据：
+"    - 每日/每周/每月的编码时长汇总
+"    - 各语言的编码时长分布
+"    - 各项目的编码时长分布
+"    - 编码活动热力图（时间分布）
+"
+" 隐私说明：
+" - WakaTime 不会上传文件内容、代码片段或敏感信息
+" - 文件路径会被处理，通常只包含项目相对路径
+" - 所有数据都通过 HTTPS 加密传输
+" - 可以在 WakaTime 仪表盘中查看、编辑或删除数据
+" - 配置文件 .wakatime.cfg 包含 API Key，必须加入 .gitignore
 
 " ============================================================================
 " 2. 插件管理 (插件列表)
@@ -50,7 +81,7 @@ call plug#begin(g:vim_home_path . '/plugged')
     
     " --- Go 开发环境 ---
     " 锁定 Tag 版本以求稳定，同时更新二进制工具
-    Plug 'fatih/vim-go', { 'tag': '*', 'do': ':GoUpdateBinaries' }
+    "Plug 'fatih/vim-go', { 'tag': '*', 'do': ':GoUpdateBinaries' }
     
     " --- 智能补全 (LSP) ---
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'npm ci'}
@@ -73,6 +104,13 @@ call plug#begin(g:vim_home_path . '/plugged')
 
     " === 启动界面 ===
     Plug 'mhinz/vim-startify'
+
+    " === 编码时间统计 ===
+    " WakaTime - 自动跟踪编程时间，生成详细的编码活动报告
+    " 功能：自动记录编码时间、语言分布、项目统计等
+    " 配置：通过 $WAKATIME_HOME 环境变量将数据存储在 ~/.vim 目录
+    " 注意：首次使用需要配置 API Key（在 ~/.vim/.wakatime.cfg 中）
+    Plug 'wakatime/vim-wakatime'
 
     " === 图标支持 (必须放在最后) ===
     " 放在最后加载可以避免被 NERDTree 等插件覆盖图标逻辑
