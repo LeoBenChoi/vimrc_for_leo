@@ -147,10 +147,9 @@ endif
 set textwidth=80
 
 " 2. 设置参考线（ColorColumn）
-" 在第 81 列和 121 列显示竖线，提醒不要超过推荐的行长度
-" 81 = 80 + 1（标准行宽提示）
-" 121 = 120 + 1（宽松行宽提示，适用于 Go 等语言）
-set colorcolumn=81,121
+" 在 textwidth+1 列显示竖线，提醒不要超过推荐的行长度
+" +1 表示相对于 textwidth 的值加 1，会自动跟随 textwidth 的变化
+set colorcolumn=+1
 
 " 自定义参考线的颜色（深灰色，以免太刺眼）
 highlight ColorColumn ctermbg=237 guibg=#2c2d27

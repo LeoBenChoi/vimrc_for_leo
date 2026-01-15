@@ -85,13 +85,8 @@ augroup FileTypeFold
     autocmd!
 
     " ================================================================
-    " Go 语言折叠配置
+    " 注意：Go 语言的折叠配置已移至 ftplugin/go.vim
     " ================================================================
-    " 使用语法折叠（syntax folding）
-    " Go 语言的语法高亮支持函数、结构体、接口等代码块的折叠
-    autocmd FileType go setlocal foldmethod=syntax
-                \ | setlocal foldnestmax=5
-                \ | setlocal foldlevelstart=99
 
     " ================================================================
     " Python 折叠配置
@@ -174,9 +169,8 @@ augroup END
 "
 " 注意：LSP 折叠通常比缩进折叠更智能，可以基于代码结构（函数、类等）折叠
 
-" 示例：为 Go 文件启用 LSP 折叠（如果 coc-go 支持）
-" 取消下面的注释以启用：
-" autocmd FileType go setlocal foldmethod=expr foldexpr=CocAction('fold')
+" 注意：Go 语言的 LSP 折叠配置已移至 ftplugin/go.vim
+" 如需启用，请在 ftplugin/go.vim 中取消相关注释
 
 " ============================================================================
 " 5. 自定义折叠文本显示
@@ -184,6 +178,7 @@ augroup END
 
 " 自定义折叠文本显示函数
 " 显示折叠的详细信息：起始行、结束行、行数、以及折叠内容的预览
+" 根据窗口宽度自动调整，确保信息部分右对齐
 function! CustomFoldText() abort
     " 获取折叠的起始和结束行号
     let l:start_line_num = v:foldstart
@@ -206,20 +201,44 @@ function! CustomFoldText() abort
                 \ ? l:processed_start 
                 \ : l:processed_start . ' ... ' . l:processed_end_no_indent
 
-    " 限制折叠文本的显示长度
-    let l:max_folded_width = &columns - 20 - 3
-    if strwidth(l:folded_display_text) > l:max_folded_width && l:max_folded_width > 3
-        let l:folded_display_text = strcharpart(l:folded_display_text, 0, l:max_folded_width - 3) . '...'
-    elseif l:max_folded_width <= 3
-        let l:folded_display_text = ''
-    endif
-
     " 构建信息部分的显示内容
     let l:info_display_text = printf('[%d-%d] %d lines', l:start_line_num, l:end_line_num, l:line_count)
 
-    " 计算填充空格的数量，确保信息部分右对齐
+    " 计算行号列宽度（如果显示行号）
+    " numberwidth 默认为 4，但如果行号很大可能会更宽
+    let l:number_width = &number ? max([&numberwidth, len(string(line('$'))) + 1]) : 0
+    
+    " 计算可用宽度：窗口宽度减去行号列宽度和折叠标记列
+    let l:available_width = &columns - l:number_width - 1  " -1 为折叠标记列
+
+    " 获取行宽（textwidth），如果为0则使用可用宽度
+    let l:textwidth = &textwidth > 0 ? &textwidth : l:available_width
+
+    " 确定对齐目标宽度：
+    " - 如果窗口宽度低于行宽，则对齐到窗口边缘（可用宽度）
+    " - 如果行宽足够（窗口宽度 >= 行宽），则对齐到行宽
+    let l:align_width = min([l:available_width, l:textwidth])
+
+    " 计算信息部分的宽度
+    let l:info_width = strwidth(l:info_display_text)
+
+    " 计算折叠文本部分的最大可用宽度
+    " 预留一些空间给信息部分和分隔
+    let l:min_info_space = l:info_width + 2  " 信息部分 + 最小间距
+    let l:max_folded_width = l:align_width - l:min_info_space
+
+    " 如果可用宽度太小，优先显示信息部分
+    if l:max_folded_width < 10
+        let l:folded_display_text = ''
+        let l:max_folded_width = 0
+    " 如果折叠文本太长，截断它
+    elseif strwidth(l:folded_display_text) > l:max_folded_width
+        let l:folded_display_text = strcharpart(l:folded_display_text, 0, l:max_folded_width - 3) . '...'
+    endif
+
+    " 计算填充空格的数量，确保信息部分右对齐到目标宽度
     let l:current_display_width = strwidth(l:folded_display_text) + strwidth(l:info_display_text)
-    let l:spacing = max([80 - l:current_display_width, 1])
+    let l:spacing = max([l:align_width - l:current_display_width, 1])
 
     " 返回最终的折叠文本
     return l:folded_display_text . repeat(' ', l:spacing) . l:info_display_text
