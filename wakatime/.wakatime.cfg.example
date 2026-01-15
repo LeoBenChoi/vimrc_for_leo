@@ -29,14 +29,14 @@ api_url = https://api.wakatime.com/api/v1
 # 例如：main.py -> HIDDEN.py, config.json -> HIDDEN.json
 # 效果：在仪表盘中，相同扩展名的文件会被合并统计
 # 用途：隐藏具体的文件名称，保护项目结构信息
-hide_file_names = false
+hidefilenames = false
 
 # 混淆项目名称
 # 设置为 true 后，项目名称会被替换为随机字符串
 # 会在每个项目目录下生成 .wakatime-project 文件存储随机名称
 # 效果：在仪表盘中，项目名称显示为随机字符串
 # 用途：隐藏项目名称，保护项目信息
-hide_project_names = false
+hideprojectnames = false
 
 # 隐藏项目文件夹路径
 # 设置为 true 后，只发送相对路径（相对于项目根目录）
@@ -44,7 +44,7 @@ hide_project_names = false
 # 如果没有检测到 Git 项目，则只发送文件名
 # 效果：在仪表盘中，文件路径不包含完整的绝对路径
 # 用途：隐藏用户目录结构、用户名等信息
-hide_project_folder = false
+hideprojectfolder = false
 
 # ============================================================================
 # 功能开关
@@ -103,18 +103,18 @@ no_ssl_verify = false
 # 根据隐私需求，可以选择以下配置组合：
 #
 # 1. 最小隐私保护（推荐）：
-#    hide_project_folder = true
+#    hideprojectfolder = true
 #    效果：隐藏绝对路径，但保留项目结构和文件名
 #
 # 2. 中等隐私保护：
-#    hide_project_folder = true
-#    hide_project_names = true
+#    hideprojectfolder = true
+#    hideprojectnames = true
 #    效果：隐藏路径和项目名，但保留文件名
 #
 # 3. 最大隐私保护：
-#    hide_file_names = true
-#    hide_project_names = true
-#    hide_project_folder = true
+#    hidefilenames = true
+#    hideprojectnames = true
+#    hideprojectfolder = true
 #    效果：只显示语言类型和编码时长，完全隐藏项目信息
 #
 # 注意：
