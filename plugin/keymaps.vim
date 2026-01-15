@@ -81,10 +81,7 @@ nnoremap N Nzzzv
 nnoremap <C-o> <C-o>zz
 nnoremap <C-i> <C-i>zz
 
-" 在插入模式下使用 jk 退出插入模式
-inoremap jk <ESC>
-inoremap kj <ESC>
-
-" 在命令行模式下使用 jk 退出
-cnoremap jk <C-c>
-cnoremap kj <C-c>
+" 注意：已删除 jk/kj 快捷键映射以避免输入延迟
+" 当输入 'j' 或 'k' 时，Vim 会等待下一个字符来判断是否触发快捷键
+" 这会导致输入时的延迟和光标移动不同步的问题
+" 如需退出插入模式，请使用 ESC 键

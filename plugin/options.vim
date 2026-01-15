@@ -189,10 +189,18 @@ set splitright
 set completeopt=menuone,longest,preview
 
 " 时间格式（用于时间戳等）
-set timeoutlen=500
+" 降低timeoutlen以减少输入延迟，提升补全响应速度
+set timeoutlen=300
+" ttimeoutlen控制终端键码的等待时间
+" 设置为0可以立即响应，避免光标移动延迟
+" 如果设置为0导致某些终端键码识别问题，可以尝试设置为10-20
+set ttimeoutlen=0
+set ttimeout
 
 " 更新间隔（毫秒）
-set updatetime=300
+" 降低updatetime以提升补全和诊断的响应速度
+" 100ms 是一个平衡点，既能快速响应又不会过于频繁更新
+set updatetime=100
 
 " ============================================================================
 " 粘贴模式切换 (解决粘贴代码时缩进错乱的问题)

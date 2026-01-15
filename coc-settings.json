@@ -40,7 +40,10 @@
   // 自动补全建议的触发方式
   "suggest.autoTrigger": "always",
   // 自动补全的超时时间（毫秒）
-  "suggest.timeout": 500,
+  // 降低超时时间以提升响应速度，减少输入时的停顿感
+  "suggest.timeout": 200,
+  // 触发补全的最小字符数（降低以更快触发补全）
+  "suggest.minTriggerInputLength": 1,
   // 禁止自动选中第一个补全项
   "suggest.noselect": true,
   // 启用补全项的预览窗口
@@ -53,6 +56,8 @@
   "coc.preferences.snippetTextEdit": true,
   // 使用 quickfix 位置列表
   "coc.preferences.useQuickfixForLocations": false,
+  // 降低补全触发延迟（毫秒），提升输入响应速度
+  "suggest.triggerCompletionWait": 0,
 
   // ============================================================
   // 代码操作功能
