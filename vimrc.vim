@@ -22,9 +22,9 @@ let maplocalleader = "\\"
 " ============================================================================
 " WakaTime 项目化配置
 " ============================================================================
-" 强制 WakaTime 将配置文件、日志和数据库都存放在 ~/.vim/ 目录下
-" 这样所有配置都闭环在 ~/.vim 目录中，方便统一管理和迁移
-let $WAKATIME_HOME = g:vim_home_path
+" 强制 WakaTime 将所有文件（配置文件、日志、数据库、CLI工具）都存放在 ~/.vim/wakatime/ 目录下
+" 这样所有 WakaTime 相关文件都统一在一个目录中，方便统一管理和迁移
+let $WAKATIME_HOME = g:vim_home_path . '/wakatime'
 "
 " WakaTime 元数据说明：
 " WakaTime 会收集并上传以下元数据到其服务器：
@@ -104,8 +104,8 @@ call plug#begin(g:vim_home_path . '/plugged')
     " === 编码时间统计 ===
     " WakaTime - 自动跟踪编程时间，生成详细的编码活动报告
     " 功能：自动记录编码时间、语言分布、项目统计等
-    " 配置：通过 $WAKATIME_HOME 环境变量将数据存储在 ~/.vim 目录
-    " 注意：首次使用需要配置 API Key（在 ~/.vim/.wakatime.cfg 中）
+    " 配置：通过 $WAKATIME_HOME 环境变量将数据存储在 ~/.vim/wakatime 目录
+    " 注意：首次使用需要配置 API Key（在 ~/.vim/wakatime/.wakatime.cfg 中）
     Plug 'wakatime/vim-wakatime'
 
     " === 图标支持 (必须放在最后) ===

@@ -1,7 +1,7 @@
 # ============================================================================
 # WakaTime 配置文件模板
 # ============================================================================
-# 文件位置: ~/.vim/.wakatime.cfg
+# 文件位置: ~/.vim/wakatime/.wakatime.cfg
 # 说明: 复制此文件为 .wakatime.cfg 并填入你的 API Key
 # 获取 API Key: https://wakatime.com/settings/api-key
 # ============================================================================
@@ -55,9 +55,16 @@ hide_project_folder = false
 disabled = false
 
 # 调试模式
-# 设置为 true 会输出详细的调试日志到 .wakatime.log
+# 设置为 true 会输出详细的调试日志到日志文件
 # 用于排查问题，正常使用建议保持 false
 debug = false
+
+# 日志文件位置（可选）
+# 指定日志文件的路径，可以是相对路径（相对于 $WAKATIME_HOME）或绝对路径
+# 默认值：~/.wakatime/wakatime.log 或 $WAKATIME_HOME/.wakatime/wakatime.log
+# 示例（将日志文件放在 .wakatime 目录内）：
+# log_file = .wakatime/wakatime.log
+# log_file = 
 
 # 状态栏显示
 # 控制是否在编辑器状态栏显示 WakaTime 信息
