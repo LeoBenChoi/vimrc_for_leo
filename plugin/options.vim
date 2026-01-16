@@ -120,6 +120,10 @@ set fileencodings=utf-8,gbk,gb2312,big5
 set fileformat=unix
 set fileformats=unix,dos,mac
 
+" 保存时强制使用 LF (Unix) 换行符
+" 这确保所有文件在保存时都转换为 Unix 格式，避免 Windows 的 CRLF 换行符
+"autocmd BufWritePre * setlocal fileformat=unix
+
 " 自动检测文件类型
 filetype on
 filetype plugin on
