@@ -75,10 +75,10 @@ if has('termguicolors')
 endif
 
 " 高亮当前行
-set cursorline
+"set cursorline
 
 " 高亮当前列（可选，取消注释启用）
-" set cursorcolumn
+"set cursorcolumn
 
 " 高亮匹配的括号
 set showmatch
