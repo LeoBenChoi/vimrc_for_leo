@@ -162,6 +162,45 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
+" ============================================================================
+" 文档预览窗口滚动支持
+" ============================================================================
+" 使用 <C-j> 和 <C-k> 滚动文档预览窗口
+" 优先滚动浮动窗口，如果没有浮动窗口则滚动预览窗口
+function! s:ScrollDocumentation(direction)
+  " 首先检查是否有可滚动的浮动窗口
+  if coc#float#has_scroll()
+    " 滚动浮动窗口：1 表示向下，0 表示向上
+    call coc#float#scroll(a:direction ==# 'down' ? 1 : 0)
+    return
+  endif
+  
+  " 检查是否有预览窗口
+  let preview_win = -1
+  for winid in range(1, winnr('$'))
+    if getwinvar(winid, '&previewwindow', 0)
+      let preview_win = win_getid(winid)
+      break
+    endif
+  endfor
+  
+  " 如果找到预览窗口，滚动它
+  if preview_win != -1
+    if a:direction ==# 'down'
+      call win_execute(preview_win, 'normal! ' . &scroll . "\<C-e>")
+    else
+      call win_execute(preview_win, 'normal! ' . &scroll . "\<C-y>")
+    endif
+  endif
+endfunction
+
+" 映射 <C-j> 和 <C-k> 来滚动文档预览
+nnoremap <silent> <C-j> :call <SID>ScrollDocumentation('down')<CR>
+nnoremap <silent> <C-k> :call <SID>ScrollDocumentation('up')<CR>
+inoremap <silent> <C-j> <C-o>:call <SID>ScrollDocumentation('down')<CR>
+inoremap <silent> <C-k> <C-o>:call <SID>ScrollDocumentation('up')<CR>
+
+
 " Use CTRL-S for selections ranges
 " Requires 'textDocument/selectionRange' support of language server
 nmap <silent> <C-s> <Plug>(coc-range-select)
