@@ -72,8 +72,38 @@
    // ============================================================
   // 格式化配置
   // ============================================================
-  // 注意：已禁用 formatOnSave，改为在保存前通过 autocmd 调用 :Format 命令
+  // 注意：已禁用全局 formatOnSave，改为针对特定文件类型配置
   "coc.preferences.formatOnSave": false,
+  
+  // ============================================================
+  // Go 语言配置（最佳实践）
+  // ============================================================
+  // 方案 A：使用 gopls 内置功能（推荐）
+  // gopls 已经包含了格式化和整理 imports 的功能，无需外部工具
+  // 如果使用此方案，不配置 go.formatTool，让 gopls 处理一切
+  
+  // 方案 B：使用外部 goimports 工具（备选）
+  // 如果更喜欢使用独立的 goimports 工具，取消下面的注释
+  // "go.formatTool": "goimports",
+  
+  // 针对 Go 文件类型开启保存时自动格式化
+  "coc.preferences.formatOnSaveFiletypes": ["go"],
+  
+  // 保存时自动整理 imports（使用 gopls 的 source.organizeImports）
+  // 执行顺序：先整理 imports，再格式化（由 Coc 自动处理）
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  
+  // 注意：Go 文件的保存时处理完全由 Coc 配置控制
+  // ftplugin/go.vim 中的 autocmd 已被移除，避免重复执行
+  
+  // 可选：gopls 高级配置
+  // "go.goplsOptions": {
+  //   "completeUnimported": true,
+  //   "staticcheck": true,
+  //   "gofumpt": true  // 使用更严格的格式化（类似 gofumpt）
+  // }
 
   // ============================================================
   // gopls 配置

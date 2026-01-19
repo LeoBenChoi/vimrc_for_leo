@@ -238,7 +238,8 @@ function! s:FormatOnSave()
   endif
   
   " 检查当前文件类型是否支持格式化
-  let l:filetypes = ['javascript', 'typescript', 'json', 'go', 'python', 'vue', 'javascriptreact', 'typescriptreact']
+  " 注意：Go 文件由 ftplugin/go.vim 单独处理，避免重复执行
+  let l:filetypes = ['javascript', 'typescript', 'json', 'python', 'vue', 'javascriptreact', 'typescriptreact']
   if index(l:filetypes, &filetype) == -1
     if get(g:, 'coc_format_on_save_debug', 0)
       echo "FormatOnSave: 文件类型 " . &filetype . " 不支持格式化"
