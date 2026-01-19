@@ -23,6 +23,7 @@ let g:coc_global_extensions = [
       \ 'coc-clangd',
       \ 'coc-phpls',
       \ 'coc-vetur',
+      \ 'coc-translator',
       \ ]
 " 扩展说明：
 "   coc-json          - JSON 支持
@@ -38,6 +39,7 @@ let g:coc_global_extensions = [
 "   coc-clangd        - C/C++ LSP
 "   coc-phpls         - PHP LSP
 "   coc-vetur         - Vue.js LSP（支持 Vue 2 和 Vue 3）
+"   coc-translator    - 翻译插件，支持弹窗、命令行和替换三种模式
 
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
@@ -88,10 +90,13 @@ endif
 nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
 nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation
+" 跳转到代码定义（GoTo Definition）
 nmap <silent><nowait> gd <Plug>(coc-definition)
+" 跳转到类型定义（GoTo Type Definition）
 nmap <silent><nowait> gy <Plug>(coc-type-definition)
+" 跳转到实现（GoTo Implementation）
 nmap <silent><nowait> gi <Plug>(coc-implementation)
+" 跳转到所有引用（GoTo References）
 nmap <silent><nowait> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
@@ -295,4 +300,30 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" ============================================================================
+" coc-translator 翻译插件配置
+" ============================================================================
+" 说明：coc-translator 是 coc.nvim 生态中非常优秀的翻译插件
+" 安装：:CocInstall coc-translator
+" 使用场景：在 Vim 界面内直接翻译单词和文本，特别适合学习英语的开发者
+
+" 1. 弹窗翻译 (Popup): 最常用，不打断思路
+" <Leader>t 翻译光标下的单词（Normal 模式）
+nmap <Leader>t <Plug>(coc-translator-p)
+" <Leader>t 翻译选中的文本（Visual 模式）
+vmap <Leader>t <Plug>(coc-translator-pv)
+
+" 2. 命令行回显 (Echo): 适合只想快速看一眼意思，不想挡住代码
+" <Leader>e 翻译光标下的单词（Normal 模式）
+nmap <Leader>e <Plug>(coc-translator-e)
+" <Leader>e 翻译选中的文本（Visual 模式）
+vmap <Leader>e <Plug>(coc-translator-ev)
+
+" 3. 替换文本 (Replace): 慎用，把选中的英文直接变成中文
+" 默认注释掉，如需使用请取消注释
+" nmap <Leader>r <Plug>(coc-translator-r)
+" vmap <Leader>r <Plug>(coc-translator-rv)
+
+" 查看翻译历史：:CocList translation
 

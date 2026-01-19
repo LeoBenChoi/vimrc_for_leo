@@ -73,10 +73,29 @@
   // 格式化配置
   // ============================================================
   // 注意：已禁用 formatOnSave，改为在保存前通过 autocmd 调用 :Format 命令
-  "coc.preferences.formatOnSave": false
+  "coc.preferences.formatOnSave": false,
 
   // ============================================================
   // gopls 配置
   // ============================================================
   // 注意：checkForUpdates 选项在当前版本的 coc.nvim 中已不再支持，已移除
+
+  // ============================================================
+  // coc-translator 翻译插件配置
+  // ============================================================
+  // 翻译目标语言（转为中文）
+  "translator.toLang": "zh-CN",
+  
+  // 翻译引擎（推荐 bing 或 google，youdao 有时会被限流）
+  "translator.engines": [
+    // "bing",
+    // "google",
+    "youdao"
+  ],
+  
+  // 是否在翻译结果中显示音标（对学习英语非常重要！）
+  "translator.enableHover": true,
+  
+  // 窗口最大宽度
+  "translator.window.maxWidth": 50
 }
