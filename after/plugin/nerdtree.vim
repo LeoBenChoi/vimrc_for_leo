@@ -8,9 +8,6 @@
 " 1. 核心行为设置
 " ============================================================================
 
-" 显示行号（方便定位文件）
-let NERDTreeShowLineNumbers=1
-
 " 显示隐藏文件（包括 .git、.env 等）
 let NERDTreeShowHidden=1
 
@@ -34,25 +31,6 @@ let NERDTreeMinimalUI=1
 " 显示书签（如果配置了书签）
 let NERDTreeShowBookmarks=1
 
-" ============================================================================
-" 3. Git 集成
-" ============================================================================
-
-" 配合 vim-gitgutter 显示文件变动状态（需要安装 nerdtree-git-plugin 或使用内置支持）
-" 如果安装了 nerdtree-git-plugin，取消下面的注释：
-" let g:NERDTreeGitStatusUseNerdFonts = 1
-" let g:NERDTreeGitStatusIndicatorMapCustom = {
-"     \ 'Modified'  : '✹',
-"     \ 'Staged'    : '✚',
-"     \ 'Untracked' : '✭',
-"     \ 'Renamed'   : '➜',
-"     \ 'Unmerged'  : '═',
-"     \ 'Deleted'   : '✖',
-"     \ 'Dirty'     : '✗',
-"     \ 'Clean'     : '✔︎',
-"     \ 'Ignored'   : '☒',
-"     \ 'Unknown'   : '?'
-"     \ }
 
 " ============================================================================
 " 4. 键位映射
@@ -75,15 +53,6 @@ nnoremap <silent> <Leader>f :NERDTreeFind<CR>
 " 当 NERDTree 是最后一个窗口时，自动退出 Vim
 " 避免关闭文件后只剩下空白的文件树窗口
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" 打开文件后自动关闭文件树（可选，如果觉得干扰可以取消注释）
-" autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" 注意：由于你已经配置了 Startify 启动页，不建议启用下面的自动打开功能
-" 否则启动页和文件树会同时出现，造成冲突
-" 如果需要，可以取消下面的注释：
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " ============================================================================
 " 6. 窗口大小设置

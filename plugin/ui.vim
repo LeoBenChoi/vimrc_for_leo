@@ -166,17 +166,3 @@ set formatoptions+=c
 set formatoptions+=q
 set formatoptions+=n
 set formatoptions+=j
-
-" 注意：如果你希望写代码（非注释）时也强制断行（不推荐）
-" 取消下面这行的注释：
-"set formatoptions+=a  " 这是一个非常暴力的自动格式化选项
-
-" ============================================================================
-" 自定义高亮（可选）
-" ============================================================================
-
-" 可以根据需要自定义特定语法元素的高亮
-" 例如：
-" highlight Comment ctermfg=green guifg=#00ff00
-" highlight String ctermfg=yellow guifg=#ffff00
-" highlight Number ctermfg=magenta guifg=#ff00ff

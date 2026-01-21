@@ -11,19 +11,16 @@
 let g:coc_config_home = expand('~/.vim')
 
 let g:coc_global_extensions = [
-      \ 'coc-json',
-      \ 'coc-snippets',
-      \ '@yaegassy/coc-pylsp',
-      \ 'coc-tsserver',
       \ 'coc-go',
-      \ 'coc-html',
-      \ 'coc-css',
-      \ 'coc-eslint',
-      \ 'coc-prettier',
-      \ 'coc-clangd',
-      \ 'coc-phpls',
-      \ 'coc-vetur',
+      \ 'coc-json',
+      \ 'coc-yaml',
+      \ 'coc-vimlsp',
+      \ 'coc-sh',
+      \ 'coc-snippets',
+      \ 'coc-pairs',
+      \ 'coc-explorer',
       \ 'coc-translator',
+      \ 'coc-marketplace',
       \ ]
 " 扩展说明：
 "   coc-json          - JSON 支持
@@ -53,8 +50,7 @@ set nowritebackup
 " 降低updatetime以提升补全响应速度，减少输入时的停顿感
 set updatetime=100
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved
+" 翻译：始终显示 signcolumn（否则 diagnostics 出现/消失会导致文本左右跳动）
 set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate
@@ -213,65 +209,6 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
-
-" ============================================================================
-" 保存前自动格式化配置
-" ============================================================================
-" 在保存文件前先调用 :Format 命令进行格式化
-" 支持的文件类型：javascript, typescript, json, go, python, vue
-" 设置 g:coc_format_on_save_debug = 1 可以启用调试信息
-function! s:FormatOnSave()
-  " 检查 coc.nvim 是否已加载并可用
-  if !exists('*CocAction')
-    if get(g:, 'coc_format_on_save_debug', 0)
-      echo "FormatOnSave: CocAction 函数不存在"
-    endif
-    return
-  endif
-  
-  " 检查 coc.nvim 是否已连接
-  if !coc#rpc#ready()
-    if get(g:, 'coc_format_on_save_debug', 0)
-      echo "FormatOnSave: coc.nvim RPC 未就绪"
-    endif
-    return
-  endif
-  
-  " 检查当前文件类型是否支持格式化
-  " 注意：Go 文件由 ftplugin/go.vim 单独处理，避免重复执行
-  let l:filetypes = ['javascript', 'typescript', 'json', 'python', 'vue', 'javascriptreact', 'typescriptreact']
-  if index(l:filetypes, &filetype) == -1
-    if get(g:, 'coc_format_on_save_debug', 0)
-      echo "FormatOnSave: 文件类型 " . &filetype . " 不支持格式化"
-    endif
-    return
-  endif
-  
-  " 检查是否有格式化提供者（可选，某些情况下可能检查失败但格式化仍可用）
-  " 如果检查失败，仍然尝试格式化
-  let l:has_provider = CocHasProvider('formatting')
-  if !l:has_provider && get(g:, 'coc_format_on_save_debug', 0)
-    echo "FormatOnSave: 警告 - 未检测到格式化提供者，但仍将尝试格式化"
-  endif
-  
-  " 调用格式化命令（同步执行，确保在保存前完成）
-  " 使用 silent! 避免错误信息打断保存流程
-  try
-    call CocAction('format')
-    if get(g:, 'coc_format_on_save_debug', 0)
-      echo "FormatOnSave: 格式化成功"
-    endif
-  catch /.*/
-    if get(g:, 'coc_format_on_save_debug', 0)
-      echo "FormatOnSave: 格式化失败 - " . v:exception
-    endif
-  endtry
-endfunction
-
-augroup coc_format_on_save
-  autocmd!
-  autocmd BufWritePre * call s:FormatOnSave()
-augroup end
 
 " Add `:Fold` command to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)

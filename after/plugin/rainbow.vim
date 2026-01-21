@@ -4,8 +4,6 @@
 " 说明: 此文件会在所有插件加载后自动执行，用于配置 rainbow 插件
 " ============================================================================
 
-
-
 let g:rainbow_conf = {
 \	'guifgs': ['red', 'darkorange', 'yellow', 'green', 'cyan', 'lightblue', 'magenta'],
 \	'ctermfgs': ['red', 'darkyellow', 'yellow', 'green', 'cyan', 'lightblue', 'magenta'],

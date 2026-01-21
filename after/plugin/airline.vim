@@ -3,97 +3,27 @@
 " 文件位置: ~/.vim/after/plugin/airline.vim
 " 说明: 此文件会在所有插件加载后自动执行，用于配置 vim-airline 插件
 " ============================================================================
-
-" ============================================================================
-" 1. 核心外观设置
-" ============================================================================
-
-" 启用 Powerline 字体 (必须安装 Nerd Fonts 或 Powerline 字体才能看到三角形箭头)
-" 如果出现乱码或方框，请安装 Nerd Font（如 JetBrainsMono Nerd Font）
-" 或者将此项设置为 0 使用普通字符模式
+" 启用 Powerline 字体，以特殊符号显示三角箭头
 let g:airline_powerline_fonts = 1
 
-" 设置主题
-" 根据运行模式选择不同的主题：
-" - GUI 模式（gvim）：使用 luna 主题
-" - 终端模式：使用 seoul256（适合终端）
+" 主题
 if has('gui_running')
-    " GUI 模式使用 luna 主题
     let g:airline_theme = 'luna'
 else
-    " 终端模式使用 seoul256
     let g:airline_theme = 'seoul256'
 endif
 
-" 安全加载主题：如果主题不存在，回退到默认主题
-function! s:SafeLoadAirlineTheme() abort
-    if !exists('g:airline_theme')
-        return
-    endif
-    
-    " 检查主题是否存在
-    let l:theme_name = g:airline_theme
-    let l:theme_var = 'g:airline#themes#' . l:theme_name . '#palette'
-    
-    " 如果主题不存在，回退到 'luna'（GUI）或 'seoul256'（终端）
-    if !exists(l:theme_var)
-        if has('gui_running')
-            let g:airline_theme = 'luna'
-        else
-            let g:airline_theme = 'seoul256'
-        endif
-    endif
-endfunction
-
-" 在 Airline 初始化前检查主题
-autocmd User AirlineBeforeInit call s:SafeLoadAirlineTheme()
-
-" ============================================================================
-" 2. Tabline 设置 (顶部的 Buffer 标签栏)
-" ============================================================================
-
-" 开启顶部标签栏 (像 IDE 一样显示打开的文件)
+" 顶部标签栏
 let g:airline#extensions#tabline#enabled = 1
-
-" 只显示文件名，不显示冗长的路径 (unique_tail: 只有重名时才显示路径)
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" 显示 Buffer 编号 (方便用 :b 1 跳转，可选)
-let g:airline#extensions#tabline#buffer_nr_show = 0
-
-" ============================================================================
-" 3. 集成设置 (Git & COC)
-" ============================================================================
 
 " 集成 coc.nvim: 在状态栏显示错误和警告数量
 let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#coc#error_symbol = 'E:'
 let g:airline#extensions#coc#warning_symbol = 'W:'
 
-" 集成 vim-gitgutter: 显示变更统计 (增加/修改/删除的行数)
-let g:airline#extensions#hunks#enabled = 1
-
-" 集成 vim-fugitive: 显示当前分支名
-let g:airline#extensions#branch#enabled = 1
-
 " ============================================================================
-" 4. 精简模式 (去掉没用的信息)
-" ============================================================================
-
-" 不显示 'utf-8[unix]' 这种显而易见的信息，除非它不是 utf-8
-"let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-
-" 简化符号 (可选)
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-" 这里的符号可以根据你的字体喜好微调
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = '🔒'
-let g:airline_symbols.dirty='⚡'
-
-" ============================================================================
-" 5. 右侧状态栏显示优化 (Section Z)
+" Z
 " ============================================================================
 
 " 获取当前光标下字符的十六进制值（简化逻辑）
@@ -109,18 +39,10 @@ function! GetHexChar()
     return printf("0x%02X", l:code)
 endfunction
 
-" 优化右侧状态栏显示格式：百分比 + 行号/总行数:列号 + 当前字符十六进制
-" 格式说明：
-"   %p%%   : 文件位置百分比
-"   %l     : 当前行号
-"   %L     : 文件总行数
-"   %v     : 当前列号
-"   %{GetHexChar()} : 当前字符的十六进制值（小写，无前缀）
-" 显示效果：50% 123/456:45 41
-let g:airline_section_z = '%3p%% %l/%L:%02v | %{GetHexChar()} '
+let g:airline_section_z = '%3p%% Ln:%l/%L V:%02v | %{GetHexChar()} '
 
 " ============================================================================
-" 6. 启动时间显示（10秒后自动关闭）
+" 启动时间显示（10秒后自动关闭）
 " ============================================================================
 
 " 计算并更新启动时间显示
@@ -158,24 +80,7 @@ function! s:AirlineStartupTimeInit() abort
     endif
 endfunction
 
-" 在 airline 初始化后设置启动时间显示
 autocmd User AirlineAfterInit call s:AirlineStartupTimeInit()
-
-" 如果 airline 已经初始化，立即设置启动时间显示
-" 这处理了 airline.vim 在 airline 初始化之后加载的情况
-if exists(':AirlineRefresh')
-    call s:AirlineStartupTimeInit()
-endif
-
-" 在 Vim 完全启动后更新启动时间（此时所有插件都已加载）
-autocmd VimEnter * call s:UpdateStartupTime() | if exists(':AirlineRefresh') | call s:AirlineStartupTimeInit() | endif
-
-" 延迟初始化：确保在插件完全加载后设置启动时间显示
-" 使用延迟执行，确保 airline 已经完全初始化
-if has('timers')
-    " 延迟 100ms 后初始化，确保 airline 已完全加载
-    call timer_start(100, {-> s:AirlineStartupTimeInit()}, {'repeat': 1})
-endif
 
 " 10 秒后清除启动时间显示
 function! s:ClearStartupTime() abort

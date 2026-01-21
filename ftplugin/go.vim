@@ -46,33 +46,3 @@ setlocal foldlevelstart=99
 "   - /* */ 块注释（用于多行注释，但不常用）
 " vim-commentary 默认应该使用 //，但显式设置可以避免配置冲突
 setlocal commentstring=//\ %s
-
-" ============================================================================
-" 5. 保存时自动格式化（最佳实践）
-" ============================================================================
-" 最佳实践：完全使用 Coc 配置，避免重复执行
-" 
-" Go 文件的保存时处理由 coc-settings.json 统一控制：
-"   1. editor.codeActionsOnSave.source.organizeImports = true
-"      → 自动整理 imports（添加缺失的，删除未使用的）
-"   2. coc.preferences.formatOnSaveFiletypes = ["go"]
-"      → 自动格式化代码
-"
-" 执行顺序由 Coc 自动处理：先整理 imports，再格式化
-"
-" 如果使用 goimports（go.formatTool: "goimports"）：
-"   - format 会自动使用 goimports，它会同时格式化和整理 imports
-"   - codeActionsOnSave 可能不会执行（因为 goimports 已经处理了 imports）
-"
-" 如果使用 gopls 内置功能（不配置 go.formatTool）：
-"   - codeActionsOnSave 会先整理 imports
-"   - 然后 format 会格式化代码
-"
-" 注意：这里不再使用 autocmd，避免与 Coc 配置冲突
-
-" ============================================================================
-" 6. 其他 Go 相关配置（可选）
-" ============================================================================
-" 如果需要使用 LSP 折叠（通过 coc-go），可以取消下面的注释：
-" setlocal foldmethod=expr
-" setlocal foldexpr=CocAction('fold')
