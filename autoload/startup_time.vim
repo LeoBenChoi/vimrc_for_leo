@@ -46,26 +46,39 @@ function! startup_time#get_formatted_string()
 endfunction
 
 " ============================================================================
-" 3. 获取格式化的启动时间字符串（用于 Airline）
+" 3. 获取格式化的启动时间字符串（用于 Airline / Lightline）
 " ============================================================================
 " 返回格式：'🚀 89ms' 或 '🚀 1.234s'（根据时间长度自动选择）
-function! startup_time#get_airline_string()
+" 若已执行 startup_time#freeze()（在 VimEnter），返回冻结值，否则每次从 g:start_time 实时计算
+" 状态栏会多次重绘，必须使用冻结值，否则数字会持续增加到 10s 等
+function! s:compute_airline() abort
     if !exists('g:start_time')
         return ''
     endif
-    
-    " 使用 reltimefloat 获取更精确的时间
     let l:elapsed = reltimefloat(reltime(g:start_time))
     if l:elapsed < 0.001
         return ''
     endif
-    
-    " 格式化时间：如果小于 1 秒，显示毫秒；否则显示秒（保留 3 位小数）
     if l:elapsed < 1.0
         let l:time_str = printf('%dms', float2nr(l:elapsed * 1000))
     else
         let l:time_str = printf('%.3fs', l:elapsed)
     endif
-    
     return '🚀 ' . l:time_str
+endfunction
+
+function! startup_time#get_airline_string()
+    if exists('g:startup_time_airline_cached')
+        return g:startup_time_airline_cached
+    endif
+    return s:compute_airline()
+endfunction
+
+" 在 VimEnter 时冻结启动时间到 g:startup_time_airline_cached，避免状态栏持续递增
+" 由 vimrc.vim 的 VimEnter autocmd 调用
+function! startup_time#freeze() abort
+    if !exists('g:start_time')
+        return
+    endif
+    let g:startup_time_airline_cached = s:compute_airline()
 endfunction
