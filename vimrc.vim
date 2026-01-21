@@ -39,27 +39,29 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'luochen1990/rainbow'         " 彩虹括号
 Plug 'itchyny/vim-cursorword'      " 光标单词高亮
 
-" --- 语言包集合 ---
-" 提供 120+ 种语言的语法高亮和缩进支持
-" 按需加载，不影响启动速度
-Plug 'sheerun/vim-polyglot'
+" git hunks 提示
+if has('nvim') || has('patch-8.0.902')
+  Plug 'mhinz/vim-signify'
+else
+  Plug 'mhinz/vim-signify', { 'tag': 'legacy' }
+endif
 
 " --- 智能补全 (LSP) ---
 Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'npm ci'}
+
+" === 启动界面 ===
+Plug 'mhinz/vim-startify'
+
+" 文件树
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+
+" 结构大纲
+Plug 'liuchengxu/vista.vim'
 
 " === 导航与搜索 ===
 " FZF (使用 lambda 自动安装二进制)
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
-" 结构大纲
-Plug 'liuchengxu/vista.vim'
-
-" 文件树
-Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
-
-" === 启动界面 ===
-Plug 'mhinz/vim-startify'
 
 " === 编码时间统计 ===
 Plug 'wakatime/vim-wakatime'
@@ -70,8 +72,6 @@ Plug 'yianwillis/vimcdoc'
 " === 图标支持 (必须放在最后) ===
 " 放在最后加载可以避免被 NERDTree 等插件覆盖图标逻辑
 Plug 'ryanoasis/vim-devicons'
-
-
 
 call plug#end()
 

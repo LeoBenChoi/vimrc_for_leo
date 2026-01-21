@@ -39,7 +39,7 @@ function! GetHexChar()
     return printf("0x%02X", l:code)
 endfunction
 
-let g:airline_section_z = '%3p%% Ln:%l/%L V:%02v | %{GetHexChar()} '
+let g:airline_section_z = '%3p%% Ln:%l/%L:%02v | %{GetHexChar()} '
 
 " ============================================================================
 " 启动时间显示（10秒后自动关闭）

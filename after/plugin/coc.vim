@@ -17,7 +17,6 @@ let g:coc_global_extensions = [
       \ 'coc-vimlsp',
       \ 'coc-sh',
       \ 'coc-snippets',
-      \ 'coc-pairs',
       \ 'coc-explorer',
       \ 'coc-translator',
       \ 'coc-marketplace',
@@ -44,11 +43,6 @@ set encoding=utf-8
 " Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
-
-" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-" delays and poor user experience
-" 降低updatetime以提升补全响应速度，减少输入时的停顿感
-set updatetime=100
 
 " 翻译：始终显示 signcolumn（否则 diagnostics 出现/消失会导致文本左右跳动）
 set signcolumn=yes
