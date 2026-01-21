@@ -64,12 +64,14 @@ Plug 'mhinz/vim-startify'
 " === 编码时间统计 ===
 Plug 'wakatime/vim-wakatime'
 
+" 中文帮助文档
+Plug 'yianwillis/vimcdoc'
+
 " === 图标支持 (必须放在最后) ===
 " 放在最后加载可以避免被 NERDTree 等插件覆盖图标逻辑
 Plug 'ryanoasis/vim-devicons'
 
-" 
-Plug 'yianwillis/vimcdoc'
+
 
 call plug#end()
 
