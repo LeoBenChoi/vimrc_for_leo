@@ -39,8 +39,6 @@ function! GetHexChar()
     return printf("0x%02X", l:code)
 endfunction
 
-let g:airline_section_z = '%3p%% Ln:%l/%L:%02v | %{GetHexChar()} '
-
 " ============================================================================
 " 启动时间显示（10秒后自动关闭）
 " ============================================================================
@@ -102,3 +100,71 @@ endfunction
 if has('timers')
     let s:startup_timer = timer_start(10000, {-> s:ClearStartupTime()}, {'repeat': 1})
 endif
+
+" 在模式前面添加窗口编号
+function! WindowNumber(...)
+    let builder = a:1
+    let context = a:2
+    call builder.add_section('airline_b', '%{tabpagewinnr(tabpagenr())}')
+    return 0
+endfunction
+
+call airline#add_statusline_func('WindowNumber')
+call airline#add_inactive_statusline_func('WindowNumber')
+
+function! MyLineNumber()
+  return substitute(line('.'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g'). ' | '.
+    \    substitute(line('$'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g')
+endfunction
+
+call airline#parts#define('linenr', {'function': 'MyLineNumber', 'accents': 'bold'})
+
+let g:airline_section_z = airline#section#create(['%3p%%: ', 'linenr', ':%3v'])
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+
+" （可选）设置 Airline 状态栏字体渲染选项，仅 Windows GVim 下的 DirectX 渲染器有效
+" type:directx           使用 DirectX 渲染
+" gamma:1.0, contrast:0.5, level:1      调整伽马、对比度、抗锯齿级别
+" geom:1                 启用几何抗锯齿
+" renmode:4, taamode:1   各类渲染与混合模式调优
+" 该配置设置 'renderoptions'（rop），仅对 Windows GVim（带 DirectX 渲染器）有效。
+" 优势包括：
+" - 使用 DirectX 显卡增强渲染（type:directx）提升字体渲染质量与性能
+" - gamma/contrast/level/geom 可调整显示亮度，对比度与抗锯齿效果，字体边缘更平滑锐利
+" - renmode 与 taamode 进一步微调抗锯齿、渲染模式，配合高分屏能获得更清晰的状态栏显示
+" - 特别适合对美观、清晰度要求较高的 Windows 用户
+" !!! 会将启动时间拉高到1s左右 !!!
+"set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
