@@ -254,9 +254,9 @@ vmap <Leader>t <Plug>(coc-translator-pv)
 
 " 2. 命令行回显 (Echo): 适合只想快速看一眼意思，不想挡住代码
 " <Leader>e 翻译光标下的单词（Normal 模式）
-nmap <Leader>e <Plug>(coc-translator-e)
+"nmap <Leader>e <Plug>(coc-translator-e)
 " <Leader>e 翻译选中的文本（Visual 模式）
-vmap <Leader>e <Plug>(coc-translator-ev)
+"vmap <Leader>e <Plug>(coc-translator-ev)
 
 " 3. 替换文本 (Replace): 慎用，把选中的英文直接变成中文
 " 默认注释掉，如需使用请取消注释
@@ -265,3 +265,57 @@ vmap <Leader>e <Plug>(coc-translator-ev)
 
 " 查看翻译历史：:CocList translation
 
+:nmap <space>ee <Cmd>CocCommand explorer<CR>
+
+let g:coc_explorer_global_presets = {
+\   '.vim': {
+\     'root-uri': '~/.vim',
+\   },
+\   'cocConfig': {
+\      'root-uri': '~/.config/coc',
+\   },
+\   'tab': {
+\     'position': 'tab',
+\     'quit-on-open': v:true,
+\   },
+\   'tab:$': {
+\     'position': 'tab:$',
+\     'quit-on-open': v:true,
+\   },
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   },
+\   'buffer': {
+\     'sources': [{'name': 'buffer', 'expand': v:true}]
+\   },
+\ }
+
+" Use preset argument to open it
+nmap <space>ed <Cmd>CocCommand explorer --preset .vim<CR>
+nmap <space>ef <Cmd>CocCommand explorer --preset floating<CR>
+nmap <space>ec <Cmd>CocCommand explorer --preset cocConfig<CR>
+nmap <space>eb <Cmd>CocCommand explorer --preset buffer<CR>
+
+" List all presets
+nmap <space>el <Cmd>CocList explPresets<CR>

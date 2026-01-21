@@ -80,6 +80,8 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
+  // 开启代码透视 (Code Lens)，比如显示函数被引用了多少次
+  "codeLens.enable": true,
   // ============================================================
   // coc-translator 翻译插件配置
   // ============================================================
@@ -94,5 +96,14 @@
   // 是否在翻译结果中显示音标（对学习英语非常重要！）
   "translator.enableHover": true,
   // 窗口最大宽度
-  "translator.window.maxWidth": 50
+  "translator.window.maxWidth": 50,
+  // === Explorer 配置 (适配你删掉的 NERDTree) ===
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.keyMappings.global": {
+    // "o": "open",
+    "v": "open:vsplit",
+    "s": "open:split"
+  }
 }
