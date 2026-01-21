@@ -68,6 +68,9 @@ Plug 'wakatime/vim-wakatime'
 " 放在最后加载可以避免被 NERDTree 等插件覆盖图标逻辑
 Plug 'ryanoasis/vim-devicons'
 
+" 
+Plug 'yianwillis/vimcdoc'
+
 call plug#end()
 
 " NOTE(): 这里是插件初始化的位置
