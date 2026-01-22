@@ -58,11 +58,13 @@ augroup END
 " 注意：虽然 Space 是 Leader 键，但单独的 <space> 映射仍然可以工作
 " 按 Space 后会短暂等待，如果没有后续键则执行折叠切换
 " za - 切换当前折叠
-nnoremap <space> za
+" 已禁用：取消空格键的折叠功能，因为空格键是 Leader 键
+" nnoremap <space> za
 
 " Space 键创建折叠（在可视模式下）
 " zf - 创建折叠
-vnoremap <space> zf
+" 已禁用：取消空格键的折叠功能，因为空格键是 Leader 键
+" vnoremap <space> zf
 
 " 备用快捷键（如果不想等待 Space 的延迟）：
 " 使用 Leader + z 组合键
