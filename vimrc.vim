@@ -17,6 +17,7 @@ let g:vim_home_path = expand('<sfile>:p:h')
 
 " 定义 Leader 键（必须在加载任何插件前定义！）
 let mapleader = "\<Space>"
+" 设置本地（局部）快捷键前缀键为反斜杠，用于局部映射（如插件或文件类型特定快捷键）
 let maplocalleader = "\\"
 
 " 禁用 netrw 目录历史记录（不生成 .netrwhist 文件）
