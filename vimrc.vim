@@ -12,6 +12,11 @@ let g:start_time = reltime()
 " 1. 全局预设 (必须最先执行)
 " ============================================================================
 
+" 设置 Leader 键为空格键
+" 注意：必须在所有使用 <leader> 的映射之前定义
+let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
+
 " ============================================================================
 " 2. 插件管理 (插件列表)
 " ============================================================================
@@ -79,4 +84,29 @@ augroup END
 " NOTE(): 这里是插件初始化的位置
 " 全局开启彩虹括号
 let g:rainbow_active = 1
+
+" ============================================================================
+" TODO 管理 (基于 FZF + Rg，零插件)
+" ============================================================================
+
+" =======================================================
+" 自定义 TODO 检索命令 (基于 FZF + Rg)
+" =======================================================
+" 搜索关键词：TODO, FIXME, XXX, BUG, HACK
+" 也就是搜索这些全大写的单词
+command! -bang -nargs=0 Todo
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- "TODO|FIXME|XXX|BUG|HACK"', 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+" =======================================================
+" 原生 TODO 高亮 (无需插件)
+" =======================================================
+augroup vim_todo_highlight
+  autocmd!
+  " 在所有文件类型的注释中，匹配这些关键词
+  autocmd Syntax * syntax keyword MyTodo TODO FIXME XXX BUG HACK containedin=.*Comment,.*String
+  " 将其链接到 Vim 内置的 Todo 高亮组 (通常是显眼的黄色或红色)
+  autocmd Syntax * hi def link MyTodo Todo
+augroup END
 
