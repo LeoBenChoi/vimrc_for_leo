@@ -115,8 +115,8 @@ augroup mygroup
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 augroup end
 
-" Applying code actions to the selected code block
-" Example: `<leader>aap` for current paragraph
+" 作用：为选中区域或当前光标的代码块应用代码操作（Code Action）
+" 例如：选中文本后按 <leader>a 触发快速修复、重构等操作
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
@@ -216,7 +216,8 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" 注意：<space>a 与 <leader>a（代码操作）冲突，改为 <space>d
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
