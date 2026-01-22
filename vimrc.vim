@@ -12,17 +12,6 @@ let g:start_time = reltime()
 " 1. 全局预设 (必须最先执行)
 " ============================================================================
 
-" 获取配置文件所在目录（更可靠的方式）
-let g:vim_home_path = expand('<sfile>:p:h')
-
-" 定义 Leader 键（必须在加载任何插件前定义！）
-let mapleader = "\<Space>"
-" 设置本地（局部）快捷键前缀键为反斜杠，用于局部映射（如插件或文件类型特定快捷键）
-let maplocalleader = "\\"
-
-" 禁用 netrw 目录历史记录（不生成 .netrwhist 文件）
-let g:netrw_dirhistmax = 0
-
 " ============================================================================
 " 2. 插件管理 (插件列表)
 " ============================================================================
@@ -68,6 +57,9 @@ Plug 'junegunn/fzf.vim'
 
 " === 编码时间统计 ===
 Plug 'wakatime/vim-wakatime'
+
+" === 翻译 ===
+Plug 'voldikss/vim-translator'
 
 " 中文帮助文档
 Plug 'yianwillis/vimcdoc'

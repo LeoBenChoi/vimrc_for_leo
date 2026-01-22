@@ -18,7 +18,6 @@ let g:coc_global_extensions = [
       \ 'coc-sh',
       \ 'coc-snippets',
       \ 'coc-explorer',
-      \ 'coc-translator',
       \ 'coc-marketplace',
       \ ]
 " 扩展说明：
