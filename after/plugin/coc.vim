@@ -17,7 +17,6 @@ let g:coc_global_extensions = [
       \ 'coc-vimlsp',
       \ 'coc-sh',
       \ 'coc-snippets',
-      \ 'coc-explorer',
       \ 'coc-marketplace',
       \ ]
 " 扩展说明：
@@ -258,83 +257,3 @@ vmap <Leader>t <Plug>(coc-translator-pv)
 " vmap <Leader>r <Plug>(coc-translator-rv)
 
 " 查看翻译历史：:CocList translation
-
-:nmap <space>ee <Cmd>CocCommand explorer<CR>
-
-let g:coc_explorer_global_presets = {
-\   '.vim': {
-\     'root-uri': '~/.vim',
-\   },
-\   'cocConfig': {
-\      'root-uri': '~/.config/coc',
-\   },
-\   'tab': {
-\     'position': 'tab',
-\     'quit-on-open': v:true,
-\   },
-\   'tab:$': {
-\     'position': 'tab:$',
-\     'quit-on-open': v:true,
-\   },
-\   'floating': {
-\     'position': 'floating',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingTop': {
-\     'position': 'floating',
-\     'floating-position': 'center-top',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingLeftside': {
-\     'position': 'floating',
-\     'floating-position': 'left-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingRightside': {
-\     'position': 'floating',
-\     'floating-position': 'right-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'simplify': {
-\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-\   },
-\   'buffer': {
-\     'sources': [{'name': 'buffer', 'expand': v:true}]
-\   },
-\ }
-
-" Use preset argument to open it
-nmap <space>ed <Cmd>CocCommand explorer --preset .vim<CR>
-nmap <space>ef <Cmd>CocCommand explorer --preset floating<CR>
-nmap <space>ec <Cmd>CocCommand explorer --preset cocConfig<CR>
-nmap <space>eb <Cmd>CocCommand explorer --preset buffer<CR>
-
-" List all presets
-nmap <space>el <Cmd>CocList explPresets<CR>
-
-" ============================================================================
-" coc-explorer 串色问题修复
-" ============================================================================
-" 问题：coc-explorer 可能会出现串色，因为语法高亮被错误应用到 explorer 缓冲区
-" 解决方案：在 coc-explorer 缓冲区禁用语法高亮，避免高亮组冲突
-augroup CocExplorerFix
-    autocmd!
-    " 当 coc-explorer 缓冲区打开时，禁用语法高亮并清除所有高亮匹配
-    autocmd FileType coc-explorer call s:FixExplorerColors()
-    " 当进入 coc-explorer 窗口时，再次确保高亮被清除
-    autocmd BufEnter * if &filetype == 'coc-explorer' | call s:FixExplorerColors() | endif
-augroup END
-
-" 修复 coc-explorer 缓冲区中的颜色显示问题
-function! s:FixExplorerColors() abort
-    " 禁用语法高亮
-    setlocal syntax=off
-    " 清除所有语法匹配
-    syntax clear
-    " 清除所有匹配组（包括其他插件添加的）
-    call clearmatches()
-    " 注意：保留 filetype=coc-explorer，因为 coc-explorer 需要它来识别自己
-    " 只是禁用语法高亮系统，不影响 coc-explorer 的正常功能
-endfunction

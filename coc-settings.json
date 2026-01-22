@@ -100,15 +100,6 @@
   "translator.enableHover": true,
   // 窗口最大宽度
   "translator.window.maxWidth": 50,
-  // === Explorer 配置 (适配你删掉的 NERDTree) ===
-  "explorer.width": 30,
-  "explorer.icon.enableNerdfont": true,
-  "explorer.file.showHiddenFiles": true,
-  "explorer.keyMappings.global": {
-    // "o": "open",
-    "v": "open:vsplit",
-    "s": "open:split"
-  },
   // ============================================================
   // Shell 脚本配置（Windows 下修复 bash-language-server 错误）
   // ============================================================
