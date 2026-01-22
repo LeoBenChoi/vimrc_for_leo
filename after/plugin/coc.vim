@@ -99,7 +99,10 @@ function! ShowDocumentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" 只在 Normal 模式下触发，避免在插入模式下导致光标闪烁
+augroup CocHighlight
+  autocmd! CursorHold * if mode() ==# 'n' | silent call CocActionAsync('highlight') | endif
+augroup END
 
 " Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
