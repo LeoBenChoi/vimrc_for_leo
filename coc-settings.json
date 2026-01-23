@@ -20,7 +20,7 @@
   // "diagnostic.infoSign": "ℹ",
   // "diagnostic.hintSign": ">>",
   // 虚拟文本显示诊断信息（可能错位，影响阅读）
-  "diagnostic.virtualText": false,
+  "diagnostic.virtualText": true,
   // 禁用特定文件类型的诊断源
   "diagnostic.disableSources": {
     "json": [
@@ -85,6 +85,11 @@
   },
   // 开启代码透视 (Code Lens)，比如显示函数被引用了多少次
   "codeLens.enable": true,
+  // ============================================================
+  // Git 集成配置（防止与 vim-signify 冲突）
+  // ============================================================
+  // 禁用 Coc 的 Git 功能，使用 vim-signify 和 vim-fugitive 代替
+  "git.enableGutters": false,
   // ============================================================
   // coc-translator 翻译插件配置
   // ============================================================
