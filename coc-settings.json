@@ -21,6 +21,8 @@
   // "diagnostic.hintSign": ">>",
   // 虚拟文本显示诊断信息（可能错位，影响阅读）
   "diagnostic.virtualText": true,
+  // 虚拟文本前缀（在诊断信息前添加方块前缀）
+  "diagnostic.virtualTextPrefix": " ■ ",
   // 禁用特定文件类型的诊断源
   "diagnostic.disableSources": {
     "json": [
