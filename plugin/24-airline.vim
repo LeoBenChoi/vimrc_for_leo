@@ -28,7 +28,7 @@ let g:airline_powerline_fonts = 1
     let g:airline_symbols.paste = 'Þ'
     let g:airline_symbols.paste = '∥'
     let g:airline_symbols.spell = 'Ꞩ'
-    let g:airline_symbols.notexists = 'Ɇ'
+    let g:airline_symbols.notexists = " \u2204"
     let g:airline_symbols.whitespace = 'Ξ'
 
     " powerline 符号
