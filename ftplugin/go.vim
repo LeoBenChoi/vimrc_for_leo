@@ -53,7 +53,7 @@ setlocal foldlevel=99
 " 0 = 不显示
 " 1 = 显示一列宽度的折叠标识 (推荐)
 " 2 = 显示两列宽度 (可以看到折叠层级，但比较占地)
-setlocal foldcolumn=2
+setlocal foldcolumn=0
 
 " 4. (可选) 限制最大嵌套层级，防止性能问题
 setlocal foldnestmax=3
