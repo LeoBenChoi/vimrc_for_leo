@@ -54,9 +54,35 @@ set smartcase
 " --- [文件处理] ---
 set autoread
 set autowrite
-set nobackup
-set nowritebackup
-set noswapfile
+
+" --- [备份设置] ---
+set backup
+set backupdir=~/.vim/.backup//
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), 'p')
+endif
+set backupext=.bak
+
+" --- [交换文件] ---
+set swapfile
+set directory=~/.vim/.swapfile//
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), 'p')
+endif
+
+" --- [持久化撤销] ---
+set undofile
+set undodir=~/.vim/.undofile//
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), 'p')
+endif
+
+" --- [视图备份] ---
+set viewdir=~/.vim/.view//
+if !isdirectory(expand(&viewdir))
+    call mkdir(expand(&viewdir), 'p')
+endif
+set viewoptions=cursor,folds,slash,unix
 
 " --- [GVim 去边框 (UI 准备)] ---
 " GUI 模式

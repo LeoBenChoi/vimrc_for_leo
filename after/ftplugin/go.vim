@@ -38,4 +38,4 @@ nmap <buffer> <leader>rt :GoRemoveTags<CR> " 移除 tags
 augroup go_format_on_save
   autocmd!
   autocmd BufWritePre <buffer> call CocAction('format')
-augroup END  
+augroup END
