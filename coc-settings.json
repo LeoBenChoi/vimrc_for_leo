@@ -76,6 +76,17 @@
   // ============================================================
   // Go 语言配置（最佳实践）
   // ============================================================
+  // Go 语言服务器配置（gopls）
+  "languageserver": {
+    "go": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    }
+  },
   // 针对 Go 文件类型开启保存时自动格式化
   "coc.preferences.formatOnSaveFiletypes": [
     "go"

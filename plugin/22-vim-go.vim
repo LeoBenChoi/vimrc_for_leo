@@ -23,9 +23,10 @@
 " 如果 gopls 未安装，运行 :GoUpdateBinaries 即可
 
 " --- 1. 核心行为 ---
-" 必须开启！保存文件时自动运行 goimports (自动补全 import，自动排版)
+" 注意：格式化功能已交给 coc-go/gopls 处理，禁用 vim-go 的自动格式化
+" coc-go 使用 gopls 进行格式化，功能更强大（支持 organizeImports）
 let g:go_fmt_command = "goimports"
-let g:go_fmt_autosave = 1
+let g:go_fmt_autosave = 0  " 禁用 vim-go 的自动格式化，由 coc.nvim 处理
 
 " --- 2. 防止冲突 (让位给 coc-go) ---
 " 关掉 vim-go 的 LSP 功能，全部交给 coc-go 处理
