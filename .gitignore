@@ -19,7 +19,14 @@ plugged/
 *.backup
 *.tmp
 
-" --- 4. 撤销文件 ---
+" --- 4. Vim 备份目录 ---
+" 备份、交换文件、撤销文件和视图文件目录
+.backup/
+.swapfile/
+.undofile/
+.view/
+
+" --- 5. 撤销文件 ---
 " Vim 撤销历史文件
 *.un~
 

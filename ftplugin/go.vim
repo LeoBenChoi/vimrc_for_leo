@@ -39,3 +39,21 @@ augroup go_format_on_save
   autocmd!
   autocmd BufWritePre <buffer> call CocAction('format')
 augroup END
+
+" =======================================================
+" [Go Fold Execution] 执行与显示设置
+" =======================================================
+
+" 开启语法感知折叠 (使用 vim-go 提供的规则)
+setlocal foldmethod=syntax
+
+setlocal foldlevel=99
+
+"  [核心需求] 显示侧边折叠柱
+" 0 = 不显示
+" 1 = 显示一列宽度的折叠标识 (推荐)
+" 2 = 显示两列宽度 (可以看到折叠层级，但比较占地)
+setlocal foldcolumn=2
+
+" 4. (可选) 限制最大嵌套层级，防止性能问题
+setlocal foldnestmax=3

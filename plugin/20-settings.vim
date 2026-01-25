@@ -18,3 +18,26 @@
 " 32-git.vim          - Git 黄金组合配置（vim-fugitive & vim-signify）
 "
 " 注意：所有插件配置按数字顺序自动加载
+
+" =======================================================
+" [Go Fold Strategy] 定义折叠策略
+" =======================================================
+" 让 vim-go 插件知道我们想折叠哪些内容
+" block: 函数体 (可选，如果不喜欢函数被折叠可以去掉)
+" import: 导入块 (强力推荐)
+" varconst: 长变量/常量块
+" package_comment: 包注释
+let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
+
+" 严禁保存 options，否则会因为保存了错误的缩进设置导致混乱
+set viewoptions=cursor,folds,slash,unix
+
+" 4. 自动化命令：静默保存和加载
+augroup AutoSaveView
+    autocmd!
+    " 离开或保存时：如果文件名不为空，则保存视图
+    autocmd BufWinLeave,BufWritePost * if expand('%') != '' | silent! mkview | endif
+    
+    " 打开文件时：如果文件名不为空，则恢复视图
+    autocmd BufWinEnter * if expand('%') != '' | silent! loadview | endif
+augroup END
