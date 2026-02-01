@@ -3,10 +3,14 @@
   "coc.preferences.formatOnSave": true,
   // 禁止自动选中第一个补全项
   "suggest.noselect": true,
-  // 保存时自动组织 import (自动增删包)
+  // Go: 保存时自动整理 import（排序、增删未使用/缺失的包）
+  "[go]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
   "go.goplsOptions": {
     "completeUnimported": true
-  }
-
-  
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }

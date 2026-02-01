@@ -207,3 +207,20 @@ augroup jsonc_detect
   autocmd!
   autocmd BufRead,BufNewFile coc-settings.json setfiletype jsonc
 augroup END
+
+let g:coc_config_home = expand('~/.vim')
+
+let g:coc_global_extensions = [
+      \ 'coc-go',
+      \ 'coc-json',
+      \ 'coc-yaml',
+      \ 'coc-vimlsp',
+      \ 'coc-snippets',
+      \ 'coc-marketplace',
+      \ ]
+
+" 2. 平台特定判断
+" 如果 【不是】 Windows 系统，才加入 coc-sh
+if !has('win32') && !has('win64')
+    call add(g:coc_global_extensions, 'coc-sh')
+endif

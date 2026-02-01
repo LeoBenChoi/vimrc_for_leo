@@ -1,14 +1,21 @@
+
+
 call plug#begin('~/.vim/plugged')
 
 " === 基础优化 ===
-Plug 'tpope/vim-sensible'                       " 默认优化配置 (Vim 社区公认的“标准库”)
+Plug 'tpope/vim-sensible'                       " 默认优化配置
 
 " === 语言服务/LSP ===
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " 核心 LSP
 
 " === 界面美化和辅助 ===
 Plug 'junegunn/rainbow_parentheses.vim'         " 彩虹括号
+Plug 'tpope/vim-commentary'                     " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'yianwillis/vimcdoc'                       " 中文帮助文档
+
+" === Git ===
+Plug 'airblade/vim-gitgutter'                  " 左侧显示修改标记 (+ ~ -)
+Plug 'tpope/vim-fugitive'                      " Git 包装器 & 分支信息获取
 
 " === 侧边栏与图标 ===
 Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} " 侧边栏
