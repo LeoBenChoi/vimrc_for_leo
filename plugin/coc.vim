@@ -1,3 +1,9 @@
+if exists('g:loaded_coc') || &compatible
+  finish
+else
+  let g:loaded_coc = 'yes'
+endif
+
 " =======================================================
 " [coc.nvim] 智能补全与 LSP 配置
 " =======================================================
@@ -163,19 +169,18 @@ nmap <silent> <C-s> <Plug>(coc-range-select)
 " 可视化模式
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" Add `:Format` command to format current buffer
+" 添加 `:Format` 命令，以格式化当前缓冲区
 command! -nargs=0 Format :call CocActionAsync('format')
 
-" Add `:Fold` command to fold current buffer
+" 添加 `:Fold` 命令，以折叠当前缓冲区
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Add `:OR` command for organize imports of the current buffer
+" 添加 `:OR` 命令，用于整理（organize）当前缓冲区的导入语句
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: vim-airline
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" 添加 (Neo)Vim 原生的状态栏支持
+" 注意：请参阅 `:h coc-status`，以了解与外部状态栏插件（如 vim-airline）的集成方式
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " --- [CoCList 映射] ---
 " 显示所有诊断错误
@@ -195,20 +200,10 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " 恢复最新的 coc 列表
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-" =======================================================
-" [Coc Highlight] 智能高亮当前符号
-" =======================================================
+"" 附加
 
-" 1. 触发机制
-" 当光标在普通模式(Normal)停留 300ms (updatetime) 后，
-" 通知 Coc 高亮当前光标下的变量/函数及其所有引用。
-autocmd CursorHold * if mode() == 'n' | silent call CocActionAsync('highlight') | endif
-
-" 2. 颜色设置 (关键！)
-" 很多配色方案(Theme)没有定义 CocHighlightText，导致高亮是“透明”的，你看不到。
-" 这里强制定义一种显眼的颜色 (类似于 VS Code 的浅灰色背景)。
-augroup CocHighlightCustom
+" --- [设置 coc-settings.json 为 jsonc 格式] ---
+augroup jsonc_detect
   autocmd!
-  " ctermbg=242 代表一种深灰色，guibg=#504945 是 Gruvbox/Retrobox 风格的背景色
-  autocmd ColorScheme * highlight CocHighlightText ctermbg=242 guibg=#504945 cterm=underline gui=underline
+  autocmd BufRead,BufNewFile coc-settings.json setfiletype jsonc
 augroup END

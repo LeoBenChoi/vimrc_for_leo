@@ -36,6 +36,11 @@ plugged/
 Session.vim
 Sessionx.vim
 
+" --- 5.1. netrw 历史文件 ---
+" netrw 文件浏览器目录历史记录
+.netrwhist
+.netrwbook
+
 " --- 6. 标签文件 ---
 " 代码索引标签文件
 tags
