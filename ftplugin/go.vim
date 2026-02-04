@@ -5,14 +5,6 @@ else
 	let b:go_fold_loaded = 1
 endif
 
-" 折叠视图保存目录（全局，仅当未设置时）
-if empty(&viewdir)
-	set viewdir=~/.vim/.view//
-endif
-if !isdirectory(expand(&viewdir))
-	call mkdir(expand(&viewdir), 'p')
-endif
-
 setlocal foldmethod=indent
 setlocal foldlevel=1
 setlocal foldlevelstart=99
