@@ -1,42 +1,37 @@
 # Vim 配置 - 现代化开发环境
 
-> 一个功能完整、模块化的 Vim 配置，专为现代软件开发设计
+> 模块化 Vim 配置，以 coc.nvim 为核心，适合日常编码与多语言开发。
 
-[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/LeoBenChoi/vimrc_for_leo)
+## ✨ 特性概览
 
-## ✨ 特性
+### 🎨 界面与主题
+- **seoul256**（终端）：经典深色配色
+- **retrobox**（GVim）：图形界面主题
+- **rainbow_parentheses**：彩虹括号，提升括号配对可读性
+- **vim-devicons**：侧边栏与文件类型图标
+- **原生状态栏**：集成 Git 分支、GitGutter 统计、coc 诊断与状态
 
-### 🎨 界面美化
-- **vim-airline**: 强大的状态栏，显示 Git 分支、文件信息、行号等
-- **seoul256**: 优雅的配色方案
-- **rainbow**: 彩虹括号，提高代码可读性
-- **vim-devicons**: 文件类型图标支持
+### 🚀 核心能力
+- **coc.nvim**：LSP 客户端，补全、诊断、跳转、重命名、格式化、代码操作
+- **vim-fugitive**：Git 集成（`:G` 等）
+- **vim-gitgutter**：行侧 Git 变更标记（+ ~ -）
+- **NERDTree**：侧边栏文件树，按需加载
 
-### 🚀 核心功能
-- **coc.nvim**: 强大的 LSP 客户端，支持代码补全、诊断、跳转等
-- **vim-go**: Go 语言开发工具集
-- **FZF**: 极速模糊搜索（文件、内容、历史等）
-- **NERDTree**: 文件树导航
-- **Vista**: 代码结构大纲
+### 🔧 体验与工具
+- **vim-sensible**：通用合理默认
+- **vim-commentary**：快速注释（`gcc` / `gc` + 选区）
+- **vimcdoc**：中文帮助
+- **vim-startuptime**：启动时间分析
+- **vim-wakatime**：编码时间统计
 
-### 🔧 开发工具
-- **AsyncRun/AsyncTasks**: 异步任务执行系统，支持编译、测试、运行
-- **vim-fugitive**: Git 操作集成
-- **vim-signify**: Git 变更标记（增删改）
-- **vim-translator**: 代码翻译工具
-- **vim-startuptime**: 启动时间分析
-
-### 📦 其他工具
-- **vim-startify**: 优雅的启动界面
-- **vim-commentary**: 快速注释工具
-- **vim-wakatime**: 编码时间统计
+### 📁 文件类型
+- **ftplugin/go.vim**：Go 按缩进折叠，保存/恢复折叠视图
 
 ## 📋 系统要求
 
-- **Vim**: 8.0+ 或 **Neovim** 0.5+
-- **Git**: 用于插件管理
-- **Node.js**: 用于 coc.nvim（推荐 16+）
-- **Python**: 部分插件需要（可选）
+- **Vim** 8.0+ 或 **Neovim** 0.5+
+- **Git**：克隆与插件管理
+- **Node.js**：coc.nvim（建议 16+）
 
 ## 🚀 快速开始
 
@@ -49,186 +44,164 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 # Windows (PowerShell)
 iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
-    ni "$env:LOCALAPPDATA\nvim-data\site\autoload\plug.vim -Force
+    ni $env:USERPROFILE\.vim\autoload\plug.vim -Force
 ```
 
-### 2. 克隆配置
+### 2. 使用本配置
 
 ```bash
-git clone https://github.com/LeoBenChoi/vimrc_for_leo.git ~/.vim
+git clone <你的仓库地址> ~/.vim
 ```
 
 ### 3. 安装插件
 
-打开 Vim，运行：
+启动 Vim 后执行：
 
 ```vim
 :PlugInstall
 ```
 
-### 4. 配置 coc.nvim（可选）
+### 4. coc.nvim 扩展（可选）
 
-如果需要 LSP 功能，安装语言服务器：
+LSP 与补全依赖 coc 扩展，可按需安装：
 
 ```vim
 :CocInstall coc-go
 :CocInstall coc-json
 :CocInstall coc-yaml
-" ... 其他语言服务器
+:CocInstall coc-vimlsp
+:CocInstall coc-snippets
+:CocInstall coc-marketplace
 ```
+
+配置中已通过 `g:coc_global_extensions` 声明常用扩展，首次启动 coc 时会自动安装。
 
 ## 📁 目录结构
 
 ```
 ~/.vim/
-├── .vimrc                 # 主配置文件（加载插件和配置）
-├── plugins.vim            # 插件声明文件
-├── plugin/                # 插件配置目录
-│   ├── 00-init.vim        # 核心设置和全局配置
-│   ├── 20-settings.vim    # 插件配置索引
-│   ├── 21-fzf.vim         # FZF 配置
-│   ├── 22-vim-go.vim      # vim-go 配置
-│   ├── 23-asyncrun.vim    # AsyncRun 配置
-│   ├── 24-airline.vim     # vim-airline 配置
-│   ├── 25-startify.vim    # Startify 配置
-│   ├── 26-nerdtree.vim    # NERDTree 配置
-│   ├── 27-rainbow.vim     # Rainbow 配置
-│   ├── 28-translator.vim  # 翻译插件配置
-│   ├── 29-vista.vim       # Vista 配置
-│   ├── 30-coc.vim         # coc.nvim 配置
-│   ├── 32-git.vim         # Git 工具配置
-│   └── 33-asynctasks.vim  # AsyncTasks 配置
-├── tasks.ini              # 异步任务定义
-├── coc-settings.json       # coc.nvim 配置
-├── ftplugin/              # 文件类型特定配置
-└── plugged/               # 插件目录（由 vim-plug 管理）
+├── .vimrc                 " 入口：设置 runtimepath 并加载 plugins.vim
+├── plugins.vim            " 插件列表（vim-plug）
+├── coc-settings.json      " coc.nvim 配置（格式、Go 等）
+├── .gitignore             " 忽略 plugged/、备份、交换文件等
+├── autoload/
+│   └── plug.vim           " vim-plug 脚本
+├── plugin/                " 模块化配置（按功能拆分）
+│   ├── basic.vim          " 备份/交换/撤销/视图、行号、wildmenu、恢复光标
+│   ├── coc.vim             " coc.nvim 键位与行为
+│   ├── performance.vim    " 内存、updatetime、DirectX（Windows GVim）
+│   ├── rainbow.vim        " 彩虹括号
+│   ├── sidebar.vim        " NERDTree 与自动化
+│   ├── statusline.vim     " 状态栏（Git、诊断、编码等）
+│   └── ui.vim             " 主题、GUI 选项与字体
+├── ftplugin/
+│   └── go.vim             " Go 缩进折叠与视图保存
+└── plugged/               " 插件目录（vim-plug 管理，已在 .gitignore）
 ```
 
-## ⌨️ 快捷键
+## ⌨️ 快捷键与命令
 
-### 文件操作
-- `<F2>`: 打开/关闭文件树（NERDTree）
-- `<Leader>n`: 打开文件树（备用）
-- `<Leader>f`: 在当前文件所在目录打开文件树
+### 侧边栏（NERDTree）
+| 按键 | 说明 |
+|------|------|
+| `<F2>` | 打开/关闭文件树 |
+| `<Leader>e` | 在文件树中定位当前文件 |
 
-### 搜索
-- `<Leader>f`: FZF 文件搜索
-- `<Leader>g`: FZF Git 文件搜索
-- `<Leader>b`: FZF 缓冲区搜索
-- `<Leader>r`: FZF 历史搜索
-- `:Todo`: 搜索 TODO 注释
+### coc.nvim 补全与导航
+| 按键 | 说明 |
+|------|------|
+| `<Tab>` / `<S-Tab>` | 补全列表中下一项/上一项 |
+| `<Enter>` | 确认补全或触发 coc 格式化 |
+| `<C-Space>`（或 Vim 下 `<C-@>`） | 手动触发补全 |
+| `gd` | 跳转到定义 |
+| `gy` | 跳转到类型定义 |
+| `gi` | 跳转到实现 |
+| `gr` | 查找引用 |
+| `K` | 悬浮文档（Hover） |
+| `[g` / `]g` | 上一个/下一个诊断 |
 
-### 代码导航
-- `<Leader>v`: 打开代码结构大纲（Vista）
-- `gd`: 跳转到定义（coc.nvim）
-- `gr`: 查找引用（coc.nvim）
+### coc 代码操作与列表
+| 按键 | 说明 |
+|------|------|
+| `<Leader>rn` | 重命名符号 |
+| `<Leader>f` | 格式化选中/当前（n/x 模式） |
+| `<Leader>a` | 对选中应用代码操作 |
+| `<Leader>ac` | 光标处代码操作 |
+| `<Leader>qf` | 快速修复当前行诊断 |
+| `<Leader>cl` | 执行当前行 Code Lens |
+| `<Space>a` | CocList 诊断 |
+| `<Space>e` | CocList 扩展 |
+| `<Space>c` | CocList 命令 |
+| `<Space>o` | CocList 当前文档符号大纲 |
+| `<Space>s` | CocList 工作区符号 |
 
-### 异步任务
-- `<F5>`: 运行当前文件
-- `<F6>`: 任务列表（FZF 选择）
-- `<F9>`: 构建项目
-- `<F10>`: 停止当前任务
+### 注释（vim-commentary）
+| 按键 | 说明 |
+|------|------|
+| `gcc` | 注释/取消注释当前行 |
+| `gc` + 选区 | 注释/取消注释选中区域 |
 
-### Git 操作
-- `:G`: 打开 Git 状态
-- `:G blame`: 查看 Git 追溯
-- `:G diff`: 查看差异
+### Git（vim-fugitive）
+| 命令 | 说明 |
+|------|------|
+| `:G` | 打开 Git 状态 |
+| `:G blame` | 追溯当前文件 |
+| `:G diff` | 查看差异 |
 
 ### 其他
-- `gcc`: 注释/取消注释当前行
-- `gc`: 注释/取消注释选中区域
+| 命令 | 说明 |
+|------|------|
+| `:Format` | 格式化当前缓冲区 |
+| `:OR` | 整理导入（如 Go organize imports） |
+| `:StartupTime` | 查看启动时间分析 |
 
 ## 🛠️ 配置说明
 
 ### 模块化设计
 
-所有插件配置按功能分类到独立文件，便于维护和定制：
+- **basic.vim**：备份目录、交换目录、撤销与视图目录、行号、wildmenu、恢复上次光标等。
+- **coc.vim**：补全键位、诊断导航、跳转、重命名、格式化、代码操作、CoCList、coc 扩展列表（含 coc-go、coc-json、coc-yaml、coc-vimlsp、coc-snippets 等）。
+- **performance.vim**：`maxmem`/`maxmemtot`、`updatetime`、Windows GVim 下 DirectX 渲染、`ttyfast`/`lazyredraw`。
+- **statusline.vim**：Git 分支（Fugitive）、GitGutter 统计、coc 诊断数量、coc 状态、文件类型与编码。
 
-- **00-init.vim**: 核心 Vim 设置、全局快捷键、自动命令
-- **20-settings.vim**: 插件配置索引（说明文档）
-- **21-33**: 各插件的具体配置
+### coc 配置（coc-settings.json）
 
-### 异步任务系统
+- 保存时自动格式化（`coc.preferences.formatOnSave`）
+- 补全不自动选中第一项（`suggest.noselect`）
+- Go：保存时整理 import；gopls 补全未导入符号
 
-配置文件：`~/.vim/tasks.ini`
+### 主题策略（ui.vim）
 
-预定义任务：
-- `file-run`: 运行当前文件
-- `file-build`: 构建项目
-- `go-test`: Go 测试
-- `go-mod-tidy`: Go 模块整理
+- 终端：`seoul256`（`g:seoul256_background = 234`）
+- GVim：尝试 `retrobox`，失败则 `default`
+- Windows GVim：可选用 Maple Mono 等字体（见 `guifont`）
 
-### LSP 配置
+## 🔧 自定义
 
-配置文件：`~/.vim/coc-settings.json`
+### 添加插件
 
-支持的语言服务器：
-- Go (coc-go)
-- JSON (coc-json)
-- YAML (coc-yaml)
-- 更多语言服务器可通过 `:CocInstall` 安装
-
-## 🎯 使用技巧
-
-### 启动时间分析
-
-```vim
-:StartupTime
-```
-
-### 查看 Git 状态
-
-```vim
-:G
-```
-
-### 快速搜索
-
-使用 FZF 进行模糊搜索，支持：
-- 文件名搜索
-- 内容搜索（使用 ripgrep）
-- Git 文件搜索
-- 缓冲区搜索
-
-### 代码补全
-
-coc.nvim 提供智能补全：
-- 自动触发补全
-- 使用 `<Tab>` 选择补全项
-- 使用 `<Enter>` 确认
-
-## 🔧 自定义配置
-
-### 添加新插件
-
-编辑 `plugins.vim`，添加：
+在 `plugins.vim` 的 `plug#begin` 与 `plug#end` 之间添加：
 
 ```vim
 Plug 'author/plugin-name'
 ```
 
-然后运行 `:PlugInstall`
+然后执行 `:PlugInstall`。
 
-### 修改插件配置
+### 修改插件行为
 
-找到对应的配置文件（如 `plugin/24-airline.vim`），直接编辑即可。
+在 `plugin/` 下对应模块中修改（如 NERDTree 在 `sidebar.vim`，coc 在 `coc.vim`）。
 
-### 添加自定义任务
+### 添加 coc 扩展
 
-编辑 `tasks.ini`，添加新任务定义：
+在 `coc.vim` 的 `g:coc_global_extensions` 中追加，或临时执行：
 
-```ini
-[task-name]
-command=your-command
-cwd=<root>
-output=quickfix
+```vim
+:CocInstall coc-xxx
 ```
 
-## 📝 更新日志
+## 📝 更新说明
 
-### Version 4.0.0 (2026-01-24)
-- ✨ 重构配置结构，采用模块化设计
-- ➕ 添加 `.gitignore` 配置
-- 🔧 优化插件配置，提升启动速度
-- 📦 更新插件列表和配置
-
+- 当前结构为模块化配置：`.vimrc` → `plugins.vim` + `plugin/*.vim` + `ftplugin/*.vim`。
+- 核心为 coc.nvim + 原生状态栏 + NERDTree + Git（Fugitive/GitGutter）+ 主题与基础体验优化。
+- 备份、交换、撤销、视图等目录集中在 `~/.vim/.backup/`、`.swapfile/`、`.undofile/`、`.view/`，已通过 `.gitignore` 排除。
