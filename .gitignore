@@ -25,6 +25,7 @@ plugged/
 .swapfile/
 .undofile/
 .view/
+view/
 
 " --- 5. 撤销文件 ---
 " Vim 撤销历史文件
