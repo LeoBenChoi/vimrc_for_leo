@@ -33,10 +33,8 @@ if !isdirectory(expand(&undodir))
 	call mkdir(expand(&undodir), 'p')
 endif
 
-" 折叠视图保存目录（全局，仅当未设置时）
-if empty(&viewdir)
-	set viewdir=~/.vim/.view//
-endif
+" 折叠视图保存目录（固定为 .view，便于纳入 .gitignore）
+set viewdir=~/.vim/.view//
 if !isdirectory(expand(&viewdir))
 	call mkdir(expand(&viewdir), 'p')
 endif
