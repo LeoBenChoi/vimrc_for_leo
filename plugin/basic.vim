@@ -33,6 +33,17 @@ if !isdirectory(expand(&undodir))
 	call mkdir(expand(&undodir), 'p')
 endif
 
+" 折叠视图保存目录（全局，仅当未设置时）
+if empty(&viewdir)
+	set viewdir=~/.vim/.view//
+endif
+if !isdirectory(expand(&viewdir))
+	call mkdir(expand(&viewdir), 'p')
+endif
+
+" 默认使用语法折叠（各 ftplugin 可覆盖，如 go.vim 用 indent）
+set foldmethod=syntax
+set foldenable
 
 """"""""""""""""""""""""""""""""""""""""""" 来自官网，永久保存
 " 将以下内容放入一个 autocmd 组，这样可以通过以下命令还原它们：
