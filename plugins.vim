@@ -7,6 +7,7 @@ Plug 'tpope/vim-sensible'                       " 默认优化配置
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " 核心 LSP
 
 " === 界面美化和辅助 ===
+Plug 'mhinz/vim-startify'                       " 启动屏/仪表盘
 Plug 'luochen1990/rainbow'                      " 彩虹括号
 Plug 'tpope/vim-commentary'                     " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'yianwillis/vimcdoc', {'depth': 1}         " 中文帮助文档（浅克隆，减轻网络中断）
