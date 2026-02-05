@@ -59,36 +59,61 @@ augroup vimStartup
 
 augroup END
 
-" 显示相对行号和当前行绝对行号
+" 默认显示相对行号和当前行绝对行号
 set number
 set relativenumber
+
+" 定义切换行号模式的函数
+let g:line_number_mode = 0
+function! ToggleLineNumberMode()
+    " 模式顺序：
+    " 0: relativenumber+number（相对+绝对 默认）
+    " 1: number（只绝对）
+    " 2: relativenumber（只相对）
+    " 3: 都不显示
+    let g:line_number_mode = (g:line_number_mode + 1) % 4
+    if g:line_number_mode == 0
+        set number
+        set relativenumber
+        echo "行号: 绝对+相对"
+    elseif g:line_number_mode == 1
+        set number
+        set norelativenumber
+        echo "行号: 绝对"
+    elseif g:line_number_mode == 2
+        set nonumber
+        set relativenumber
+        echo "行号: 相对"
+    else
+        set nonumber
+        set norelativenumber
+        echo "行号: 不显示"
+    endif
+endfunction
+
+" 绑定 F3 键切换行号模式（如需更换，可以改成 F2/F4...F12）
+nnoremap <F3> :call ToggleLineNumberMode()<CR>
 
 " =======================================================
 " [Command Line] 末行模式补全增强
 " =======================================================
 
-" 1. 开启 wildmenu (基础必须)
+" 开启 wildmenu (基础必须)
 " 允许按下 Tab 键时显示补全列表
 set wildmenu
 
-" 2. 定义补全行为
+" 定义补全行为
 " longest: 先补全到最长的公共字符串
 " full:    如果还有多种可能，触发菜单
 " full:    再次按 Tab 在菜单中循环
 set wildmode=longest:full,full
 
-" 3. 【核心】启用竖向弹出菜单 (PopUp Menu)
+" 启用竖向弹出菜单 (PopUp Menu)
 if has("patch-8.2.4325") || has('nvim')
     set wildoptions=pum
     if exists('&pumblend')
         set pumblend=10
     endif
 endif
-
-" 4. 忽略一些不想补全的文件 (让列表更干净)
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest
-set wildignore+=*.pyc,*.class
-set wildignore+=.git,.hg,.svn
-set wildignore+=*.jpg,*.png,*.gif,*.jpeg,*.bmp
 
 set lazyredraw

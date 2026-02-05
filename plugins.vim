@@ -1,6 +1,4 @@
-
-
-call plug#begin('~/.vim/plugged')
+call plug#begin(g:vim_dir . '/plugged')
 
 " === 基础优化 ===
 Plug 'tpope/vim-sensible'                       " 默认优化配置
@@ -31,5 +29,5 @@ Plug 'dstein64/vim-startuptime'                 " 启动时间分析 (按需加�
 " === 编码统计 ===
 Plug 'wakatime/vim-wakatime'                    " 编码时间统计
 
-Plug 'ryanoasis/vim-devicons'                       " 图标支持 (必须放在最后加载)
+Plug 'ryanoasis/vim-devicons'                   " 图标支持 (必须放在最后加载)
 call plug#end()
