@@ -3,14 +3,27 @@
   "coc.preferences.formatOnSave": true,
   // 禁止自动选中第一个补全项
   "suggest.noselect": true,
-  // Go: 保存时自动整理 import（排序、增删未使用/缺失的包）
+  // Go: 保存时自动整理 import
   "[go]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
   },
-  "go.goplsOptions": {
-    "completeUnimported": true
+
+  // Go: 使用 gopls 作为语言服务器
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.work", "go.mod", ".git/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true,
+        "completeUnimported": true,
+        "staticcheck": true
+      }
+    }
   },
+
+  // 禁用 ultisnips 的 Python 提示
   "snippets.ultisnips.pythonPrompt": false
 }

@@ -211,7 +211,6 @@ augroup END
 let g:coc_config_home = expand('~/.vim')
 
 let g:coc_global_extensions = [
-      \ 'coc-go',
       \ 'coc-json',
       \ 'coc-yaml',
       \ 'coc-vimlsp',
