@@ -22,7 +22,10 @@ plugged/
 " --- 4. Vim 备份目录 ---
 " 备份、交换文件、撤销文件和视图文件目录
 .backup/
+backup/
+.swap/
 .swapfile/
+.undo/
 .undofile/
 .view/
 view/
