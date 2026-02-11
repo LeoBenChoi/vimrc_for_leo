@@ -39,18 +39,8 @@ if !isdirectory(expand(&viewdir))
 	call mkdir(expand(&viewdir), 'p')
 endif
 
-" 保存/加载视图时包含：折叠、光标、当前目录等（不含 options 避免干扰 ftplugin）
-set viewoptions=folds,cursor,curdir,slash,unix
-
-" 自动保存/加载折叠视图（仅对有文件名的普通缓冲区）
-augroup foldView
-	au!
-	autocmd BufWinLeave * if expand('%') !=# '' && &ft !~# '^nerdtree' | silent! mkview | endif
-	autocmd BufWinEnter * if expand('%') !=# '' && &ft !~# '^nerdtree' | silent! loadview | endif
-augroup END
-
-" 默认使用语法折叠（各 ftplugin 可覆盖，如 go.vim 用 indent）
-set foldmethod=syntax
+" 折叠：仅手动折叠并开启
+set foldmethod=manual
 set foldenable
 
 """"""""""""""""""""""""""""""""""""""""""" 来自官网，永久保存

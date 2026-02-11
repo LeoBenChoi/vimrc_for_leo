@@ -171,9 +171,6 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 " 添加 `:Format` 命令，以格式化当前缓冲区
 command! -nargs=0 Format :call CocActionAsync('format')
 
-" 添加 `:Fold` 命令，以折叠当前缓冲区
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
 " 添加 `:OR` 命令，用于整理（organize）当前缓冲区的导入语句
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
@@ -211,6 +208,7 @@ let g:coc_config_home = g:vim_dir
 
 let g:coc_global_extensions = [
       \ 'coc-json',
+      \ 'coc-go',
       \ 'coc-yaml',
       \ 'coc-vimlsp',
       \ 'coc-snippets',
