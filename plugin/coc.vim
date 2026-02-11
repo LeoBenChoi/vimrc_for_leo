@@ -10,9 +10,8 @@ endif
 " 来源: https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.vim
 
 " --- [基础设置] ---
-" 指定 coc.nvim 配置文件路径
-" 配置文件位置：~/.vim/coc-settings.json
-let g:coc_config_home = expand('~/.vim')
+" 指定 coc.nvim 配置文件路径（与 g:vim_dir 一致：Win=vimfiles，Linux=.vim）
+let g:coc_config_home = g:vim_dir
 
 " Vim (非 Neovim) 需要设置 UTF-8 编码，因为 coc.nvim 通过字节序列计算偏移量
 set encoding=utf-8
@@ -208,7 +207,7 @@ augroup jsonc_detect
   autocmd BufRead,BufNewFile coc-settings.json setfiletype jsonc
 augroup END
 
-let g:coc_config_home = expand('~/.vim')
+let g:coc_config_home = g:vim_dir
 
 let g:coc_global_extensions = [
       \ 'coc-json',

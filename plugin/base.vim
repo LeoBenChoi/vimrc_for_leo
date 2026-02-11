@@ -11,9 +11,9 @@ let g:netrw_dirhistmax = 0
 " 文件备份与恢复
 " ========================
 
-" 备份设置
+" 备份设置（路径随 g:vim_dir：Win=vimfiles，Linux=.vim）
 set backup
-set backupdir=~/.vim/.backup//
+let &backupdir = g:vim_dir . '/.backup//'
 if !isdirectory(expand(&backupdir))
 	call mkdir(expand(&backupdir), 'p')
 endif
@@ -21,23 +21,33 @@ set backupext=.bak
 
 " 交换文件
 set swapfile
-set directory=~/.vim/.swapfile//
+let &directory = g:vim_dir . '/.swap//'
 if !isdirectory(expand(&directory))
 	call mkdir(expand(&directory), 'p')
 endif
 
 " 持久化撤销
 set undofile
-set undodir=~/.vim/.undofile//
+let &undodir = g:vim_dir . '/.undo//'
 if !isdirectory(expand(&undodir))
 	call mkdir(expand(&undodir), 'p')
 endif
 
 " 折叠视图保存目录（固定为 .view，便于纳入 .gitignore）
-set viewdir=~/.vim/.view//
+let &viewdir = g:vim_dir . '/.view//'
 if !isdirectory(expand(&viewdir))
 	call mkdir(expand(&viewdir), 'p')
 endif
+
+" 保存/加载视图时包含：折叠、光标、当前目录等（不含 options 避免干扰 ftplugin）
+set viewoptions=folds,cursor,curdir,slash,unix
+
+" 自动保存/加载折叠视图（仅对有文件名的普通缓冲区）
+augroup foldView
+	au!
+	autocmd BufWinLeave * if expand('%') !=# '' && &ft !~# '^nerdtree' | silent! mkview | endif
+	autocmd BufWinEnter * if expand('%') !=# '' && &ft !~# '^nerdtree' | silent! loadview | endif
+augroup END
 
 " 默认使用语法折叠（各 ftplugin 可覆盖，如 go.vim 用 indent）
 set foldmethod=syntax
