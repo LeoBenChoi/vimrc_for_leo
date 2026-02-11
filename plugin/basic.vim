@@ -21,14 +21,14 @@ set backupext=.bak
 
 " 交换文件
 set swapfile
-set directory=~/.vim/.swapfile//
+set directory=~/.vim/swap//
 if !isdirectory(expand(&directory))
 	call mkdir(expand(&directory), 'p')
 endif
 
 " 持久化撤销
 set undofile
-set undodir=~/.vim/.undofile//
+set undodir=~/.vim/undo//
 if !isdirectory(expand(&undodir))
 	call mkdir(expand(&undodir), 'p')
 endif

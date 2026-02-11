@@ -91,7 +91,7 @@ LSP 与补全依赖 coc 扩展，可按需安装：
 │   ├── coc.vim             " coc.nvim 键位与行为
 │   ├── performance.vim    " 内存、updatetime、DirectX（Windows GVim）
 │   ├── rainbow.vim        " 彩虹括号
-│   ├── sidebar.vim        " NERDTree 与自动化
+│   ├── nerdtree.vim       " NERDTree 与自动化
 │   ├── statusline.vim     " 状态栏（Git、诊断、编码等）
 │   └── ui.vim             " 主题、GUI 选项与字体
 ├── ftplugin/
@@ -190,7 +190,7 @@ Plug 'author/plugin-name'
 
 ### 修改插件行为
 
-在 `plugin/` 下对应模块中修改（如 NERDTree 在 `sidebar.vim`，coc 在 `coc.vim`）。
+在 `plugin/` 下对应模块中修改（如 NERDTree 在 `nerdtree.vim`，coc 在 `coc.vim`）。
 
 ### 添加 coc 扩展
 
@@ -204,4 +204,4 @@ Plug 'author/plugin-name'
 
 - 当前结构为模块化配置：`.vimrc` → `plugins.vim` + `plugin/*.vim` + `ftplugin/*.vim`。
 - 核心为 coc.nvim + 原生状态栏 + NERDTree + Git（Fugitive/GitGutter）+ 主题与基础体验优化。
-- 备份、交换、撤销、视图等目录集中在 `~/.vim/.backup/`、`.swapfile/`、`.undofile/`、`.view/`，已通过 `.gitignore` 排除。
+- 备份、交换、撤销、视图等目录集中在 `~/.vim/.backup/`、`swap/`、`undo/`、`.view/`，已通过 `.gitignore` 排除。

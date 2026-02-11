@@ -1,7 +1,7 @@
-if exists('g:loaded_sidebar') || &compatible
+if exists('g:loaded_nerdtree') || &compatible
 	finish
 else
-	let g:loaded_sidebar = 'yes'
+	let g:loaded_nerdtree = 'yes'
 endif
 
 " =======================================================
