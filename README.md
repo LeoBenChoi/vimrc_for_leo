@@ -2,6 +2,29 @@
 
 > 模块化 Vim 配置，以 coc.nvim 为核心，适合日常编码与多语言开发。
 
+## 📁 目录结构
+
+```
+~/.vim/ 或 ~/vimfiles/（Windows）
+├── vimrc                  " 入口：设置 g:vim_dir、runtimepath 并加载 plugins.vim
+├── plugins.vim            " 插件列表（vim-plug）
+├── coc-settings.json      " coc.nvim 配置（格式、Go 等）
+├── .gitignore             " 忽略 plugged/、备份、交换文件等
+├── autoload/
+│   └── plug.vim           " vim-plug 脚本
+├── plugin/                " 模块化配置（按功能拆分）
+│   ├── base.vim           " 备份/交换/撤销/视图、行号、wildmenu、恢复光标
+│   ├── coc.vim            " coc.nvim 键位与行为
+│   ├── performance.vim    " 内存、updatetime、DirectX（Windows GVim）
+│   ├── nerdtree.vim       " NERDTree 与自动化
+│   └── ui.vim             " 主题、GUI、状态栏、彩虹括号
+├── ftplugin/
+│   └── go.vim             " Go 缩进折叠与视图保存
+└── plugged/               " 插件目录（vim-plug 管理，已在 .gitignore）
+```
+
+---
+
 ## ✨ 特性概览
 
 ### 🎨 界面与主题
@@ -42,15 +65,19 @@
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# Windows (PowerShell)
+# Windows (PowerShell)，配置目录为 vimfiles
 iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
-    ni $env:USERPROFILE\.vim\autoload\plug.vim -Force
+    ni $env:USERPROFILE\vimfiles\autoload\plug.vim -Force
 ```
 
 ### 2. 使用本配置
 
 ```bash
+# Linux/macOS
 git clone <你的仓库地址> ~/.vim
+
+# Windows（配置目录为 vimfiles）
+git clone <你的仓库地址> $env:USERPROFILE\vimfiles
 ```
 
 ### 3. 安装插件
@@ -75,29 +102,6 @@ LSP 与补全依赖 coc 扩展，可按需安装：
 ```
 
 配置中已通过 `g:coc_global_extensions` 声明常用扩展，首次启动 coc 时会自动安装。
-
-## 📁 目录结构
-
-```
-~/.vim/
-├── .vimrc                 " 入口：设置 runtimepath 并加载 plugins.vim
-├── plugins.vim            " 插件列表（vim-plug）
-├── coc-settings.json      " coc.nvim 配置（格式、Go 等）
-├── .gitignore             " 忽略 plugged/、备份、交换文件等
-├── autoload/
-│   └── plug.vim           " vim-plug 脚本
-├── plugin/                " 模块化配置（按功能拆分）
-│   ├── basic.vim          " 备份/交换/撤销/视图、行号、wildmenu、恢复光标
-│   ├── coc.vim             " coc.nvim 键位与行为
-│   ├── performance.vim    " 内存、updatetime、DirectX（Windows GVim）
-│   ├── rainbow.vim        " 彩虹括号
-│   ├── nerdtree.vim       " NERDTree 与自动化
-│   ├── statusline.vim     " 状态栏（Git、诊断、编码等）
-│   └── ui.vim             " 主题、GUI 选项与字体
-├── ftplugin/
-│   └── go.vim             " Go 缩进折叠与视图保存
-└── plugged/               " 插件目录（vim-plug 管理，已在 .gitignore）
-```
 
 ## ⌨️ 快捷键与命令
 
@@ -159,10 +163,10 @@ LSP 与补全依赖 coc 扩展，可按需安装：
 
 ### 模块化设计
 
-- **basic.vim**：备份目录、交换目录、撤销与视图目录、行号、wildmenu、恢复上次光标等。
+- **base.vim**：备份/交换/撤销/视图目录（随 `g:vim_dir`，Windows 为 vimfiles）、行号与 F3 切换、wildmenu、恢复上次光标等。
 - **coc.vim**：补全键位、诊断导航、跳转、重命名、格式化、代码操作、CoCList、coc 扩展列表（含 coc-go、coc-json、coc-yaml、coc-vimlsp、coc-snippets 等）。
 - **performance.vim**：`maxmem`/`maxmemtot`、`updatetime`、Windows GVim 下 DirectX 渲染、`ttyfast`/`lazyredraw`。
-- **statusline.vim**：Git 分支（Fugitive）、GitGutter 统计、coc 诊断数量、coc 状态、文件类型与编码。
+- **ui.vim**：主题（终端 seoul256 / GVim retrobox）、GUI 选项、状态栏（Git 分支、GitGutter、coc 诊断与状态、编码）、彩虹括号。
 
 ### coc 配置（coc-settings.json）
 
@@ -204,4 +208,4 @@ Plug 'author/plugin-name'
 
 - 当前结构为模块化配置：`.vimrc` → `plugins.vim` + `plugin/*.vim` + `ftplugin/*.vim`。
 - 核心为 coc.nvim + 原生状态栏 + NERDTree + Git（Fugitive/GitGutter）+ 主题与基础体验优化。
-- 备份、交换、撤销、视图等目录集中在 `~/.vim/.backup/`、`swap/`、`undo/`、`.view/`，已通过 `.gitignore` 排除。
+- 备份、交换、撤销、视图等目录在 `g:vim_dir` 下（`.backup/`、`.swap/`、`.undo/`、`.view/`），已通过 `.gitignore` 排除。
