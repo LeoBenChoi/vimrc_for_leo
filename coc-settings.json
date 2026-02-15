@@ -10,20 +10,6 @@
     }
   },
 
-  // Go: 使用 gopls 作为语言服务器
-  "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.work", "go.mod", ".git/"],
-      "filetypes": ["go"],
-      "initializationOptions": {
-        "usePlaceholders": true,
-        "completeUnimported": true,
-        "staticcheck": true
-      }
-    }
-  },
-
   // 禁用 ultisnips 的 Python 提示
   "snippets.ultisnips.pythonPrompt": false
 }

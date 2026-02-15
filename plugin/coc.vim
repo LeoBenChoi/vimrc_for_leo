@@ -10,9 +10,8 @@ endif
 " 来源: https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.vim
 
 " --- [基础设置] ---
-" 指定 coc.nvim 配置文件路径
-" 配置文件位置：~/.vim/coc-settings.json
-let g:coc_config_home = expand('~/.vim')
+" 指定 coc.nvim 配置文件路径（与 g:vim_dir 一致：Win=vimfiles，Linux=.vim）
+let g:coc_config_home = g:vim_dir
 
 " Vim (非 Neovim) 需要设置 UTF-8 编码，因为 coc.nvim 通过字节序列计算偏移量
 set encoding=utf-8
@@ -172,9 +171,6 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 " 添加 `:Format` 命令，以格式化当前缓冲区
 command! -nargs=0 Format :call CocActionAsync('format')
 
-" 添加 `:Fold` 命令，以折叠当前缓冲区
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
 " 添加 `:OR` 命令，用于整理（organize）当前缓冲区的导入语句
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
@@ -208,10 +204,11 @@ augroup jsonc_detect
   autocmd BufRead,BufNewFile coc-settings.json setfiletype jsonc
 augroup END
 
-let g:coc_config_home = expand('~/.vim')
+let g:coc_config_home = g:vim_dir
 
 let g:coc_global_extensions = [
       \ 'coc-json',
+      \ 'coc-go',
       \ 'coc-yaml',
       \ 'coc-vimlsp',
       \ 'coc-snippets',

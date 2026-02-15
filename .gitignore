@@ -24,6 +24,11 @@ plugged/
 .backup/
 swap/
 undo/
+backup/
+.swap/
+.swapfile/
+.undo/
+.undofile/
 .view/
 view/
 

@@ -11,9 +11,9 @@ let g:netrw_dirhistmax = 0
 " 文件备份与恢复
 " ========================
 
-" 备份设置
+" 备份设置（路径随 g:vim_dir：Win=vimfiles，Linux=.vim）
 set backup
-set backupdir=~/.vim/.backup//
+let &backupdir = g:vim_dir . '/.backup//'
 if !isdirectory(expand(&backupdir))
 	call mkdir(expand(&backupdir), 'p')
 endif
@@ -21,26 +21,26 @@ set backupext=.bak
 
 " 交换文件
 set swapfile
-set directory=~/.vim/swap//
+let &directory = g:vim_dir . '/.swap//'
 if !isdirectory(expand(&directory))
 	call mkdir(expand(&directory), 'p')
 endif
 
 " 持久化撤销
 set undofile
-set undodir=~/.vim/undo//
+let &undodir = g:vim_dir . '/.undo//'
 if !isdirectory(expand(&undodir))
 	call mkdir(expand(&undodir), 'p')
 endif
 
 " 折叠视图保存目录（固定为 .view，便于纳入 .gitignore）
-set viewdir=~/.vim/.view//
+let &viewdir = g:vim_dir . '/.view//'
 if !isdirectory(expand(&viewdir))
 	call mkdir(expand(&viewdir), 'p')
 endif
 
-" 默认使用语法折叠（各 ftplugin 可覆盖，如 go.vim 用 indent）
-set foldmethod=syntax
+" 折叠：仅手动折叠并开启
+set foldmethod=manual
 set foldenable
 
 """"""""""""""""""""""""""""""""""""""""""" 来自官网，永久保存
@@ -59,36 +59,61 @@ augroup vimStartup
 
 augroup END
 
-" 显示相对行号和当前行绝对行号
+" 默认显示相对行号和当前行绝对行号
 set number
 set relativenumber
+
+" 定义切换行号模式的函数
+let g:line_number_mode = 0
+function! ToggleLineNumberMode()
+    " 模式顺序：
+    " 0: relativenumber+number（相对+绝对 默认）
+    " 1: number（只绝对）
+    " 2: relativenumber（只相对）
+    " 3: 都不显示
+    let g:line_number_mode = (g:line_number_mode + 1) % 4
+    if g:line_number_mode == 0
+        set number
+        set relativenumber
+        echo "行号: 绝对+相对"
+    elseif g:line_number_mode == 1
+        set number
+        set norelativenumber
+        echo "行号: 绝对"
+    elseif g:line_number_mode == 2
+        set nonumber
+        set relativenumber
+        echo "行号: 相对"
+    else
+        set nonumber
+        set norelativenumber
+        echo "行号: 不显示"
+    endif
+endfunction
+
+" 绑定 F3 键切换行号模式（如需更换，可以改成 F2/F4...F12）
+nnoremap <F3> :call ToggleLineNumberMode()<CR>
 
 " =======================================================
 " [Command Line] 末行模式补全增强
 " =======================================================
 
-" 1. 开启 wildmenu (基础必须)
+" 开启 wildmenu (基础必须)
 " 允许按下 Tab 键时显示补全列表
 set wildmenu
 
-" 2. 定义补全行为
+" 定义补全行为
 " longest: 先补全到最长的公共字符串
 " full:    如果还有多种可能，触发菜单
 " full:    再次按 Tab 在菜单中循环
 set wildmode=longest:full,full
 
-" 3. 【核心】启用竖向弹出菜单 (PopUp Menu)
+" 启用竖向弹出菜单 (PopUp Menu)
 if has("patch-8.2.4325") || has('nvim')
     set wildoptions=pum
     if exists('&pumblend')
         set pumblend=10
     endif
 endif
-
-" 4. 忽略一些不想补全的文件 (让列表更干净)
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest
-set wildignore+=*.pyc,*.class
-set wildignore+=.git,.hg,.svn
-set wildignore+=*.jpg,*.png,*.gif,*.jpeg,*.bmp
 
 set lazyredraw
