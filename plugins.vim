@@ -17,4 +17,15 @@ if !has('gui_running')
 endif
 Plug 'dstein64/vim-startuptime'                 " 启动时间分析 (按需加载)
 Plug 'ryanoasis/vim-devicons'                   " 图标支持 (必须放在最后加载)
+
+" --- ~/.vim/plugins.vim ---
+
+if has('win32') || has('win64')
+    " Windows: 手动下载 lua-language-server 二进制到 vim-plug 插件目录
+    Plug 'LuaLS/lua-language-server', {
+        \ 'dir': g:vim_dir . '/plugged/lua-language-server',
+        \ 'do': 'curl -L -o lualsp.zip https://github.com/LuaLS/lua-language-server/releases/download/3.17.1/lua-language-server-3.17.1-win32-x64.zip && powershell -Command Expand-Archive -Force lualsp.zip .; Remove-Item lualsp.zip',
+        \ 'tag': '3.17.1'
+        \ }
+endif
 call plug#end()

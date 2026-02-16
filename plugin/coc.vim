@@ -219,4 +219,5 @@ let g:coc_global_extensions = [
 " 如果 【不是】 Windows 系统，才加入 coc-sh
 if !has('win32') && !has('win64')
     call add(g:coc_global_extensions, 'coc-sh')
+    call add(g:coc_global_extensions, 'coc-lua')
 endif
