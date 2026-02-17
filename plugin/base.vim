@@ -7,6 +7,10 @@ endif
 " 不保存历史记录
 let g:netrw_dirhistmax = 0
 
+" Leader 键设为空格
+let mapleader = " "
+let maplocalleader = " "
+
 " ========================
 " 文件备份与恢复
 " ========================

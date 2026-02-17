@@ -12,7 +12,7 @@ endif
 " F2: 打开/关闭侧边栏
 nnoremap <silent> <F2> :NERDTreeToggle<CR>
 " <Leader>e: 在侧边栏中定位当前文件 (非常有用！)
-nnoremap <silent> <leader>e :NERDTreeFind<CR>
+nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 
 " 2. 界面美化
 let g:NERDTreeMinimalUI = 1      " 隐藏 'Press ? for help' 顶部提示

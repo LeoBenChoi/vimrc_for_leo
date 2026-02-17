@@ -182,7 +182,7 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 " 显示所有诊断错误
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " 管理扩展
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+"nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " 显示命令
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " 查找当前文档的符号
