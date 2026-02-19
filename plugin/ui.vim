@@ -56,14 +56,6 @@ set laststatus=2
 " 只打开一个tab时，显示所有缓冲区
 let g:airline#extensions#tabline#enabled = 1
 
-" 行号优化
-function! MyLineNumber()
-  return substitute(line('.'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g'). ' | '.
-    \    substitute(line('$'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g')
-endfunction
-call airline#parts#define('linenr', {'function': 'MyLineNumber', 'accents': 'bold'})
-let g:airline_section_z = airline#section#create(['%3p%%: ', 'linenr', ':%3v'])
-
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
