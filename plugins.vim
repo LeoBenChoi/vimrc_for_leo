@@ -25,4 +25,9 @@ if has('win32') || has('win64')
         \ 'tag': '3.17.1'
         \ }
 endif
+
+Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+Plug 'cocopon/iceberg.vim'
+
 call plug#end()

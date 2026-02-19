@@ -13,14 +13,14 @@ set background=dark
 
 if has("gui_running")
   try
-    colorscheme retrobox
+    colorscheme gruvbox
   catch
     colorscheme default
   endtry
 else
   if globpath(&rtp, 'colors/seoul256.vim') != ""
     let g:seoul256_background = 234
-    silent! colorscheme seoul256
+    silent! colorscheme iceberg
   else
     colorscheme default
   endif
