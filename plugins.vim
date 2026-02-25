@@ -8,6 +8,7 @@ Plug 'tpope/vim-commentary'                     " 快速注释 (gcc 注释行, g
 Plug 'yianwillis/vimcdoc', {'depth': 1}         " 中文帮助文档（浅克隆，减轻网络中断）
 Plug 'airblade/vim-gitgutter'                  " 左侧显示修改标记 (+ ~ -)
 Plug 'tpope/vim-fugitive'                      " Git 包装器 & 分支信息获取
+Plug 'airblade/vim-rooter'                     " 自动将 cwd 设为项目根（.git 等）
 Plug 'junegunn/fzf'                              " 模糊搜索核心引擎
 Plug 'junegunn/fzf.vim'                          " FZF 的 Vim 桥接增强插件
 Plug 'liuchengxu/vista.vim'                      " 符号大纲与函数列表视图
