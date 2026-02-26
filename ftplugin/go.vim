@@ -13,4 +13,3 @@ augroup goViewFold
 	autocmd BufWinEnter <buffer> set viewoptions+=folds | silent! loadview | set viewoptions-=folds
 	autocmd BufWritePost <buffer> set viewoptions+=folds | silent! mkview | set viewoptions-=folds
 augroup END
-
