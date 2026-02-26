@@ -18,7 +18,7 @@ set background=dark
 
 if has("gui_running")
   try
-    colorscheme gruvbox
+    colorscheme iceberg
   catch
     colorscheme default
   endtry
