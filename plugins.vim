@@ -1,11 +1,12 @@
 call plug#begin(g:vim_dir . '/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " 核心 LSP
+Plug 'bufbuild/vim-buf'                           " Protocol Buffers / Buf 集成
 
 Plug 'mhinz/vim-startify'                       " 启动屏/仪表盘
 Plug 'luochen1990/rainbow'                      " 彩虹括号
 Plug 'tpope/vim-commentary'                     " 快速注释 (gcc 注释行, gc+选区 注释块)
-Plug 'RRethy/vim-illuminate'                    " 高亮光标下单词的其它出现位置
+
 Plug 'yianwillis/vimcdoc', {'depth': 1}         " 中文帮助文档（浅克隆，减轻网络中断）
 Plug 'airblade/vim-gitgutter'                  " 左侧显示修改标记 (+ ~ -)
 Plug 'tpope/vim-fugitive'                      " Git 包装器 & 分支信息获取
@@ -35,3 +36,5 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
+
+" go install github.com/bufbuild/buf/cmd/buf@latest
