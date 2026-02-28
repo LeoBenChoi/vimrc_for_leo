@@ -1,8 +1,25 @@
 {
   // 全局保存时自动格式化
   "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnSaveFiletypes": ["proto"],
+
+  "languageserver": {
+    "protobuf": {
+      "command": "buf",
+      "args": ["beta", "lsp"],
+      "filetypes": ["proto"],
+      "rootPatterns": ["buf.yaml", ".git"]
+    }
+  },
+
   // 禁止自动选中第一个补全项
   "suggest.noselect": true,
+  // 输入变化后等待 100ms 再请求补全，减少频繁请求
+  "suggest.triggerCompletionWait": 200,
+  // 诊断信息显示前等待 300ms，避免光标快速移动时刷屏
+  "diagnostic.messageDelay": 300,
+  // 用 echo 代替 float，避免在诊断行间移动时光标处浮动窗反复开关导致闪烁
+  //"diagnostic.messageTarget": "echo",
   // Go: 保存时自动整理 import
   "[go]": {
     "editor.codeActionsOnSave": {
