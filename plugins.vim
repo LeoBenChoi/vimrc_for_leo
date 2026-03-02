@@ -30,6 +30,22 @@ if has('win32') || has('win64')
         \ }
 endif
 
+if has('win32') || has('win64')
+    " 自动化下载 clangd 独立包 (体积小，需项目内 .clangd 指定标准库路径如 MSYS2 MinGW)
+    Plug 'clangd/clangd', {
+        \ 'dir': g:vim_dir . '/plugged/clangd',
+        \ 'do': 'curl -L -o clangd.zip https://github.com/clangd/clangd/releases/download/18.1.3/clangd-windows-18.1.3.zip && powershell -Command Expand-Archive -Force clangd.zip .; Remove-Item clangd.zip',
+        \ }
+    " 仅在此次 Vim 会话中把 clangd 加入 PATH，便于 coc 等调用（兼容 zip 解压后的目录名）
+    let s:clangd_bin = g:vim_dir . '/plugged/clangd/clangd_18.1.3/bin'
+    if !isdirectory(s:clangd_bin)
+        let s:clangd_bin = g:vim_dir . '/plugged/clangd/clangd-windows-18.1.3/bin'
+    endif
+    if isdirectory(s:clangd_bin)
+        let $PATH = s:clangd_bin . ';' . $PATH
+    endif
+endif
+
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'cocopon/iceberg.vim'

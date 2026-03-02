@@ -1,7 +1,27 @@
 {
   // 全局保存时自动格式化
   "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["proto"],
+  "coc.preferences.formatOnSaveFiletypes": ["proto", "c", "cpp"],
+
+  // C/C++ (clangd) — 安裝擴展後生效: :CocInstall coc-clangd
+  // --query-driver 讓 clangd 向系統裡的 gcc/clang 查詢標準庫路徑，解決 Windows 下找不到 stdio.h 的假報錯
+  "clangd.arguments": [
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--query-driver=*"
+  ],
+  "[c]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+  "[cpp]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
 
   "languageserver": {
     "protobuf": {
@@ -30,5 +50,6 @@
   },
 
   // 禁用 ultisnips 的 Python 提示
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.8\\clangd_21.1.8\\bin\\clangd.exe"
 }
