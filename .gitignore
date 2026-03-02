@@ -83,3 +83,4 @@ temp/
 " 如果不想提交某些个人配置，可以取消注释
 " coc-settings.json
 " tasks.ini
+.aider*
