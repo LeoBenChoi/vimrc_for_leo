@@ -213,6 +213,7 @@ let g:coc_global_extensions = [
       \ 'coc-vimlsp',
       \ 'coc-snippets',
       \ 'coc-marketplace',
+      \ 'coc-clangd',
       \ ]
 
 " 2. 平台特定判断
