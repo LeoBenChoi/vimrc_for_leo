@@ -1,7 +1,7 @@
 {
   // 全局保存时自动格式化
   "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["proto", "c", "cpp"],
+  "coc.preferences.formatOnSaveFiletypes": ["proto", "c", "cpp","python"],
 
   // C/C++ (clangd) — 安裝擴展後生效: :CocInstall coc-clangd
   // --query-driver 讓 clangd 向系統裡的 gcc/clang 查詢標準庫路徑，解決 Windows 下找不到 stdio.h 的假報錯
