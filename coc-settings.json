@@ -50,6 +50,5 @@
   },
 
   // 禁用 ultisnips 的 Python 提示
-  "snippets.ultisnips.pythonPrompt": false,
-  "clangd.path": "~\\AppData\\Local\\coc\\extensions\\coc-clangd-data\\install\\21.1.8\\clangd_21.1.8\\bin\\clangd.exe"
+  "snippets.ultisnips.pythonPrompt": false
 }
