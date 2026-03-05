@@ -9,8 +9,8 @@ setlocal expandtab
 setlocal textwidth=120
 setlocal colorcolumn=120
 
-" 保存时自动整理 import（isort）
+" 保存时自动整理 import（vim-isort）
 augroup python_isort
-	autocmd! BufWritePre <buffer>
-	autocmd BufWritePre <buffer> Isort
+	autocmd!
+	" autocmd BufWritePre <buffer> Isort
 augroup END

@@ -7,7 +7,6 @@ Plug 'mhinz/vim-startify'                       " 启动屏/仪表盘
 Plug 'luochen1990/rainbow'                      " 彩虹括号
 Plug 'tpope/vim-commentary'                     " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'itchyny/vim-cursorword'                   " 高亮当前光标下单词的其它出现位置
-Plug 'fisadev/vim-isort'                        " 一键 isort，无需配置
 
 Plug 'yianwillis/vimcdoc', {'depth': 1}         " 中文帮助文档（浅克隆，减轻网络中断）
 Plug 'airblade/vim-gitgutter'                  " 左侧显示修改标记 (+ ~ -)
@@ -55,4 +54,10 @@ Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
+"以下为一些lsp需要进行安装
+
 " go install github.com/bufbuild/buf/cmd/buf@latest
+
+" pip install pipx
+" pipx ensurepath
+" pipx install ruff

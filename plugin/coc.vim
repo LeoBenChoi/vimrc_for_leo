@@ -214,11 +214,12 @@ let g:coc_global_extensions = [
       \ 'coc-snippets',
       \ 'coc-marketplace',
       \ 'coc-clangd',
-      \ 'coc-pyright',
+      \ '@yaegassy/coc-pylsp',
+      \ '@yaegassy/coc-ruff',
       \ ]
 
 " 2. 平台特定判断
-" 如果 【不是】 Windows 系统，才加入 coc-sh
+" 如果 【不是】 Windows 系统，才加入 coc-sh / coc-lua
 if !has('win32') && !has('win64')
     call add(g:coc_global_extensions, 'coc-sh')
     call add(g:coc_global_extensions, 'coc-lua')
