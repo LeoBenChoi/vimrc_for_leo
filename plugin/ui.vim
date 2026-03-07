@@ -43,6 +43,10 @@ if has("gui_running")
   set guioptions-=l
   set guioptions-=L
   set notitle
+  " 启动时自动最大化窗口（Windows GVim）
+  if has('win32') || has('win64')
+    autocmd GUIEnter * simalt ~x
+  endif
 endif
 
 " =======================================================
