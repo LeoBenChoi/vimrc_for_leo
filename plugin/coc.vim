@@ -214,8 +214,9 @@ let g:coc_global_extensions = [
       \ 'coc-snippets',
       \ 'coc-marketplace',
       \ 'coc-clangd',
-      \ '@yaegassy/coc-pylsp',
+      \ 'coc-pyright',
       \ '@yaegassy/coc-ruff',
+      \ 'coc-tsserver',
       \ ]
 
 " 2. 平台特定判断
