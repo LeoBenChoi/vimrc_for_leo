@@ -12,8 +12,8 @@ Plug 'yianwillis/vimcdoc', {'depth': 1}         " 中文帮助文档（浅克隆
 Plug 'airblade/vim-gitgutter'                  " 左侧显示修改标记 (+ ~ -)
 Plug 'tpope/vim-fugitive'                      " Git 包装器 & 分支信息获取
 Plug 'airblade/vim-rooter'                     " 自动将 cwd 设为项目根（.git 等）
-Plug 'junegunn/fzf'                              " 模糊搜索核心引擎
-Plug 'junegunn/fzf.vim'                          " FZF 的 Vim 桥接增强插件
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " fzf
+Plug 'junegunn/fzf.vim'                                 " fzf
 Plug 'liuchengxu/vista.vim'                      " 符号大纲与函数列表视图
 Plug 'preservim/nerdtree', {'on': 'NERDTreeToggle'} " 侧边栏
 if !has('gui_running')
@@ -28,14 +28,13 @@ if has('win32') || has('win64')
         \ 'do': 'curl -L -o lualsp.zip https://github.com/LuaLS/lua-language-server/releases/download/3.17.1/lua-language-server-3.17.1-win32-x64.zip && powershell -Command Expand-Archive -Force lualsp.zip .; Remove-Item lualsp.zip',
         \ 'tag': '3.17.1'
         \ }
-endif
 
-if has('win32') || has('win64')
     " 自动化下载 clangd 独立包 (体积小，需项目内 .clangd 指定标准库路径如 MSYS2 MinGW)
     Plug 'clangd/clangd', {
         \ 'dir': g:vim_dir . '/plugged/clangd',
         \ 'do': 'curl -L -o clangd.zip https://github.com/clangd/clangd/releases/download/18.1.3/clangd-windows-18.1.3.zip && powershell -Command Expand-Archive -Force clangd.zip .; Remove-Item clangd.zip',
         \ }
+
     " 仅在此次 Vim 会话中把 clangd 加入 PATH，便于 coc 等调用（兼容 zip 解压后的目录名）
     let s:clangd_bin = g:vim_dir . '/plugged/clangd/clangd_18.1.3/bin'
     if !isdirectory(s:clangd_bin)
@@ -53,11 +52,3 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
-
-"以下为一些lsp需要进行安装
-
-" go install github.com/bufbuild/buf/cmd/buf@latest
-
-" pip install pipx
-" pipx ensurepath
-" pipx install ruff
