@@ -86,13 +86,6 @@ endfunction
 " 重命名符号
 nmap <leader>rn <Plug>(coc-rename)
 
-" --- [代码格式化] ---
-" 格式化选中的代码
-" 可视化模式
-xmap <leader>f  <Plug>(coc-format-selected)
-" 普通模式
-nmap <leader>f  <Plug>(coc-format-selected)
-
 augroup mygroup
   autocmd!
   " 为指定文件类型设置格式化表达式
@@ -217,6 +210,10 @@ let g:coc_global_extensions = [
       \ 'coc-pyright',
       \ '@yaegassy/coc-ruff',
       \ 'coc-tsserver',
+      \ 'coc-eslint',
+      \ 'coc-prettier',
+      \ '@yaegassy/coc-volar',
+      \ 'coc-tailwindcss',
       \ ]
 
 " 2. 平台特定判断
