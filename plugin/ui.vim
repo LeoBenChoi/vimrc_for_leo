@@ -43,6 +43,15 @@ if has("gui_running")
   set guioptions-=l
   set guioptions-=L
   set notitle
+  " Windows 平台
+    if has("win32") || has("win64")
+        autocmd GUIEnter * simalt ~x
+    " Linux 平台 (依赖桌面环境对 'zoomed' 的支持)
+    elseif has("unix")
+        set lines=999 columns=999
+        " 或者尝试使用快捷键发送指令
+        autocmd GUIEnter * call system('wmctrl -r ":ACTIVE:" -b add,maximized_vert,maximized_horz')
+    endif
 endif
 
 " =======================================================
