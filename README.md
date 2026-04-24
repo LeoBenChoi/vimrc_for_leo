@@ -173,6 +173,13 @@ LSP 与补全依赖 coc 扩展，可按需安装：
 - 保存时自动格式化（`coc.preferences.formatOnSave`）
 - 补全不自动选中第一项（`suggest.noselect`）
 - Go：保存时整理 import；gopls 补全未导入符号
+- Python：使用 Pyright（coc-pyright），保存时整理 import、可选 Black 格式化；禁用 coc-pylsp 避免冲突
+
+### Python 环境（Windows）
+
+- **依赖**：Node.js（coc）、Python 3（建议用虚拟环境）。可选：`pip install black isort`（Black 用于格式化，vim-isort 用于保存时整理 import）。
+- **LSP**：已启用 `coc-pyright`，类型检查为 `basic`。若使用 **虚拟环境**，在项目根目录放置 `pyrightconfig.json`，可参考 `pyrightconfig.json.example`，设置 `venvPath`/`venv` 或 `pythonPath`（请用绝对路径或相对项目根的路径，勿用 `~` 或 `$HOME`）。
+- **格式化**：`coc-settings.json` 中 `python.formatting.provider` 为 `black`，需已安装 Black；或执行 `:CocInstall @yaegassy/coc-black-formatter` 使用扩展内置安装。
 
 ### 主题策略（ui.vim）
 

@@ -62,11 +62,11 @@ nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
 nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
 
 " --- [代码导航] ---
-" GoTo 代码导航快捷键
-nmap <silent><nowait> gd <Plug>(coc-definition)         " 跳转到定义
-nmap <silent><nowait> gy <Plug>(coc-type-definition)    " 跳转到类型定义
-nmap <silent><nowait> gi <Plug>(coc-implementation)     " 跳转到实现
-nmap <silent><nowait> gr <Plug>(coc-references)        " 查看所有引用
+" GoTo 代码导航快捷键（用 nnoremap + 同步 CocAction 避免先跳到下一行再执行）
+nnoremap <silent><nowait> gd :<C-u>call CocAction('jumpDefinition')<CR>
+nnoremap <silent><nowait> gy :<C-u>call CocAction('jumpTypeDefinition')<CR>
+nnoremap <silent><nowait> gi <Plug>(coc-implementation)
+nnoremap <silent><nowait> gr <Plug>(coc-references)
 
 " --- [文档查看] ---
 " 使用 K 键在预览窗口显示文档
@@ -85,13 +85,6 @@ endfunction
 " --- [符号重命名] ---
 " 重命名符号
 nmap <leader>rn <Plug>(coc-rename)
-
-" --- [代码格式化] ---
-" 格式化选中的代码
-" 可视化模式
-xmap <leader>f  <Plug>(coc-format-selected)
-" 普通模式
-nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -213,10 +206,18 @@ let g:coc_global_extensions = [
       \ 'coc-vimlsp',
       \ 'coc-snippets',
       \ 'coc-marketplace',
+      \ 'coc-clangd',
+      \ 'coc-pyright',
+      \ '@yaegassy/coc-ruff',
+      \ 'coc-tsserver',
+      \ 'coc-eslint',
+      \ 'coc-prettier',
+      \ '@yaegassy/coc-volar',
+      \ 'coc-tailwindcss',
       \ ]
 
 " 2. 平台特定判断
-" 如果 【不是】 Windows 系统，才加入 coc-sh
+" 如果 【不是】 Windows 系统，才加入 coc-sh / coc-lua
 if !has('win32') && !has('win64')
     call add(g:coc_global_extensions, 'coc-sh')
     call add(g:coc_global_extensions, 'coc-lua')

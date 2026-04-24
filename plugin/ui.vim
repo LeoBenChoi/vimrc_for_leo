@@ -43,15 +43,10 @@ if has("gui_running")
   set guioptions-=l
   set guioptions-=L
   set notitle
-  " Windows 平台
-    if has("win32") || has("win64")
-        autocmd GUIEnter * simalt ~x
-    " Linux 平台 (依赖桌面环境对 'zoomed' 的支持)
-    elseif has("unix")
-        set lines=999 columns=999
-        " 或者尝试使用快捷键发送指令
-        autocmd GUIEnter * call system('wmctrl -r ":ACTIVE:" -b add,maximized_vert,maximized_horz')
-    endif
+  " 启动时自动最大化窗口（Windows GVim）
+  if has('win32') || has('win64')
+    autocmd GUIEnter * simalt ~x
+  endif
 endif
 
 " =======================================================
@@ -127,3 +122,20 @@ let g:rainbow_conf = {
 \       'help': 0,
 \   }
 \}
+
+" =======================================================
+" vim-startify (启动页) - 自定义 banner
+" =======================================================
+" `vim-startify` 支持用 `g:startify_custom_header` 指定启动页自定义头部（banner）
+" 这里放一份可直接使用的示例；你可以按需改数组里的每一行字符串。
+let g:startify_custom_header = [
+\ '__     __  ____       ____               _         ',
+\ ' \ \   / / / ___|     / ___|   ___     __| |   ___  ',
+\ '  \ \ / /  \___ \    | |      / _ \   / _` |  / _ \ ',
+\ '   \ V /    ___) |   | |___  | (_) | | (_| | |  __/ ',
+\ '    \_/    |____/     \____|  \___/   \__,_|  \___| ',
+\ ' ',
+\ ' ',
+\ '   Welcome to vim(VS Code)',
+\ ]
+
