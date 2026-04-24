@@ -69,7 +69,7 @@ set relativenumber
 
 " 显示列表字符，包括缩进和空白字符
 set list
-set listchars=tab:▸\ ,trail:·,eol:¶,precedes:<,extends:>
+set listchars=tab:▸\ ,trail:·,precedes:<,extends:>
 
 " 定义切换行号模式的函数
 let g:line_number_mode = 0
