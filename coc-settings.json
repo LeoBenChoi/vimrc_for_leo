@@ -50,5 +50,8 @@
   },
 
   // 禁用 ultisnips 的 Python 提示
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+
+  // 禁止 coc 更新检查，避免在没有网络的环境下启动时卡顿
+  "extensions.updateCheck": "never"
 }
