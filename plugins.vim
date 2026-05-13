@@ -27,4 +27,16 @@ Plug 'itchyny/vim-cursorword'
 
 " 启动页
 Plug 'mhinz/vim-startify'
+
+" 中文帮助文档（浅克隆，减轻网络中断）
+Plug 'yianwillis/vimcdoc', {'depth': 1}
+
+" 左侧显示修改标记 (+ ~ -)
+Plug 'airblade/vim-gitgutter'
+
+" Git 包装器 & 分支信息获取
+Plug 'tpope/vim-fugitive'
+
+" 符号大纲与函数列表视图
+Plug 'liuchengxu/vista.vim'
 call plug#end()

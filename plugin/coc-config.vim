@@ -157,7 +157,6 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " 自动安装插件
 let g:coc_global_extensions = [
                         \ 'coc-json',
-                        \ 'coc-git',
                         \ 'coc-go',
                         \ 'coc-explorer',
 			\ 'coc-snippets'
@@ -165,6 +164,3 @@ let g:coc_global_extensions = [
 
 " 侧边栏
 nmap <leader>e :CocCommand explorer<CR>
-
-" 代码大纲
-nmap <leader>o :CocOutline<CR>
