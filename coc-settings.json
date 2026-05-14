@@ -1,4 +1,7 @@
 {
   // 补全默认不选中第一项
-  "suggest.noselect": true
+  "suggest.noselect": true,
+
+  // 从不检查插件更新
+  "extensions.updateCheck": "never"
 }
