@@ -164,3 +164,6 @@ let g:coc_global_extensions = [
 
 " 侧边栏
 nmap <leader>e :CocCommand explorer<CR>
+
+" 识别cocconfig文件格式为jsonc
+autocmd BufRead,BufNewFile coc-settings.json set filetype=jsonc
