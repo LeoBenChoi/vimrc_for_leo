@@ -2,6 +2,7 @@ call plug#begin()
 
 " 核心插件 lsp
 Plug 'neoclide/coc.nvim', {'branch': 'release'} 
+" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " 状态栏
 Plug 'vim-airline/vim-airline'
@@ -23,7 +24,7 @@ Plug 'luochen1990/rainbow'
 Plug 'tpope/vim-commentary'
 
 " 高亮当前光标下单词的其它出现位置
-Plug 'itchyny/vim-cursorword'
+" Plug 'itchyny/vim-cursorword'
 
 " 启动页
 Plug 'mhinz/vim-startify'

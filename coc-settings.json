@@ -3,5 +3,16 @@
   "suggest.noselect": true,
 
   // 从不检查插件更新
-  "extensions.updateCheck": "never"
+  "extensions.updateCheck": "never",
+
+    "languageserver": {
+    "go": {
+      "command": "gopls",
+      "rootPatterns": ["go.work", "go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    }
+  }
 }

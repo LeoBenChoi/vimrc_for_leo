@@ -157,7 +157,6 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " 自动安装插件
 let g:coc_global_extensions = [
                         \ 'coc-json',
-                        \ 'coc-go',
                         \ 'coc-explorer',
 			\ 'coc-snippets'
                         \ ]
