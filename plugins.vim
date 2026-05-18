@@ -40,4 +40,7 @@ Plug 'tpope/vim-fugitive'
 
 " 符号大纲与函数列表视图
 Plug 'liuchengxu/vista.vim'
+
+" 图标 在最后
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
