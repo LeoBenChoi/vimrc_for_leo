@@ -40,4 +40,7 @@ Plug 'tpope/vim-fugitive'
 
 " 符号大纲与函数列表视图
 Plug 'liuchengxu/vista.vim'
+
+" 侧边栏
+Plug 'preservim/nerdtree'
 call plug#end()
