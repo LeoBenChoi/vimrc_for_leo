@@ -12,7 +12,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'Rigellute/shades-of-purple.vim'
 " Plug 'cocopon/iceberg.vim'
 " Plug 'atelierbram/vim-colors_atelier-schemes'
-Plug 'shrikecode/kyotonight.vim'
+" Plug 'shrikecode/kyotonight.vim'
 
 " 自动回到上次编辑位置
 Plug 'farmergreg/vim-lastplace'

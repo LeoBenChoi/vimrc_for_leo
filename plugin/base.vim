@@ -11,8 +11,12 @@ syntax enable
 
 " 主题设置
 " colorscheme shades_of_purple
-colorscheme kyotonight
-let g:airline_theme='kyotonight'
+" colorscheme kyotonight
+colorscheme retrobox
+set background=dark
+" let g:airline_theme='kyotonight'
+" let g:airline_theme=''
+
 
 " 显示绝对行号（当前行） " 显示相对行号（其他行）
 set number relativenumber 
