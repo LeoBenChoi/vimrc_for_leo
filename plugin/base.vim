@@ -16,9 +16,7 @@ syntax enable
 " let g:airline_theme='kyotonight'
 " let g:airline_theme=''
 set background=dark
-set colorscheme tokyonight
-
-
+colorscheme tokyonight
 
 " 显示绝对行号（当前行） " 显示相对行号（其他行）
 set number relativenumber 
