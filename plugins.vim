@@ -8,9 +8,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" 高亮单词
-Plug 'itchyny/vim-cursorword'
-
 " 主题
 " Plug 'Rigellute/shades-of-purple.vim'
 " Plug 'cocopon/iceberg.vim'
@@ -24,6 +21,9 @@ Plug 'luochen1990/rainbow'
 
 " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'tpope/vim-commentary'
+"
+" 高亮单词
+" Plug 'itchyny/vim-cursorword'
 
 " 启动页
 Plug 'mhinz/vim-startify'
