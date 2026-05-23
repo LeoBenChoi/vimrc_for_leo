@@ -8,23 +8,22 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" 高亮单词
+Plug 'itchyny/vim-cursorword'
+
 " 主题
 " Plug 'Rigellute/shades-of-purple.vim'
 " Plug 'cocopon/iceberg.vim'
 " Plug 'atelierbram/vim-colors_atelier-schemes'
 " Plug 'shrikecode/kyotonight.vim'
-
-" 自动回到上次编辑位置
-Plug 'farmergreg/vim-lastplace'
+" Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
+" Plug 'dracula/vim', { 'as': 'dracula' }
 
 " 彩虹括号
 Plug 'luochen1990/rainbow'
 
 " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'tpope/vim-commentary'
-
-" 高亮当前光标下单词的其它出现位置
-" Plug 'itchyny/vim-cursorword'
 
 " 启动页
 Plug 'mhinz/vim-startify'
