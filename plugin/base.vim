@@ -45,3 +45,19 @@ if has("patch-8.2.4325") || has('nvim')
         set pumblend=10
     endif
 endif
+
+""""""""""""""""""""""""""""""""""""""""""" 来自官网，永久保存
+" 将以下内容放入一个 autocmd 组，这样可以通过以下命令还原它们：
+" ":augroup vimStartup | au! | augroup END"
+augroup vimStartup
+	au!
+
+	" 编辑文件时，始终跳转到上次光标停留的位置。
+	" 如果位置无效、处于事件处理程序中（例如在 gvim 拖拽文件时），
+	" 或编辑 commit message 文件（通常是新的缓冲区）时则不执行跳转。
+	autocmd BufReadPost *
+				\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+				\ |   exe "normal! g`\""
+				\ | endif
+
+augroup END
