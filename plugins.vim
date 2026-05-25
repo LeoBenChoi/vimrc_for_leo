@@ -1,8 +1,15 @@
 call plug#begin()
 
 " 核心插件 lsp
-Plug 'neoclide/coc.nvim', {'branch': 'release'} 
+" Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'yegappan/lsp'
+Plug 'honza/vim-snippets'          " 通用代码片段库
+Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
+" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
+" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
+" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
+
 
 " ################# Code completion #################
 Plug 'honza/vim-snippets'
@@ -14,11 +21,8 @@ Plug 'tpope/vim-fugitive' " Git 包装器 & 分支信息获取
 
 " ############# Look and feel ###############
 " Syntax
-Plug 'habamax/vim-rst'                " reStructuredtext
 Plug 'luochen1990/rainbow'            " Multicolor parentheses and brackets
-Plug 'm-pilia/vim-pkgbuild'           " Arch Linux PKGBUILD
 Plug 'martinlroth/vim-devicetree'     " Linux devicetree
-Plug 'westeri/asl-vim'                " ACPI source language
 Plug 'wgwoods/vim-systemd-syntax'     " Systemd unit files
 Plug 'yuezk/vim-js'                   " Javascript
 
@@ -33,8 +37,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'shrikecode/kyotonight.vim'
 " Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
 " Plug 'dracula/vim', { 'as': 'dracula' }
-
-
+Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
 
 " 彩虹括号
 Plug 'luochen1990/rainbow'

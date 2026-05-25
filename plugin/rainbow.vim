@@ -1,18 +1,25 @@
+" Rainbow configuration
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\   'guifgs': ['firebrick', 'darkorange2', 'goldenrod', 'seagreen3', 'darkcyan', 'royalblue3', 'darkorchid'],
-\   'ctermfgs': ['red', 'darkyellow', 'yellow', 'green', 'cyan', 'blue', 'magenta'],
-\   'operators': '_,_',
-\   'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/'],
+\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\	'guis': [''],
+\	'cterms': [''],
+\	'operators': '_,_',
+\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 \   'separately': {
-\       '*': {},
-\       'tex': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\       },
-\       'vim': {
-\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/', 'start=/(/ end=/)/'],
-\       },
+\		'*': {},
+\		'vim': {
+\			'parentheses_options': 'containedin=vimFuncBody',
+\		},
+\		'css': 0,
 \       'nerdtree': 0,
 \       'help': 0,
 \   }
 \}
+
+au FileType * RainbowToggleOff
+au FileType json RainbowToggleOn
+au FileType jsonc RainbowToggleOn
+
+
