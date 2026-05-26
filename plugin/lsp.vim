@@ -202,7 +202,16 @@ autocmd User LspSetup call LspOptionsSet(lspOpts)
 " 	\	  args: ['--background-index']
 " 	\ }]
 
-let lspServers = [#{
+let lspServers = []
+
+let lspServers += [#{
+			\	name: 'clangd',
+			\	filetype: ['c', 'cpp'],
+			\	path: 'clangd',
+			\	args: ['--background-index', '--clang-tidy']
+			\}]
+
+let lspServers += [#{
 			\	name: 'gopls',
 			\	filetype: 'go',
 			\	path: 'gopls',
@@ -231,7 +240,7 @@ let lspServers = [#{
 			\    }
 			\}]
 
-let lspServers = [#{
+let lspServers += [#{
 			\	name: 'vim-language-server',
 			\	filetype: 'vim',
 			\	path: 'vim-language-server',
