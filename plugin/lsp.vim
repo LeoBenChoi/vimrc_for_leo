@@ -136,9 +136,9 @@
 
 let lspOpts = #{
 			\   aleSupport: v:false,
-			\   ultisnipsSupport: v:false,
+			\   ultisnipsSupport: v:true,
 			\   vsnipSupport: v:false,
-			\   snippetSupport: v:false,
+			\   snippetSupport: v:true,
 			\   autoComplete: v:true,
 			\   omniComplete: v:null,
 			\   omniCompleteAllowBare: v:false,
@@ -202,50 +202,52 @@ autocmd User LspSetup call LspOptionsSet(lspOpts)
 " 	\	  args: ['--background-index']
 " 	\ }]
 
-let lspServers = []
-
-let lspServers += [#{
-			\	name: 'clangd',
-			\	filetype: ['c', 'cpp'],
-			\	path: 'clangd',
-			\	args: ['--background-index', '--clang-tidy']
-			\}]
-
-let lspServers += [#{
-			\	name: 'gopls',
-			\	filetype: 'go',
-			\	path: 'gopls',
-			\	args: ['serve'],
-			\	workspaceConfig: #{
-			\		gopls: #{
-			\			hints: #{
-			\				assignVariableTypes: v:true,
-			\				compositeLiteralFields: v:true,
-			\				compositeLiteralTypes: v:true,
-			\				constantValues: v:true,
-			\				functionTypeParameters: v:true,
-			\				parameterNames: v:true,
-			\				rangeVariableTypes: v:true
+let lspServers = [
+			\	#{
+			\		filetype: ['c', 'cpp'],
+			\		name: 'clangd',
+			\		path: 'clangd',
+			\		args: ['--background-index', '--clang-tidy'],
+			\	},
+			\	#{
+			\		filetype: 'go',
+			\		name: 'gopls',
+			\		path: 'gopls',
+			\		args: ['serve'],
+			\		workspaceConfig: #{
+			\			gopls: #{
+			\				hints: #{
+			\					assignVariableTypes: v:true,
+			\					compositeLiteralFields: v:true,
+			\					compositeLiteralTypes: v:true,
+			\					constantValues: v:true,
+			\					functionTypeParameters: v:true,
+			\					parameterNames: v:true,
+			\					rangeVariableTypes: v:true
+			\				}
 			\			}
 			\		}
 			\	},
-			\	initializationOptions: #{
-			\       capabilities: #{
-			\           textDocument: #{
-			\               foldingRange: #{
-			\                   lineFoldingOnly: v:true
-			\               }
-			\           }
-			\       }
-			\    }
-			\}]
-
-let lspServers += [#{
-			\	name: 'vim-language-server',
-			\	filetype: 'vim',
-			\	path: 'vim-language-server',
-			\	args: ['--stdio']
-			\}]
+			\	#{
+			\	    filetype: ['python'],
+			\	    name: 'basedpyright',
+			\	    path: 'basedpyright-langserver',
+			\	    args: ['--stdio'],
+			\	    syncInit: v:true
+			\	  },
+			\	#{
+			\	    filetype: ['python'],
+			\	    name: 'ruff',
+			\	    path: 'ruff',
+			\	    args: ['server'],
+			\	    syncInit: v:true
+			\	},
+			\	#{
+			\		filetype: 'vim',
+			\		name: 'vim-language-server',
+			\		path: 'vim-language-server',
+			\		args: ['--stdio']
+            \ }]
 
 autocmd User LspSetup call LspAddServer(lspServers)
 
@@ -277,5 +279,11 @@ augroup LspAutoActions
 	autocmd!
 	autocmd BufWritePre *.go silent! LspOrganizeImports
 	autocmd BufWritePre *.go silent! LspFormat
+augroup END
+
+augroup dockercompose
+	autocmd!
+	autocmd BufEnter,BufReadPre docker-compose.yaml,docker-compose.yml setf dockercompose
+	autocmd BufEnter,BufReadPre docker-compose.yaml,docker-compose.yml set syntax=yaml
 augroup END
 
