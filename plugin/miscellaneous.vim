@@ -6,9 +6,9 @@ let mapleader = " "
 set number relativenumber " 显示绝对行号（当前行） " 显示相对行号（其他行）
 set signcolumn=yes " 始终启动符号列
 set undofile   
+set noswapfile
 set ttimeoutlen=0
 set timeoutlen=500
-set noswapfile
 set wildmenu
 set wildmode=longest:full,full
 set wildoptions=pum
@@ -17,20 +17,20 @@ set splitbelow " 水平分屏时，新窗口放在当前窗口下方
 set noscrollbind " 不自动绑定滚动（多个窗口独立滚动）
 set nocursorbind " 不自动绑定光标移动（多个窗口光标位置独立）
 set incsearch " 增量搜索：输入搜索词时实时高亮第一个匹配项，边输边跳转
+set hlsearch " 所有搜索高亮
 set scrolloff=5
 set tags=./tags;,tags;./.tags;,.tags;
-set foldmethod=syntax
+set foldmethod=manual " 默认使用手动折叠
 set foldnestmax=99
 set foldlevel=99
 set noautochdir
-set viewoptions-=curdir
 set list listchars=tab:\¦\ ,eol:¬ " 隐形字符
 " set exrc " 允许读取局部vimrc，但是会有安全问题
 set cursorline
 set nocursorline
 
 " =======================================================
-" GUI 图形界面专属
+" GUI 图形界面
 " =======================================================
 if has("gui_running")
 	set guifont=Maple_Mono_NL_NFMono_CN:h12

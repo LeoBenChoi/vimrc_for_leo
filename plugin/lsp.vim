@@ -1,59 +1,197 @@
-" from https://github.com/jclsn/vimconfig "
+" call LspOptionsSet(#{
+"         " --- 1. 外部插件与集成配置 ---
+"         \   aleSupport: v:false,               " 是否将诊断信息发送给 ALE 插件（若为 true 则交由 ALE 统一显示，当前关闭）
+"         \   ultisnipsSupport: v:false,         " 是否启用 SirVer/ultisnips 代码片段插件支持（当前关闭）
+"         \   vsnipSupport: v:false,             " 是否启用 hrsh7th/vim-vsnip 代码片段插件支持（当前关闭）
+"         \   snippetSupport: v:false,           " 是否开启通用的代码片段补全支持（当前关闭）
+
+"         " --- 2. 自动补全 (Completion) 核心配置 ---
+"         \   autoComplete: v:true,              " 是否在插入模式下自动弹出补全菜单（若关闭则需手动触发 omni-completion）
+"         \   omniComplete: v:null,              " 手动全能补全(omni)开关（v:null 表示如果 autoComplete 为真则不强制覆盖）
+"         \   omniCompleteAllowBare: v:false,    " 是否允许在光标前没有触发字符（如点号或逗号）时也触发 omni 补全（设为 true 会有很多空格造成的干扰）
+"         \   completionMatcher: 'case',         " 客户端补全过滤匹配模式：'case'(区分大小写, 默认), 'icase'(忽略大小写), 'fuzzy'(模糊匹配)
+"         \   completionMatcherValue: 1,         " 补全匹配器的附加权重值/行为设定
+"         \   completionTextEdit: v:true,        " 补全选中后，是否应用 LSP 服务器提供的文本修改（若使用外部片段插件则需设为 false 避免二次修改）
+"         \   noNewlineInCompletion: v:false,    " 是否禁止在选中补全项并按下回车 <CR> 时自动插入新行
+"         \   useBufferCompletion: v:false,      " 是否将当前 buffer 里的普通单词也提取出来加入到自动补全列表中（当前关闭）
+"         \   bufferCompletionTimeout: 100,      " 提取当前 buffer 单词的超时时间（毫秒），避免大文件卡顿
+"         \   filterCompletionDuplicates: v:false," 是否过滤由 LSP 服务器返回的重复补全条目
+"         \   condensedCompletionMenu: v:false,  " 精简补全菜单：只显示单词和类型，将详细文档等内容移到 info 弹窗中
+
+"         " --- 3. 补全菜单/弹窗的外观与高亮 ---
+"         \   customCompletionKinds: v:false,    " 是否开启自定义补全类型图标/文本
+"         \   completionKinds: {},               " 配合 customCompletionKinds 使用的自定义图标映射字典
+"         \   documentationFormat: ['markdown', 'plaintext'], " 向 LSP 服务器申明的文档接收格式优先级（优先 Markdown）
+
+"         " --- 4. 诊断信息 (Diagnostics/错误与警告) 核心配置 ---
+"         \   maxDiagnostics: 200,               " 限制接收和处理来自服务器的最大诊断信息数量，防止百千个错误解析拖慢 Vim
+"         \   autoHighlightDiags: v:true,         " 是否自动在含有错误/警告的行号左侧放置标记(Signs)
+"         \   autoPopulateDiags: v:false,        " 是否自动将所有的 LSP 错误和警告填充到 Vim 的 Location List 窗口中
+"         \   showDiagWithSign: v:true,          " 是否通过左侧行号边栏的标记(Sign)来展示代码有错误
+"         \   showDiagWithVirtualText: v:false,  " 是否在代码行右侧或上方显示虚拟文本(Virtual Text)来提示错误（需要 Vim 9.0.1157+）
+"         \   diagVirtualTextAlign: 'above',     " 虚拟文本错误信息的对齐方式：'above'(行上方, 默认), 'below'(下方), 'after'(行尾)
+"         \   diagVirtualTextWrap: 'default',    " 虚拟文本错误信息的换行方式：'default', 'wrap'(折行), 'truncate'(截断)
+"         \   showDiagInBalloon: v:true,         " 当鼠标悬停在错误文本上时，是否在气泡弹窗(Balloon)中显示错误详情（GUI或支持鼠标的终端）
+"         \   showDiagInPopup: v:true,           " 当执行 `:LspDiag current` 时，是否使用弹窗(Popup)而不是在底部命令行回显错误
+"         \   showDiagOnStatusLine: v:false,     " 是否在 Vim 底部状态栏(StatusLine)显示当前的诊断信息
+"         \   highlightDiagInline: v:true,       " 是否在代码内部对错误/警告文本进行下划线或背景色高亮
+
+"         " --- 5. 错误边栏标记的文本自定义 (Signs Text) ---
+"         \   diagSignErrorText: 'E>',           " 错误(Error)在左侧边栏显示的文本标识
+"         \   diagSignWarningText: 'W>',         " 警告(Warning)在左侧边栏显示的文本标识
+"         \   diagSignInfoText: 'I>',            " 信息(Info)在左侧边栏显示的文本标识
+"         \   diagSignHintText: 'H>',            " 提示(Hint)在左侧边栏显示的文本标识
+
+"         " --- 6. 悬浮提示 (Hover) 与函数签名 (Signature) ---
+"         \   autoHighlight: v:false,            " 【高亮符号】是否在法向模式下，自动高亮光标下符号在当前文件里的所有出现位置
+"         \   showSignature: v:true,             " 在插入模式下输入 `(` 或 `,` 时，是否自动弹出函数的参数签名提示
+"         \   echoSignature: v:false,            " 是否将函数签名显示在底部命令行，而不是弹窗中（开启此项可获得极简界面）
+"         \   showSignatureDocs: v:false,        " 弹出参数签名时，是否同时把函数底部的详细文档一同展示出来
+"         \   hoverInPreview: v:false,           " 运行 `:LspHover` 查看文档时，是使用传统的 Preview 窗口(v:true)，还是使用现代 Popup 弹窗(v:false)
+"         \   completionInPreview: v:false,      " 是否把补全项的文档强行放在 Preview 窗口里展示
+
+"         " --- 7. 弹窗外观控制 (Popup Windows) ---
+"         \   popupBorder: v:true,               " 是否为 LSP 所有的弹窗（文档、代码操作等）绘制边框
+"         \   popupHighlight: 'Normal',          " 弹窗内部文本和背景所使用的基础高亮组（这里设为了普通的 Normal）
+"         \   popupBorderHighlight: 'Title',     " 弹窗边框所使用的高亮组（这里用 Title 的颜色渲染边框）
+"         \   popupBorderHighlightPeek: 'Special'," 使用 Peek 命令（预览定义）时，弹窗边框所使用的高亮组（这里用 Special 颜色区分）
+"         \   popupBorderSignatureHelp: v:false, " 是否专门为函数参数签名(Signature Help)弹窗绘制边框（您关闭了此项）
+"         \   popupHighlightSignatureHelp: 'Pmenu'," 参数签名弹窗内部文本和背景的高亮组（这里设为了补全菜单 Pmenu 的样式）
+"         \   closePreviewOnComplete: v:true,    " 当补全菜单关闭时，如果开启了 Preview 窗口，是否自动关闭该 Preview 窗口
+
+"         " --- 8. 窗口焦点与视图交互 ---
+"         \   keepFocusInDiags: v:true,          " 运行 `:LspDiag show` 查看错误列表后，光标是否保持/聚焦在错误列表窗口中
+"         \   keepFocusInReferences: v:true,     " 运行查看引用后，光标是否保持/聚焦在引用列表窗口中
+"         \   outlineOnRight: v:false,           " 运行 `:LspOutline` 查看大纲时，是否将大纲窗口放在屏幕右侧（false 表示在左侧）
+"         \   outlineWinSize: 20,                " 大纲窗口的默认宽度（列数）
+"         \   usePopupInCodeAction: v:false,     " 触发 Code Action (修复建议) 时，是否使用弹窗菜单代替底部的数字输入列表(inputlist)
+"         \   useQuickfixForLocations: v:false,  " 查看引用列表等位置信息时，是使用 Quickfix 列表(v:true) 还是 Location 列表(v:false)
+
+"         " --- 9. 其他高级与兜底配置 ---
+"         \   semanticHighlight: v:true,         " 是否启用语义高亮（让 LSP 根据代码逻辑对变量、结构体等进行更精准的着色）
+"         \   showInlayHints: v:false,           " 是否开启内联提示（Inlay Hints，如在代码间虚拟显示参数名和推导类型，当前关闭）
+"         \   ignoreMissingServer: v:false,      " 当找不到某个语言的 LSP 可执行程序时，是否静默不报错
+"         \   hideDisabledCodeActions: v:false,  " 是否隐藏被语言服务器标记为“不可用/禁用”的代码修复操作
+"         \ })
+
+" call LspOptionsSet(#{
+" 			\   aleSupport: v:false,
+" 			\   ultisnipsSupport: v:false,
+" 			\   vsnipSupport: v:false,
+" 			\   snippetSupport: v:false,
+" 			\   autoComplete: v:true,
+" 			\   omniComplete: v:null,
+" 			\   omniCompleteAllowBare: v:false,
+" 			\   completionMatcher: 'case',
+" 			\   completionMatcherValue: 1,
+" 			\   completionTextEdit: v:true,
+" 			\   noNewlineInCompletion: v:false,
+" 			\   useBufferCompletion: v:false,
+" 			\   bufferCompletionTimeout: 100,
+" 			\   filterCompletionDuplicates: v:true,
+" 			\   condensedCompletionMenu: v:false,
+" 			\   customCompletionKinds: v:false,
+" 			\   completionKinds: {},
+" 			\   documentationFormat: ['markdown', 'plaintext'],
+" 			\   maxDiagnostics: 200,
+" 			\   autoHighlightDiags: v:true,
+" 			\   autoPopulateDiags: v:false,
+" 			\   showDiagWithSign: v:true,
+" 			\   showDiagWithVirtualText: v:true,
+" 			\   diagVirtualTextAlign: 'after',
+" 			\   diagVirtualTextWrap: 'default',
+" 			\   showDiagInBalloon: v:true,
+" 			\   showDiagInPopup: v:true,
+" 			\   showDiagOnStatusLine: v:false,
+" 			\   highlightDiagInline: v:true,
+" 			\   diagSignErrorText: 'E>',
+" 			\   diagSignHintText: 'H>',
+" 			\   diagSignInfoText: 'I>',
+" 			\   diagSignWarningText: 'W>',
+" 			\   autoHighlight: v:true,
+" 			\   showSignature: v:true,
+" 			\   echoSignature: v:false,
+" 			\   showSignatureDocs: v:false,
+" 			\   hoverInPreview: v:false,
+" 			\   completionInPreview: v:false,
+" 			\   popupBorder: v:true,
+" 			\   popupBorderHighlight: 'Title',
+" 			\   popupBorderHighlightPeek: 'Special',
+" 			\   popupBorderSignatureHelp: v:false,
+" 			\   popupHighlightSignatureHelp: 'Pmenu',
+" 			\   popupHighlight: 'Normal',
+" 			\   closePreviewOnComplete: v:true,
+" 			\   keepFocusInDiags: v:true,
+" 			\   keepFocusInReferences: v:true,
+" 			\   outlineOnRight: v:true,
+" 			\   outlineWinSize: 20,
+" 			\   usePopupInCodeAction: v:true,
+" 			\   useQuickfixForLocations: v:false,
+" 			\   semanticHighlight: v:true,
+" 			\   showInlayHints: v:false,
+" 			\   ignoreMissingServer: v:true,
+" 			\   hideDisabledCodeActions: v:false,
+" 			\ })
+" autocmd User LspSetup call LspOptionsSet(lspOpts)
+
 let lspOpts = #{
 			\   aleSupport: v:false,
+			\   ultisnipsSupport: v:false,
+			\   vsnipSupport: v:false,
+			\   snippetSupport: v:false,
 			\   autoComplete: v:true,
-			\   autoHighlight: v:true,
-			\   autoHighlightDiags: v:true,
-			\   autoPopulateDiags: v:true,
-			\   codeActionPopupStyle: 'full',
+			\   omniComplete: v:null,
+			\   omniCompleteAllowBare: v:false,
 			\   completionMatcher: 'case',
 			\   completionMatcherValue: 1,
-			\   definitionFallback: v:true,
-			\   diagSignErrorText: '❗',
-			\   diagSignHintText: '💡',
-			\   diagSignInfoText: '💡',
-			\   diagSignWarningText: '💡',
-			\   diagSignPriority: {
-			\       'Error': 100,
-			\       'Warning': 99,
-			\       'Information': 98,
-			\       'Hint': 97
-			\   },
-			\   echoSignature: v:false,
-			\   hideDisabledCodeActions: v:false,
-			\   highlightDiagInline: v:true,
-			\   hoverInPreview: v:false,
-			\   hoverFallback: v:true,
-			\   ignoreMissingServer: v:true,
-			\   keepFocusInDiags: v:true,
-			\   keepFocusInReferences: v:true,
 			\   completionTextEdit: v:true,
-			\   diagVirtualTextAlign: 'above',
-			\   noNewlineInCompletion: v:true,
-			\   popupBorder: v:true,
-			\	popupBorderSignatureHelp: v:true,
-			\   omniComplete: v:null,
-			\   outlineOnRight: v:true,
-			\   outlineWinSize: 50,
-			\   semanticHighlight: v:true,
-			\   showDiagInBalloon: v:false,
-			\   showDiagInPopup: v:true,
-			\   showDiagOnStatusLine: v:false,
-			\   showDiagWithSign: v:true,
-			\   showDiagWithVirtualText: v:false,
-			\   showInlayHints: v:false,
-			\   showSignature: v:true,
-			\   snippetSupport: v:true,
-			\   ultisnipsSupport: v:true,
+			\   noNewlineInCompletion: v:false,
 			\   useBufferCompletion: v:false,
-			\   usePopupInCodeAction: v:true,
-			\   vsnipSupport: v:false,
-			\   useQuickfixForLocations: v:false,
 			\   bufferCompletionTimeout: 100,
+			\   filterCompletionDuplicates: v:true,
+			\   condensedCompletionMenu: v:false,
 			\   customCompletionKinds: v:false,
 			\   completionKinds: {},
-			\   filterCompletionDuplicates: v:true,
-			\ }
+			\   documentationFormat: ['markdown', 'plaintext'],
+			\   maxDiagnostics: 200,
+			\   autoHighlightDiags: v:true,
+			\   autoPopulateDiags: v:false,
+			\   showDiagWithSign: v:true,
+			\   showDiagWithVirtualText: v:true,
+			\   diagVirtualTextAlign: 'after',
+			\   diagVirtualTextWrap: 'default',
+			\   showDiagInBalloon: v:true,
+			\   showDiagInPopup: v:true,
+			\   showDiagOnStatusLine: v:false,
+			\   highlightDiagInline: v:true,
+			\   diagSignErrorText: 'E>',
+			\   diagSignHintText: 'H>',
+			\   diagSignInfoText: 'I>',
+			\   diagSignWarningText: 'W>',
+			\   autoHighlight: v:true,
+			\   showSignature: v:true,
+			\   echoSignature: v:false,
+			\   showSignatureDocs: v:false,
+			\   hoverInPreview: v:false,
+			\   completionInPreview: v:false,
+			\   popupBorder: v:true,
+			\   popupBorderHighlight: 'Title',
+			\   popupBorderHighlightPeek: 'Special',
+			\   popupBorderSignatureHelp: v:false,
+			\   popupHighlightSignatureHelp: 'Pmenu',
+			\   popupHighlight: 'Normal',
+			\   closePreviewOnComplete: v:true,
+			\   keepFocusInDiags: v:true,
+			\   keepFocusInReferences: v:true,
+			\   outlineOnRight: v:true,
+			\   outlineWinSize: 20,
+			\   usePopupInCodeAction: v:true,
+			\   useQuickfixForLocations: v:false,
+			\   semanticHighlight: v:true,
+			\   showInlayHints: v:false,
+			\   ignoreMissingServer: v:true,
+			\   hideDisabledCodeActions: v:false,
+      \}
 
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
@@ -65,71 +203,69 @@ autocmd User LspSetup call LspOptionsSet(lspOpts)
 " 	\ }]
 
 let lspServers = [#{
-			\   name: 'gopls',
-			\   filetype: 'go',
-			\   path: 'gopls',
-			\   args: ['serve'],
-			\   workspaceConfig: #{
-			\     gopls: #{
-			\       hints: #{
-			\         assignVariableTypes: v:true,
-			\         compositeLiteralFields: v:true,
-			\         compositeLiteralTypes: v:true,
-			\         constantValues: v:true,
-			\         functionTypeParameters: v:true,
-			\         parameterNames: v:true,
-			\         rangeVariableTypes: v:true
+			\	name: 'gopls',
+			\	filetype: 'go',
+			\	path: 'gopls',
+			\	args: ['serve'],
+			\	workspaceConfig: #{
+			\		gopls: #{
+			\			hints: #{
+			\				assignVariableTypes: v:true,
+			\				compositeLiteralFields: v:true,
+			\				compositeLiteralTypes: v:true,
+			\				constantValues: v:true,
+			\				functionTypeParameters: v:true,
+			\				parameterNames: v:true,
+			\				rangeVariableTypes: v:true
+			\			}
+			\		}
+			\	},
+			\	initializationOptions: #{
+			\       capabilities: #{
+			\           textDocument: #{
+			\               foldingRange: #{
+			\                   lineFoldingOnly: v:true
+			\               }
+			\           }
 			\       }
-			\     }
-			\   }
-	\ }]
+			\    }
+			\}]
 
+let lspServers = [#{
+			\	name: 'vim-language-server',
+			\	filetype: 'vim',
+			\	path: 'vim-language-server',
+			\	args: ['--stdio']
+			\}]
 
 autocmd User LspSetup call LspAddServer(lspServers)
 
-autocmd User LspAttached {
-	nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
-	nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
-	nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
-	nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
-	nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
-	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
-}
+" autocmd User LspAttached {
+" 	nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
+" 	nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
+" 	nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
+" 	nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
+" 	nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
+" 	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr> 
+" }
 
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+augroup LspBufferSettings
+    autocmd!
+    " 当 LspAttached 触发时，调用下面的自定义函数
+    autocmd User LspAttached call s:LspBufferSetup()
+augroup END
 
-" nnoremap <silent> <leader>pe :LspDiagPrev<CR>
-" nnoremap <silent> <leader>ne :LspDiagNext<CR>
-nnoremap <silent> <leader>pd :LspPeekDefinition<CR>
-nnoremap <silent> <leader>pdc :LspPeekDeclaration<CR>
-nnoremap <silent> <leader>pr :LspPeekReferences<CR>
-nnoremap <silent> <leader>ol :LspOutline<CR>
-nnoremap <silent> <leader>di :LspDiagShow<CR>
-nnoremap <leader>cl :LspCodeLens<CR>
-
-function! s:SmartHover() abort
-	let result = execute('LspHover')
-	if result =~ 'Error'
-		call feedkeys('K', 'n')
-	endif
+function! s:LspBufferSetup()
+    nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
+    nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
+    nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
+    nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
+    nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
+    nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
 endfunction
 
-nnoremap <silent> <RightMouse> :call <SID>SmartHover()<CR>
-nnoremap <silent> <MiddleMouse> :LspPeekDefinition<CR>
-nnoremap <silent> <C-.> :LspGotoDefinition<CR>
-
-nnoremap <silent> gy :LspGotoTypeDef<CR>
-nnoremap <silent> gi :LspGotoImpl<CR>
-nnoremap <silent> gdc :LspGotoDeclaration<CR>
-
-xnoremap <silent> <leader>f :LspFormat<CR>
-nnoremap <silent> <leader>f :LspFormat<CR>
-
-set formatexpr=lsp#lsp#FormatExpr() " Map LspFormat to the gq command
-
 augroup LspAutoActions
-    autocmd!
+	autocmd!
 	autocmd BufWritePre *.go silent! LspOrganizeImports
 	autocmd BufWritePre *.go silent! LspFormat
 augroup END
