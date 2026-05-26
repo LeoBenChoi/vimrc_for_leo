@@ -1,18 +1,18 @@
 call plug#begin()
 
 " 核心插件 lsp
-" Plug 'neoclide/coc.nvim', {'branch': 'release'} 
+Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'yegappan/lsp'
-Plug 'honza/vim-snippets'          " 通用代码片段库
-" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
-" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
-" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
+" Plug 'yegappan/lsp'
 
 
 " ################# Code completion #################
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
+" Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
+" Plug 'honza/vim-snippets'          " 通用代码片段库 （需要 vim 支持python3模块）
+" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
+" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
+" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
+" Plug 'hrsh7th/vim-vsnip'
 
 " ################### Git ####################
 Plug 'airblade/vim-gitgutter' " 左侧显示修改标记 (+ ~ -)
