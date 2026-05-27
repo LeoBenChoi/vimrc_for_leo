@@ -6,6 +6,7 @@ call plug#begin()
 if has('vim9script')
 	Plug 'yegappan/lsp'
 endif
+" Plug 'dense-analysis/ale' " 代码检查
 
 " 代码片段
 if has('python3')
@@ -16,11 +17,9 @@ if has('python3')
 	" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
 endif
 
-" 代码检查
-Plug 'dense-analysis/ale'
-
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " ################### Git ####################
 Plug 'airblade/vim-gitgutter' " 左侧显示修改标记 (+ ~ -)
@@ -64,6 +63,10 @@ Plug 'yianwillis/vimcdoc', {'depth': 1}
 
 " 侧边栏
 Plug 'preservim/nerdtree'
+
+" 快捷键提示
+" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'liuchengxu/vim-which-key',
 
 " 图标 在最后
 Plug 'ryanoasis/vim-devicons'

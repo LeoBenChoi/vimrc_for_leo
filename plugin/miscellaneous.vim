@@ -2,7 +2,6 @@
 "		 Miscellaneous settings
 " ++++++++++++++++++++++++************************
 " 杂项
-let mapleader = " "
 set number relativenumber " 显示绝对行号（当前行） " 显示相对行号（其他行）
 set signcolumn=yes " 始终启动符号列
 set undofile   
