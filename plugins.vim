@@ -16,6 +16,9 @@ if has('python3')
 	" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
 endif
 
+" fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
 " ################### Git ####################
 Plug 'airblade/vim-gitgutter' " 左侧显示修改标记 (+ ~ -)
 Plug 'tpope/vim-fugitive' " Git 包装器 & 分支信息获取
