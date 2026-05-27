@@ -36,7 +36,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'shrikecode/kyotonight.vim'
 " Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
 " Plug 'dracula/vim', { 'as': 'dracula' }
-" Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
+Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
 
 " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'tpope/vim-commentary'

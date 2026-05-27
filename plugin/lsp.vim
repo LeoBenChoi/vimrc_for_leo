@@ -273,6 +273,16 @@ function! s:LspBufferSetup()
     nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
     nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
     nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
+
+	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
+	nnoremap <silent> gy :LspGotoTypeDef<CR>
+	nnoremap <silent> gi :LspGotoImpl<CR>
+	nnoremap <silent> gdc :LspGotoDeclaration<CR>
+
+	xnoremap <silent> <leader>f :LspFormat<CR>
+	nnoremap <silent> <leader>f :LspFormat<CR>
 endfunction
 
 augroup LspAutoActions
