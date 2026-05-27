@@ -7,7 +7,7 @@ if has('vim9script')
 	Plug 'yegappan/lsp'
 endif
 
-" ################# Code completion #################
+" 代码片段
 if has('python3')
 	Plug 'honza/vim-snippets'          " 通用代码片段库
 	Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
@@ -15,6 +15,9 @@ if has('python3')
 	" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
 	" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
 endif
+
+" 代码检查
+Plug 'dense-analysis/ale'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
