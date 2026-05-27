@@ -74,68 +74,64 @@
 "         \   hideDisabledCodeActions: v:false,  " 是否隐藏被语言服务器标记为“不可用/禁用”的代码修复操作
 "         \ })
 
-" call LspOptionsSet(#{
-" 			\   aleSupport: v:false,
-" 			\   ultisnipsSupport: v:false,
-" 			\   vsnipSupport: v:false,
-" 			\   snippetSupport: v:false,
-" 			\   autoComplete: v:true,
-" 			\   omniComplete: v:null,
-" 			\   omniCompleteAllowBare: v:false,
-" 			\   completionMatcher: 'case',
-" 			\   completionMatcherValue: 1,
-" 			\   completionTextEdit: v:true,
-" 			\   noNewlineInCompletion: v:false,
-" 			\   useBufferCompletion: v:false,
-" 			\   bufferCompletionTimeout: 100,
-" 			\   filterCompletionDuplicates: v:true,
-" 			\   condensedCompletionMenu: v:false,
-" 			\   customCompletionKinds: v:false,
-" 			\   completionKinds: {},
-" 			\   documentationFormat: ['markdown', 'plaintext'],
-" 			\   maxDiagnostics: 200,
-" 			\   autoHighlightDiags: v:true,
-" 			\   autoPopulateDiags: v:false,
-" 			\   showDiagWithSign: v:true,
-" 			\   showDiagWithVirtualText: v:true,
-" 			\   diagVirtualTextAlign: 'after',
-" 			\   diagVirtualTextWrap: 'default',
-" 			\   showDiagInBalloon: v:true,
-" 			\   showDiagInPopup: v:true,
-" 			\   showDiagOnStatusLine: v:false,
-" 			\   highlightDiagInline: v:true,
-" 			\   diagSignErrorText: 'E>',
-" 			\   diagSignHintText: 'H>',
-" 			\   diagSignInfoText: 'I>',
-" 			\   diagSignWarningText: 'W>',
-" 			\   autoHighlight: v:true,
-" 			\   showSignature: v:true,
-" 			\   echoSignature: v:false,
-" 			\   showSignatureDocs: v:false,
-" 			\   hoverInPreview: v:false,
-" 			\   completionInPreview: v:false,
-" 			\   popupBorder: v:true,
-" 			\   popupBorderHighlight: 'Title',
-" 			\   popupBorderHighlightPeek: 'Special',
-" 			\   popupBorderSignatureHelp: v:false,
-" 			\   popupHighlightSignatureHelp: 'Pmenu',
-" 			\   popupHighlight: 'Normal',
-" 			\   closePreviewOnComplete: v:true,
-" 			\   keepFocusInDiags: v:true,
-" 			\   keepFocusInReferences: v:true,
-" 			\   outlineOnRight: v:true,
-" 			\   outlineWinSize: 20,
-" 			\   usePopupInCodeAction: v:true,
-" 			\   useQuickfixForLocations: v:false,
-" 			\   semanticHighlight: v:true,
-" 			\   showInlayHints: v:false,
-" 			\   ignoreMissingServer: v:true,
-" 			\   hideDisabledCodeActions: v:false,
-" 			\ })
-" autocmd User LspSetup call LspOptionsSet(lspOpts)
-
-let lspOpts = #{autoHighlightDiags: v:true}
-
+let lspOpts = #{
+			\   aleSupport: v:true,
+			\   ultisnipsSupport: v:false,
+			\   vsnipSupport: v:false,
+			\   snippetSupport: v:false,
+			\   autoComplete: v:true,
+			\   omniComplete: v:null,
+			\   omniCompleteAllowBare: v:false,
+			\   completionMatcher: 'case',
+			\   completionMatcherValue: 1,
+			\   completionTextEdit: v:true,
+			\   noNewlineInCompletion: v:false,
+			\   useBufferCompletion: v:false,
+			\   bufferCompletionTimeout: 100,
+			\   filterCompletionDuplicates: v:true,
+			\   condensedCompletionMenu: v:false,
+			\   customCompletionKinds: v:false,
+			\   completionKinds: {},
+			\   documentationFormat: ['markdown', 'plaintext'],
+			\   maxDiagnostics: 200,
+			\   autoHighlightDiags: v:true,
+			\   autoPopulateDiags: v:false,
+			\   showDiagWithSign: v:true,
+			\   showDiagWithVirtualText: v:true,
+			\   diagVirtualTextAlign: 'after',
+			\   diagVirtualTextWrap: 'default',
+			\   showDiagInBalloon: v:true,
+			\   showDiagInPopup: v:true,
+			\   showDiagOnStatusLine: v:false,
+			\   highlightDiagInline: v:true,
+			\   diagSignErrorText: 'E>',
+			\   diagSignHintText: 'H>',
+			\   diagSignInfoText: 'I>',
+			\   diagSignWarningText: 'W>',
+			\   autoHighlight: v:true,
+			\   showSignature: v:true,
+			\   echoSignature: v:false,
+			\   showSignatureDocs: v:false,
+			\   hoverInPreview: v:false,
+			\   completionInPreview: v:false,
+			\   popupBorder: v:true,
+			\   popupBorderHighlight: 'Title',
+			\   popupBorderHighlightPeek: 'Special',
+			\   popupBorderSignatureHelp: v:false,
+			\   popupHighlightSignatureHelp: 'Pmenu',
+			\   popupHighlight: 'Normal',
+			\   closePreviewOnComplete: v:true,
+			\   keepFocusInDiags: v:true,
+			\   keepFocusInReferences: v:true,
+			\   outlineOnRight: v:true,
+			\   outlineWinSize: 20,
+			\   usePopupInCodeAction: v:true,
+			\   useQuickfixForLocations: v:false,
+			\   semanticHighlight: v:true,
+			\   showInlayHints: v:false,
+			\   ignoreMissingServer: v:true,
+			\   hideDisabledCodeActions: v:false,
+			\ }
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
 let lspServers = []
@@ -158,23 +154,10 @@ endif
 
 if executable('gopls')
 	let lspServers += [#{
-				\		filetype: 'go',
-				\		name: 'gopls',
+				\		filetype: ['go', 'gomod'],
+				\		name: 'golang',
 				\		path: 'gopls',
 				\		args: ['serve'],
-				\		workspaceConfig: #{
-				\			gopls: #{
-				\				hints: #{
-				\					assignVariableTypes: v:true,
-				\					compositeLiteralFields: v:true,
-				\					compositeLiteralTypes: v:true,
-				\					constantValues: v:true,
-				\					functionTypeParameters: v:true,
-				\					parameterNames: v:true,
-				\					rangeVariableTypes: v:true
-				\				}
-				\			}
-				\		}
 				\	}]
 endif
 
@@ -235,5 +218,15 @@ function! s:LspBufferSetup()
 
 	xnoremap <silent> <leader>f :LspFormat<CR>
 	nnoremap <silent> <leader>f :LspFormat<CR>
+
+	nmap <LocalLeader>ca <Cmd>LspCodeAction<CR>
+	nmap gd <Cmd>LspGotoDefinition<CR>
+	nmap <LocalLeader>gd <Cmd>tab LspGotoDefinition<CR>
+	nmap gr <Cmd>LspPeekReferences<CR>
+	nmap <LocalLeader>gr <Cmd>LspShowReferences<CR>
+	nnoremap <LocalLeader>K <Cmd>LspHover<CR>
+	nmap <LocalLeader>rn <Cmd>LspRename<CR>
+	nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
+	nmap <Leader>O <Cmd>LspSymbolSearch<CR>
 endfunction
 
