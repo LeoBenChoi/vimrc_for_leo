@@ -43,7 +43,7 @@
 "         \   diagSignHintText: 'H>',            " 提示(Hint)在左侧边栏显示的文本标识
 
 "         " --- 6. 悬浮提示 (Hover) 与函数签名 (Signature) ---
-"         \   autoHighlight: v:false,            " 【高亮符号】是否在法向模式下，自动高亮光标下符号在当前文件里的所有出现位置
+"         \   autoHighlight: v:false,            " 【高亮符号】是否在普通模式下，自动高亮光标下符号在当前文件里的所有出现位置
 "         \   showSignature: v:true,             " 在插入模式下输入 `(` 或 `,` 时，是否自动弹出函数的参数签名提示
 "         \   echoSignature: v:false,            " 是否将函数签名显示在底部命令行，而不是弹窗中（开启此项可获得极简界面）
 "         \   showSignatureDocs: v:false,        " 弹出参数签名时，是否同时把函数底部的详细文档一同展示出来
@@ -75,64 +75,26 @@
 "         \ })
 
 let lspOpts = #{
-			\   aleSupport: v:true,
-			\   ultisnipsSupport: v:false,
-			\   vsnipSupport: v:false,
-			\   snippetSupport: v:false,
-			\   autoComplete: v:true,
-			\   omniComplete: v:null,
-			\   omniCompleteAllowBare: v:false,
-			\   completionMatcher: 'case',
-			\   completionMatcherValue: 1,
-			\   completionTextEdit: v:true,
-			\   noNewlineInCompletion: v:false,
-			\   useBufferCompletion: v:false,
-			\   bufferCompletionTimeout: 100,
-			\   filterCompletionDuplicates: v:true,
-			\   condensedCompletionMenu: v:false,
-			\   customCompletionKinds: v:false,
-			\   completionKinds: {},
-			\   documentationFormat: ['markdown', 'plaintext'],
-			\   maxDiagnostics: 200,
-			\   autoHighlightDiags: v:true,
-			\   autoPopulateDiags: v:false,
-			\   showDiagWithSign: v:true,
-			\   showDiagWithVirtualText: v:true,
-			\   diagVirtualTextAlign: 'after',
-			\   diagVirtualTextWrap: 'default',
-			\   showDiagInBalloon: v:true,
-			\   showDiagInPopup: v:true,
-			\   showDiagOnStatusLine: v:false,
-			\   highlightDiagInline: v:true,
-			\   diagSignErrorText: 'E>',
-			\   diagSignHintText: 'H>',
-			\   diagSignInfoText: 'I>',
-			\   diagSignWarningText: 'W>',
-			\   autoHighlight: v:true,
-			\   showSignature: v:true,
-			\   echoSignature: v:false,
-			\   showSignatureDocs: v:false,
-			\   hoverInPreview: v:false,
-			\   completionInPreview: v:false,
-			\   popupBorder: v:true,
-			\   popupBorderHighlight: 'Title',
-			\   popupBorderHighlightPeek: 'Special',
-			\   popupBorderSignatureHelp: v:false,
-			\   popupHighlightSignatureHelp: 'Pmenu',
-			\   popupHighlight: 'Normal',
-			\   closePreviewOnComplete: v:true,
-			\   keepFocusInDiags: v:true,
-			\   keepFocusInReferences: v:true,
-			\   outlineOnRight: v:true,
-			\   outlineWinSize: 20,
-			\   usePopupInCodeAction: v:true,
-			\   useQuickfixForLocations: v:false,
-			\   semanticHighlight: v:true,
-			\   showInlayHints: v:false,
-			\   ignoreMissingServer: v:true,
-			\   hideDisabledCodeActions: v:false,
-			\ }
+			\		completionMatcher: 'case',
+			\		useBufferCompletion: v:true,
+			\		filterCompletionDuplicates: v:true,
+			\		condensedCompletionMenu: v:true,
+			\		autoPopulateDiags: v:true,
+			\		diagVirtualTextAlign: 'after',
+			\		diagVirtualTextWrap: 'truncate',
+			\		autoHighlight: v:true,
+			\		showSignature: v:false,
+			\		hoverInPreview: v:false,
+			\		outlineOnRight: v:true,
+			\		usePopupInCodeAction: v:true,
+			\		noNewlineInCompletion: v:true,
+			\		popupBorderSignatureHelp: v:true,
+			\		outlineWinSize: 30,
+			\		ultisnipsSupport: v:true,
+			\	}
 autocmd User LspSetup call LspOptionsSet(lspOpts)
+
+set updatetime=4000
 
 let lspServers = []
 
@@ -158,6 +120,19 @@ if executable('gopls')
 				\		name: 'golang',
 				\		path: 'gopls',
 				\		args: ['serve'],
+				\		workspaceConfig: #{
+				\			gopls: #{
+				\				hints: #{
+				\					assignVariableTypes: v:true,
+				\					compositeLiteralFields: v:true,
+				\					compositeLiteralTypes: v:true,
+				\					constantValues: v:true,
+				\					functionTypeParameters: v:true,
+				\					parameterNames: v:true,
+				\					rangeVariableTypes: v:true,
+				\				}
+				\			}
+				\		}
 				\	}]
 endif
 
@@ -201,32 +176,29 @@ autocmd User LspSetup call LspAddServer(lspServers)
 " 	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr> 
 " }
 
-function! s:LspBufferSetup()
-    nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
-    nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
-    nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
-    nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
-    nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
-    nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
+nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
+nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
+nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
+nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
+nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
+nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
 
-	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
-	nnoremap <silent> gy :LspGotoTypeDef<CR>
-	nnoremap <silent> gi :LspGotoImpl<CR>
-	nnoremap <silent> gdc :LspGotoDeclaration<CR>
+nnoremap <silent> gy :LspGotoTypeDef<CR>
+nnoremap <silent> gi :LspGotoImpl<CR>
+nnoremap <silent> gdc :LspGotoDeclaration<CR>
 
-	xnoremap <silent> <leader>f :LspFormat<CR>
-	nnoremap <silent> <leader>f :LspFormat<CR>
+xnoremap <silent> <leader>f :LspFormat<CR>
+nnoremap <silent> <leader>f :LspFormat<CR>
 
-	nmap <LocalLeader>ca <Cmd>LspCodeAction<CR>
-	nmap gd <Cmd>LspGotoDefinition<CR>
-	nmap <LocalLeader>gd <Cmd>tab LspGotoDefinition<CR>
-	nmap gr <Cmd>LspPeekReferences<CR>
-	nmap <LocalLeader>gr <Cmd>LspShowReferences<CR>
-	nnoremap <LocalLeader>K <Cmd>LspHover<CR>
-	nmap <LocalLeader>rn <Cmd>LspRename<CR>
-	nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
-	nmap <Leader>O <Cmd>LspSymbolSearch<CR>
-endfunction
+nmap <LocalLeader>qf <Cmd>LspCodeAction<CR>
+" nmap gd <Cmd>LspGotoDefinition<CR>
+nmap <LocalLeader>gd <Cmd>tab LspGotoDefinition<CR>
+nmap gr <Cmd>LspPeekReferences<CR>
+nmap <LocalLeader>gr <Cmd>LspShowReferences<CR>
+nmap <LocalLeader>rn <Cmd>LspRename<CR>
+nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
+nmap <Leader>O <Cmd>LspSymbolSearch<CR>
 
