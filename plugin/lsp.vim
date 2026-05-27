@@ -134,66 +134,11 @@
 " 			\ })
 " autocmd User LspSetup call LspOptionsSet(lspOpts)
 
-let lspOpts = #{
-			\   aleSupport: v:false,
-			\   ultisnipsSupport: v:true,
-			\   vsnipSupport: v:false,
-			\   snippetSupport: v:true,
-			\   autoComplete: v:true,
-			\   omniComplete: v:null,
-			\   omniCompleteAllowBare: v:false,
-			\   completionMatcher: 'case',
-			\   completionMatcherValue: 1,
-			\   completionTextEdit: v:true,
-			\   noNewlineInCompletion: v:false,
-			\   useBufferCompletion: v:false,
-			\   bufferCompletionTimeout: 100,
-			\   filterCompletionDuplicates: v:true,
-			\   condensedCompletionMenu: v:false,
-			\   customCompletionKinds: v:false,
-			\   completionKinds: {},
-			\   documentationFormat: ['markdown', 'plaintext'],
-			\   maxDiagnostics: 200,
-			\   autoHighlightDiags: v:true,
-			\   autoPopulateDiags: v:false,
-			\   showDiagWithSign: v:true,
-			\   showDiagWithVirtualText: v:true,
-			\   diagVirtualTextAlign: 'after',
-			\   diagVirtualTextWrap: 'default',
-			\   showDiagInBalloon: v:true,
-			\   showDiagInPopup: v:true,
-			\   showDiagOnStatusLine: v:false,
-			\   highlightDiagInline: v:true,
-			\   diagSignErrorText: 'E>',
-			\   diagSignHintText: 'H>',
-			\   diagSignInfoText: 'I>',
-			\   diagSignWarningText: 'W>',
-			\   autoHighlight: v:true,
-			\   showSignature: v:true,
-			\   echoSignature: v:false,
-			\   showSignatureDocs: v:false,
-			\   hoverInPreview: v:false,
-			\   completionInPreview: v:false,
-			\   popupBorder: v:true,
-			\   popupBorderHighlight: 'Title',
-			\   popupBorderHighlightPeek: 'Special',
-			\   popupBorderSignatureHelp: v:false,
-			\   popupHighlightSignatureHelp: 'Pmenu',
-			\   popupHighlight: 'Normal',
-			\   closePreviewOnComplete: v:true,
-			\   keepFocusInDiags: v:true,
-			\   keepFocusInReferences: v:true,
-			\   outlineOnRight: v:true,
-			\   outlineWinSize: 20,
-			\   usePopupInCodeAction: v:true,
-			\   useQuickfixForLocations: v:false,
-			\   semanticHighlight: v:true,
-			\   showInlayHints: v:false,
-			\   ignoreMissingServer: v:true,
-			\   hideDisabledCodeActions: v:false,
-      \}
+let lspOpts = #{autoHighlightDiags: v:true}
 
 autocmd User LspSetup call LspOptionsSet(lspOpts)
+
+let lspServers = []
 
 " let lspServers = [#{
 " 	\	  name: 'clang',
@@ -202,52 +147,65 @@ autocmd User LspSetup call LspOptionsSet(lspOpts)
 " 	\	  args: ['--background-index']
 " 	\ }]
 
-let lspServers = [
-			\	#{
-			\		filetype: ['c', 'cpp'],
-			\		name: 'clangd',
-			\		path: 'clangd',
-			\		args: ['--background-index', '--clang-tidy'],
-			\	},
-			\	#{
-			\		filetype: 'go',
-			\		name: 'gopls',
-			\		path: 'gopls',
-			\		args: ['serve'],
-			\		workspaceConfig: #{
-			\			gopls: #{
-			\				hints: #{
-			\					assignVariableTypes: v:true,
-			\					compositeLiteralFields: v:true,
-			\					compositeLiteralTypes: v:true,
-			\					constantValues: v:true,
-			\					functionTypeParameters: v:true,
-			\					parameterNames: v:true,
-			\					rangeVariableTypes: v:true
-			\				}
-			\			}
-			\		}
-			\	},
-			\	#{
-			\	    filetype: ['python'],
-			\	    name: 'basedpyright',
-			\	    path: 'basedpyright-langserver',
-			\	    args: ['--stdio'],
-			\	    syncInit: v:true
-			\	  },
-			\	#{
-			\	    filetype: ['python'],
-			\	    name: 'ruff',
-			\	    path: 'ruff',
-			\	    args: ['server'],
-			\	    syncInit: v:true
-			\	},
-			\	#{
+if executable('clangd')
+	let lspServers += [#{
+				\		filetype: ['c', 'cpp'],
+				\		name: 'clangd',
+				\		path: 'clangd',
+				\		args: ['--background-index', '--clang-tidy'],
+				\	}]
+endif
+
+if executable('gopls')
+	let lspServers += [#{
+				\		filetype: 'go',
+				\		name: 'gopls',
+				\		path: 'gopls',
+				\		args: ['serve'],
+				\		workspaceConfig: #{
+				\			gopls: #{
+				\				hints: #{
+				\					assignVariableTypes: v:true,
+				\					compositeLiteralFields: v:true,
+				\					compositeLiteralTypes: v:true,
+				\					constantValues: v:true,
+				\					functionTypeParameters: v:true,
+				\					parameterNames: v:true,
+				\					rangeVariableTypes: v:true
+				\				}
+				\			}
+				\		}
+				\	}]
+endif
+
+if executable('basedpyright')
+	let lspServers += [#{
+				\		filetype: ['python'],
+				\		name: 'basedpyright',
+				\		path: 'basedpyright-langserver',
+				\		args: ['--stdio'],
+				\		syncInit: v:true
+				\	}]
+endif
+
+if executable('ruff')
+	let lspServers += [#{
+			\		filetype: ['python'],
+			\		name: 'ruff',
+			\		path: 'ruff',
+			\		args: ['server'],
+			\		syncInit: v:true
+			\	}]
+endif
+
+if executable('ruff')
+	let lspServers += [#{
 			\		filetype: 'vim',
 			\		name: 'vim-language-server',
 			\		path: 'vim-language-server',
 			\		args: ['--stdio']
-            \ }]
+			\	}]
+endif
 
 autocmd User LspSetup call LspAddServer(lspServers)
 
@@ -259,12 +217,6 @@ autocmd User LspSetup call LspAddServer(lspServers)
 " 	nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
 " 	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr> 
 " }
-
-augroup LspBufferSettings
-    autocmd!
-    " 当 LspAttached 触发时，调用下面的自定义函数
-    autocmd User LspAttached call s:LspBufferSetup()
-augroup END
 
 function! s:LspBufferSetup()
     nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
@@ -284,16 +236,4 @@ function! s:LspBufferSetup()
 	xnoremap <silent> <leader>f :LspFormat<CR>
 	nnoremap <silent> <leader>f :LspFormat<CR>
 endfunction
-
-augroup LspAutoActions
-	autocmd!
-	autocmd BufWritePre *.go silent! LspOrganizeImports
-	autocmd BufWritePre *.go silent! LspFormat
-augroup END
-
-augroup dockercompose
-	autocmd!
-	autocmd BufEnter,BufReadPre docker-compose.yaml,docker-compose.yml setf dockercompose
-	autocmd BufEnter,BufReadPre docker-compose.yaml,docker-compose.yml set syntax=yaml
-augroup END
 

@@ -3,16 +3,18 @@ call plug#begin()
 " 核心插件 lsp
 " Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'yegappan/lsp'
-Plug 'honza/vim-snippets'          " 通用代码片段库
-" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
-" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
-" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
-
+if has('vim9script')
+	Plug 'yegappan/lsp'
+endif
 
 " ################# Code completion #################
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
+if has('python3')
+	Plug 'honza/vim-snippets'          " 通用代码片段库
+	Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
+	" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
+	" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
+	" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
+endif
 
 " ################### Git ####################
 Plug 'airblade/vim-gitgutter' " 左侧显示修改标记 (+ ~ -)
@@ -41,7 +43,7 @@ Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
 " 快速注释 (gcc 注释行, gc+选区 注释块)
 Plug 'tpope/vim-commentary'
 "
-" 高亮单词
+" 高亮单词 交给lsp
 " Plug 'itchyny/vim-cursorword'
 
 " 启动页
