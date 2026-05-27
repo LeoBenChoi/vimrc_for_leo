@@ -180,8 +180,6 @@ nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
 nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
 nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
 nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
-nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
-nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr>
 
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
@@ -193,12 +191,6 @@ nnoremap <silent> gdc :LspGotoDeclaration<CR>
 xnoremap <silent> <leader>f :LspFormat<CR>
 nnoremap <silent> <leader>f :LspFormat<CR>
 
-nmap <LocalLeader>qf <Cmd>LspCodeAction<CR>
-" nmap gd <Cmd>LspGotoDefinition<CR>
-nmap <LocalLeader>gd <Cmd>tab LspGotoDefinition<CR>
-nmap gr <Cmd>LspPeekReferences<CR>
-nmap <LocalLeader>gr <Cmd>LspShowReferences<CR>
-nmap <LocalLeader>rn <Cmd>LspRename<CR>
-nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
-nmap <Leader>O <Cmd>LspSymbolSearch<CR>
+" nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
+" nmap <Leader>O <Cmd>LspSymbolSearch<CR>
 
