@@ -25,7 +25,9 @@ nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " 注册 Space 激活下方字典
-call which_key#register('<Space>', "g:which_key_map")
+if exists('*which_key#register')
+    call which_key#register('<Space>', "g:which_key_map")
+endif
 
 " 初始化映射字典
 let g:which_key_map = {}
