@@ -7,3 +7,5 @@ nnoremap <leader>e :NERDTreeToggle<CR>
 
 " 不保留最后一个窗口
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
+let NERDTreeShowHidden=1
