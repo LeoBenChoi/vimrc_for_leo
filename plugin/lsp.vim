@@ -167,30 +167,25 @@ endif
 
 autocmd User LspSetup call LspAddServer(lspServers)
 
-" autocmd User LspAttached {
-" 	nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
-" 	nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
-" 	nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
-" 	nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
-" 	nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
-" 	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr> 
-" }
+" 这里需要使用 autocmd User LspAttached 来映射，否则可能会被覆盖
+autocmd User LspAttached {
+ 	nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
+	nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
+ 	nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
+ 	nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
+ 	nnoremap <buffer> <silent> <leader>rn <cmd>LspRename<cr>
+ 	nnoremap <buffer> <silent> <leader>ca <cmd>LspCodeAction<cr> 
 
-nnoremap <buffer> <silent> gd <cmd>LspGotoDefinition<cr>
-nnoremap <buffer> <silent> K  <cmd>LspHover<cr>
-nnoremap <buffer> <silent> [d <cmd>LspDiag prev<cr>
-nnoremap <buffer> <silent> ]d <cmd>LspDiag next<cr>
+	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+	nnoremap <silent> gy :LspGotoTypeDef<CR>
+	nnoremap <silent> gi :LspGotoImpl<CR>
+	nnoremap <silent> gdc :LspGotoDeclaration<CR>
 
-nnoremap <silent> gy :LspGotoTypeDef<CR>
-nnoremap <silent> gi :LspGotoImpl<CR>
-nnoremap <silent> gdc :LspGotoDeclaration<CR>
+	xnoremap <silent> <leader>f :LspFormat<CR>
+	nnoremap <silent> <leader>f :LspFormat<CR>
 
-xnoremap <silent> <leader>f :LspFormat<CR>
-nnoremap <silent> <leader>f :LspFormat<CR>
-
-" nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
-" nmap <Leader>O <Cmd>LspSymbolSearch<CR>
-
+	" nmap <Leader>o <Cmd>LspDocumentSymbol<CR>
+	" nmap <Leader>O <Cmd>LspSymbolSearch<CR>
+}
