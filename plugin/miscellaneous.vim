@@ -95,3 +95,21 @@ let &viewdir = g:vim_dir . '/.view//'
 if !isdirectory(expand(&viewdir))
 	call mkdir(expand(&viewdir), 'p')
 endif
+
+" 打开/关闭文件时自动保存并恢复视图（折叠、光标位置、局部选项等）
+set viewoptions=folds,cursor,cursoff,search,localoptions
+augroup vimView
+	au!
+	autocmd BufWinLeave *
+				\ if expand('<afile>') != ''
+				\ && &l:buftype == ''
+				\ && &ft !~# 'commit'
+				\ |   mkview
+				\ | endif
+	autocmd BufWinEnter *
+				\ if expand('<afile>') != ''
+				\ && &l:buftype == ''
+				\ && &ft !~# 'commit'
+				\ |   loadview
+				\ | endif
+augroup END
