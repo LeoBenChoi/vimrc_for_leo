@@ -7,6 +7,7 @@ if has('vim9script')
 	Plug 'yegappan/lsp'
 endif
 " Plug 'dense-analysis/ale' " 代码检查
+" Plug 'OmniSharp/omnisharp-vim'
 
 " 代码片段
 if has('python3')

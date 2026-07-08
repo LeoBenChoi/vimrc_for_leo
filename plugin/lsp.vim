@@ -90,7 +90,7 @@ let lspOpts = #{
 			\		noNewlineInCompletion: v:true,
 			\		popupBorderSignatureHelp: v:true,
 			\		outlineWinSize: 30,
-			\		ultisnipsSupport: v:true,
+			\		ultisnipsSupport: v:false,
 			\	}
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
@@ -111,6 +111,16 @@ if executable('clangd')
 				\		name: 'clangd',
 				\		path: 'clangd',
 				\		args: ['--background-index', '--clang-tidy'],
+				\	}]
+endif
+
+if executable('OmniSharp')
+	let lspServers += [#{
+				\		name: 'omnisharp',
+				\		filetype: 'cs',
+				\		path: 'OmniSharp',
+				\		args: ['-z', '--languageserver', '--encoding', 'utf-8'],
+				\		syncInit: v:true,
 				\	}]
 endif
 
