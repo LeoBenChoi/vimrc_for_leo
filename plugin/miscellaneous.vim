@@ -8,8 +8,15 @@ set undofile
 set noswapfile
 set ttimeoutlen=0
 set timeoutlen=500
+" 启用命令行补全增强菜单
+" 在底线命令模式按 Tab 键时，会在命令行上方显示所有可匹配项供选择
 set wildmenu
+" 设置补全模式（逗号分隔，代表第一次按 Tab / 第二次按 Tab 的行为）
+" longest:full —— 第一次按 Tab：用最长公共子串补全，并同时显示 wildmenu 列表
+" full         —— 第二次按 Tab：在 wildmenu 列表中逐个遍历所有匹配项
 set wildmode=longest:full,full
+" 将 wildmenu 的候选列表以浮动弹出菜单（popup menu）的形式显示
+" 效果类似插入模式下的补全菜单（pum），比传统状态栏展示更直观
 set wildoptions=pum
 set mouse=a
 set splitbelow " 水平分屏时，新窗口放在当前窗口下方

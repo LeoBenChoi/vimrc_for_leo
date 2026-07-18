@@ -29,9 +29,6 @@ Plug 'tpope/vim-fugitive' " Git 包装器 & 分支信息获取
 " ############# Look and feel ###############
 " Syntax
 Plug 'luochen1990/rainbow' " 彩虹括号
-Plug 'martinlroth/vim-devicetree'     " Linux devicetree
-Plug 'wgwoods/vim-systemd-syntax'     " Systemd unit files
-Plug 'yuezk/vim-js'                   " Javascript
 
 " 状态栏
 Plug 'vim-airline/vim-airline'
