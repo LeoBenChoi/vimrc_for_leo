@@ -114,6 +114,64 @@ if executable('clangd')
 				\	}]
 endif
 
+" version 1.60.0
+" java 21
+if executable('java')
+	let lspServers += [#{
+		\   name: 'jdtls',
+		\   filetype: 'java',
+		\   path: 'java',
+		\   args: [
+		\       "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+		\       "-Dosgi.bundles.defaultStartLevel=4",
+		\       "-Declipse.product=org.eclipse.jdt.ls.core.product",
+		\       "-Dlog.level=ALL",
+		\       "-Xmx1G",
+		\       "--add-modules=ALL-SYSTEM",
+		\       "--add-opens", "java.base/java.util=ALL-UNNAMED",
+		\       "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+		\       "-jar",
+		\       "D:\\ProgramPortable\\Dev\\LSP\\jdt-language-server-1.60.0-202606262232\\plugins\\org.eclipse.equinox.launcher_1.7.200.v20260619-2039.jar",
+		\       "-configuration",
+		\       "D:\\ProgramPortable\\Dev\\LSP\\jdt-language-server-1.60.0-202606262232\\config_win",
+		\       "-data",
+		\       "D:\\work"
+		\   ],
+		\   initializationOptions: #{
+		\       settings: #{
+		\           java: #{
+		\               completion: #{
+		\                   filteredTypes: ["com.sun.", "java.awt.", "jdk.", "org.graalvm.", "sun.", "javax.awt.", "javax.swing.*"],
+		\               },
+		\           },
+		\       },
+		\   },
+		\	workspaceConfig: #{
+		\       java: #{
+		\           progressReports: #{ enabled: v:false },
+		\       },
+		\	},
+		\ }]
+endif
+
+" if executable('jdtls')
+" 	let lspServers += [#{
+" 	\		name: 'jdtls',
+" 	\		filetype: 'java',
+" 	\		path: 'jdtls',
+" 	\		args: [],
+" 	\		initializationOptions: #{
+" 	\			settings: #{
+" 	\				java: #{
+" 	\					completion: #{
+"     \	                   filteredTypes: ["com.sun.*", "java.awt.*", "jdk.*", "org.graalvm.*", "sun.*", "javax.awt.*", "javax.swing.*"],
+" 	\					},
+" 	\				},
+" 	\			},
+" 	\		},
+" 	\	}]
+" endif
+
 if executable('OmniSharp')
 	let lspServers += [#{
 				\		name: 'omnisharp',
