@@ -114,44 +114,86 @@ if executable('clangd')
 				\	}]
 endif
 
-" version 1.60.0
+" version
+" jdtls 1.60.0
 " java 21
+"
+" env
+" JAVA_HOME/bin
+" JDTLS_HOME/bin
+" 
+" handlers.vim 原插件 125行左右，这里需要改为以下方式
+" if get(lspserver, 'isDiagnosticsProvider', v:false)
+"     lspserver.queuePullDiagnosticsAllBuffers()
+"   endif
 if executable('java')
-	let lspServers += [#{
-		\   name: 'jdtls',
-		\   filetype: 'java',
-		\   path: 'java',
-		\   args: [
-		\       "-Declipse.application=org.eclipse.jdt.ls.core.id1",
-		\       "-Dosgi.bundles.defaultStartLevel=4",
-		\       "-Declipse.product=org.eclipse.jdt.ls.core.product",
-		\       "-Dlog.level=ALL",
-		\       "-Xmx1G",
-		\       "--add-modules=ALL-SYSTEM",
-		\       "--add-opens", "java.base/java.util=ALL-UNNAMED",
-		\       "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-		\       "-jar",
-		\       "D:\\ProgramPortable\\Dev\\LSP\\jdt-language-server-1.60.0-202606262232\\plugins\\org.eclipse.equinox.launcher_1.7.200.v20260619-2039.jar",
-		\       "-configuration",
-		\       "D:\\ProgramPortable\\Dev\\LSP\\jdt-language-server-1.60.0-202606262232\\config_win",
-		\       "-data",
-		\       "D:\\work"
-		\   ],
-		\   initializationOptions: #{
-		\       settings: #{
-		\           java: #{
-		\               completion: #{
-		\                   filteredTypes: ["com.sun.", "java.awt.", "jdk.", "org.graalvm.", "sun.", "javax.awt.", "javax.swing.*"],
-		\               },
-		\           },
-		\       },
-		\   },
-		\	workspaceConfig: #{
-		\       java: #{
-		\           progressReports: #{ enabled: v:false },
-		\       },
-		\	},
-		\ }]
+	let jdtls_home = ''
+	if !empty($JDTLS_HOME)
+		let jdtls_home = $JDTLS_HOME
+
+		" ========== 动态查找 launcher jar（文件名带版本号，不能写死） ==========
+		let jdtls_jar = glob(jdtls_home .. '/plugins/org.eclipse.equinox.launcher_*.jar')
+
+		" ========== 按平台选择 configuration 目录 ==========
+		if has('win32')
+			let jdtls_config = jdtls_home .. '/config_win'
+		elseif has('mac')
+			let jdtls_config = jdtls_home .. '/config_mac'
+		else
+			let jdtls_config = jdtls_home .. '/config_linux'
+		endif
+
+		" ========== workspace 数据目录（按平台放到用户目录下） ==========
+		if has('win32')
+			let jdtls_data = expand('~/jdtls-workspace')
+		else
+			let jdtls_data = expand('~/.cache/jdtls-workspace')
+		endif
+
+		if !isdirectory(jdtls_data)
+			silent! call mkdir(jdtls_data, 'p')
+		endif
+
+		" ========== 只有 jar 真实存在才注册 server ==========
+		if !empty(jdtls_jar)
+			let lspServers += [#{
+				\   name: 'jdtls',
+				\   filetype: 'java',
+				\   path: 'java',
+				\   args: [
+				\       "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+				\       "-Dosgi.bundles.defaultStartLevel=4",
+				\       "-Declipse.product=org.eclipse.jdt.ls.core.product",
+				\       "-Dlog.level=ALL",
+				\       "-Xmx1G",
+				\       "--add-modules=ALL-SYSTEM",
+				\       "--add-opens", "java.base/java.util=ALL-UNNAMED",
+				\       "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+				\       "-jar", jdtls_jar,
+				\       "-configuration", jdtls_config,
+				\       "-data", jdtls_data
+				\   ],
+				\   initializationOptions: #{
+				\       settings: #{
+				\           java: #{
+				\               completion: #{
+				\                   filteredTypes: ["com.sun.", "java.awt.", "jdk.", "org.graalvm.", "sun.", "javax.awt.", "javax.swing.*"],
+				\               },
+				\           },
+				\       },
+				\   },
+				\   workspaceConfig: #{
+				\       java: #{
+				\           progressReports: #{ enabled: v:false },
+				\       },
+				\   },
+				\ }]
+		else
+			echohl WarningMsg
+			echomsg 'jdtls launcher jar 未找到，路径: ' .. jdtls_home .. '/plugins/'
+			echohl None
+		endif
+	endif
 endif
 
 " if executable('jdtls')
