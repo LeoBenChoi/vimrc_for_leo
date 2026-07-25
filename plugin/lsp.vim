@@ -196,23 +196,6 @@ if executable('java')
 	endif
 endif
 
-" if executable('jdtls')
-" 	let lspServers += [#{
-" 	\		name: 'jdtls',
-" 	\		filetype: 'java',
-" 	\		path: 'jdtls',
-" 	\		args: [],
-" 	\		initializationOptions: #{
-" 	\			settings: #{
-" 	\				java: #{
-" 	\					completion: #{
-"     \	                   filteredTypes: ["com.sun.*", "java.awt.*", "jdk.*", "org.graalvm.*", "sun.*", "javax.awt.*", "javax.swing.*"],
-" 	\					},
-" 	\				},
-" 	\			},
-" 	\		},
-" 	\	}]
-" endif
 
 if executable('OmniSharp')
 	let lspServers += [#{
@@ -273,6 +256,15 @@ if executable('ruff')
 			\		path: 'vim-language-server',
 			\		args: ['--stdio']
 			\	}]
+endif
+
+if executable('asm-lsp')
+    let lspServers += [#{
+                \   filetype: ['asm', 's', 'S'],
+                \   name: 'asm-lsp',
+                \   path: 'asm-lsp',
+                \   args: [],
+                \   }]
 endif
 
 autocmd User LspSetup call LspAddServer(lspServers)
