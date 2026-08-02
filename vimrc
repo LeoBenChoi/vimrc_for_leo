@@ -5,6 +5,12 @@ execute 'set rtp^=' . fnameescape(g:vim_dir)
 execute 'set rtp+=' . fnameescape(g:vim_dir . '/after')
 let &packpath = &runtimepath
 
-if filereadable(g:vim_dir . '/plugins.vim')
-    execute 'source ' . g:vim_dir . '/plugins.vim'
+if filereadable(g:vim_dir . '/pluginlist.vim')
+    " execute 'source ' . g:vim_dir . '/pluginlist.vim'
+    call plug#begin()
+        "so $VIMHOME/pluginlist.vim
+        execute 'source ' . g:vim_dir . '/pluginlist.vim'
+    call plug#end()
 endif
+
+

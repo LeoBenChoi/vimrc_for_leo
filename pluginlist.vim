@@ -1,22 +1,16 @@
-call plug#begin()
+command! -nargs=+ NodePlug if executable('node') | execute 'Plug ' . <q-args> | endif
+command! -nargs=+ PyPlug if has('python3') | execute 'Plug ' . <q-args> | endif
+command! -nargs=+ Vim9Plug if has('vim9script') | execute 'Plug ' . <q-args> | endif
 
 " 核心插件 lsp
 " Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-if has('vim9script')
-	Plug 'yegappan/lsp'
-endif
+Vim9Plug 'yegappan/lsp'
 " Plug 'dense-analysis/ale' " 代码检查
 " Plug 'OmniSharp/omnisharp-vim'
 
 " 代码片段
-if has('python3')
-	Plug 'honza/vim-snippets'          " 通用代码片段库
-	Plug 'SirVer/ultisnips'          " 强大的代码片段引擎（依赖 Python3）
-	" Plug 'hrsh7th/vim-vsnip'          " 另一片段引擎（被注释）
-	" Plug 'hrsh7th/vim-vsnip-integ'    " vsnip 集成
-	" Plug 'rafamadriz/friendly-snippets' " 友好片段集合
-endif
+PyPlug 'SirVer/ultisnips'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -68,5 +62,3 @@ Plug 'liuchengxu/vim-which-key',
 
 " 图标 在最后
 Plug 'ryanoasis/vim-devicons'
-
-call plug#end()
