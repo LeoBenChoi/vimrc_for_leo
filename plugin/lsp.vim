@@ -267,6 +267,18 @@ if executable('asm-lsp')
                 \   }]
 endif
 
+" typescript
+" npm install -g typescript-language-server typescript@5
+if executable('typescript-language-server')
+    let lspServers += [#{
+                \   name: 'tsserver',
+                \   filetype: ['javascript', 'typescript'],
+                \   path: 'typescript-language-server',
+                \   args: ['--stdio']
+                \ }]
+endif
+
+
 autocmd User LspSetup call LspAddServer(lspServers)
 
 " 这里需要使用 autocmd User LspAttached 来映射，否则可能会被覆盖
