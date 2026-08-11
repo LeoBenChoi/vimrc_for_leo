@@ -52,7 +52,7 @@ Plug 'yianwillis/vimcdoc', {'depth': 1}
 
 
 " 符号大纲与函数列表视图
-" Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim'
 
 " 侧边栏
 Plug 'preservim/nerdtree'
