@@ -75,7 +75,8 @@
 "         \ })
 
 let lspOpts = #{
-			\		completionMatcher: 'case',
+            \       autoComplete: v:true,
+            \		completionMatcher: 'case',
 			\		useBufferCompletion: v:true,
 			\		filterCompletionDuplicates: v:true,
 			\		condensedCompletionMenu: v:true,
@@ -258,14 +259,15 @@ if executable('ruff')
 			\	}]
 endif
 
-if executable('asm-lsp')
-    let lspServers += [#{
-                \   filetype: ['asm', 's', 'S'],
-                \   name: 'asm-lsp',
-                \   path: 'asm-lsp',
-                \   args: [],
-                \   }]
-endif
+" 用不到，补全使用字典，诊断有bug，跳转直接全局搜索，
+" if executable('asm-lsp')
+"     let lspServers += [#{
+"                 \   filetype: ['asm', 's', 'S'],
+"                 \   name: 'asm-lsp',
+"                 \   path: 'asm-lsp',
+"                 \   args: [],
+"                 \   }]
+" endif
 
 " typescript
 " npm install -g typescript-language-server typescript@5
