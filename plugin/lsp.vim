@@ -230,24 +230,14 @@ if executable('gopls')
 				\	}]
 endif
 
-if executable('basedpyright')
-	let lspServers += [#{
-				\		filetype: ['python'],
-				\		name: 'basedpyright',
-				\		path: 'basedpyright-langserver',
-				\		args: ['--stdio'],
-				\		syncInit: v:true
-				\	}]
-endif
-
-if executable('ruff')
-	let lspServers += [#{
-			\		filetype: ['python'],
-			\		name: 'ruff',
-			\		path: 'ruff',
-			\		args: ['server'],
-			\		syncInit: v:true
-			\	}]
+if executable('pyright-langserver')
+    " pyright
+    let lspServers += [#{
+                \   filetype: ['python'],
+                \   name: 'pyright',
+                \   path: 'pyright-langserver',
+                \   args: ['--stdio'],
+                \ }]
 endif
 
 if executable('ruff')
